@@ -458,3 +458,38 @@ phase. Format: decision, alternatives, why.
 - **Not a regression**: the live chrome shows a pale rim (the wall reflected at grazing angles);
   it was already there in Phase 04's captures. The v1.1.0 screenshot looked rimless only because
   it was taken before the still had crossfaded to the canvas.
+
+## Phase 12: work stack (2026-11-03)
+
+- **Folio Stack, studied first**: filmed the Framer demo (`.artifacts/folio/sheet.png`): wide
+  rounded cards pinned near the top, each next one pinned about 12 px lower, earlier cards scaled
+  down from their top edge and darkened so a sliver of each stays visible; big white title bottom
+  left, one-line caption, `01 / 05` top left, a tag top right.
+- **Rebuilt as CSS sticky plus one scroll handler**: each `<li>` is `position: sticky` at
+  `inset + i * 14px`; a rAF-throttled scroll listener measures how far each card has slid over the
+  one before (0 entering at the bottom, 1 pinned) and gives every earlier card
+  `scale(1 - 0.04 * depth)` from its top edge and a dimming layer at `0.28 * depth` (max 0.6).
+  Reduced motion keeps the stack without scale or dimming. No ScrollTrigger pin: sticky is native,
+  survives Lenis untouched and costs nothing when idle.
+- **Card size and hold**: `100svh` less the inset and the three peeks (svh, so phone toolbars do
+  not resize cards mid-scroll). Each card gets a 45svh hold (a margin, plus an `::after` spacer
+  after the last card so the pile stays together before it leaves); without it the next card
+  started covering the title the moment a card pinned.
+- **Legibility**: a neutral scrim at the bottom (black 65% to clear at 60%) and a lighter one at the
+  top (35% to clear at 25%) for the index and tag: Ripple and Maple Leaf's media are white.
+- **Order and copy**: Shufflr, Ripple, Maple Leaf Foods, Warframe. The intro ("Selected work / Four
+  exhibits") is gone; the section keeps a visually hidden `h2` for its outline. Captions are cut
+  from each project's existing description (accuracy rule). Tags are the medium, lowercase.
+- **Warframe is a card only**: `/work/warframe` and its content file are removed (404, gone from
+  the sitemap and the Next cards; Maple Leaf's Next is Shufflr again). The card is not a link
+  (`role="group"`), shows `apple-still.jpg` (WebP) and plays the glitch on hover: the 6.5 MB GIF
+  became a 0.66 MB H.264 loop (`scripts/media.sh`); a VP9 WebM came out twice the size, so it is
+  not shipped. The catalogue lists Warframe as "Coming soon" without a link.
+- **Taste inspector**, allowed with reasons: `numbering` (the `01 / 04` index is asked for in
+  PLAN 12.5 and copies Folio Stack), `gradient` (the two neutral scrims under white type on the
+  media, the one gradient the skill itself permits, plus the PLAN 12.1 metal underline),
+  `button-fx` (the probe reads the metal underline on large links as a gradient-filled button).
+  Defended warnings: `pinned-over-picture` and `long-pin` (the title belongs to its card and is
+  covered by the next card, which the probe does not see), `palette-cream` (the museum wall).
+  Fixed: `no-poster` (the glitch loop has the still as poster), `size-count` (card titles share
+  the close's size; captions and the close's paragraph use the body size).

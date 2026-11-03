@@ -40,8 +40,8 @@ vision, architecture, phases, git workflow and the autonomous execution protocol
   dev server because /lab 404s in production). `scripts/sheet.py` resizes tiles to a fixed size:
   check raw files before judging proportions.
 - Physics probes: `npx jiti scripts/physics/probe.ts`, `npx jiti scripts/physics/calibrate.ts`.
-- Taste gate: `node <taste>/scripts/inspect.mjs http://localhost:3100/<route> --allow shadow,rules,hairline,covered-text,late-title`
-  (allow-list reasons in DECISIONS.md, Phases 06 and 09).
+- Taste gate: `node <taste>/scripts/inspect.mjs http://localhost:3100/<route> --allow shadow,rules,hairline,covered-text,late-title,button-fx,numbering,gradient`
+  (allow-list reasons in DECISIONS.md, Phases 06, 09, 11 and 12).
 - Editing after Prettier: re-read the file first; scripted string replacements silently miss
   reformatted lines.
 

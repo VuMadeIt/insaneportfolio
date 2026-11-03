@@ -108,26 +108,14 @@
 }
 
 /* Section entrances (`.reveal`) are driven by GSAP ScrollTrigger in ScrollMotion.tsx. */
-@supports (animation-timeline: view()) {
-  @media (prefers-reduced-motion: no-preference) {
-    /* The covered exhibit dims a little while the next one slides over it. */
-    .exhibit::after {
-      content: "";
-      position: absolute;
-      inset: 0;
-      pointer-events: none;
-      background: var(--ink);
-      opacity: 0;
-      animation: exhibit-dim linear both;
-      animation-timeline: var(--next);
-      animation-range: entry 0% entry 100%;
-    }
-  }
-}
-@keyframes exhibit-dim {
-  to {
-    opacity: 0.12;
-  }
+
+/* The home work stack (WorkStack.tsx): cards fill the small viewport less the inset and the peeks
+   of the three cards that can sit above the last one. */
+:root {
+  --card-inset: clamp(10px, 1.4vw, 20px);
+  --card-h: calc(100svh - 2 * var(--card-inset) - 3 * 14px);
+  /* Scroll each card stays whole before the next one starts to cover it. */
+  --card-hold: 45svh;
 }
 
 /* Catalogue previews appear beside the row on hover (desktop); inline on tablets and phones. */

@@ -3,7 +3,7 @@
   "1": "compilerOptions",
   "2": "Cradle",
   "3": "choreography.ts",
-  "4": "Stage.tsx",
+  "4": "Cradle.tsx",
   "5": "@playwright/test",
   "6": "Part 12. Revision 2 (Lucas, 2026-11-03). Overrides Parts 1-11 where they conflict",
   "7": "AGENTS.md",
@@ -34,12 +34,11 @@
   "32": "media.sh",
   "33": "Visual inspo (not shipped)",
   "34": "screens.mjs",
-  "35": "HeroStage.tsx",
-  "36": "dependencies",
-  "37": "StillStage.tsx",
-  "38": "slowmo.ts",
-  "39": "scripts",
-  "40": "eslint-config-next",
-  "41": "slowmo.mjs",
-  "42": "Part 3. Technical architecture"
+  "35": "cradle.ts",
+  "36": "Stage.tsx",
+  "37": "cradle.test.ts",
+  "38": "Rope",
+  "39": "config.ts",
+  "40": "PhysicsLab.tsx",
+  "41": "slowmo.mjs"
 }

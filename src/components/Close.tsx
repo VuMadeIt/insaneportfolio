@@ -23,7 +23,7 @@ export function Close() {
         <h2 id="close-title" className="reveal max-w-[12em] text-[clamp(36px,7vw,112px)] leading-[0.95]">
           Let&apos;s get something moving.
         </h2>
-        <p className="reveal mt-8 max-w-[34em] text-[clamp(18px,1.5vw,22px)] leading-[1.5]">
+        <p className="reveal mt-8 max-w-[34em] leading-[1.5]">
           I&apos;m looking for Summer 2027 co-op roles. Write to{" "}
           <A href={`mailto:${CONTACT.email}`}>{CONTACT.email}</A>, or find me on{" "}
           <A href={CONTACT.linkedin}>LinkedIn</A>, <A href={CONTACT.github}>GitHub</A>,{" "}

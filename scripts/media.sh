@@ -7,7 +7,7 @@
 set -euo pipefail
 SRC="$1/public"
 OUT="public/media"
-mkdir -p "$OUT"/{shufflr,ripple,maple-leaf,work,about}
+mkdir -p "$OUT"/{shufflr,ripple,maple-leaf,warframe,work,about}
 
 video() { # src dest
   ffmpeg -v error -y -i "$SRC/$1" -an -vf "scale='min(1280,iw)':-2,fps=30" -c:v libx264 -preset slow -crf 26 \
@@ -30,4 +30,7 @@ cp "$SRC"/images/shufflr/{discover,profile-memories}.png "$OUT/shufflr/"
 cp "$SRC"/images/ripple/{ideation,research,comparison,system-diagram,discover,profile-history}.png "$OUT/ripple/"
 cp "$SRC"/images/maple-leaf/{service-penalty-app,maple-leaf-market,project-tracking-app}.png "$OUT/maple-leaf/"
 cp "$SRC"/images/search-a-song.jpg "$OUT/work/"
+# Warframe card: the still, and the 6.5 MB glitch GIF as a muted mp4 loop played on hover.
+ffmpeg -v error -y -i "$SRC/images/apple-still.jpg" -c:v libwebp -quality 85 "$OUT/warframe/still.webp"
+ffmpeg -v error -y -i "$SRC/images/apple-hover.gif" -an -vf "fps=30,format=yuv420p" -c:v libx264 -preset slow -crf 24   -movflags +faststart "$OUT/warframe/glitch.mp4"
 du -sh "$OUT"/*

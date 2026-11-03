@@ -150,18 +150,6 @@ export default async function CaseStudyPage({ params }: { params: Promise<{ slug
       {study.sections.map((s) => (
         <Block key={s.id} section={s} />
       ))}
-      {slug === "warframe" && (
-        <div className="px-[var(--gutter)] pb-24">
-          <div className="mx-auto max-w-[660px]">
-            <a
-              href={`mailto:${CONTACT.email}?subject=Warframe`}
-              className="link-arrow text-[clamp(22px,2.2vw,30px)]"
-            >
-              Ask me about it <span aria-hidden>&rarr;</span>
-            </a>
-          </div>
-        </div>
-      )}
       <ProgressBar sections={study.sections.map((s) => ({ id: s.id, label: s.label }))} />
       <Link
         href={`/work/${next.slug}`}

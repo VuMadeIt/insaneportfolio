@@ -52,3 +52,8 @@ motion enter the state directly. Filmed sheets: `.artifacts/story/1440/sheet.png
 `[more]` dialog, four full-screen sticky exhibits with real (re-encoded) media and wall labels,
 "View all work", the close with contact links and the returning name, inner-page slim nav, 404,
 favicon from the real render, sitemap, robots. Taste inspector: 0 FAIL with the PLAN allow-list.
+
+### Phase 07: case studies (`v0.7.0-case-studies`)
+Shufflr, Ripple, Maple Leaf Foods and Warframe (under wraps) on one template: Sam's layout,
+Caleb's rhythm, Rachel Chen's claim headlines, square progress bar, Next exhibit card. Copy and
+media ported from the old repo; a test enforces the headline skim rule.

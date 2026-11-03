@@ -313,3 +313,22 @@ phase. Format: decision, alternatives, why.
   S27 co-op line from LinkedIn, contact in running text, the name returning at full width.
 - **404** "Nothing hangs here." Favicon: one chrome ball cropped from the real render with a
   circular mask. Sitemap and robots (lab disallowed).
+
+## Phase 07: case studies (2026-11-03)
+
+- **One data-driven template** (`app/(site)/(pages)/work/[slug]/page.tsx`) fed by typed content
+  (`src/content/caseStudies/*`): title, one-sentence claim, a wall-label block (Role, Team,
+  Timeline, Scope), link, full-width hero media, then sections that each open with a short
+  label and a first-person claim headline, a 660 px reading column, media breaking wider, stats
+  with their sources, interview quotes, titled points, a square floating progress bar
+  (section label, n / total, a 2 px fill) and a full-width "Next exhibit" card.
+- **Story order** follows Caleb Wu's rhythm compressed to PLAN 6.4: Context, Problem (with
+  research), Insight or Solution, Key features or design decisions, System or impact, Reflection.
+- **Copy** is ported faithfully from the old repo; only headlines were rewritten as claims
+  (Rachel Chen). Every real stat keeps its source link. A unit test enforces the skim rule
+  (every claim and headline is first person), no em dashes anywhere in site copy, and that every
+  case study links to a real next one. The test caught one headline that was not a claim.
+- **Maple Leaf reflection** had no source copy: the section holds a DRAFT placeholder asking Lucas
+  to write it, rather than an invented reflection.
+- **Warframe**: one section ("I would rather show you this in person.") and a mailto "Ask me
+  about it". No invented content.

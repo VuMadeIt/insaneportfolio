@@ -15,7 +15,9 @@ const sizes = [
 ];
 for (const webgl of [true, false]) {
   const args = webgl
-    ? ["--use-angle=swiftshader", "--enable-unsafe-swiftshader", "--ignore-gpu-blocklist"]
+    ? process.env.SWIFTSHADER
+      ? ["--use-angle=swiftshader", "--enable-unsafe-swiftshader"]
+      : ["--enable-gpu", "--ignore-gpu-blocklist"]
     : ["--disable-webgl", "--disable-webgl2", "--disable-3d-apis"];
   const browser = await chromium.launch({ channel: "msedge", args });
   for (const [w, h] of sizes) {

@@ -42,7 +42,7 @@ export const defaultLook: Look = {
   exposure: 1,
   shadow: "vsm",
   shadowOpacity: 0.24,
-  lightSize: 0.05,
+  lightSize: 0.08,
   keyIntensity: 40,
   keyPosition: [-0.3, 0.45, 3],
   wallDistance: 0.3,

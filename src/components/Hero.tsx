@@ -1,4 +1,5 @@
 import { GiantName } from "./GiantName";
+import { SoundToggle } from "./SoundToggle";
 
 export function Hero({ children }: { children?: React.ReactNode }) {
   return (
@@ -14,6 +15,7 @@ export function Hero({ children }: { children?: React.ReactNode }) {
           Systems Design Engineering @ Waterloo
         </p>
       </div>
+      <SoundToggle className="absolute bottom-[calc(30.5vw*0.86)] right-[var(--gutter)]" />
     </section>
   );
 }

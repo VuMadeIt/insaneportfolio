@@ -12,7 +12,9 @@ export default defineConfig({
     baseURL: `http://localhost:${port}`,
     channel: "msedge",
     launchOptions: {
-      args: ["--use-angle=swiftshader", "--enable-unsafe-swiftshader", "--ignore-gpu-blocklist"],
+      args: process.env.SWIFTSHADER
+        ? ["--use-angle=swiftshader", "--enable-unsafe-swiftshader"]
+        : ["--enable-gpu", "--ignore-gpu-blocklist"],
     },
   },
   webServer: {

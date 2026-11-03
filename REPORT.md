@@ -24,3 +24,11 @@ strings with a 1 px minimum, VSM wall shadows sized to a 5 cm museum spot, analy
 shadows, porcelain and dark metal for comparison, `/lab` with every switch. Pre-rendered still as
 LCP and no-WebGL fallback, aligned to the live canvas. Four realism rounds in DECISIONS.md.
 Screens: `.artifacts/screens/v0.2.0/`, lab sheets in `.artifacts/lab/`.
+
+### Phase 03: interaction and sound (`v0.3.0-interaction`)
+Drag and flick with the soft hand constraint (touch only captured on a ball), hover captions,
+real buttons projected over each ball (Tab order, focus ring, arrow-key push, names "People:
+where every problem starts. Open story."), on-demand rendering with sleep and off-screen pause,
+WebAudio clacks from a CC0 recording grouped per chain and scaled by impact speed, `[sound on]`
+toggle. 60 fps at 1440x900 DPR 2 on an integrated GPU after a shadow-map fix. E2E: keyboard flow,
+push, reduced motion, sound toggle.

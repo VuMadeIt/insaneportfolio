@@ -14,7 +14,9 @@ mkdirSync(dir, { recursive: true });
 
 const browser = await chromium.launch({
   channel: "msedge",
-  args: ["--use-angle=swiftshader", "--enable-unsafe-swiftshader", "--ignore-gpu-blocklist"],
+  args: process.env.SWIFTSHADER
+    ? ["--use-angle=swiftshader", "--enable-unsafe-swiftshader"]
+    : ["--enable-gpu", "--ignore-gpu-blocklist"],
 });
 // Paths are given without a leading slash ("home", "work/shufflr") so Git Bash does not rewrite them.
 for (const route of paths.length ? paths : ["home"]) {

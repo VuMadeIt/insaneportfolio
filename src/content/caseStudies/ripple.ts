@@ -13,7 +13,7 @@ export const ripple: CaseStudy = {
   claim: "We redesigned what it means to use an LLM: reuse an answer first, generate only when nothing fits.",
   meta: {
     role: "Product designer",
-    timeline: "BLOOM Designathon, 2026",
+    timeline: "UW/UX BLOOM Designathon, 2026. 3rd place",
     scope: "Research, concept, interaction and visual design, prototype",
   },
   link: {

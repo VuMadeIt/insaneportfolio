@@ -14,7 +14,7 @@ export const shufflr: CaseStudy = {
   meta: {
     role: "Product designer",
     team: "Emma Phuntsok, Jasmine Kumar, Kelly M, Lucas Vu",
-    timeline: "Product Design Sprint, 2026. Winner",
+    timeline: "Western University Product Design Sprint, 2026. 1st place and Most Practical",
     scope: "Research, product strategy, interaction design, prototyping",
   },
   link: { label: "Devpost", href: "https://devpost.com/software/shufflr" },

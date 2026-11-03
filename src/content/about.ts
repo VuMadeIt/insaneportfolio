@@ -15,18 +15,37 @@ export const portrait = {
   height: 883,
 };
 
-export const chronology: { when: string; role: string; place: string }[] = [
-  { when: "2026, now", role: "Product Designer", place: "Digital Extremes" },
-  { when: "2026, now", role: "Product Design Lead", place: "Hackathons North America" },
-  { when: "2026", role: "Design Engineer", place: "Parrot (YC F25)" },
-  { when: "2026", role: "Product Designer", place: "Creators Collective" },
-  { when: "2026", role: "Digital Product Manager", place: "Maple Leaf Foods" },
-  { when: "2026", role: "Figma Design Director", place: "Waterloo Engineering Society" },
-  { when: "2025", role: "Systems Design and Ops Coordinator", place: "The Local Charity" },
-  { when: "Ongoing", role: "Systems Design Engineering", place: "University of Waterloo" },
+/** Oldest first, read left to right. `dark` puts a white logo on a dark tile. */
+export const chronology: { when: string; role: string; place: string; logo: string; dark?: boolean }[] = [
+  { when: "Ongoing", role: "Systems Design Engineering", place: "University of Waterloo", logo: "uwaterloo" },
+  {
+    when: "2025",
+    role: "Systems Design and Ops Coordinator",
+    place: "The Local Charity",
+    logo: "local-charity",
+  },
+  {
+    when: "2026",
+    role: "Figma Design Director",
+    place: "Waterloo Engineering Society",
+    logo: "waterloo-engineering",
+  },
+  { when: "2026", role: "Digital Product Manager", place: "Maple Leaf Foods", logo: "maple-leaf-foods" },
+  { when: "2026", role: "Product Designer", place: "Creators Collective", logo: "creators-collective" },
+  { when: "2026", role: "Design Engineer", place: "Parrot (YC F25)", logo: "parrot-yc" },
+  { when: "2026, now", role: "Product Design Lead", place: "Hackathons North America", logo: "hack-canada" },
+  {
+    when: "2026, now",
+    role: "Product Designer",
+    place: "Digital Extremes",
+    logo: "digital-extremes",
+    dark: true,
+  },
 ];
 
 export interface ObjectItem {
+  /** Anchor on /about, linked from the home page's photo strip. */
+  id: string;
   title: string;
   year: string;
   medium: string;
@@ -37,6 +56,7 @@ export interface ObjectItem {
 
 export const objects: ObjectItem[] = [
   {
+    id: "cadets",
     title: "Remembrance Day parade in the snow",
     year: "Cadets",
     medium: "Photograph",
@@ -49,6 +69,7 @@ export const objects: ObjectItem[] = [
     },
   },
   {
+    id: "chess",
     title: "My last game in the TCDSB West-End division",
     year: "High school chess",
     medium: "Photograph",
@@ -61,6 +82,7 @@ export const objects: ObjectItem[] = [
     },
   },
   {
+    id: "speech",
     title: "After a 15-minute speech",
     year: "Volunteer Appreciation Ceremony",
     medium: "Photograph",
@@ -73,6 +95,7 @@ export const objects: ObjectItem[] = [
     },
   },
   {
+    id: "hack-the-6ix",
     title: "Winning $1,400 USD",
     year: "Hack the 6ix 2026",
     medium: "Photograph",
@@ -85,6 +108,7 @@ export const objects: ObjectItem[] = [
     },
   },
   {
+    id: "socratica",
     title: "Socratica's Create-a-thon",
     year: "Socratica, UW/UX, Blueprint",
     medium: "Photograph",
@@ -97,6 +121,7 @@ export const objects: ObjectItem[] = [
     },
   },
   {
+    id: "fishing",
     title: "A hummingbird on the tip of my rod",
     year: "Fishing at 4am",
     medium: "Video, 26 seconds",

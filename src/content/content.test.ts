@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { caseStudies } from "./caseStudies";
 import { identities } from "./identities";
-import { projects } from "./projects";
+import { allProjects, homeProjects, hrefOf, projects } from "./projects";
 
 const allText = JSON.stringify({ identities, projects, caseStudies });
 
@@ -22,6 +22,21 @@ describe("site copy", () => {
     const slugs = new Set(caseStudies.map((c) => c.slug));
     for (const p of projects.filter((p) => p.caseStudy)) expect(slugs.has(p.slug), p.slug).toBe(true);
     for (const c of caseStudies) expect(slugs.has(c.next), c.next).toBe(true);
+  });
+
+  it("every project opens something and has a video, and the lists rank it right", () => {
+    for (const p of projects) {
+      expect(hrefOf(p), p.slug).toBeTruthy();
+      expect(p.media.video ?? p.media.hover, p.slug).toBeTruthy();
+    }
+    expect(homeProjects.map((p) => p.slug)).toEqual([
+      "ripple",
+      "shufflr",
+      "we-should-go-to-japan",
+      "maple-leaf-foods",
+    ]);
+    expect(allProjects.slice(0, 3)).toEqual(homeProjects.slice(0, 3));
+    expect(new Set(allProjects).size).toBe(projects.length);
   });
 
   it("third-party stats keep their sources", () => {

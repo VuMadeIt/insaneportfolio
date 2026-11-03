@@ -20,7 +20,16 @@ vision, architecture, phases, git workflow and the autonomous execution protocol
   terse; written files (PLAN, DECISIONS, REPORT, copy) stay in full sentences.
 
 ## Commands
-To be filled in during Phase 00 (dev, build, start, typecheck, lint, test, e2e).
+- `npm run dev` (dev server), `npm run build`, `npm run start`
+- `npm run typecheck` (tsc), `npm run lint` (eslint + prettier check), `npm run format`
+- `npm run test` (Vitest, physics acceptance tests in `src/physics/*.test.ts`)
+- `npm run e2e` (Playwright on Edge against `next start -p 3100`; build first)
+- `bash scripts/serve.sh` rebuilds and restarts the prod server on :3100 (kills stale listeners;
+  `SKIP_BUILD=1` to only restart). Killing a shell on Windows does not kill `next start`.
+- `node scripts/screens.mjs <tag> [route ...]` saves 1440/768/390 screenshots to
+  `.artifacts/screens/<tag>/`. Routes have no leading slash (`home`, `people`, `work/shufflr`)
+  because Git Bash rewrites `/x` arguments. `SETTLE=ms`, `FULL=1` for full page.
+- Installs need `legacy-peer-deps` (set in `.npmrc`; npm 10.9 peer-set bug).
 
 ## Conventions
 - Physics in `src/physics` is pure TypeScript: no three.js, React, or UI-state imports.

@@ -1,0 +1,73 @@
+@import "tailwindcss";
+@import "../src/styles/tokens.css";
+
+@theme {
+  --color-wall: var(--wall);
+  --color-ink: var(--ink);
+  --color-muted: var(--muted);
+  --color-rule: var(--rule);
+  --font-serif: var(--font-fraunces), Georgia, serif;
+  --radius-*: initial;
+  --ease-out: var(--ease-out);
+  --ease-drawer: var(--ease-drawer);
+}
+
+@layer base {
+  * {
+    border-radius: 0;
+  }
+  html {
+    background: var(--wall);
+    color: var(--ink);
+    font-family: var(--font-serif);
+    font-optical-sizing: auto;
+    font-variation-settings:
+      "SOFT" 0,
+      "WONK" 0;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+  body {
+    font-size: 17px;
+    line-height: 1.5;
+  }
+  ::selection {
+    background: var(--ink);
+    color: var(--wall);
+  }
+  :focus-visible {
+    outline: 1px solid var(--ink);
+    outline-offset: 4px;
+  }
+}
+
+@layer components {
+  .bracket {
+    color: var(--muted);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    text-decoration-thickness: 1px;
+    transition: color 200ms var(--ease-out);
+  }
+  .bracket:hover {
+    color: var(--ink);
+  }
+  .sr-only-focusable:not(:focus-visible) {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 1ms !important;
+    transition-duration: 1ms !important;
+    scroll-behavior: auto !important;
+  }
+}

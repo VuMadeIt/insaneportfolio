@@ -15,7 +15,7 @@ test("clicking a ball opens its story at its own URL; Escape returns", async ({ 
   await expect(page).toHaveTitle("Ideas | Lucas Vu");
   await page.keyboard.press("Escape");
   await expect(page).toHaveURL(/\/$/);
-  await expect(page.getByRole("heading", { level: 2 })).toHaveCount(0);
+  await expect(page.locator("#story-title")).toHaveCount(0);
 });
 
 test("the back arrow and the browser back button close the story", async ({ page }) => {

@@ -7,7 +7,6 @@ import { StoryController } from "./StoryController";
 export function Hero() {
   return (
     <section aria-label="Lucas Vu" className="relative h-dvh min-h-[560px] w-full overflow-hidden bg-wall">
-      <h1 className="sr-only">Lucas Vu, product designer</h1>
       <HeroName />
       <div className="hero-frame absolute inset-0">
         <HeroStage />

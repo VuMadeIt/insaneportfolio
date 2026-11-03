@@ -16,7 +16,7 @@ export default function HomePage() {
         <h2 id="work-title" className="sr-only">
           Selected work
         </h2>
-        <WorkList projects={homeProjects} level="h3" />
+        <WorkList projects={homeProjects} level="h3" large />
         <Link href="/work" className="link-arrow reveal mt-12 inline-block text-[clamp(22px,2.2vw,30px)]">
           View more work <span aria-hidden>&rarr;</span>
         </Link>

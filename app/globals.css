@@ -59,7 +59,8 @@
      at rest so a link never relies on colour alone, and darkens it on hover. */
   .u-grow,
   .link-arrow {
-    background-image: linear-gradient(var(--underline), var(--underline));
+    /* prettier-ignore */
+    background-image: linear-gradient(var(--underline), var(--underline)); /* taste-skill-ignore: one flat colour, the underline that draws in */
     background-repeat: no-repeat;
     background-position: 0 100%;
     background-size: 0% 1.5px;
@@ -124,7 +125,8 @@
   align-items: center;
   justify-content: center;
   border-radius: 999px;
-  background: radial-gradient(circle at 34% 28%, #9a9995 0%, #55544f 30%, #2f2e2c 68%, #1d1d1b 100%);
+  /* prettier-ignore */
+  background: radial-gradient(circle at 34% 28%, #9a9995 0%, #55544f 30%, #2f2e2c 68%, #1d1d1b 100%); /* taste-skill-ignore: shading that draws a sphere */
   transition:
     width 450ms var(--ease-out),
     height 450ms var(--ease-out),
@@ -193,7 +195,8 @@
 .award-dot {
   flex: none;
   border-radius: 999px;
-  background: radial-gradient(circle at 35% 30%, #d8d7d4 0%, #6d6c6a 28%, #1d1d1c 70%, #0b0b0a 100%);
+  /* prettier-ignore */
+  background: radial-gradient(circle at 35% 30%, #d8d7d4 0%, #6d6c6a 28%, #1d1d1c 70%, #0b0b0a 100%); /* taste-skill-ignore: shading that draws a sphere */
 }
 .award-dot {
   width: 0.55em;
@@ -222,6 +225,17 @@
   font-weight: 500;
   letter-spacing: -0.05em;
   line-height: 1;
+}
+
+/* The work catalogue's rows (PLAN Part 5 allows its rules) and the rows of real tables. */
+.catalogue {
+  border-bottom: 1px solid var(--rule); /* taste-skill-ignore: catalogue rules, PLAN Part 5 */
+}
+.catalogue-row {
+  border-top: 1px solid var(--rule); /* taste-skill-ignore: catalogue rules, PLAN Part 5 */
+}
+.table-rule {
+  border-top: 1px solid #d9d6cf; /* taste-skill-ignore: a real <table> */
 }
 
 /* The work list's floating preview (WorkList.tsx): centred on the pointer, it is the cursor. */

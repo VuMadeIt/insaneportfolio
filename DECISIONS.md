@@ -601,3 +601,42 @@ Lucas dropped two screenshots marked **USE NOW** (not archive inspo):
   `side-scroll`, `long-pin` and `empty-screens`, which all come from the pinned horizontal
   timeline Lucas chose (the track bleeds off the right edge on purpose so it reads as scrollable).
   `blank-gap` and `palette-cream` as before.
+
+## Phase 15: revision 4 (2026-11-03 evening)
+
+- **Light only, grey hover underlines, nav back everywhere** (PLAN 13.1). `.u-grow`/`.link-arrow`
+  draw a flat light-grey line in on hover only; `.u-metal` (links inside running text) keeps a
+  faint line at rest for WCAG 1.4.1. The mute button lives in the audio module as a tiny store
+  (`isMuted`/`setMuted`/`subscribeMuted`), read with `useSyncExternalStore`, persisted in
+  localStorage, applied through the master gain so the cradle, slow motion and the footer all obey.
+- **Cursor**: one fixed element, lerped, states set from `data-cursor` attributes (`hide` on work
+  rows, `drop` on the home footer) and the clickable elements under the pointer. Only on
+  `(hover: hover) and (pointer: fine)`; elsewhere the native cursor stays.
+- **Work rows**: the preview video follows the pointer in a fixed layer and plays only for the
+  hovered row. The "stuck video" bug was `:focus-within`: clicking an external link focused the
+  row, the tab changed, and the preview stayed. Now it shows on pointer hover only, clears on
+  window blur, and keyboard focus places it beside the row.
+- **Slow motion hold**: touching a moving ball sets a hold that lasts 1.5 s of real time after the
+  last contact; ease-out is 0.8 s. Still a time-scale change only (test in `slowmo.test.ts`).
+- **Ball-pit footer**: a 2D circle-vs-box solver (`src/footer-physics/pit.ts`, 240 Hz substeps,
+  restitution, Coulomb-ish friction, rolling resistance, sleeping) with six tests. Colliders are
+  measured from the DOM: each letter of the name from its glyph metrics (`measureText`), other
+  text as its line boxes. The canvas sits over the text with no pointer events; clicks within
+  28 px of text or a link never drop a ball (the same rule hides "drop me").
+- **Timeline**: Wallnut's overlapping staircase, Bryan Oh's playhead and Blackbook's per-role
+  panel combined: axis along the bottom, greedy lanes, a dark ball that rests on each role's start
+  then rolls to the next, one section per role with "At the same time". Sticky plus a scroll
+  listener (no GSAP pin), so it cannot fight Lenis. Phones and reduced motion get the list.
+- **Case studies**: graphics are components (`src/components/case/Diagram.tsx`, `Charts.tsx`);
+  diagram wires are computed from measured boxes (fan-in turns left of the target, fan-out right of
+  the source) and an e2e test checks every wire starts and ends on a box. Each study sets
+  `--accent` from its own UI (Ripple #2f6f9e, Shufflr #6a3df0). Outside research appears only as
+  context or in "Looking back", always with a source.
+- **Taste**: lint 0 FAIL on the UI (`src/components src/content app/(site)`; `src/scene` is
+  three.js shadow-map code, not CSS shadows). Ignored with reasons in place: the flat-colour
+  underline, the sphere shading of the cursor and accolade balls, catalogue rules, real table rows.
+  Inspector: home and About 0 FAIL. Allowed: `eyebrow` (Caleb's labels; case studies),
+  `few-pictures` (Lucas asked for no photos on home), `button-fx` (the hover underline on links),
+  `long-pin` (the pinned timeline). Defended on the case studies: `blank-gap` (the full-page
+  capture runs before the scroll entrances; viewport captures show every block) and
+  `headline-lines` at 390 px (claim headlines, the skim test).

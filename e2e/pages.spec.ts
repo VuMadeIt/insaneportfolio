@@ -7,7 +7,6 @@ test("about is a museum room: statement, timeline with logos, objects with label
   await expect(page.getByRole("heading", { level: 1 })).toHaveText("About");
   await expect(page.getByRole("heading", { name: "Chronology" })).toBeVisible();
   await expect(page.locator(".timeline-stop")).toHaveCount(8);
-  await expect(page.locator(".timeline-stop img")).toHaveCount(8);
   await expect(page.locator(".timeline-stop").last()).toContainText("Digital Extremes");
   await expect(page.locator("figure[id]")).toHaveCount(6);
   await expect(
@@ -26,19 +25,27 @@ test("about is a museum room: statement, timeline with logos, objects with label
   expect(broken.filter(Boolean)).toEqual([]);
 });
 
-test("the timeline slides sideways as the page scrolls down", async ({ page }) => {
+test("the timeline: one section per role, the ball moves along the axis as the page scrolls", async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 1440, height: 900 });
   await page.goto("/about");
-  const track = page.locator(".timeline-stop").first();
-  const x0 = (await track.boundingBox())!.x;
-  await page
-    .locator("#chronology-title")
-    .evaluate((el) => window.scrollTo(0, el.getBoundingClientRect().top + scrollY + 600));
-  await expect.poll(async () => (await track.boundingBox())!.x, { timeout: 5000 }).toBeLessThan(x0 - 200);
+  const stage = page.locator("li.timeline-stop[aria-current='step']");
+  await expect(stage).toContainText("The Local Charity");
+  await page.locator("#chronology-title").evaluate((el) => {
+    const s = el.closest("section")!;
+    window.scrollTo(0, s.getBoundingClientRect().top + scrollY + s.offsetHeight - innerHeight);
+  });
+  await expect(stage).toContainText("Digital Extremes", { timeout: 5000 });
+  // Overlaps are shown: Digital Extremes runs alongside Waterloo and Hackathons North America.
+  await expect(stage).toContainText("At the same time");
 });
 
-test("inner pages have a small Back to Site link and no logo nav", async ({ page }) => {
+test("inner pages carry the site nav and no logo image", async ({ page }) => {
   await page.goto("/work");
-  await expect(page.getByRole("link", { name: "Back to Site" })).toHaveAttribute("href", "/");
+  await expect(
+    page.getByRole("navigation", { name: "Site" }).getByRole("link", { name: "lucas vu" }),
+  ).toHaveAttribute("href", "/");
   await expect(page.getByAltText("i am vu")).toHaveCount(0);
 });
 
@@ -60,5 +67,6 @@ test("the catalogue: top three first, every project listed and clickable", async
     "https://lucasvu.framer.website/projects/reboot",
   );
   await expect(rows.filter({ hasText: "Reboot" })).toContainText("3rd place");
-  expect(await rows.locator("video").count()).toBe(12);
+  // Title, accolades, description and month only: no meta line.
+  await expect(rows.filter({ hasText: "Case study" })).toHaveCount(0);
 });

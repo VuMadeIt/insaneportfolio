@@ -47,7 +47,7 @@ export function Bars({ v }: { v: Of<"bars"> }) {
                 )}
               </div>
               <div className="relative flex h-9 items-center">
-                <span className="absolute inset-x-0 top-1/2 h-px -translate-y-1/2 bg-[#d3cfc6]" />
+                <span className="absolute inset-x-0 top-1/2 h-2 -translate-y-1/2 rounded-full bg-[#dedad2]" />
                 <span
                   className={`bar-fill absolute top-0 h-full rounded-full ${fill[b.tone ?? "accent"]}`}
                   style={
@@ -275,14 +275,14 @@ export function Table({ v }: { v: Of<"table"> }) {
             <tr key={r.label} className={r.ours ? "bg-white" : ""}>
               <th
                 scope="row"
-                className={`rounded-l-sm py-3.5 pl-4 pr-4 font-medium ${r.ours ? "" : "border-t border-[#d9d6cf]"}`}
+                className={`rounded-l-sm py-3.5 pl-4 pr-4 font-medium ${r.ours ? "" : "table-rule"}`}
               >
                 {r.label}
               </th>
               {r.cells.map((c, i) => (
                 <td
                   key={i}
-                  className={`py-3.5 pr-4 ${i === r.cells.length - 1 ? "rounded-r-sm" : ""} ${r.ours ? "" : "border-t border-[#d9d6cf]"}`}
+                  className={`py-3.5 pr-4 ${i === r.cells.length - 1 ? "rounded-r-sm" : ""} ${r.ours ? "" : "table-rule"}`}
                 >
                   {c === true ? <Check /> : c === false ? <Dash /> : c}
                 </td>

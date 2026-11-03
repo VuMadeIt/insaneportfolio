@@ -24,7 +24,7 @@ async function meanColour(page: import("@playwright/test").Page, x: number, y: n
 test("hovering a ball reveals its identity, leaving it restores the chrome", async ({ page }) => {
   await page.setViewportSize({ width: 1440, height: 900 });
   await page.goto("/");
-  await expect(page.locator("canvas")).toBeVisible({ timeout: 30_000 });
+  await expect(page.locator(".hero-frame canvas")).toBeVisible({ timeout: 30_000 });
   await page.waitForTimeout(4000);
   const box = (await page.getByRole("button", { name: /^People:/ }).boundingBox())!;
   const [cx, cy] = [box.x + box.width / 2, box.y + box.height / 2];

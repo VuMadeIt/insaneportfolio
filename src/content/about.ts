@@ -72,7 +72,7 @@ export const chronology: Role[] = [
     start: "2026-01",
     end: "2026-06",
     logo: "creators-collective",
-    text: "Product design for a student initiative that sets out to empower creators.",
+    text: "Product design for Creators Collective, a student initiative for people who make things.",
     link: { label: "Live site", href: "https://creatorscollective.framer.website/" },
   },
   {

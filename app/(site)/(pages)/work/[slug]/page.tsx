@@ -102,7 +102,7 @@ function BlockView({ blocks }: { blocks: Block[] }) {
     >
       <div className={`mx-auto max-w-[1400px] ${pair ? "grid gap-12 md:grid-cols-2" : ""}`}>
         {blocks.map((b) => (
-          <div key={b.id} id={b === blocks[0] ? undefined : b.id}>
+          <div key={b.id} id={b === blocks[0] ? undefined : b.id} className="min-w-0">
             <Text block={b} />
             <Figure block={b} />
           </div>

@@ -2,7 +2,7 @@ import { expect, test } from "@playwright/test";
 
 const ready = async (page: import("@playwright/test").Page) => {
   await page.goto("/");
-  await expect(page.locator("canvas")).toBeVisible({ timeout: 30_000 });
+  await expect(page.locator(".hero-frame canvas")).toBeVisible({ timeout: 30_000 });
   await page.waitForTimeout(4000);
 };
 

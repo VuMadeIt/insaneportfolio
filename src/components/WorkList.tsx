@@ -15,7 +15,16 @@ const previewMedia = (p: Project) =>
  * hover only (never on focus after a click, which left it stuck). Keyboard focus shows it beside
  * the row. Phones and tablets get the video inline.
  */
-export function WorkList({ projects, level = "h2" }: { projects: Project[]; level?: "h2" | "h3" }) {
+export function WorkList({
+  projects,
+  level = "h2",
+  large = false,
+}: {
+  projects: Project[];
+  level?: "h2" | "h3";
+  /** Home shows two projects, so they are set at poster size. */
+  large?: boolean;
+}) {
   const [active, setActive] = useState<number | null>(null);
   const layer = useRef<HTMLDivElement>(null);
   const to = useRef({ x: 0, y: 0 });
@@ -48,12 +57,18 @@ export function WorkList({ projects, level = "h2" }: { projects: Project[]; leve
 
   return (
     <>
-      <ul className="border-b border-rule">
+      <ul className="catalogue">
         {projects.map((p, i) => {
           const href = hrefOf(p)!;
           const external = href.startsWith("http");
           const H = level;
-          const title = <H className="text-[clamp(30px,3.6vw,52px)] leading-[1]">{p.title}</H>;
+          const title = (
+            <H
+              className={`${large ? "text-[clamp(48px,7.6vw,128px)] leading-[0.92]" : "text-[clamp(30px,3.6vw,52px)] leading-[1]"}`}
+            >
+              {p.title}
+            </H>
+          );
           const linkProps = {
             className: "after:absolute after:inset-0",
             onFocus: (e: React.FocusEvent<HTMLAnchorElement>) => {
@@ -68,7 +83,7 @@ export function WorkList({ projects, level = "h2" }: { projects: Project[]; leve
             <li
               key={p.slug}
               data-cursor="hide"
-              className="catalogue-row reveal group relative border-t border-rule py-8 md:py-10"
+              className={`catalogue-row reveal group relative ${large ? "py-[clamp(40px,7vh,80px)]" : "py-8 md:py-10"}`}
               onPointerEnter={(e) => {
                 if (e.pointerType !== "mouse") return;
                 to.current = { x: e.clientX, y: e.clientY };
@@ -93,7 +108,9 @@ export function WorkList({ projects, level = "h2" }: { projects: Project[]; leve
                     </a>
                   )}
                   {p.accolades && (
-                    <ul className="mt-4 flex flex-col gap-1.5 text-[15px] leading-[1.35]">
+                    <ul
+                      className={`mt-4 flex flex-col gap-1.5 leading-[1.35] ${large ? "text-[17px]" : "text-[15px]"}`}
+                    >
                       {p.accolades.map((a) => (
                         <li key={a} className="flex items-baseline gap-2.5">
                           <span aria-hidden className="award-dot" />
@@ -103,8 +120,14 @@ export function WorkList({ projects, level = "h2" }: { projects: Project[]; leve
                     </ul>
                   )}
                 </div>
-                <p className="max-w-[34em] text-[17px] leading-[1.5]">{p.description}</p>
-                <p className="text-[15px] text-muted md:text-right">{monthOf(p.date)}</p>
+                <p
+                  className={`max-w-[34em] leading-[1.5] ${large ? "self-end text-[clamp(18px,1.5vw,22px)]" : "text-[17px]"}`}
+                >
+                  {p.description}
+                </p>
+                <p className={`text-[15px] text-muted md:text-right ${large ? "md:self-end" : ""}`}>
+                  {monthOf(p.date)}
+                </p>
               </div>
               <div className="mt-6 lg:hidden">
                 <ExhibitMedia media={previewMedia(p)} sizes="100vw" />

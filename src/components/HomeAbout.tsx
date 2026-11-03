@@ -9,15 +9,15 @@ export function HomeAbout() {
   return (
     <section
       aria-labelledby="about-teaser-title"
-      className="grid gap-12 px-[var(--gutter)] pb-[clamp(40px,8vh,96px)] pt-[clamp(120px,18vh,220px)] md:grid-cols-[minmax(0,1.25fr)_minmax(0,1fr)] md:items-end md:gap-[clamp(40px,6vw,112px)]"
+      className="grid gap-10 px-[var(--gutter)] pb-[clamp(40px,8vh,96px)] pt-[clamp(120px,18vh,220px)] md:grid-cols-2 md:gap-x-[clamp(40px,6vw,112px)]"
     >
       <h2
         id="about-teaser-title"
-        className="reveal text-[clamp(56px,8.4vw,148px)] leading-[0.92] tracking-[-0.045em]"
+        className="reveal text-[clamp(40px,7.4vw,132px)] leading-[0.92] tracking-[-0.045em] md:col-span-2"
       >
         Let&apos;s get things moving.
       </h2>
-      <div className="md:pb-[0.6em]">
+      <div className="md:col-start-2">
         {statement.map((s, k) => (
           <p key={k} className="reveal mt-5 max-w-[32em] leading-[1.55] first:mt-0">
             {s}

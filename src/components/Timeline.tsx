@@ -77,7 +77,7 @@ function Section({ role, also }: { role: Role; also: Role[] }) {
     <div className="grid w-full gap-x-[clamp(24px,3vw,56px)] gap-y-6 md:grid-cols-[auto_minmax(0,1fr)_minmax(0,0.5fr)] md:items-start">
       <Logo role={role} size="lg" />
       <div>
-        <h3 className="max-w-[14em] text-[clamp(40px,5.2vw,88px)] leading-[0.98]">{role.role}</h3>
+        <h3 className="max-w-[18em] text-[clamp(32px,4.2vw,72px)] leading-[0.98]">{role.role}</h3>
         <p className="mt-4 text-[clamp(19px,1.6vw,24px)]">
           {role.place} <span className="text-muted">· {span(role)}</span>
         </p>
@@ -201,7 +201,7 @@ export function Timeline({ now: nowYm }: { now: string }) {
             onClick={() => jump(i)}
             tabIndex={pinned ? 0 : -1}
             aria-label={`${r.role}, ${r.place}, ${span(r)}`}
-            className={`absolute flex h-8 items-center gap-2 overflow-hidden rounded-full pl-1 pr-3 text-left text-[14px] transition-colors duration-500 ${on ? "bg-ink text-wall" : near ? "bg-[#d9d6cf] text-ink" : "bg-[#e8e5de] text-muted"}`}
+            className={`absolute flex h-8 items-center gap-2 overflow-hidden rounded-full pl-1 pr-3 text-left text-[14px] transition-colors duration-500 ${on ? "bg-ink text-wall" : near ? "bg-[#d9d6cf] text-ink" : "bg-[#e8e5de] text-[#55524b]"}`}
             style={{ left: `${x(m(r.start))}%`, width: `${x(end) - x(m(r.start))}%`, top: lane[i]! * ROW }}
           >
             <Logo role={r} size="sm" />

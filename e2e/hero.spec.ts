@@ -6,7 +6,7 @@ test.describe("hero with WebGL", () => {
   test("the canvas edges blend invisibly into the page wall", async ({ page }) => {
     await page.setViewportSize({ width: 1440, height: 900 });
     await page.goto("/");
-    await expect(page.locator("canvas")).toBeVisible({ timeout: 30_000 });
+    await expect(page.locator(".hero-frame canvas")).toBeVisible({ timeout: 30_000 });
     await page.waitForTimeout(6000);
     const shot = (await page.screenshot()).toString("base64");
     // Points along the canvas edges, away from the corner text and the giant name.

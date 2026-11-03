@@ -127,6 +127,17 @@ overflow. Screens: `.artifacts/screens/v1.5.0/`, sweep shots in `.artifacts/swee
   Japan Base44 ($1,000) and Pheobe ($400) at Hack the 6ix, Asper Best Use of AI on a Real
   Inspection (AirPods 5) at SOON, SolarScore 1st (Incubator Hacks), Reboot 3rd (UofT UDesignathon).
 
+### Phase 15: revision 4 (branch `phase/15-revision-4`, not merged yet)
+- Light everywhere; nav on every page with a mute button; grey underlines on hover only.
+- Dark-ball cursor: hides over work rows (the row's video follows the pointer and no longer sticks
+  after a click), grows with "drop me" in the home footer.
+- Slow motion holds 1.5 s after you touch a swinging ball.
+- Home: hero, Ripple and Shufflr at poster size, the about line, and a footer where clicking empty
+  space drops balls that land on and roll off the words.
+- About: a timeline with the axis along the bottom, overlapping roles, a section per role.
+- Ripple and Shufflr rewritten in depth (brief, my role, research with sources, explorations,
+  solution, decisions, outcome, looking back) with new coded graphics.
+
 ## Where to look first
 1. `npm run build && npm run start`, open http://localhost:3000 . Watch `LUCAS VU` rise in, drag a
    ball, flick it, hover each ball, click one, press Escape. Scroll through the work stack.
@@ -174,6 +185,9 @@ overflow. Screens: `.artifacts/screens/v1.5.0/`, sweep shots in `.artifacts/swee
    the Real World"; the site uses your wording. Asper's prize says "AirPods 5" from your note.
 
 ## Draft or unconfirmed content to check
+- Revision 4: `src/content/caseStudies/{ripple,shufflr}.ts` `draft` lists (competitor table rows,
+  criteria ticks, the opportunity question, synthesis themes, the "one evening out" bar);
+  `src/content/about.ts` role lines for WES, Creators Collective and Hackathons North America.
 - `src/content/projects.ts`: every `draft` field (roles on Shufflr, Ripple, Asper, Japan,
   Frictionless, SolarScore; Ripple team; SolarScore year; the song-search description, year and
   GitHub link; Warframe medium). New: the one-line captions on the four home cards, cut from each

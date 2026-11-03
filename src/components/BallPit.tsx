@@ -94,6 +94,7 @@ export function BallPit() {
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
       ctx.clearRect(0, 0, pit.width, pit.height);
       for (const b of pit.balls) ctx.drawImage(image, b.x - b.r, b.y - b.r, b.r * 2, b.r * 2);
+      cv.dataset.balls = String(pit.balls.length);
     };
     const frame = (t: number) => {
       const dt = last ? (t - last) / 1000 : 1 / 60;

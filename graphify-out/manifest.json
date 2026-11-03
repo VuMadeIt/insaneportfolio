@@ -1,0 +1,170 @@
+{
+  ".prettierrc.json": {
+    "mtime": 1793676069.1093347,
+    "seen": 1793676076.179438,
+    "ast_hash": "885894a29d0d099f09687573b3450bb6",
+    "semantic_hash": ""
+  },
+  "app/(site)/page.tsx": {
+    "mtime": 1793676069.1174488,
+    "seen": 1793676076.179438,
+    "ast_hash": "9db88f765332eef454bbc32e01a758a1",
+    "semantic_hash": ""
+  },
+  "app/layout.tsx": {
+    "mtime": 1793676069.119448,
+    "seen": 1793676076.179438,
+    "ast_hash": "b396f0cbe74194817f3fa45c021e495c",
+    "semantic_hash": ""
+  },
+  "e2e/home.spec.ts": {
+    "mtime": 1793676069.1224504,
+    "seen": 1793676076.179438,
+    "ast_hash": "6ade6fbd1812592ff75327d092f7b25a",
+    "semantic_hash": ""
+  },
+  "eslint.config.mjs": {
+    "mtime": 1793676069.1244538,
+    "seen": 1793676076.179438,
+    "ast_hash": "62d06f45bc0b7fee881cfb1c7bac6894",
+    "semantic_hash": ""
+  },
+  "next.config.ts": {
+    "mtime": 1793676069.1284533,
+    "seen": 1793676076.179438,
+    "ast_hash": "34dc96521f1c8463bbf74ad690de78eb",
+    "semantic_hash": ""
+  },
+  "package.json": {
+    "mtime": 1793676069.1346464,
+    "seen": 1793676076.179438,
+    "ast_hash": "2a63c0390fa62c394fafb8c0473d4280",
+    "semantic_hash": ""
+  },
+  "playwright.config.ts": {
+    "mtime": 1793676069.1356473,
+    "seen": 1793676076.179438,
+    "ast_hash": "17d14a46fde9a9231c46cb85d01eb689",
+    "semantic_hash": ""
+  },
+  "postcss.config.mjs": {
+    "mtime": 1793676069.1376505,
+    "seen": 1793676076.179438,
+    "ast_hash": "7912877b7790f1bbc5ada178ffffb564",
+    "semantic_hash": ""
+  },
+  "scripts/screens.mjs": {
+    "mtime": 1793676069.162552,
+    "seen": 1793676076.179438,
+    "ast_hash": "0acbc95022d8b817455afd93626813d3",
+    "semantic_hash": ""
+  },
+  "scripts/serve.sh": {
+    "mtime": 1793676069.162552,
+    "seen": 1793676076.179438,
+    "ast_hash": "390c0d2b0750e9c1ff435a63c1a70ed6",
+    "semantic_hash": ""
+  },
+  "src/components/CradleStill.tsx": {
+    "mtime": 1793676069.1638033,
+    "seen": 1793676076.179438,
+    "ast_hash": "5d6b6637463f1e63857d4c8e28f46171",
+    "semantic_hash": ""
+  },
+  "src/components/GiantName.tsx": {
+    "mtime": 1793676069.165252,
+    "seen": 1793676076.179438,
+    "ast_hash": "a5d9f3e9301bb4bbe2805d47da7c1655",
+    "semantic_hash": ""
+  },
+  "src/components/Hero.tsx": {
+    "mtime": 1793676069.1667435,
+    "seen": 1793676076.179438,
+    "ast_hash": "1ab83d1c63c86e33797f4ef740f0ab99",
+    "semantic_hash": ""
+  },
+  "tsconfig.json": {
+    "mtime": 1793676069.168754,
+    "seen": 1793676076.179438,
+    "ast_hash": "0184550b11158a4f37a3878fa6687765",
+    "semantic_hash": ""
+  },
+  "vitest.config.ts": {
+    "mtime": 1793676069.1700346,
+    "seen": 1793676076.179438,
+    "ast_hash": "50386c4c24ebb496ea008d0cfc0a8ce3",
+    "semantic_hash": ""
+  },
+  "AGENTS.md": {
+    "mtime": 1793676069.1113336,
+    "seen": 1793676076.179438,
+    "ast_hash": "545eaa0b600e65532d334c91ae1ef8bd",
+    "semantic_hash": ""
+  },
+  "CREDITS.md": {
+    "mtime": 1793676069.1123333,
+    "seen": 1793676076.179438,
+    "ast_hash": "de645d7cb7c59e8cf9be8deb1613c81e",
+    "semantic_hash": ""
+  },
+  "DECISIONS.md": {
+    "mtime": 1793676069.1144516,
+    "seen": 1793676076.179438,
+    "ast_hash": "c5c7606295c9000c2ce2927c4c9becc5",
+    "semantic_hash": ""
+  },
+  "PLAN.md": {
+    "mtime": 1793674718.3837833,
+    "seen": 1793676076.179438,
+    "ast_hash": "5f525a23fe74ca7dec8fc6ecaf2534ec",
+    "semantic_hash": ""
+  },
+  "reference/identities/experiment-atom.png": {
+    "mtime": 1793676069.147727,
+    "seen": 1793676076.179438,
+    "ast_hash": "695bd7145e1a94db644ac1004eea500d",
+    "semantic_hash": ""
+  },
+  "reference/identities/idea-orb.jpg": {
+    "mtime": 1793676069.1497264,
+    "seen": 1793676076.179438,
+    "ast_hash": "9ba7d438727e20b08dfe13efeccd7a34",
+    "semantic_hash": ""
+  },
+  "reference/identities/people-eye.jpg": {
+    "mtime": 1793676069.1530955,
+    "seen": 1793676076.179438,
+    "ast_hash": "d9cf983cba39dcdcf8ed425172d4fb26",
+    "semantic_hash": ""
+  },
+  "reference/identities/product-flower.jpg": {
+    "mtime": 1793676069.1560943,
+    "seen": 1793676076.179438,
+    "ast_hash": "0711f5d7559fc3c2877f47955da36307",
+    "semantic_hash": ""
+  },
+  "reference/layout/example-reference.png": {
+    "mtime": 1793676069.1590943,
+    "seen": 1793676076.179438,
+    "ast_hash": "43fe1e9bb27463cf12a1a04d298e22ac",
+    "semantic_hash": ""
+  },
+  "reference/layout/hover-reference.png": {
+    "mtime": 1793676069.1601608,
+    "seen": 1793676076.179438,
+    "ast_hash": "c25144f7e9d426f5980a1f1f4302b341",
+    "semantic_hash": ""
+  },
+  "reference/identities/atom-motion.mp4": {
+    "mtime": 1793676069.1445484,
+    "seen": 1793676076.179438,
+    "ast_hash": "19fd303fb5c4474a99bc0ad09c6c255c",
+    "semantic_hash": ""
+  },
+  "package-lock.json": {
+    "mtime": 1793676069.1326482,
+    "seen": 1793676076.179438,
+    "ast_hash": "2b185ed5dab95c769f8561ce26a3af35",
+    "semantic_hash": ""
+  }
+}

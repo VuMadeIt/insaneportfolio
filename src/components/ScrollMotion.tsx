@@ -45,15 +45,15 @@ export function ScrollMotion() {
     const triggers = ScrollTrigger.batch(parts, {
       start: "top 85%",
       once: true,
-      onEnter: (batch) =>
-        gsap.to(batch, {
-          y: 0,
-          opacity: 1,
-          duration: 1.25,
-          ease: "power4.out",
-          stagger: 0.2,
-          overwrite: true,
-        }),
+      onEnter: (batch) => {
+        // A jump (anchor, End key) passes parts that are already above the screen: show those at once.
+        const passed = batch.filter((el) => el.getBoundingClientRect().bottom < 0);
+        gsap.set(passed, { y: 0, opacity: 1 });
+        gsap.to(
+          batch.filter((el) => !passed.includes(el)),
+          { y: 0, opacity: 1, duration: 1.25, ease: "power4.out", stagger: 0.2, overwrite: true },
+        );
+      },
     });
     return () => {
       triggers.forEach((t) => t.kill());

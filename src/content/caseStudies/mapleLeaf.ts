@@ -86,6 +86,6 @@ export const mapleLeaf: CaseStudy = {
       ],
     },
   ],
-  next: "warframe",
+  next: "shufflr",
   draft: ["reflection section is a placeholder", "headlines rewritten as first-person claims"],
 };

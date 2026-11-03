@@ -4,7 +4,16 @@ import { chromium } from "@playwright/test";
 import { mkdirSync } from "node:fs";
 
 const base = `http://localhost:${process.argv[2] ?? 3100}`;
-const routes = ["/", "/people", "/ideas", "/work", "/about", "/work/shufflr", "/work/warframe", "/nope"];
+const routes = [
+  "/",
+  "/people",
+  "/ideas",
+  "/work",
+  "/about",
+  "/work/shufflr",
+  "/work/maple-leaf-foods",
+  "/nope",
+];
 const widths = [
   [1440, 900],
   [1024, 768],

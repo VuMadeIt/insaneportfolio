@@ -12,10 +12,13 @@ export function ExhibitMedia({
   media,
   sizes,
   priority = false,
+  cover = false,
 }: {
   media: Media;
   sizes: string;
   priority?: boolean;
+  /** Fill the positioned parent, cropped (the home cards), instead of keeping its own ratio. */
+  cover?: boolean;
 }) {
   const video = useRef<HTMLVideoElement>(null);
 
@@ -33,7 +36,9 @@ export function ExhibitMedia({
     return () => io.disconnect();
   }, []);
 
-  const box = "block h-auto w-full rounded-md bg-[#e9e6df]";
+  const box = cover
+    ? "absolute inset-0 h-full w-full object-cover"
+    : "block h-auto w-full rounded-md bg-[#e9e6df]";
   if (media.video) {
     return (
       <video
@@ -56,8 +61,7 @@ export function ExhibitMedia({
       className={box}
       src={media.image!}
       alt={media.alt}
-      width={media.width}
-      height={media.height}
+      {...(cover ? { fill: true } : { width: media.width, height: media.height })}
       sizes={sizes}
       priority={priority}
     />

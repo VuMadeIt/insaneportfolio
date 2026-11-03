@@ -31,4 +31,7 @@ test("the catalogue lists every project and links case studies", async ({ page }
     "href",
     "https://devpost.com/software/asper",
   );
+  const warframe = page.locator("li.catalogue-row", { hasText: "Warframe" });
+  await expect(warframe).toContainText("Coming soon");
+  await expect(warframe.getByRole("link")).toHaveCount(0);
 });

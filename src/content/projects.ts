@@ -9,6 +9,8 @@ export interface Media {
   video?: string;
   poster?: string;
   image?: string;
+  /** A muted loop that plays only while the card is hovered (the still stays otherwise). */
+  hover?: string;
   alt: string;
   /** Intrinsic size of the poster or image. */
   width: number;
@@ -27,6 +29,8 @@ export interface Project {
   credit?: string;
   /** Two-line description for the catalogue. */
   description: string;
+  /** Featured only: the one line under the title on its home card. */
+  caption?: string;
   media?: Media;
   /** Has a case study page at /work/<slug>. */
   caseStudy: boolean;
@@ -46,6 +50,7 @@ export const projects: Project[] = [
     credit: "Winner, Product Design Sprint",
     description:
       "Lowering the activation energy of fun, low-stakes hangouts: a shuffle that turns a few loose preferences into a plan in under a minute.",
+    caption: "A shuffle that turns a few loose preferences into a plan in under a minute.",
     media: {
       video: "/media/shufflr/hero.mp4",
       poster: "/media/shufflr/hero.webp",
@@ -67,6 +72,7 @@ export const projects: Project[] = [
     credit: "BLOOM Designathon 2026",
     description:
       "An LLM that reuses before it regenerates: past answers resurface first, so everyday questions stop costing water and energy.",
+    caption: "An LLM that reuses before it regenerates, so everyday questions stop costing water.",
     media: {
       video: "/media/ripple/hero.mp4",
       poster: "/media/ripple/hero.webp",
@@ -91,6 +97,7 @@ export const projects: Project[] = [
     credit: "A Power App processing $14M+ in penalties a year",
     description:
       "Digitising decades-old workflows: a service penalty app, an employee store and a project tracker that replaced email chains and DMs.",
+    caption: "Three internal apps that took decades-old workflows out of email chains and DMs.",
     media: {
       video: "/media/maple-leaf/hero.mp4",
       poster: "/media/maple-leaf/hero.webp",
@@ -107,10 +114,18 @@ export const projects: Project[] = [
     year: "2026, ongoing",
     medium: "Game UI and product design",
     role: "Product designer, Digital Extremes",
-    credit: "Under wraps for now",
+    credit: "Coming soon",
     description:
       "Product design at Digital Extremes on Warframe. The work is not public yet; ask me about it.",
-    caseStudy: true,
+    caption: "Product design at Digital Extremes. The case study is coming soon.",
+    media: {
+      image: "/media/warframe/still.webp",
+      hover: "/media/warframe/glitch.mp4",
+      alt: "A Warframe in blue light, glitching on hover",
+      width: 1024,
+      height: 571,
+    },
+    caseStudy: false,
     draft: ["medium", "NDA status"],
   },
   {

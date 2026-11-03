@@ -88,6 +88,13 @@ the chrome draws the underlines, the scroll line and the progress fill; rounded 
 are allowed. Text rises in on scroll (GSAP ScrollTrigger) over Lenis smooth scrolling. Screens:
 `.artifacts/screens/v1.2.0/`.
 
+### Phase 12: work stack (`v1.3.0-work-stack`)
+The home work section is now a Folio Stack: full-bleed rounded cards that pin near the top; each
+covered card steps back (shrinks and dims) and leaves a sliver of its top edge, so the stack reads
+as a pile. Title bottom left over the media, a one-line caption, `01 / 04`, a tag. The intro is
+gone. Warframe is a card only: its still plays the glitch on hover, it says "coming soon", and
+`/work/warframe` no longer exists. Films: `.artifacts/scroll/stack-1440/`, `stack-390/`.
+
 ## Where to look first
 1. `npm run build && npm run start`, open http://localhost:3000 . Drag a ball, flick it, let it go.
    Hover each ball, click one, press Escape.

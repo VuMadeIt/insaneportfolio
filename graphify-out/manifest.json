@@ -1,56 +1,56 @@
 {
   ".prettierrc.json": {
-    "mtime": 1793676069.1093347,
-    "seen": 1793676076.179438,
-    "ast_hash": "885894a29d0d099f09687573b3450bb6",
+    "mtime": 1793677289.206768,
+    "seen": 1793677328.5582132,
+    "ast_hash": "7042a753c9e33aea2800a5d091398c26",
     "semantic_hash": ""
   },
   "app/(site)/page.tsx": {
-    "mtime": 1793676069.1174488,
-    "seen": 1793676076.179438,
-    "ast_hash": "9db88f765332eef454bbc32e01a758a1",
+    "mtime": 1793677804.373554,
+    "seen": 1793683404.6671157,
+    "ast_hash": "4524b629517ddb532ac4871099db876d",
     "semantic_hash": ""
   },
   "app/layout.tsx": {
-    "mtime": 1793676069.119448,
-    "seen": 1793676076.179438,
-    "ast_hash": "b396f0cbe74194817f3fa45c021e495c",
+    "mtime": 1793677289.3756547,
+    "seen": 1793677328.5582132,
+    "ast_hash": "f67f5290d92044d585c4320128152d8a",
     "semantic_hash": ""
   },
   "e2e/home.spec.ts": {
-    "mtime": 1793676069.1224504,
-    "seen": 1793676076.179438,
-    "ast_hash": "6ade6fbd1812592ff75327d092f7b25a",
+    "mtime": 1793677289.3896618,
+    "seen": 1793677328.5582132,
+    "ast_hash": "0d492ca3b09eadb7d4db5c9ced87789c",
     "semantic_hash": ""
   },
   "eslint.config.mjs": {
-    "mtime": 1793676069.1244538,
-    "seen": 1793676076.179438,
-    "ast_hash": "62d06f45bc0b7fee881cfb1c7bac6894",
+    "mtime": 1793682971.7251165,
+    "seen": 1793683404.6671157,
+    "ast_hash": "a4cd9a0c08d476587126548c17852519",
     "semantic_hash": ""
   },
   "next.config.ts": {
-    "mtime": 1793676069.1284533,
-    "seen": 1793676076.179438,
-    "ast_hash": "34dc96521f1c8463bbf74ad690de78eb",
+    "mtime": 1793677289.4061773,
+    "seen": 1793677328.5582132,
+    "ast_hash": "ebe8de28e06988ea7e436722258650a1",
     "semantic_hash": ""
   },
   "package.json": {
-    "mtime": 1793676069.1346464,
-    "seen": 1793676076.179438,
-    "ast_hash": "2a63c0390fa62c394fafb8c0473d4280",
+    "mtime": 1793677289.4091766,
+    "seen": 1793677328.5582132,
+    "ast_hash": "4e0cb0fcbbc5ae13bea62359223b1e27",
     "semantic_hash": ""
   },
   "playwright.config.ts": {
-    "mtime": 1793676069.1356473,
-    "seen": 1793676076.179438,
-    "ast_hash": "17d14a46fde9a9231c46cb85d01eb689",
+    "mtime": 1793677289.4141753,
+    "seen": 1793677328.5582132,
+    "ast_hash": "f2d764200f0d23ebc3dfc20b4c98bd79",
     "semantic_hash": ""
   },
   "postcss.config.mjs": {
-    "mtime": 1793676069.1376505,
-    "seen": 1793676076.179438,
-    "ast_hash": "7912877b7790f1bbc5ada178ffffb564",
+    "mtime": 1793677289.4171753,
+    "seen": 1793677328.5582132,
+    "ast_hash": "c53832658be065607209c380f64fbcaf",
     "semantic_hash": ""
   },
   "scripts/screens.mjs": {
@@ -66,9 +66,9 @@
     "semantic_hash": ""
   },
   "src/components/CradleStill.tsx": {
-    "mtime": 1793677021.8751252,
-    "seen": 1793677036.4246898,
-    "ast_hash": "c682d8b67db08eeba0ac2ecc35a87a6f",
+    "mtime": 1793682988.2962167,
+    "seen": 1793683404.6671157,
+    "ast_hash": "d193d0ab131a734bcc4318e3cde34aa0",
     "semantic_hash": ""
   },
   "src/components/GiantName.tsx": {
@@ -78,39 +78,39 @@
     "semantic_hash": ""
   },
   "src/components/Hero.tsx": {
-    "mtime": 1793677021.918189,
-    "seen": 1793677036.4246898,
-    "ast_hash": "0ab4446a5bad73cdb6f20eea69046407",
+    "mtime": 1793682191.8182333,
+    "seen": 1793683404.6671157,
+    "ast_hash": "e697aaa31af7c462a7cd11720dfccd74",
     "semantic_hash": ""
   },
   "tsconfig.json": {
-    "mtime": 1793676069.168754,
-    "seen": 1793676076.179438,
-    "ast_hash": "0184550b11158a4f37a3878fa6687765",
+    "mtime": 1793677289.6444821,
+    "seen": 1793677328.5582132,
+    "ast_hash": "96f14fd330af267a645a9b104a7749db",
     "semantic_hash": ""
   },
   "vitest.config.ts": {
-    "mtime": 1793676069.1700346,
-    "seen": 1793676076.179438,
-    "ast_hash": "50386c4c24ebb496ea008d0cfc0a8ce3",
+    "mtime": 1793677289.647484,
+    "seen": 1793677328.5582132,
+    "ast_hash": "0290f9af3eb7454071a4df9c5e4929f3",
     "semantic_hash": ""
   },
   "AGENTS.md": {
-    "mtime": 1793676069.1113336,
-    "seen": 1793676076.179438,
-    "ast_hash": "545eaa0b600e65532d334c91ae1ef8bd",
+    "mtime": 1793677327.295476,
+    "seen": 1793677328.5582132,
+    "ast_hash": "b909a92d1427d72b580386350ba171a3",
     "semantic_hash": ""
   },
   "CREDITS.md": {
-    "mtime": 1793676069.1123333,
-    "seen": 1793676076.179438,
-    "ast_hash": "de645d7cb7c59e8cf9be8deb1613c81e",
+    "mtime": 1793683261.1019971,
+    "seen": 1793683404.6671157,
+    "ast_hash": "9b91be6a847ff0a7d791f69df65bc827",
     "semantic_hash": ""
   },
   "DECISIONS.md": {
-    "mtime": 1793676069.1144516,
-    "seen": 1793676076.179438,
-    "ast_hash": "c5c7606295c9000c2ce2927c4c9becc5",
+    "mtime": 1793683261.0847874,
+    "seen": 1793683404.6671157,
+    "ast_hash": "2ddbaababc86ae112bcc7a58c1aebe64",
     "semantic_hash": ""
   },
   "PLAN.md": {
@@ -162,99 +162,339 @@
     "semantic_hash": ""
   },
   "reference/audio/analysis.json": {
-    "mtime": 1793676570.9868822,
-    "seen": 1793677036.4246898,
+    "mtime": 1793677327.3085668,
+    "seen": 1793677328.5582132,
     "ast_hash": "82f2659033ce7ad2ef9305119ff19f36",
     "semantic_hash": ""
   },
   "scripts/audio/analyse.py": {
-    "mtime": 1793676567.935588,
-    "seen": 1793677036.4246898,
+    "mtime": 1793677327.309853,
+    "seen": 1793677328.5582132,
     "ast_hash": "76dbc19162112676a44c9dc7b4bfbb53",
     "semantic_hash": ""
   },
   "scripts/physics/calibrate.ts": {
-    "mtime": 1793677022.7083325,
-    "seen": 1793677036.4246898,
-    "ast_hash": "b53117b2a2acd6373ad92ce20bb756a8",
+    "mtime": 1793682934.0704987,
+    "seen": 1793683404.6671157,
+    "ast_hash": "fb22dbaf63ce1d0160af4358418d93fa",
     "semantic_hash": ""
   },
   "scripts/physics/probe.ts": {
-    "mtime": 1793677022.7377148,
-    "seen": 1793677036.4246898,
+    "mtime": 1793682934.0795095,
+    "seen": 1793683404.6671157,
     "ast_hash": "cff58f4443045516e740bd315db066bd",
     "semantic_hash": ""
   },
   "src/physics/body.ts": {
-    "mtime": 1793677021.939882,
-    "seen": 1793677036.4246898,
+    "mtime": 1793682934.120229,
+    "seen": 1793683404.6671157,
     "ast_hash": "0e7fe20ba9705a4f2cca9041aa96e702",
     "semantic_hash": ""
   },
   "src/physics/config.ts": {
-    "mtime": 1793677021.997858,
-    "seen": 1793677036.4246898,
+    "mtime": 1793682934.1292267,
+    "seen": 1793683404.6671157,
     "ast_hash": "11d608c4ad96fd056cb16199d703138b",
     "semantic_hash": ""
   },
   "src/physics/contacts.ts": {
-    "mtime": 1793677022.109627,
-    "seen": 1793677036.4246898,
+    "mtime": 1793682934.1392276,
+    "seen": 1793683404.6671157,
     "ast_hash": "ea63326d0d1b8d6e0c958339d9ff60e1",
     "semantic_hash": ""
   },
   "src/physics/cradle.test.ts": {
-    "mtime": 1793677022.2860312,
-    "seen": 1793677036.4246898,
+    "mtime": 1793682934.173226,
+    "seen": 1793683404.6671157,
     "ast_hash": "97423c942a5766eda4930b248b99cfa8",
     "semantic_hash": ""
   },
   "src/physics/cradle.ts": {
-    "mtime": 1793677022.3855286,
-    "seen": 1793677036.4246898,
+    "mtime": 1793682934.2003567,
+    "seen": 1793683404.6671157,
     "ast_hash": "ede5f9c6ecbe4fee887df83e479355a5",
     "semantic_hash": ""
   },
   "src/physics/drag.ts": {
-    "mtime": 1793677022.4153936,
-    "seen": 1793677036.4246898,
+    "mtime": 1793682934.2073555,
+    "seen": 1793683404.6671157,
     "ast_hash": "a033ad4b9184d9c9cd1142041dbf50ae",
     "semantic_hash": ""
   },
   "src/physics/events.ts": {
-    "mtime": 1793677022.426397,
-    "seen": 1793677036.4246898,
+    "mtime": 1793682934.2103581,
+    "seen": 1793683404.6671157,
     "ast_hash": "c2910bf0c1b7bdd87167a0bec40854f1",
     "semantic_hash": ""
   },
   "src/physics/rope.test.ts": {
-    "mtime": 1793677022.4554734,
-    "seen": 1793677036.4246898,
+    "mtime": 1793682934.2153566,
+    "seen": 1793683404.6671157,
     "ast_hash": "32de732e1d4a46348795375389554ebb",
     "semantic_hash": ""
   },
   "src/physics/rope.ts": {
-    "mtime": 1793677022.4930243,
-    "seen": 1793677036.4246898,
+    "mtime": 1793682934.2263546,
+    "seen": 1793683404.6671157,
     "ast_hash": "4490c2b16351ef00a54646a3faa446cb",
     "semantic_hash": ""
   },
   "src/physics/vec.ts": {
-    "mtime": 1793677022.5190594,
-    "seen": 1793677036.4246898,
+    "mtime": 1793682934.2323556,
+    "seen": 1793683404.6671157,
     "ast_hash": "59a7ee49ff1a48be63f61c91906e398f",
     "semantic_hash": ""
   },
   "src/state/ui.ts": {
-    "mtime": 1793677022.5425746,
-    "seen": 1793677036.4246898,
+    "mtime": 1793682934.324951,
+    "seen": 1793683404.6671157,
     "ast_hash": "52762e3851969259874d3e5d744e4c14",
     "semantic_hash": ""
   },
   "scripts/audio/fetch.sh": {
-    "mtime": 1793677044.8532906,
-    "seen": 1793677048.3363552,
+    "mtime": 1793677327.3111384,
+    "seen": 1793677328.5582132,
     "ast_hash": "7c694ca52a844c6e3ffaa82d3c01d411",
+    "semantic_hash": ""
+  },
+  "app/lab/layout.tsx": {
+    "mtime": 1793682933.8428764,
+    "seen": 1793683404.6671157,
+    "ast_hash": "8c107189d62af17bc7b5567c833d0a52",
+    "semantic_hash": ""
+  },
+  "app/lab/physics/PhysicsLab.tsx": {
+    "mtime": 1793682933.9574468,
+    "seen": 1793683404.6671157,
+    "ast_hash": "cdd902d31613548d001043cb5e0372e6",
+    "semantic_hash": ""
+  },
+  "app/lab/physics/page.tsx": {
+    "mtime": 1793682933.8909624,
+    "seen": 1793683404.6671157,
+    "ast_hash": "46bfc58d6871e69673b8bd9ec9a26fd6",
+    "semantic_hash": ""
+  },
+  "e2e/lab.spec.ts": {
+    "mtime": 1793682934.0031374,
+    "seen": 1793683404.6671157,
+    "ast_hash": "e5393a0c9d4192a1c60a0b583dcdf4bd",
+    "semantic_hash": ""
+  },
+  "scripts/shot.mjs": {
+    "mtime": 1793682934.0922284,
+    "seen": 1793683404.6671157,
+    "ast_hash": "de179229c762f60120ea7ab75153dfbe",
+    "semantic_hash": ""
+  },
+  "docs/physics/calibration.svg": {
+    "mtime": 1793677327.2987206,
+    "seen": 1793677328.5582132,
+    "ast_hash": "df9542874d81232f0c3c6c79c9328da9",
+    "semantic_hash": ""
+  },
+  "app/lab/ObjectLab.tsx": {
+    "mtime": 1793682933.8768816,
+    "seen": 1793683404.6671157,
+    "ast_hash": "f8e38eb448c8c4470a84dcc3f634af85",
+    "semantic_hash": ""
+  },
+  "app/lab/page.tsx": {
+    "mtime": 1793682933.8828807,
+    "seen": 1793683404.6671157,
+    "ast_hash": "f82c7efaf0b6d97214312f32ef9956f9",
+    "semantic_hash": ""
+  },
+  "app/lab/still/StillStage.tsx": {
+    "mtime": 1793682933.969445,
+    "seen": 1793683404.6671157,
+    "ast_hash": "ba616803b43e3c3f804d516524d7ea1c",
+    "semantic_hash": ""
+  },
+  "app/lab/still/page.tsx": {
+    "mtime": 1793682933.9634452,
+    "seen": 1793683404.6671157,
+    "ast_hash": "da5000976f54887a5aea6c15bb389fb0",
+    "semantic_hash": ""
+  },
+  "e2e/fallback.spec.ts": {
+    "mtime": 1793683056.7451203,
+    "seen": 1793683404.6671157,
+    "ast_hash": "1fa484624ec3efff2710660c062bfb30",
+    "semantic_hash": ""
+  },
+  "e2e/hero.spec.ts": {
+    "mtime": 1793683056.7441382,
+    "seen": 1793683404.6671157,
+    "ast_hash": "44c2f83f3a85b472a2171a22a8276507",
+    "semantic_hash": ""
+  },
+  "scripts/align.mjs": {
+    "mtime": 1793682934.0324974,
+    "seen": 1793683404.6671157,
+    "ast_hash": "076992d808019fa34f786ccbedc98c4e",
+    "semantic_hash": ""
+  },
+  "scripts/console.mjs": {
+    "mtime": 1793682934.0394967,
+    "seen": 1793683404.6671157,
+    "ast_hash": "3fc3b494431eb088f91ce0ca8569ef11",
+    "semantic_hash": ""
+  },
+  "scripts/hdri_neutral.py": {
+    "mtime": 1793678481.2897253,
+    "seen": 1793683404.6671157,
+    "ast_hash": "52c4227cec2c8083cddf0d7132d0fcee",
+    "semantic_hash": ""
+  },
+  "scripts/lab-shots.mjs": {
+    "mtime": 1793682934.0474985,
+    "seen": 1793683404.6671157,
+    "ast_hash": "6186b3194dd2e1ddf3ff7a6fdf71ba63",
+    "semantic_hash": ""
+  },
+  "scripts/sheet.py": {
+    "mtime": 1793678630.3541677,
+    "seen": 1793683404.6671157,
+    "ast_hash": "c8603c7036b927ebf7decaee279d5cb1",
+    "semantic_hash": ""
+  },
+  "scripts/still.mjs": {
+    "mtime": 1793682934.0962281,
+    "seen": 1793683404.6671157,
+    "ast_hash": "db9d94035cff35d31e219971420647a0",
+    "semantic_hash": ""
+  },
+  "src/components/HeroStage.tsx": {
+    "mtime": 1793682934.1162286,
+    "seen": 1793683404.6671157,
+    "ast_hash": "fbfe539bf6927fa3f98b96da9b3d0bda",
+    "semantic_hash": ""
+  },
+  "src/scene/Cradle.tsx": {
+    "mtime": 1793682934.2453568,
+    "seen": 1793683404.6671157,
+    "ast_hash": "b8c6a09b0d3c7ccd896b86fb14da499d",
+    "semantic_hash": ""
+  },
+  "src/scene/Lighting.tsx": {
+    "mtime": 1793678831.438196,
+    "seen": 1793683404.6671157,
+    "ast_hash": "58ba77b51282789bca2d6f58d0960ee7",
+    "semantic_hash": ""
+  },
+  "src/scene/Stage.tsx": {
+    "mtime": 1793682934.2885034,
+    "seen": 1793683404.6671157,
+    "ast_hash": "a41bd0b99dec957b590fe3d95f779249",
+    "semantic_hash": ""
+  },
+  "src/scene/StringShadows.tsx": {
+    "mtime": 1793682934.3089514,
+    "seen": 1793683404.6671157,
+    "ast_hash": "91147c1d84f9414f1d7bf2f1df4edbef",
+    "semantic_hash": ""
+  },
+  "src/scene/Wall.tsx": {
+    "mtime": 1793682934.3149552,
+    "seen": 1793683404.6671157,
+    "ast_hash": "6f1a12200eddc868ce79a5b595138f42",
+    "semantic_hash": ""
+  },
+  "src/scene/framing.ts": {
+    "mtime": 1793682934.249356,
+    "seen": 1793683404.6671157,
+    "ast_hash": "af9a609d1c89ce982fb4c5d66998ee47",
+    "semantic_hash": ""
+  },
+  "src/scene/look.ts": {
+    "mtime": 1793683261.0541317,
+    "seen": 1793683404.6671157,
+    "ast_hash": "c57a3e94d4aabb4fdc7cec92349c5bfd",
+    "semantic_hash": ""
+  },
+  "src/scene/materials/imperfections.ts": {
+    "mtime": 1793682934.271601,
+    "seen": 1793683404.6671157,
+    "ast_hash": "67e085ff00163d17793994dadcacf524",
+    "semantic_hash": ""
+  },
+  "src/scene/materials/index.ts": {
+    "mtime": 1793682934.2779956,
+    "seen": 1793683404.6671157,
+    "ast_hash": "0380dfa4f758b985852c53a28961c47d",
+    "semantic_hash": ""
+  },
+  "src/scene/materials/string.ts": {
+    "mtime": 1793682934.2819996,
+    "seen": 1793683404.6671157,
+    "ast_hash": "db9829a83b7211937f8bbc02e64161d5",
+    "semantic_hash": ""
+  },
+  "src/scene/stringGeometry.ts": {
+    "mtime": 1793682934.2975285,
+    "seen": 1793683404.6671157,
+    "ast_hash": "884daf38a0f114e8e5d4dabe345b9593",
+    "semantic_hash": ""
+  },
+  "src/scene/world.ts": {
+    "mtime": 1793682934.3199513,
+    "seen": 1793683404.6671157,
+    "ast_hash": "08937bf1adb8182218fdae1456dc7916",
+    "semantic_hash": ""
+  },
+  "REPORT.md": {
+    "mtime": 1793683289.3268404,
+    "seen": 1793683404.6671157,
+    "ast_hash": "63cd21dd3276963a5f6eba0893640a12",
+    "semantic_hash": ""
+  },
+  "reference/realism/SOURCES.md": {
+    "mtime": 1793677516.1482024,
+    "seen": 1793683404.6671157,
+    "ast_hash": "a20add62b6adcce3c6e029419cd94e47",
+    "semantic_hash": ""
+  },
+  "public/fallback/cradle-landscape.webp": {
+    "mtime": 1793683336.993955,
+    "seen": 1793683404.6671157,
+    "ast_hash": "4aba17d3c24f9bbdf3f83288abc92074",
+    "semantic_hash": ""
+  },
+  "public/fallback/cradle-portrait.webp": {
+    "mtime": 1793683384.4848814,
+    "seen": 1793683404.6671157,
+    "ast_hash": "8a1197d136f919591fc227d6eed6aeef",
+    "semantic_hash": ""
+  },
+  "public/textures/imperfections.jpg": {
+    "mtime": 1793677465.4250026,
+    "seen": 1793683404.6671157,
+    "ast_hash": "b3a3e2c322aa7a6aeed9ac1e34788377",
+    "semantic_hash": ""
+  },
+  "reference/realism/newtons-cradle-2.jpg": {
+    "mtime": 1793677487.576289,
+    "seen": 1793683404.6671157,
+    "ast_hash": "ef19444a7bbd40941d1986340c19936c",
+    "semantic_hash": ""
+  },
+  "reference/realism/newtons-cradle-flickr.jpg": {
+    "mtime": 1793677487.051724,
+    "seen": 1793683404.6671157,
+    "ast_hash": "795b4caac02192b134a9ec76396f7f03",
+    "semantic_hash": ""
+  },
+  "reference/realism/newtons-cradle.jpg": {
+    "mtime": 1793677487.9020169,
+    "seen": 1793683404.6671157,
+    "ast_hash": "99f9e2bce35544ca4285ff2f0ed777c8",
+    "semantic_hash": ""
+  },
+  "reference/realism/steel-ball-60mm.jpg": {
+    "mtime": 1793677488.2697153,
+    "seen": 1793683404.6671157,
+    "ast_hash": "ab0d159cdc3554deac8cb05dabc0014e",
     "semantic_hash": ""
   },
   "package-lock.json": {

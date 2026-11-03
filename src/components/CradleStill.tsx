@@ -1,20 +1,30 @@
-const BALLS = [-1.5, -0.5, 0.5, 1.5];
+import { getImageProps } from "next/image";
 
-/** Placeholder still of the cradle until the pre-rendered scene still replaces it (Phase 02). */
+/**
+ * The pre-rendered still of the real scene (scripts/still.mjs). It is the LCP image, stays until
+ * the canvas has drawn, and is the whole cradle when WebGL is unavailable. Positioned by
+ * `.cradle-still` in globals.css with the same framing maths as the camera.
+ */
 export function CradleStill() {
+  const common = { alt: "", sizes: "100vw", quality: 85 };
+  const landscape = getImageProps({
+    ...common,
+    src: "/fallback/cradle-landscape.webp",
+    width: 2000,
+    height: 2000,
+    priority: true,
+  }).props;
+  const portrait = getImageProps({
+    ...common,
+    src: "/fallback/cradle-portrait.webp",
+    width: 900,
+    height: 1950,
+  }).props;
   return (
-    <svg
-      aria-hidden
-      viewBox="-200 0 400 1000"
-      preserveAspectRatio="xMidYMin meet"
-      className="absolute inset-x-0 top-0 mx-auto h-[62%] w-auto"
-    >
-      {BALLS.map((x) => (
-        <g key={x}>
-          <line x1={x * 64} y1={0} x2={x * 64} y2={850} stroke="#9a978f" strokeWidth={0.6} />
-          <circle cx={x * 64} cy={882} r={32} fill="#c9c7c2" />
-        </g>
-      ))}
-    </svg>
+    <picture>
+      <source media="(max-aspect-ratio: 9/10)" srcSet={portrait.srcSet} sizes="100vw" />
+      {/* eslint-disable-next-line jsx-a11y/alt-text -- alt="" comes from getImageProps */}
+      <img {...landscape} className="cradle-still" aria-hidden />
+    </picture>
   );
 }

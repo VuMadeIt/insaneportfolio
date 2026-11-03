@@ -25,3 +25,12 @@ commit). Licence verified on each page on 2026-11-02.
 - Matthias Müller et al., "Small Steps in Physics Simulation" (2019) and Ten Minute Physics 05
   (MIT licence). Approach studied; no code copied.
 - Miles Macklin et al., "XPBD: Position-Based Simulation of Compliant Constrained Dynamics" (2016).
+
+## Light and surfaces
+- HDRIs from Poly Haven (CC0): `sculpture_exhibition` (Oliksiy Yakovlyev), `white_studio_03`,
+  `studio_small_09` (Sergej Majboroda), `photo_studio_loft_hall`, `monochrome_studio_02`,
+  `studio_kontrast_02`. https://polyhaven.com . `gallery_neutral.hdr` and `white_neutral.hdr` are
+  white-balanced, desaturated derivatives made by `scripts/hdri_neutral.py`.
+- `public/textures/imperfections.jpg`: channels from ambientCG "Fingerprints002" and
+  "SurfaceImperfections017" roughness maps (CC0), https://ambientcg.com .
+- Realism reference photos (not shipped): see `reference/realism/SOURCES.md`.

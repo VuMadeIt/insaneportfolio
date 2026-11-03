@@ -97,3 +97,66 @@ phase. Format: decision, alternatives, why.
 - **Lab tooling.** `/lab/physics` (2D side view, drag, scenarios, slow motion, angle and energy plots,
   impact ticks vs the recording's onsets on the desk preset). `/lab/*` 404s in production unless
   `LAB=1`. TypeScript scripts run with `npx jiti` (already in the tree via Tailwind).
+
+## Phase 02: the real object (2026-11-02)
+
+- **Transparent canvas, the page is the wall.** The canvas has no wall mesh the visitor sees; the
+  page background shows through, so the canvas edges match the CSS colour exactly (e2e samples
+  pixels along the edges, tolerance 2/255). The canvas draws only what the spotlight adds (a very
+  faint pool, 3% white, fading to zero inside the frame) and takes away (shadows via a
+  ShadowMaterial plane 30 cm behind the balls). A solid copy of the wall sits on a separate layer
+  that only the reflection cameras see, so the chrome still reflects it.
+- **Camera.** 18 degree vertical FOV, 35 mm above the ball line, looking straight ahead with a
+  lens shift (setViewOffset) instead of a tilt, so the strings stay parallel like a shift-lens
+  product photo. Landscape frames at least 0.8 x 0.48 m; portrait at least 0.36 m wide and at
+  most 0.95 m tall so the anchors (0.5 m above the balls) never come into view.
+- **HDRI.** Evaluated six Poly Haven studios plus two processed versions in /lab (sheets in
+  `.artifacts/lab/hdri`). Studio HDRIs read as product renders (two softboxes, black studio).
+  `sculpture_exhibition` is a real gallery and makes the chrome read as a photographed object, but
+  it was shot under tungsten and turned the balls into brass. Shipped: **`gallery_neutral`**, a
+  grey-world white-balanced, 15% saturation copy (`scripts/hdri_neutral.py`). All candidates stay
+  switchable in /lab.
+- **Chrome.** MeshPhysical, metalness 1, chromium F0 (0.549, 0.556, 0.554) linear, roughness
+  0.035 plus up to +0.09 from an ambientCG fingerprint map. Per-ball cube camera (192 px,
+  HalfFloat, PMREM refreshed) updated round-robin one per frame, each ball hidden while its own
+  cube renders, so balls reflect each other, the strings and the wall.
+- **Tone mapping: Khronos PBR Neutral.** AgX washed the chrome out to a flat grey; ACES shifted
+  hue. Neutral keeps the measured metal colour.
+- **Shadows: VSM, not PCSS.** drei's SoftShadows only works on three's Basic shadow path, which
+  my own shadow-type effect was overriding; once fixed, PCSS was noisy at 20 samples on the
+  string proxies. VSM with a blur radius computed from the physical penumbra (emitter 5 cm,
+  blocker to wall 30 cm, light 3 m away: about 5 mm) looks like a museum spot and costs less.
+- **String shadows are analytic.** A 0.4 mm line cannot be resolved by a shadow map (0.7 mm
+  texels), and fattened proxies cast fake dark bands. Each string is projected onto the wall from
+  the light, with the true penumbra width and darkness = fraction of the emitter it hides
+  (w * D / (a * S)), times the ball umbra darkness. Physically, that is faint; it is faint.
+- **Key light.** Spot at (-0.3, 0.45, 3) m: shadows fall a little down and right, about half a
+  ball diameter, partly hidden behind the balls, like Sam Cheng's lanyard.
+- **Strings.** 1 px minimum width rule in the vertex shader (coverage-weighted alpha below a
+  pixel), Kajiya-Kay highlight, darker silhouette for refraction. Nylon default; thread and wire
+  in /lab.
+- **Lint: `react-hooks/immutability` is off for `src/scene/**`.** React Compiler's rule rejects
+  every imperative three.js mutation (uniforms, scene.background), which is how R3F scenes work.
+- **Lab hydration bug.** zustand returns the server snapshot during hydration, so leva started
+  from defaults and its mount-time onChange reset query overrides. Leva now reads
+  `useLook.getState()` directly.
+- **Still.** `scripts/still.mjs` renders the real scene on a transparent page at two framings
+  (landscape 0.8 x 0.8 m square, portrait 0.36 x 0.78 m) to WebP with alpha (127 KB, 82 KB).
+  `.cradle-still` reproduces `frameFor()` in CSS; `scripts/align.mjs` blends live and still at four
+  sizes: they coincide. It is the LCP image, fades out once the canvas has rendered its
+  reflections, and stays as the cradle when WebGL2 is missing.
+  Known gap: on phones taller than about 1:2.2 the portrait still ends a few pixels below the top.
+
+### Realism review rounds (chrome)
+- **Round 0** (`.artifacts/screens/p02-r0`): balls dark and samey (the lab bug), shadows hard
+  grey discs a full diameter below, strings jagged double lines, string shadows heavy bands.
+  Fix: lab bug, HDRI comparison, lower key light.
+- **Round 1** (`.artifacts/lab/r1`): gallery HDRI makes the chrome believable; brass cast; PCSS
+  hard and noisy. Fix: neutral HDRI, VSM, smaller offset.
+- **Round 2** (`.artifacts/lab/r2`, `r3`): string shadows still too strong; pool shows a visible
+  halo; mobile cradle too small. Fix: analytic string shadows, pool 0.03, portrait framing 0.36 m.
+- **Round 3** (`.artifacts/lab/r4`, `.artifacts/screens/v0.2.0`): chrome reads as photographed
+  steel (compare `reference/realism/steel-ball-60mm.jpg`: bright body, hard horizon, ceiling
+  lights). Still fake: shadow core slightly heavy and uniform (opacity 0.3 to 0.24), porcelain flat
+  (darker base, rougher, clearcoat), dark metal banded by anisotropy (removed). Remaining: the
+  balls do not show the strings in their reflections at this size; acceptable.

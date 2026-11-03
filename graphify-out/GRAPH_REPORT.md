@@ -1,17 +1,17 @@
-# Graph Report - insaneportfolio  (2026-11-02)
+# Graph Report - insaneportfolio  (2026-11-03)
 
 ## Corpus Check
-- 36 files · ~16,599 words
+- 68 files · ~26,619 words
 - Verdict: corpus is large enough that graph structure adds value.
-- Unclassified: 4 file(s) not represented in the graph (top: (none) 3, .css 1)
+- Unclassified: 12 file(s) not represented in the graph (top: .hdr 8, (none) 3, .css 1)
 
 ## Summary
-- 285 nodes · 459 edges · 26 communities (17 shown, 9 thin omitted)
-- Extraction: 98% EXTRACTED · 2% INFERRED · 0% AMBIGUOUS · INFERRED: 11 edges (avg confidence: 0.85)
+- 418 nodes · 762 edges · 27 communities (18 shown, 9 thin omitted)
+- Extraction: 97% EXTRACTED · 3% INFERRED · 0% AMBIGUOUS · INFERRED: 24 edges (avg confidence: 0.87)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `c8c06af8`
+- Built from commit: `6697488d`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -19,9 +19,9 @@
 - package.json
 - compilerOptions
 - cradle.ts
-- layout.tsx
-- page.tsx
-- cradle.test.ts
+- HeroStage.tsx
+- Stage.tsx
+- @playwright/test
 - scripts
 - AGENTS.md
 - Credits
@@ -31,110 +31,115 @@
 - postcss.config.mjs
 - .prettierrc.json
 - serve.sh
-- Cradle
+- package.json
 - analyse.py
 - devDependencies
-- @playwright/test
-- Part 4. The hero object in detail (highest priority)
+- Phases
+- index.ts
 - eslint-config-next
-- vitest
+- tailwindcss@4.3.3
 - @types/react@19.3.0
-- @types/three@0.186.0
+- @types/react-dom@19.3.0
 - typescript@6.0.3
 - fetch.sh
+- SOURCES.md
 
 ## God Nodes (most connected - your core abstractions)
-1. `Cradle` - 35 edges
-2. `Vec3` - 21 edges
+1. `Cradle` - 38 edges
+2. `Vec3` - 24 edges
 3. `compilerOptions` - 17 edges
-4. `copy()` - 13 edges
-5. `Lucas Vu Portfolio: Master Plan` - 12 edges
-6. `Rope` - 9 edges
-7. `distance()` - 9 edges
-8. `lerp()` - 9 edges
-9. `scripts` - 9 edges
-10. `Part 4. The hero object in detail (highest priority)` - 9 edges
+4. `@playwright/test` - 13 edges
+5. `copy()` - 13 edges
+6. `useLook` - 13 edges
+7. `vec()` - 12 edges
+8. `Lucas Vu Portfolio: Master Plan` - 12 edges
+9. `build()` - 11 edges
+10. `react` - 11 edges
 
 ## Surprising Connections (you probably didn't know these)
-- `simulate()` --calls--> `Cradle`  [EXTRACTED]
-  scripts/physics/calibrate.ts → src/physics/cradle.ts
-- `simulate()` --calls--> `withConfig()`  [EXTRACTED]
-  scripts/physics/calibrate.ts → src/physics/config.ts
-- `HomePage()` --calls--> `CradleStill()`  [EXTRACTED]
-  app/(site)/page.tsx → src/components/CradleStill.tsx
-- `HomePage()` --calls--> `Hero()`  [EXTRACTED]
-  app/(site)/page.tsx → src/components/Hero.tsx
-- `Cradle` --references--> `Body`  [EXTRACTED]
-  src/physics/cradle.ts → src/physics/body.ts
+- `Part 10. Phases` --references--> `build()`  [INFERRED]
+  PLAN.md → app/lab/physics/PhysicsLab.tsx
+- `Phase 02: the real object (2026-11-02)` --references--> `frameFor()`  [INFERRED]
+  DECISIONS.md → src/scene/framing.ts
+- `3.3 The three layers (strict separation)` --references--> `BallSpec`  [INFERRED]
+  PLAN.md → src/physics/config.ts
+- `4.1 Physics (the most important part of the whole project)` --references--> `BallSpec`  [INFERRED]
+  PLAN.md → src/physics/config.ts
+- `ObjectLabPage()` --calls--> `Hero()`  [EXTRACTED]
+  app/lab/page.tsx → src/components/Hero.tsx
 
 ## Import Cycles
 - None detected.
 
-## Communities (26 total, 9 thin omitted)
+## Communities (27 total, 9 thin omitted)
 
 ### Community 0 - "package.json"
-Cohesion: 0.14
-Nodes (19): dependencies, gsap@3.15.0, react@19.3.1, react-dom@19.3.1, @react-three/drei@10.7.9, @react-three/fiber@9.8.2, three@0.186.0, zustand@5.0.16 (+11 more)
+Cohesion: 0.15
+Nodes (13): dependencies, gsap@3.15.0, next@16.4.3, react@19.3.1, react-dom@19.3.1, @react-three/drei@10.7.9, @react-three/fiber@9.8.2, three@0.186.0 (+5 more)
 
 ### Community 1 - "compilerOptions"
 Cohesion: 0.10
 Nodes (19): compilerOptions, allowJs, esModuleInterop, incremental, isolatedModules, jsx, lib, module (+11 more)
 
 ### Community 2 - "cradle.ts"
-Cohesion: 0.15
-Nodes (18): Body, solveContacts(), createHand(), Hand, solveHand(), CollisionEvent, Rope, anchor (+10 more)
+Cohesion: 0.07
+Nodes (30): build(), Body, CradleConfig, derive(), maxPenetration(), solveContacts(), Cradle, lossless (+22 more)
 
-### Community 3 - "layout.tsx"
-Cohesion: 0.20
-Nodes (6): fraunces, metadata, viewport, nextConfig, next@16.4.3, next
+### Community 3 - "HeroStage.tsx"
+Cohesion: 0.10
+Nodes (18): metadata, metadata, StillPage(), Stage, StillStage(), fraunces, metadata, viewport (+10 more)
 
-### Community 4 - "page.tsx"
-Cohesion: 0.39
-Nodes (5): HomePage(), BALLS, CradleStill(), GiantName(), Hero()
+### Community 4 - "Stage.tsx"
+Cohesion: 0.09
+Nodes (44): applyQuery(), deg(), ObjectLab(), Stage, metadata, ObjectLabPage(), react, @react-three/fiber (+36 more)
 
-### Community 5 - "cradle.test.ts"
-Cohesion: 0.13
-Nodes (10): maxPenetration(), lossless, measurePeriod(), runChain(), runFor(), untilImpact(), Material, Reveal (+2 more)
+### Community 5 - "@playwright/test"
+Cohesion: 0.08
+Nodes (11): WALL, port, @playwright/test, sizes, [url, ms = "6000"], [dir, ...variants], [width, height], [tag = "dev", ...paths] (+3 more)
 
 ### Community 6 - "scripts"
 Cohesion: 0.22
 Nodes (9): scripts, build, dev, e2e, format, lint, start, test (+1 more)
 
 ### Community 7 - "AGENTS.md"
-Cohesion: 0.33
-Nodes (4): Commands, Conventions, Environment, Installed agent tools
+Cohesion: 0.29
+Nodes (5): Commands, Conventions, Environment, Installed agent tools, This is NOT the Next.js you know
 
 ### Community 8 - "Credits"
-Cohesion: 0.50
-Nodes (3): Credits, Lucas's own material, Type
+Cohesion: 0.29
+Nodes (6): Credits, Light and surfaces, Lucas's own material, Physics references, Sound (calibration and samples), Type
 
 ### Community 9 - "Lucas Vu Portfolio: Master Plan"
-Cohesion: 0.06
-Nodes (33): 1.1 The feeling, 1.2 What Lucas asked for, verbatim decisions, 1.3 The click choreography (Lucas's own description, refined), 2.1 samfcheng.com, 2.2 calebwu.ca, 2.3 cathyyin.ca, 2.4 Rachel Chen (rachelchen.tech), case study framework, 2.5 Lucas's own material (the content source of truth) (+25 more)
+Cohesion: 0.05
+Nodes (43): 1.1 The feeling, 1.2 What Lucas asked for, verbatim decisions, 1.3 The click choreography (Lucas's own description, refined), 2.1 samfcheng.com, 2.2 calebwu.ca, 2.3 cathyyin.ca, 2.4 Rachel Chen (rachelchen.tech), case study framework, 2.5 Lucas's own material (the content source of truth) (+35 more)
 
 ### Community 10 - "calibrate.ts"
-Cohesion: 0.09
-Nodes (22): Analysis, chains, deg(), first, pairMean(), recIntervals, recLevels, recPairs (+14 more)
+Cohesion: 0.06
+Nodes (33): metadata, PhysicsLabPage(), COLORS, deg(), DESK, initial, Params, PhysicsLab() (+25 more)
 
-### Community 15 - "Cradle"
-Cohesion: 0.19
-Nodes (3): Cradle, clampTarget(), copy()
+### Community 11 - "Decisions"
+Cohesion: 0.33
+Nodes (5): Decisions, Phase 00 (2026-11-02), Phase 01: physics (2026-11-02), Phase 02: the real object (2026-11-02), Realism review rounds (chrome)
+
+### Community 15 - "package.json"
+Cohesion: 0.22
+Nodes (8): prettier@3.9.10, @types/node@22.19.0, name, private, type, version, prettier, @types/node
 
 ### Community 16 - "analyse.py"
-Cohesion: 0.31
+Cohesion: 0.19
 Nodes (3): analyse(), decode(), onsets()
 
 ### Community 17 - "devDependencies"
-Cohesion: 0.13
-Nodes (15): devDependencies, eslint@9.39.4, leva@0.10.1, prettier@3.9.10, tailwindcss@4.3.3, @tailwindcss/postcss@4.3.3, @types/node@22.19.0, @types/react-dom@19.3.0 (+7 more)
+Cohesion: 0.17
+Nodes (12): devDependencies, eslint@9.39.4, leva@0.10.1, @playwright/test@1.64.1, @tailwindcss/postcss@4.3.3, @types/three@0.186.0, vitest@4.1.12, eslint (+4 more)
 
-### Community 18 - "@playwright/test"
-Cohesion: 0.22
-Nodes (5): @playwright/test@1.64.1, port, @playwright/test, [tag = "dev", ...paths], widths
+### Community 18 - "Phases"
+Cohesion: 0.33
+Nodes (5): Phase 00: foundation (`v0.0.0-foundation`), Phase 01: physics (`v0.1.0-physics`), Phase 02: the real object (`v0.2.0-object`), Phases, Report
 
-### Community 19 - "Part 4. The hero object in detail (highest priority)"
-Cohesion: 0.22
-Nodes (9): 4.1 Physics (the most important part of the whole project), 4.2 Strings (must look and move like real fishing line), 4.3 Materials, light and wall (photographic realism), 4.4 Sound, 4.5 The four identities (remade in code), 4.6 The reveal (chrome -> identity) and its three variants, 4.7 Click choreography implementation, 4.8 Identity copy (DRAFT; Lucas to edit; no em dashes) (+1 more)
+### Community 19 - "index.ts"
+Cohesion: 0.23
+Nodes (10): imperfectionMap(), withImperfections(), chrome(), CHROMIUM, darkMetal(), materialFactories, porcelain(), Material (+2 more)
 
 ### Community 20 - "eslint-config-next"
 Cohesion: 0.50
@@ -146,17 +151,17 @@ Nodes (3): config, eslint-config-next@16.4.3, eslint-config-next
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
-- **Why does `vitest` connect `vitest` to `package.json`, `cradle.ts`, `cradle.test.ts`?**
-  _High betweenness centrality (0.170) - this node is a cross-community bridge._
-- **Should `package.json` be split into smaller, more focused modules?**
-  _Cohesion score 0.1368421052631579 - nodes in this community are weakly interconnected._
-- **Why does `Cradle` connect `Cradle` to `calibrate.ts`, `cradle.ts`, `cradle.test.ts`?**
-  _High betweenness centrality (0.096) - this node is a cross-community bridge._
+- **Why does `react` connect `Stage.tsx` to `package.json`, `calibrate.ts`, `HeroStage.tsx`, `package.json`?**
+  _High betweenness centrality (0.143) - this node is a cross-community bridge._
 - **Should `compilerOptions` be split into smaller, more focused modules?**
   _Cohesion score 0.1 - nodes in this community are weakly interconnected._
-- **Why does `next` connect `layout.tsx` to `package.json`?**
-  _High betweenness centrality (0.037) - this node is a cross-community bridge._
+- **Why does `build()` connect `cradle.ts` to `Lucas Vu Portfolio: Master Plan`, `calibrate.ts`?**
+  _High betweenness centrality (0.123) - this node is a cross-community bridge._
 - **Should `cradle.ts` be split into smaller, more focused modules?**
-  _Cohesion score 0.14564564564564564 - nodes in this community are weakly interconnected._
-- **Should `cradle.test.ts` be split into smaller, more focused modules?**
-  _Cohesion score 0.13071895424836602 - nodes in this community are weakly interconnected._
+  _Cohesion score 0.0745945945945946 - nodes in this community are weakly interconnected._
+- **Should `HeroStage.tsx` be split into smaller, more focused modules?**
+  _Cohesion score 0.0967741935483871 - nodes in this community are weakly interconnected._
+- **Should `Stage.tsx` be split into smaller, more focused modules?**
+  _Cohesion score 0.08771929824561403 - nodes in this community are weakly interconnected._
+- **Should `@playwright/test` be split into smaller, more focused modules?**
+  _Cohesion score 0.082010582010582 - nodes in this community are weakly interconnected._

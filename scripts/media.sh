@@ -29,6 +29,10 @@ video videos/design-philosophy/hummingbird.mp4 about/hummingbird
 cp "$SRC"/images/shufflr/{discover,profile-memories}.png "$OUT/shufflr/"
 cp "$SRC"/images/ripple/{ideation,research,comparison,system-diagram,discover,profile-history}.png "$OUT/ripple/"
 cp "$SRC"/images/maple-leaf/{service-penalty-app,maple-leaf-market,project-tracking-app}.png "$OUT/maple-leaf/"
+cp "$SRC"/images/ripple/{history,answer}.png "$OUT/ripple/"
+ffmpeg -v error -y -i "$SRC/images/ripple/hero-still.jpg" -c:v libwebp -quality 85 "$OUT/ripple/hero-still.webp"
+# A keyframe every 4 frames, so the scroll can seek it smoothly (case-study prototype block).
+ffmpeg -v error -y -i "$SRC/videos/shufflr/shuffle.mp4" -an -vf "scale='min(1280,iw)':-2,fps=30" -c:v libx264 -preset slow   -crf 26 -g 4 -pix_fmt yuv420p -movflags +faststart "$OUT/shufflr/shuffle-scrub.mp4"
 cp "$SRC"/images/search-a-song.jpg "$OUT/work/"
 # Warframe card: the still, and the 6.5 MB glitch GIF as a muted mp4 loop played on hover.
 ffmpeg -v error -y -i "$SRC/images/apple-still.jpg" -c:v libwebp -quality 85 "$OUT/warframe/still.webp"

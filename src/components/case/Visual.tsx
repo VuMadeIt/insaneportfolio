@@ -1,0 +1,330 @@
+"use client";
+
+import Image from "next/image";
+import { useEffect, useRef, useState } from "react";
+import type { Stat, Visual as VisualData } from "@/content/caseStudies/types";
+import { ExhibitMedia } from "../ExhibitMedia";
+
+const reducedMotion = () => window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+/**
+ * Whether a drawn visual should show its finished state. `null` until mounted (server render, no
+ * JavaScript, or already on screen at mount): the finished drawing. Below the fold it turns
+ * `false`, then `true` once the visual comes well into view, which plays the drawing.
+ */
+function useInView<T extends Element>() {
+  const ref = useRef<T>(null);
+  const [inView, setInView] = useState<boolean | null>(null);
+  useEffect(() => {
+    const el = ref.current;
+    if (!el || reducedMotion() || el.getBoundingClientRect().top < innerHeight) return;
+    setInView(false);
+    const io = new IntersectionObserver(
+      ([e]) => {
+        if (!e?.isIntersecting) return;
+        setInView(true);
+        io.disconnect();
+      },
+      { rootMargin: "0px 0px -20% 0px" },
+    );
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
+  return [ref, inView] as const;
+}
+
+/** A number that counts up from zero once on screen; the prefix and suffix ($, %, mL) stay put. */
+function Counter({ value }: { value: string }) {
+  const [ref, inView] = useInView<HTMLSpanElement>();
+  const [, before, num = "0", after] = value.match(/^([^\d]*)([\d.]+)(.*)$/) ?? [];
+  const target = Number(num);
+  const decimals = num.split(".")[1]?.length ?? 0;
+  const [shown, setShown] = useState(target);
+  useEffect(() => {
+    if (inView === false) setShown(0);
+    if (!inView) return;
+    const start = performance.now();
+    let frame = requestAnimationFrame(function tick(now) {
+      const t = Math.min(1, (now - start) / 1400);
+      setShown(target * (1 - (1 - t) ** 4));
+      if (t < 1) frame = requestAnimationFrame(tick);
+    });
+    return () => cancelAnimationFrame(frame);
+  }, [inView, target]);
+  if (before === undefined) return <span>{value}</span>;
+  return (
+    <span ref={ref} aria-label={value} className="tabular-nums">
+      <span aria-hidden>
+        {before}
+        {shown.toFixed(decimals)}
+        {after}
+      </span>
+    </span>
+  );
+}
+
+function Stats({ stats }: { stats: Stat[] }) {
+  return (
+    <dl className="grid gap-10 md:grid-cols-3">
+      {stats.map((s) => (
+        <div key={s.value + s.text} className="reveal">
+          <dt className="font-display text-[clamp(56px,6vw,88px)] font-medium leading-none tracking-[-0.03em]">
+            <Counter value={s.value} />
+          </dt>
+          <dd className="mt-3 leading-[1.5]">
+            {s.text}{" "}
+            {s.href && (
+              <a href={s.href} className="u-metal text-muted">
+                {s.source}
+              </a>
+            )}
+          </dd>
+        </div>
+      ))}
+    </dl>
+  );
+}
+
+/** A large sentence whose words rise in one after another. */
+function Statement({ text }: { text: string }) {
+  const [ref, inView] = useInView<HTMLParagraphElement>();
+  return (
+    <p
+      ref={ref}
+      data-in={inView}
+      className="statement max-w-[24em] font-display text-[clamp(22px,2.6vw,36px)] font-medium leading-[1.2] tracking-[-0.02em]"
+    >
+      {text.split(" ").map((w, i) => (
+        <span key={i} style={{ "--i": i } as React.CSSProperties}>
+          {w}{" "}
+        </span>
+      ))}
+    </p>
+  );
+}
+
+function Dots({ total, lit }: { total: number; lit: number }) {
+  const [ref, inView] = useInView<HTMLDivElement>();
+  return (
+    <div ref={ref} data-in={inView} className="dots flex flex-wrap justify-center gap-3" aria-hidden>
+      {Array.from({ length: total }, (_, i) => (
+        <span
+          key={i}
+          className={i < lit ? "dot dot-lit" : "dot"}
+          style={{ "--i": i < lit ? i : 0 } as React.CSSProperties}
+        />
+      ))}
+    </div>
+  );
+}
+
+/** Boxes joined left to right that draw in column by column; a column of two or more is a branch. */
+function Flow({ columns }: { columns: string[][] }) {
+  const [ref, inView] = useInView<HTMLDivElement>();
+  return (
+    <div
+      ref={ref}
+      data-in={inView}
+      className="flow flex flex-col items-stretch gap-4 md:flex-row md:items-center"
+    >
+      {columns.map((col, c) => (
+        <div key={c} className="contents">
+          {c > 0 && <span aria-hidden className="flow-line" style={{ "--c": c } as React.CSSProperties} />}
+          <ul className="flex flex-1 flex-col gap-3" style={{ "--c": c } as React.CSSProperties}>
+            {col.map((box) => (
+              <li
+                key={box}
+                className={`flow-box rounded-md px-4 py-3 text-[16px] leading-[1.35] ${
+                  c === columns.length - 1 ? "bg-ink text-wall" : "bg-wall"
+                }`}
+              >
+                {box}
+              </li>
+            ))}
+          </ul>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+/** A video that plays as you scroll past it, frame by frame (keyframes every few frames). */
+function Scrub({ v }: { v: Extract<VisualData, { kind: "scrub" }> }) {
+  const video = useRef<HTMLVideoElement>(null);
+  useEffect(() => {
+    const el = video.current!;
+    if (reducedMotion()) return;
+    let frame = 0;
+    const update = () => {
+      frame = 0;
+      const r = el.getBoundingClientRect();
+      const t = Math.min(1, Math.max(0, (innerHeight - r.top) / (innerHeight + r.height)));
+      if (el.duration) el.currentTime = t * el.duration;
+    };
+    const schedule = () => (frame ||= requestAnimationFrame(update));
+    el.addEventListener("loadedmetadata", schedule);
+    const io = new IntersectionObserver(([e]) => {
+      if (!e?.isIntersecting) return removeEventListener("scroll", schedule);
+      if (el.readyState === 0) {
+        el.preload = "auto";
+        el.load();
+      }
+      addEventListener("scroll", schedule, { passive: true });
+      schedule();
+    });
+    io.observe(el);
+    return () => {
+      io.disconnect();
+      cancelAnimationFrame(frame);
+      removeEventListener("scroll", schedule);
+      el.removeEventListener("loadedmetadata", schedule);
+    };
+  }, []);
+  return (
+    <video
+      ref={video}
+      src={v.video}
+      poster={v.poster}
+      width={v.width}
+      height={v.height}
+      muted
+      playsInline
+      preload="none"
+      aria-label={v.alt}
+      className="block h-auto w-full rounded-md"
+    />
+  );
+}
+
+/** A third-party embed that loads only on request (the Figma prototype is heavy). */
+function Embed({ v }: { v: Extract<VisualData, { kind: "embed" }> }) {
+  const [open, setOpen] = useState(false);
+  return (
+    <div className="relative aspect-[16/10] overflow-hidden rounded-md bg-ink">
+      {open ? (
+        <iframe src={v.src} title={v.title} className="absolute inset-0 h-full w-full" allowFullScreen />
+      ) : (
+        <button
+          type="button"
+          onClick={() => setOpen(true)}
+          className="group absolute inset-0 flex items-center justify-center"
+        >
+          <Image
+            src={v.poster.image!}
+            alt=""
+            fill
+            sizes="(min-width: 1400px) 1400px, 100vw"
+            className="object-cover opacity-60"
+          />
+          <span className="relative rounded-full bg-wall px-6 py-3 text-ink transition-transform duration-300 group-hover:scale-105">
+            Open the prototype
+          </span>
+        </button>
+      )}
+    </div>
+  );
+}
+
+export function Visual({ visual }: { visual: VisualData }) {
+  switch (visual.kind) {
+    case "media":
+      return (
+        <div className={`grid gap-4 ${visual.media.length > 1 ? "grid-cols-2" : ""}`}>
+          {visual.media.map((m) => (
+            // Never wider than the file (no upscaling) nor taller than 75% of the screen, centred.
+            <div
+              key={m.alt}
+              className="mx-auto w-full"
+              style={{ maxWidth: `min(${m.width}px, calc(75vh * ${m.width / m.height}))` }}
+            >
+              <ExhibitMedia
+                media={m}
+                sizes={
+                  visual.media.length > 1
+                    ? "(min-width: 1400px) 680px, 50vw"
+                    : "(min-width: 1400px) 1400px, 100vw"
+                }
+              />
+            </div>
+          ))}
+        </div>
+      );
+    case "stats":
+      return <Stats stats={visual.stats} />;
+    case "quotes":
+      return (
+        <div className={`grid gap-4 ${visual.quotes.length > 2 ? "md:grid-cols-2" : ""}`}>
+          {visual.quotes.map((q) => (
+            <figure key={q.text} className="reveal rounded-md bg-wall p-6">
+              <blockquote className="font-display text-[clamp(20px,1.8vw,24px)] font-medium leading-[1.3] tracking-[-0.01em]">
+                &ldquo;{q.text}&rdquo;
+              </blockquote>
+              <figcaption className="mt-3 text-[15px] text-muted">{q.who}</figcaption>
+            </figure>
+          ))}
+        </div>
+      );
+    case "statement":
+      return <Statement text={visual.text} />;
+    case "dots":
+      return <Dots total={visual.total} lit={visual.lit} />;
+    case "flow":
+      return <Flow columns={visual.columns} />;
+    case "cards":
+      return (
+        <dl className="grid gap-4 md:grid-cols-3">
+          {visual.cards.map((c) => (
+            <div key={c.title} className="reveal rounded-md bg-wall p-6">
+              <dt className="font-display text-[22px] font-semibold tracking-[-0.02em]">{c.title}</dt>
+              <dd className="mt-2 text-[16px] leading-[1.5]">{c.body}</dd>
+            </div>
+          ))}
+        </dl>
+      );
+    case "options":
+      return (
+        <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          {visual.options.map((o) => (
+            <li
+              key={o.title}
+              className={`reveal rounded-md p-6 ${o.chosen ? "bg-ink text-wall" : "bg-wall"}`}
+            >
+              <h3 className="text-[20px] leading-[1.2]">{o.title}</h3>
+              <ul className="mt-4 flex flex-col gap-2 text-[15px] leading-[1.4]">
+                {o.pros.map((p) => (
+                  <li key={p}>
+                    <span aria-label="Pro">+</span> {p}
+                  </li>
+                ))}
+                {o.cons.map((p) => (
+                  <li key={p} className="opacity-70">
+                    <span aria-label="Con">&minus;</span> {p}
+                  </li>
+                ))}
+              </ul>
+              {o.chosen && <p className="mt-4 text-[15px] font-medium">The one we built</p>}
+            </li>
+          ))}
+        </ul>
+      );
+    case "scrub":
+      return <Scrub v={visual} />;
+    case "embed":
+      return <Embed v={visual} />;
+    case "list":
+      return (
+        <ul className="flex max-w-[44em] flex-col gap-5">
+          {visual.items.map((item) => (
+            <li key={item} className="reveal flex gap-4 leading-[1.55]">
+              <span
+                aria-hidden
+                className="mt-[0.7em] h-[2px] w-5 shrink-0"
+                style={{ background: "var(--metal)" }}
+              />
+              {item}
+            </li>
+          ))}
+        </ul>
+      );
+  }
+}

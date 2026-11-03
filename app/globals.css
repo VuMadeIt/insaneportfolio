@@ -194,6 +194,64 @@
   animation: nav-in 1.2s var(--ease-power4-in-out) 0.5s both;
 }
 
+/* Case-study coded visuals (src/components/case/Visual.tsx): drawn once they are in view. Without
+   JavaScript `data-in` never turns true, so the resting state below is the finished drawing. */
+.statement span,
+.flow-box,
+.flow-line,
+.dot-lit {
+  transition:
+    opacity 700ms var(--ease-out),
+    transform 900ms var(--ease-out),
+    background-color 500ms var(--ease-out);
+}
+.statement[data-in="false"] span {
+  opacity: 0.15;
+}
+.statement span {
+  transition-delay: calc(var(--i) * 45ms);
+}
+.flow[data-in="false"] .flow-box {
+  opacity: 0;
+  transform: translateY(12px);
+}
+.flow-box {
+  transition-delay: calc(var(--c) * 260ms);
+}
+.flow-line {
+  flex: 0 0 auto;
+  width: 2px;
+  height: 20px;
+  align-self: center;
+  background: var(--metal-v);
+  transform-origin: top;
+  transition-delay: calc(var(--c) * 260ms - 130ms);
+}
+@media (min-width: 768px) {
+  .flow-line {
+    width: 40px;
+    height: 2px;
+    background: var(--metal);
+    transform-origin: left;
+  }
+}
+.flow[data-in="false"] .flow-line {
+  transform: scale(0);
+}
+.dot {
+  width: clamp(28px, 4vw, 44px);
+  aspect-ratio: 1;
+  border-radius: 999px;
+  background: var(--wall);
+}
+.dot-lit {
+  background: var(--ink);
+  transition-delay: calc(400ms + var(--i) * 160ms);
+}
+.dots[data-in="false"] .dot-lit {
+  background: var(--wall);
+}
+
 /* Story wall text rises in after the glide begins. */
 @keyframes story-rise {
   from {

@@ -1,0 +1,13 @@
+node_modules/
+.next/
+out/
+.artifacts/
+.taste-skill/
+graphify-out/cache/
+test-results/
+playwright-report/
+*.tsbuildinfo
+next-env.d.ts
+.env*
+.vercel
+.tmp/

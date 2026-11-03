@@ -1,0 +1,728 @@
+# Lucas Vu Portfolio: Master Plan
+
+This file is the single source of truth for building Lucas Vu's portfolio. It is written to be
+executed by an autonomous agent in a long unattended session (overnight). Read it fully before
+touching anything. Then follow **Part 9 (Execution protocol)** exactly.
+
+Kickoff prompt Lucas will paste into a fresh session:
+
+> Read PLAN.md and AGENTS.md in full. Execute the plan autonomously from Phase 00 onward, following
+> Part 9. Do not stop to ask me questions; make the best decision, log it in DECISIONS.md, and keep
+> going. Physics and physical realism are the top priority. Finish with REPORT.md.
+
+---
+
+## Part 1. The vision (non-negotiable)
+
+**One sentence:** a quiet, museum-white portfolio whose hero is a real-looking chrome Newton's
+cradle with four spheres hanging from the top of the screen; one ball moves, transfers its momentum,
+and causes something else to happen. That is Lucas: *"I like getting things moving."*
+
+### 1.1 The feeling
+- The whole site feels like a **clean museum exhibition**. Objects are exhibits; text is wall text
+  and wall labels. Calm, generous white space, one serif typeface, square corners everywhere.
+- The hero object must look like a **real physical object photographed on a gallery wall**, not a
+  3D demo, not a game, not "made by code", never cartoony. Benchmark: Sam Cheng's lanyard
+  (samfcheng.com) is literally a photograph (`/assets/badge-lanyard.webp`, 900x1997) with a soft
+  shadow falling on the wall behind it. Our cradle must reach that level of believability while
+  being fully interactive in real time.
+- **Realism beats effects.** Real-world scale, real gravity, real materials, real light, real
+  sound. If a choice makes it look more like a render and less like a photograph, it is wrong.
+
+### 1.2 What Lucas asked for, verbatim decisions
+- Exactly **4 spheres**: People, Ideas, Experiments, Products (in that order, left to right).
+- Strings: **clear, real-looking strings** (nylon monofilament) extending from the top of the
+  screen. Strings must **sway with real physics**.
+- **Shadow on the wall, not on a floor.** A museum spotlight throws soft shadows of the spheres
+  and strings onto the wall behind them. There is no floor.
+- Name below the cradle, huge, like Sam Cheng's: **"Lucas Vu"** in Fraunces, running edge to edge
+  along the bottom of the hero, the cradle hanging in front of it.
+- Tagline **"I like getting things moving."** is the **top-left corner line** (like Sam's
+  "I design products and the stories behind them. [more]").
+- Materials to compare: **chrome (primary, most effort)**, matte white porcelain, dark metal.
+- Hover reveal variants to compare: **all three** (A surface fade, B glass with glowing interior,
+  C ripple dissolve from the cursor). See Part 4.
+- Sound: **real classic clack**, quieter as the balls slow down.
+- Physics identical for every sphere regardless of material. Hover never changes mass/collider.
+- Typeface: **Fraunces**, formatted like Sam Cheng's site (one serif family for everything).
+- Nav: **Sam-style**. Home has no nav bar (corner text only). Inner pages get a slim top line with
+  a back arrow plus Work, About, Email.
+- Work section: **full-screen cards that stack on top of each other as you scroll** (the sticky
+  stacking idea from cathyyin.ca only), **no rounded corners**, museum feel.
+- Featured projects (3-4 strongest): **Shufflr, Ripple, Maple Leaf Foods, Warframe/Digital
+  Extremes**. A "View all work" page lists everything else.
+- Case studies: a strong mix of Caleb Wu (calebwu.ca) story structure, Sam Cheng's layout, and
+  Rachel Chen's case-study framework (rachelchen.tech; see 6.4).
+- About page: museum-like.
+- Identities are remade **in code** (procedural shaders/geometry) to match Lucas's four reference
+  images as closely as possible, mapped as cohesive 3D objects (no black square backgrounds),
+  each with life: the eye blinks, the flower sways and clouds drift, the idea orb flows like the
+  ChatGPT / AI voice orbs, the atom moves like Lucas's reference video.
+
+### 1.3 The click choreography (Lucas's own description, refined)
+1. Click a sphere. **All strings dip down slightly together** (anticipation, like a curtain being
+   tugged), then **everything rises**, accelerating (quicker at the end, like a theatre curtain).
+2. The three other spheres rise **out of frame**. The chosen sphere rises only back to its
+   **original rest position** (its string length never changes).
+3. Once the others are gone, the chosen sphere's anchor **glides to the left third** of the screen.
+   Because the anchor is moved kinematically and the ball is simulated, the ball **lags and swings
+   naturally** behind the moving anchor, then settles. This is the signature moment.
+4. To the right of the sphere: the identity **title** (e.g. "People"), a tight one-line title
+   description, then **three short, memorable sentences**. The giant name slides down out of view
+   to open up white space.
+5. The chosen sphere can still be **dragged and swung by itself** in this state.
+6. A **back arrow** (top-left, Sam-style), **Escape**, or clicking empty wall reverses everything:
+   the sphere glides back, the others lower from above with a soft physical settle.
+7. Each identity has its own URL: `/people`, `/ideas`, `/experiments`, `/products` (shareable,
+   back button works). The 3D canvas persists across these routes (it lives in a shared layout and
+   never remounts).
+
+---
+
+## Part 2. Research findings (do not redo; use)
+
+### 2.1 samfcheng.com
+- SvelteKit. **One family only: PP Kyoto** (slab serif), weights 400 and 500 plus italics.
+- Hero = three things: top-left and top-right corner lines (~15-17px), a huge name along the bottom
+  edge (~20vw, very tight leading, slight negative tracking, overflowing the edges), the lanyard
+  photo hanging from the top in front of the name with a soft offset shadow on the wall.
+- Tokens: `--page-gutter: clamp(32px, 8vw, 128px)`, `--ease-out: cubic-bezier(.23,1,.32,1)`,
+  `--ease-drawer: cubic-bezier(.32,.72,0,1)`. Background a very light warm grey/white.
+- `[more]` in the corner line is a bracketed underlined button that opens a dialog.
+- Work list: project title large, two-to-four line description, date in muted grey, thin rules
+  between rows, preview image.
+- Case study: centred large title, date pill + link pill, floating dark pill nav at top
+  (Back / LinkedIn / X / Instagram / Email), "00 — Context" numbered sections, Role / Team /
+  Skills three-column meta, narrow reading column (~600px), wide images, floating bottom progress
+  pill showing the current section.
+- Footer close: "Building products that people care about." with contact links in running text.
+
+### 2.2 calebwu.ca
+- Next.js; SF Pro Display + PP Neue Montreal. Home is a **stack of full-screen cards**: hero card
+  on top of RevisionDojo on top of Metalab; a "1 of 5" pill with project icons tracks position.
+- Case study story order: year + title + one-paragraph summary + Team block, hero images, then
+  **The problem -> Insight #1 -> Insight #2 -> Solution -> Solution -> Design decision -> Design
+  decision -> Research (context, pain points, consolidating data) -> Solution ideation (evaluating
+  ideas with pros/cons, prototype, feedback) -> Final solution -> Key learnings -> Next project
+  card.** Each block: short label, one-sentence headline, two lines of text, one big image.
+- Lucas loves Caleb's case studies. Take the **story rhythm and the "Next" card**, not the visual
+  styling (no rounded cards, no emoji, no SF Pro).
+
+### 2.3 cathyyin.ca
+- Full-width cards that are `position: sticky` and stack: each next card slides up over the
+  previous one. **Take only that mechanic.** Everything else (rounded corners, pastel gradients,
+  pill buttons, tracked caps) is explicitly rejected.
+
+### 2.4 Rachel Chen (rachelchen.tech), case study framework
+The Instagram reel (instagram.com/p/DcKkNHUsTOj, "portfolio to offer, episode 2: case studies")
+could not be watched (video behind login). Her published case studies show the framework:
+- Metadata header: **Collaborators, Timeline, Scope**.
+- The **problem stated as one bold sentence headline**, then the product as one bold sentence,
+  then an **impact number** ("8,000+ users").
+- Every following section headline is a **first-person claim that tells the story when skimmed**
+  ("I built a design system to support our rapid product development.").
+- Scannability: strong type hierarchy, consistent grid inside each section.
+Rule for us: a visitor who reads **only the headlines** of a case study gets the whole story.
+
+### 2.5 Lucas's own material (the content source of truth)
+- LinkedIn `in/beinglucasvu`: Product Designer @ Digital Extremes (Sep 2026-present); Product
+  Design Lead @ Hackathons North America (May 2026-present); Design Engineer @ Parrot (YC F25)
+  (Jul-Aug 2026); Product Designer @ Creators Collective (Jan-Jun 2026); Figma Design Director @
+  Waterloo Engineering Society (Jan-Apr 2026). Systems Design Engineering @ University of
+  Waterloo. "6x designathon/hackathon winner who loves connecting with people, building amazing
+  products, and being on stages." Seeking S27 co-ops.
+- Previous portfolio (Next.js): https://lucas-vu.vercel.app and its source repo
+  **github.com/VuMadeIt/updated-portfolioi** (Lucas owns it). It contains full case-study copy and
+  assets:
+  - `src/components/project/shufflr/shufflrContent.ts` (+ `public/images/shufflr`,
+    `public/videos/shufflr`)
+  - `src/components/project/ripple/rippleContent.ts` (+ images, videos, Figma embed URL)
+  - `src/components/project/maple-leaf/mapleLeafContent.ts` (+ images)
+  - `src/components/about/AboutPage.tsx` + `src/assets/{community,experience,polaroid}`
+  - `src/components/design-philosophy/content.ts` ("Why I'm Finally Ready to Call Myself a
+    Designer", hummingbird video)
+  - `src/lib/comingSoonProjects.ts`: Warframe and Parrot were "Coming Soon".
+  - Old experience list: Parrot YC (Design Engineer, contract, 2026), Hack Canada (Product Design
+    Lead, 2026), Waterloo Engineering Society (Figma Design Director, 2026), Maple Leaf Foods
+    (Digital Product Manager, 2026), The Local Charity (Systems Design and Ops Coordinator, 2025).
+- Devpost **LucasMadeIt** (use `curl -A "Mozilla/5.0 ..."`; plain fetch gets 403): Shufflr
+  (Winner), Asper (Winner), Frictionless, "We should go to Japan" (Hack the 6ix), SolarScore.
+- GitHub VuMadeIt repos: parrotyc, slanguage, chess4connection, impressionista, sweatertexture,
+  lucasvu (contains "google song search" rebuild, see his LinkedIn post), urbanplanningportfolio.
+- Contact: lucasvu.work@gmail.com, linkedin.com/in/beinglucasvu, github.com/VuMadeIt,
+  instagram.com/bigmanvu, x.com/bigmanvu, devpost.com/LucasMadeIt.
+- Personal lore (from old About page): solo backpacking trip in Japan; cadets (week-long camping
+  trips, instructing classes of 70+, parading in the snow, fundraising for veterans; joined to
+  overcome anxiety); soccer (TCDSB West-End, last season 13-1-2); high-school chess club;
+  Socratica, UW/UX, Blueprint; 15-minute speech at a Volunteer Appreciation Ceremony; fishing
+  (hummingbird over the tip of his rod); "the young fisherman".
+- **Accuracy rule:** never invent facts, numbers, clients, quotes or results. Anything drafted
+  gets `DRAFT` in the content file and is listed in REPORT.md for Lucas to confirm.
+
+### 2.6 Physics research
+- Use **XPBD with many small substeps** (Müller et al., "Small Steps in Physics Simulation";
+  Ten Minute Physics tutorial 05 "Newton's cradle / constrained dynamics":
+  https://matthias-research.github.io/pages/tenMinutePhysics/ and
+  https://emlyn.github.io/tenminutephysics/05-cradle.html). Small steps make the momentum pass
+  cleanly through touching balls, which general rigid-body engines (Rapier etc.) do poorly.
+- **Rapier is not used.** A focused custom solver is cleaner, deterministic, testable and cheaper.
+
+### 2.7 Reference assets found (use these, verify licences when downloading)
+- HDRI environments (CC0, Poly Haven, `https://api.polyhaven.com/assets?t=hdris&c=studio`):
+  candidates `studio_small_09`, `photo_studio_loft_hall`, `photo_studio_london_hall`,
+  `brown_photostudio_02`, `monochrome_studio_02`, `studio_kontrast_02`, `pav_studio_03`. Evaluate
+  4+ in the lab, pick the one whose reflections in chrome look like a real gallery/studio.
+- Surface imperfection textures (CC0, ambientCG.com): fingerprints / smudges / fine scratches for
+  roughness variation on chrome and dark metal. Subtle. Realism lives here.
+- Newton's cradle recordings (Freesound): drewtait #676377 (CC0), LoafDV #131596 and #94030,
+  HandroMyburg #763542. **Check each licence on its page.** Prefer CC0. Full downloads need a
+  login; if blocked, use the public preview MP3s only for CC0 sounds. Credit everything in
+  `CREDITS.md`.
+- AI-orb references for the Ideas sphere: github.com/weeeha/AI-Orb (style guide with six orb
+  archetypes; Plasma and Prism are closest), rareui.com/components/fluidorb (ChatGPT-voice
+  fluid orb technique: domain-warped FBM, 3-colour ramp, slow drift). Study, do not copy code
+  without a compatible licence.
+- Real-world photo references for realism calibration (not shipped): search Wikimedia Commons /
+  Openverse for "Newton's cradle", "chrome sphere", "fishing line", "museum spotlight wall
+  shadow". Save to `reference/realism/` with source + licence in `reference/realism/SOURCES.md`.
+  The Taste skill's `scripts/assets.mjs` can search these collections.
+
+---
+
+## Part 3. Technical architecture
+
+### 3.1 Stack (pin exact versions; prefer releases published at least 7 days ago)
+- **Next.js (App Router) + React + TypeScript (strict)**. Latest stable at time of run
+  (Nov 2026: next 16.4.x, react 19.x). `npm` as package manager.
+- **three.js + @react-three/fiber + @react-three/drei** for rendering.
+- **Custom XPBD physics** in plain TypeScript (no Rapier). Runs in the main thread (4 balls are
+  cheap); keep it framework-free so it can move to a Worker later if needed.
+- **GSAP** for UI/visual tweens and the curtain choreography timeline (never for physics state).
+- **Tailwind CSS v4** with design tokens as CSS variables.
+- **zustand** for interface state (hover, focus, selected identity, material, reveal variant).
+- **Vitest** for unit/physics tests. **Playwright** (`@playwright/test`, `channel: "msedge"`; Edge
+  is installed at `C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe`, Chrome at
+  `%LOCALAPPDATA%/Google/Chrome/Application/chrome.exe`) for e2e and screenshot capture.
+- **leva** (dev-only) for the comparison lab controls. Never shipped to production bundles.
+- **Fraunces** via `next/font/google` (variable; axes `opsz`, `wght`, `SOFT`, `WONK`; OFL licence,
+  self-hosted by Next automatically).
+- Tooling: ESLint (next config) + Prettier, `tsc --noEmit`. No unused deps.
+
+### 3.2 Folder structure
+```
+app/
+  layout.tsx                 fonts, tokens, persistent <Stage/> slot
+  (site)/
+    page.tsx                 home: hero + stacked work + close
+    [identity]/page.tsx      /people /ideas /experiments /products (static params)
+    work/page.tsx            all work (catalogue)
+    work/[slug]/page.tsx     case studies
+    about/page.tsx           about (museum room)
+  lab/                       dev-only comparison lab (404 in production unless LAB=1)
+    page.tsx                 materials x reveal variants x identities, leva panel
+    physics/page.tsx         2D physics debugger: plots, energy, sliders, scenarios
+src/
+  physics/                   PURE TS. No three.js, no React imports.
+    vec.ts                   small vec3 math
+    config.ts                all physical constants (single shared BallSpec)
+    cradle.ts                world: balls, anchors, constraints, step()
+    rope.ts                  secondary visual rope simulation
+    contacts.ts              sphere-sphere contacts + restitution
+    drag.ts                  pointer drag constraint
+    events.ts                collision events (for sound)
+    *.test.ts
+  scene/
+    Stage.tsx                <Canvas>, camera, renderer settings, frameloop control
+    Cradle.tsx               reads sim state, positions meshes (interpolated)
+    Sphere.tsx               visual mesh + material + reveal component (one per ball)
+    Strings.tsx              rope tubes + clear nylon material
+    Wall.tsx                 the gallery wall that receives shadows
+    Lighting.tsx             museum spot key light, fill, HDRI environment
+    materials/{chrome,porcelain,darkMetal}.ts
+    identities/{people,ideas,experiments,products}/  shader + geometry + animation
+    reveal/{fade,glass,ripple}.ts                    the three reveal variants
+    AccessibleTargets.tsx    HTML buttons projected over each sphere
+  audio/
+    clack.ts                 WebAudio sample bank, velocity->gain, chain grouping
+  state/
+    ui.ts                    zustand store (UI only; physics never reads it)
+  content/
+    identities.ts            title, description, three sentences per identity
+    projects.ts              all projects (featured flag, wall label data)
+    caseStudies/{shufflr,ripple,maple-leaf,warframe}.ts
+    about.ts
+  components/                Corner, GiantName, WallLabel, StackedCards, ProgressPill, Nav...
+  styles/tokens.css
+public/
+  hdri/  textures/  audio/  media/<project>/  fallback/
+reference/                   NOT shipped. identity images, layout refs, realism refs, videos
+scripts/                     asset processing (palette extraction, audio slicing, image opt)
+```
+
+### 3.3 The three layers (strict separation)
+1. **Physics (`src/physics`)** owns position, rotation, velocity and collisions. Deterministic,
+   fixed timestep, unit-tested. Knows nothing about materials, hover, or React.
+2. **Visual (`src/scene`)** reads a snapshot of physics state every frame (interpolated between
+   fixed steps) and renders it. Materials and reveals change only shader uniforms.
+3. **Interface (`src/state`, `components`)** owns hover/focus/selection/route. It may send
+   *commands* to physics (grab, move pointer, release, move anchors for choreography) through a
+   small typed API. It never writes ball positions directly.
+
+Each sphere instance = a rigid body (physics), a spherical collider (physics), a bifilar
+suspension constraint pair (physics), a visual mesh (scene), a material/reveal component (scene),
+and an accessible interaction target (DOM button). All four share one `BallSpec`.
+
+---
+
+## Part 4. The hero object in detail (highest priority)
+
+### 4.1 Physics (the most important part of the whole project)
+**Units are SI and gravity is real (9.81 m/s^2). Never scale time to fake a feel.**
+
+Model:
+- **Ball:** one rigid body per sphere, identical `BallSpec` for all four: radius, mass from steel
+  density (7850 kg/m^3), restitution, drag coefficient. Hover/material never touch it.
+- **Suspension:** real cradles hang each ball from **two strings in a V (bifilar)** to two anchors
+  spaced front/back in depth, which keeps the swing in one plane. Model each string as a
+  **unilateral distance constraint** (`|p - anchor| <= L`): a string can pull, never push. This
+  gives correct slack automatically (lift a ball above its arc and it falls freely until the string
+  snaps taut). Anchors are above the top of the viewport (strings run off-screen).
+- **Contacts:** sphere-sphere contact constraints solved in the XPBD position pass, then a
+  velocity pass applies restitution (Müller's rigid-body XPBD: correct normal velocity to
+  `-e * v_n_before`). Balls rest with a tiny gap (about 0.05-0.2 mm) so a chain resolves as fast
+  sequential collisions, which is what makes a real cradle work.
+- **Integrator:** fixed simulation step (e.g. 1/240 s) with many substeps (start at 20 per step,
+  i.e. ~4800 Hz) and one constraint iteration per substep. Render with an accumulator and
+  interpolation so results are identical at 30, 60, 120 and 144 fps.
+- **Damping (all shared, all physical):** quadratic air drag (`0.5 * rho_air * Cd * A * |v| v`,
+  rho_air 1.2, Cd ~0.47), contact energy loss via restitution, and a very small suspension
+  hysteresis term. **Calibrate restitution and hysteresis against a real recording** (4.4): match
+  the clack interval timing and the decay of loudness over time. A real cradle slowly degrades
+  into all balls swinging together; this should emerge on its own.
+- **Ball orientation:** the eyelet screwed into the top of each ball points toward the midpoint of
+  its two anchors (rigidly attached), so the ball visibly rotates as it swings, like a real one.
+- **Scale:** pick ball diameter and string length so the cradle reads as a substantial gallery
+  object and the swing period feels right on screen. Period comes from real physics
+  (`T ~ 2*pi*sqrt(L/g)`), so tune L, not time. Start with diameter 60-70 mm and an effective
+  length of 0.5-0.9 m, then judge against reference footage/recordings.
+- **Drag interaction:** on pointer down over a ball, add a compliant XPBD "hand" constraint from
+  the ball to the pointer's intersection with the swing plane. The strings still win, so a pointer
+  beyond reach keeps the ball on its arc. Pulling one ball into its neighbours pushes them (real).
+  Release keeps the ball's velocity (a flick works). Clamp to a sane maximum angle (~70 deg) only
+  via the hand constraint's softness, never by teleporting.
+- **Sleep:** when total kinetic energy stays under a threshold for ~2 s, the sim sleeps and the
+  canvas switches to on-demand rendering. Wake on any input or choreography.
+- **Idle state:** perfectly still on load (Lucas: "hanging perfectly still").
+
+**Physics acceptance tests (Vitest, must all pass before Phase 01 merges):**
+1. Single pendulum period matches `2*pi*sqrt(L/g) * (1 + theta0^2/16)` within 0.5% (5 deg and
+   30 deg).
+2. One ball released from 30 deg: after the first chain, the far ball leaves with >= 95% of the
+   incoming speed; the middle balls' peak displacement < 1 deg.
+3. Two balls lifted -> two balls leave. Three lifted -> three leave.
+4. Horizontal momentum through each collision conserved within 1%; total energy never increases
+   without input.
+5. Slack test: lift a ball above its arc and release -> free fall, taut snap, no explosion,
+   string constraint error < 0.1 mm at all times.
+6. Torture test: 10,000 random drag/release steps -> no NaN, interpenetration < 0.05 mm.
+7. Frame-rate independence: identical state hash after 10 s at simulated render rates 30/60/144.
+8. Material independence: switching material/reveal/identity in the UI store does not change the
+   physics state hash (the physics module must not import anything from scene/state).
+9. Long run: after 60 s the motion has decayed toward the calibrated envelope and the middle balls
+   have picked up motion (emergent, real-cradle behaviour).
+10. Kinematic anchor move (choreography): moving anchors along a curve makes the ball lag and
+    swing, then settle, with no constraint violation.
+
+Also build `/lab/physics`: a 2D side-view debugger plotting each ball's angle and energy over time,
+sliders for every constant, scenario buttons (1/2/3 balls, slack drop, anchor glide), and an
+overlay of the real recording's onset times for calibration.
+
+### 4.2 Strings (must look and move like real fishing line)
+- **Two-tier simulation:** the bifilar constraints above are the physical truth. Each visible
+  string is a **secondary rope simulation** (16-24 particles, XPBD inextensible segments, gravity,
+  light air damping) pinned at the anchor and at the ball's eyelet. When the string is taut it is
+  forced straight (its endpoints are exactly one rope-length apart); when the ball bounces or is
+  lifted, the string goes **slack and sways** naturally; a hard collision sends a small transverse
+  **wobble** up the line (inject a small impulse into the mid particles proportional to impact
+  speed). The rope never feeds back into the ball (keeps physics clean).
+- **Look:** clear nylon monofilament, ~0.3-0.5 mm real thickness. Render as a dynamic tube
+  (Catmull-Rom through the particles, 6 radial segments) with a custom material: mostly
+  transparent, a bright specular line from the environment, slight refraction/darkening of the wall
+  behind it, fresnel edges. **Keep it at least ~1 device pixel wide**: if the projected width is
+  under 1px, widen it to 1px and lower its opacity in proportion (prevents shimmer/aliasing). The
+  string should read like Lucas's sketch (a thin line) until you look closely and see it is clear.
+- **Attachment hardware:** each ball has a small chrome **screw eye** on top; each string ties
+  through it with a tiny knot/crimp. Real cradles have this; it sells the realism.
+- **Shadows:** strings cast faint, thin, soft shadows on the wall too.
+- Lab comparison: clear nylon (default) vs thin dark thread vs silver wire.
+
+### 4.3 Materials, light and wall (photographic realism)
+- **Camera:** fixed, no orbit. Long-lens product-photography look (vertical FOV ~15-22 deg), very
+  slightly above the balls' centre line so the V of the strings is barely perceptible.
+- **Renderer:** WebGL2, physically correct lights, **AgX or ACES/Neutral tone mapping** (compare
+  in lab), sRGB output, MSAA x4 or SMAA, DPR capped at 2. Colour-manage so the WebGL wall
+  matches the CSS page background exactly at the canvas edges (sample pixels in a Playwright test).
+- **Wall:** a large plane ~25-40 cm behind the balls, same colour as the page ground. Lit by a
+  **museum spotlight** (key light from upper-front-left) creating a very subtle pool of light;
+  the edges of the canvas must blend invisibly into the page.
+- **Shadows on the wall:** soft, physically plausible (contact hardening: sharper near, softer
+  far). Use PCSS (drei `SoftShadows`) or a high-res VSM spot shadow; compare in lab. This is
+  Lucas's "drop shadow on the wall".
+- **Chrome (primary, most effort):** metalness 1, roughness ~0.03-0.06, with an ambientCG
+  fingerprint/smudge map modulating roughness very subtly. Reflections come from the chosen HDRI
+  **plus a per-ball dynamic cube camera** (128-256 px, round-robin updates) so each ball reflects
+  its neighbours, the strings and the wall. Balls reflecting each other is what makes a cradle look
+  real. Slight clearcoat is not needed for metal.
+- **Porcelain (compare):** warm white, roughness ~0.3, clearcoat 1 (roughness ~0.08) for a glaze,
+  soft wrap lighting to fake subsurface softness.
+- **Dark metal (compare):** gunmetal/blackened steel, metalness 1, roughness ~0.2-0.3, fine
+  scratches map, gentle anisotropy.
+- Reuse geometries and materials; one sphere geometry for all balls. No expensive screen-space
+  reflections. Selective bloom only for emissive identity interiors, tiny intensity, if at all.
+- **Realism review loop:** after each material change, capture the hero at 1440 / 768 / 390 and
+  compare side-by-side with the real photos in `reference/realism/`. Write what still looks fake
+  (edges, highlights, shadow softness, string brightness, scale) in DECISIONS.md and fix the top
+  three each round. Minimum three rounds for chrome.
+
+### 4.4 Sound
+- Pipeline (`scripts/audio/`): download the CC0 recordings, detect onsets (ffmpeg `silencedetect`
+  or numpy envelope; Python 3.12 + numpy + OpenCV are installed, ffmpeg 9 is installed), slice
+  8-16 individual clacks, normalise, trim, export small `.webm/opus` + `.mp3` to `public/audio/`.
+- Also measure **inter-clack intervals and the loudness decay** from the recordings and use them
+  to calibrate physics (4.1).
+- Runtime (`src/audio/clack.ts`): WebAudio, unlocked on the first pointer down. Physics emits
+  collision events with impact speed. Collisions within a few milliseconds of each other in one
+  chain play as **one** clack (that is what a real cradle sounds like). Gain ~ log of impact
+  speed, so it gets quieter as the swing decays; random sample + playback rate 1 +/- 3%; gentle
+  low-pass for soft hits; stereo pan by x position. Silence below a speed threshold.
+- A small text toggle in the hero's bottom-right corner, Sam-style brackets: `[sound on]` /
+  `[sound off]`. Default on after the first interaction (Lucas: "9c"). Respect a muted tab.
+
+### 4.5 The four identities (remade in code)
+Source images (Lucas owns them): `reference/identities/people-eye.jpg`, `idea-orb.jpg`,
+`experiment-atom.png`, `product-flower.jpg`. Extract each image's palette with a script
+(`scripts/palette.py`, k-means in OpenCV -> JSON) and use the real colours.
+
+All identities are **inside the sphere, in object space**, so they rotate and swing with the ball:
+ray-sphere intersection in the fragment shader, then a short volumetric march or layered shells
+(24-48 steps). The black backgrounds of the images become depth/darkness inside the sphere, never
+a square. Each is built and tuned in `/lab` against its source image side by side; at least three
+compare-and-fix rounds each, with notes in DECISIONS.md.
+
+- **People (eye):** an iris filling the sphere's face: radial fibres (polar FBM stretched along the
+  radius), multi-hue palette (blues, cyan, magenta, warm yellow/orange from the image), crypts, a
+  collarette ring, a dark limbal ring, a black pupil with a soft edge, a wet cornea dome with a
+  specular highlight. **Life:** natural blinks every 3-7 s (two soft dark lids sweep closed and
+  open, about 120 ms close and 180 ms open), pupil breathing, and micro-saccades that glance
+  toward the cursor.
+- **Ideas (light burst / AI orb):** a white-hot core with radial filaments and spectral dispersion
+  (RGB offsets), slowly flowing through domain-warped FBM like the ChatGPT voice orb and other AI
+  orbs (Devin's orb, weeeha/AI-Orb Plasma/Prism). Breathes; flows a little faster on hover.
+- **Experiments (atom):** reference video `assets/20261103-0005-32.9774752.mp4` (458x384, 5 s,
+  30 fps; move it to `reference/identities/atom-motion.mp4` in Phase 00). Extract frames
+  (`ffmpeg -i <video> -vf fps=10 reference/video-frames/atom-%03d.png`) and match the motion:
+  - 8-10 **comet-like electrons**: small, very bright, slightly elongated white-blue heads
+    travelling along **tilted great-circle orbits** at different inclinations and speeds.
+  - Each electron leaves a **glowing thin trail** that persists, so over a few seconds the trails
+    **weave themselves into a full wireframe sphere** of crossing rings (begins sparse: a few
+    arcs; ends dense: a complete lattice). Trails are crisp near the head and fade/thin with age.
+  - Near the end a **nucleus flares** at the centre: a soft bright core with a subtle star-shaped
+    glint, lighting the inside of the lattice.
+  - Palette: cool white trails, blue-white heads, deep navy-to-black interior (matches
+    `experiment-atom.png`).
+  - In the sphere: loop seamlessly (trails decay as new ones are drawn so the lattice "breathes"
+    between sparse and dense rather than resetting). On hover the reveal starts the weave from
+    sparse, and the nucleus flare lands as the reveal completes.
+  - Implementation: electrons as analytic orbits (no sim), trails as a ring buffer of past
+    positions rendered as additive tapered ribbons (or a ping-pong trail texture in sphere space),
+    nucleus as an additive sprite plus a faint 4-point glint, all inside the sphere in object space.
+- **Products (flower in a bubble):** a thin-film iridescent soap-bubble shell (MeshPhysical
+  `iridescence` or a custom thin-film term), a sky with **slowly drifting clouds** inside
+  (volumetric FBM), and a **gladiolus** stem with ruffled pink florets and green buds built as real
+  geometry (procedural stem curve, instanced petals with ruffled edges, soft translucency) that
+  **sways side to side** gently inside the bubble.
+
+### 4.6 The reveal (chrome -> identity) and its three variants
+A `uReveal` uniform (0..1) per sphere, tweened by GSAP over ~0.6-0.9 s with the site ease on
+hover/focus, reversed on leave. Physics is untouched.
+- **A. Surface fade:** the chrome reflection dissolves into the identity as a surface finish.
+- **B. Glass (expected favourite):** the metal turns into a clear glass/bubble shell (refraction,
+  fresnel, the wall visible through the edges) and the identity glows from inside.
+- **C. Ripple:** a liquid-metal ripple spreads from the cursor's hit point across the sphere,
+  revealing the identity behind the wavefront (mercury-like, physical, no neon outline).
+All three are selectable in `/lab` and via `?reveal=a|b|c` on preview builds. Default = the best
+one after review (log the reason).
+
+### 4.7 Click choreography implementation
+- One GSAP timeline drives **kinematic anchor positions** (and only that) through the physics
+  command API: dip (anchors -3 to -5% of length over ~140 ms, ease out), then rise (ease in,
+  accelerating, "quicker at the end"). Non-selected anchors keep rising until their balls exit the
+  top. The selected anchor returns to rest height. Then the selected anchor glides to the left
+  third (~0.9-1.2 s, site drawer ease). Because the ball is simulated, it lags, swings and settles.
+- Text column fades/rises in after the glide begins (staggered: title, description, sentences).
+- The giant name translates down out of view in the selected state.
+- Reverse timeline on back/Escape/empty-wall click. Interrupting mid-animation must be safe.
+- Route sync: entering `/people` directly renders the selected state immediately (no intro
+  animation), with correct metadata/OG tags per identity.
+
+### 4.8 Identity copy (DRAFT; Lucas to edit; no em dashes)
+- **People**: *Where every problem starts.*
+  "I've always been curious about what makes people tick. I've run chess nights, taught cadet
+  classes of seventy, and I still talk to strangers at every design event in Waterloo. The best
+  problems I've solved were hiding inside someone else's story."
+- **Ideas**: *The first push.*
+  "Ideas are cheap until someone moves first. Six hackathon wins taught me to say 'what if' out
+  loud and sketch it before the room moves on. Most of mine are bad; the good ones only showed up
+  because I kept swinging."
+- **Experiments**: *Built to find out.*
+  "I'd rather build it than argue about it. When Figma couldn't show how a shuffle should feel, I
+  coded it; when Google's song search annoyed me, I rebuilt it. Experiments are how I find out I'm
+  wrong quickly and cheaply."
+- **Products**: *The part you can hold.*
+  "Products are where everything finally touches someone. At Maple Leaf Foods that meant moving
+  $14M+ in penalties out of email chains and into an app people actually wanted to open. I care
+  about the last five percent, the part nobody asks for and everybody notices."
+
+---
+
+## Part 5. Design system
+
+- **Typeface:** Fraunces only (Sam uses one family; so do we). Weights 400 and 500, italic for
+  wall-label titles. `font-optical-sizing: auto` so the giant name gets high-contrast display cuts
+  and body text gets text cuts. Defaults `SOFT 0`, `WONK 0` (clean, museum); compare SOFT 0/50
+  and WONK 0/1 in the lab.
+- **Scale (few sizes):** giant name ~20-22vw (leading ~0.82, tracking -0.04em); page titles
+  ~clamp(48px, 7vw, 112px); body/corner 16-18px (leading 1.45-1.55); small (dates, credits)
+  14px in muted ink.
+- **Colour:** gallery wall `#F3F1EC` (tune to match the lit WebGL wall), ink `#121212`, muted
+  `#76736C`. No accent colour in the chrome UI; colour comes from the identities and project
+  media only.
+- **Space:** `--gutter: clamp(32px, 8vw, 128px)` (Sam). Sections 160-240px apart on desktop.
+- **Motion:** `--ease-out: cubic-bezier(.23,1,.32,1)`, `--ease-drawer: cubic-bezier(.32,.72,0,1)`.
+  Transform/opacity only. Every motion has a reduced-motion fallback.
+- **Shape:** **no rounded corners anywhere** (cards, pills, buttons, images, video). The floating
+  progress element on case studies is a square-cornered bar, not a pill.
+- **Wall label** component (museum tombstone label), used for projects and About objects:
+  **Title** (italic), year / medium (e.g. "Mobile app concept") / role / team / one-line credit.
+  Sentence case, small, set beside the object, never on top of it.
+- **Taste skill:** use its process (copy deck first, `lint.mjs`, `inspect.mjs`, screenshot
+  critique rounds). Its house rules are overridden where this vision requires it; pass `--allow`
+  for: the wall shadow (shadow at rest), the cradle overlapping the giant name, thin rules in the
+  /work catalogue list, and `[bracket]` corner links. Everything else in its rules applies (no
+  gradients in UI, no glass blur panels, no emoji, no tracked tiny caps, no em dashes in copy).
+
+---
+
+## Part 6. Pages
+
+### 6.1 Home `/`
+1. **Hero (100dvh):** top-left corner: "I like getting things moving. [more]" (`[more]` opens a
+   small dialog with a two-sentence intro and a link to /about). Top-right corner: "Product Designer
+   @ Digital Extremes / Systems Design Engineering @ Waterloo" (two lines). The cradle hangs from
+   the top. "Lucas Vu" giant along the bottom, behind the cradle. `[sound on]` bottom-right.
+   Hovering/focusing a sphere shows its identity name as a small caption under it (meaning never
+   relies on colour alone).
+2. **Work:** four full-viewport sticky stacked exhibits (Shufflr, Ripple, Maple Leaf Foods,
+   Warframe). Each: one dominant project visual (real media from Lucas's repo; video loops muted
+   with posters), a wall label, and "View case study". Each next card slides up over the previous
+   one (CSS `position: sticky`; slight darkening of the covered card; no scaling gimmicks). A
+   minimal position indicator ("2 of 4" in small type) is optional; decide in review.
+3. **"View all work"** link to `/work`.
+4. **Close:** one large line in Lucas's voice (e.g. "Let's get something moving."), contact links
+   in running text (Sam style), the name returning at full width.
+
+### 6.2 Identity routes `/people` etc.
+The hero in the selected state (Part 1.3, 4.7). Back arrow top-left. Proper titles/OG images.
+
+### 6.3 All work `/work` (the catalogue)
+Sam-style list: large title, two-line description, date in muted ink, thin rules between rows,
+preview media appearing on hover (desktop) or inline (mobile). Includes featured projects plus
+Asper, Frictionless, We should go to Japan, SolarScore, Parrot, Creators Collective, Google song
+search rebuild (only what has enough real information; skip the rest).
+
+### 6.4 Case study `/work/[slug]`
+Template (Sam layout + Caleb rhythm + Rachel Chen headlines):
+1. Slim top line: back arrow, LinkedIn, X, Instagram, Email.
+2. Title (large Fraunces), one-sentence claim, wall-label block: Role / Team / Timeline / Scope /
+   link (prototype, Devpost, live site).
+3. Hero media full width (square corners).
+4. Sections, each opening with a **one-sentence first-person claim headline**: Context ->
+   Problem -> Research / insights -> Solution -> Key features / design decisions -> Impact ->
+   Reflection / learnings. Reading column ~600-680px; media breaks wider.
+5. Square-cornered floating progress bar at the bottom showing the current section.
+6. **"Next exhibit"** full-width card to the next featured project (Caleb).
+- Content: port faithfully from the old repo's content files (Shufflr, Ripple, Maple Leaf),
+  tightening copy and rewriting headlines into Rachel-style claims. Keep all real stats and quotes
+  with their sources (Shufflr research stats link to their sources).
+- **Warframe / Digital Extremes:** NDA status unknown. Build the exhibit card and a case-study page
+  that says the work is under wraps and invites a conversation ("Ask me about it" -> email). No
+  invented content. Flag in REPORT.md.
+
+### 6.5 About `/about` (the museum room)
+- Artist statement (wall text) with a portrait from Lucas's old assets.
+- **Chronology:** the experience timeline (2.5), museum-style (year, role, place).
+- **Selected objects:** personal artefacts as exhibits, each with a wall label: cadets, soccer
+  (13-1-2), chess club, Socratica / UW/UX / Blueprint, solo Japan trip, fishing (hummingbird
+  video), the volunteer speech. Use Lucas's real photos from the old repo.
+- **Reading room:** the essay "Why I'm Finally Ready to Call Myself a Designer" (from the old
+  repo), set beautifully.
+
+### 6.6 Shared
+- 404 page in the same voice. Favicon (a tiny chrome sphere). Metadata, OG images per page,
+  sitemap, robots. Analytics: none for now.
+
+---
+
+## Part 7. Responsive, accessibility, performance, fallbacks
+
+- **Desktop:** full 3D cradle, hover reveals, click opens the story state.
+- **Mobile:** first tap reveals/selects (caption shows), second tap opens the story. In the story
+  state the sphere sits top-centre (smaller) and the text flows below it like a bottom sheet.
+  Dragging a ball captures touch only on the ball (the canvas uses `touch-action: pan-y` except
+  while a ball is grabbed) so the page still scrolls.
+- **Keyboard:** each sphere is a real `<button>` (projected over the ball each frame, visually
+  hidden but focus-visible ring drawn around the sphere). Tab order People -> Products. Focus =
+  hover reveal. Enter/Space = open story. Escape = close. Arrow Left/Right on a focused sphere gives
+  it a gentle push (keyboard users can play too).
+- **Accessible names:** "People: where every problem starts. Open story." etc.
+- **Reduced motion:** no anticipation dip, no curtain travel (crossfade instead), no idle
+  identity animation (still frame), physics only responds to direct drags.
+- **Performance budgets:** 60 fps on a mid-range laptop; hero JS (three + scene) lazy-loaded with
+  `next/dynamic({ ssr: false })`; the static still (6.7) is the LCP image and stays until the
+  canvas has rendered its first frame, then crossfades. Pause rendering when the hero is off-screen
+  (IntersectionObserver) and when the sim sleeps. HDRI at 1k, textures compressed (KTX2 where
+  sensible), images AVIF/WebP via `next/image`, videos H.264 MP4 + poster, lazy.
+- **Fallbacks:** no WebGL (or WebGL context lost) -> high-quality **pre-rendered stills of our own
+  scene** (rendered by a Playwright script from the real scene, one per identity revealed) with the
+  same buttons and the same story state as plain HTML.
+
+---
+
+## Part 8. Git workflow (Lucas wants to see and recover every version)
+
+- `main` always builds and works.
+- **One branch per phase:** `phase/00-foundation`, `phase/01-physics`, ... (see Part 10). Small,
+  focused commits in Conventional Commit style (`feat(physics): add bifilar unilateral strings`,
+  `fix(strings): keep 1px minimum width`, `test(physics): momentum transfer`, `chore: ...`).
+  Commit after every meaningful working step (tests green), not in giant batches.
+- At the end of each phase: run all gates (Part 9.3), merge into `main` with `--no-ff`, and create
+  an **annotated tag** (`v0.1.0-physics`, etc.) with a one-paragraph message of what changed.
+- **Experiments:** alternative approaches worth keeping get their own branch `exp/<topic>` (e.g.
+  `exp/strings-tube-vs-line`, `exp/shadows-pcss-vs-vsm`) plus a tag `exp-<topic>-<variant>`.
+  Never delete them. The `/lab` route also keeps every variant switchable in one build.
+- **Never** force-push, rewrite history, or delete branches/tags.
+- Remote: `origin = https://github.com/VuMadeIt/insaneportfolio.git` (currently empty). Push
+  `main`, phase branches and tags after each phase if `git push` works non-interactively; if it
+  asks for credentials, skip pushing and note it in REPORT.md.
+- Commits use the repo's configured identity (Lucas Vu).
+- Vercel (account lucasvu26@gmail.com) is set up by Lucas in the morning; every branch then gets a
+  preview URL for side-by-side comparison. Do not attempt to log in.
+
+---
+
+## Part 9. Execution protocol for the autonomous run
+
+### 9.1 Rules of engagement
+- Do not wait for Lucas. When something is ambiguous, choose the option that best serves the
+  vision (Part 1), write it in `DECISIONS.md` (date, decision, alternatives, why), and continue.
+- Priority order when trading off: **1) physics correctness and feel, 2) physical realism of the
+  object (materials, strings, light, shadow, sound), 3) interaction choreography, 4) identity
+  shaders, 5) site pages, 6) polish.** If the run is cut short, phases must be completed in order so
+  the best parts exist.
+- Quality over speed. Iterate visual work with screenshots until it is genuinely convincing; do not
+  stop at "works".
+- Keep code clean, as if a senior developer wrote it: small modules, clear names, typed APIs, no
+  dead code, no commented-out code, comments only where intent is non-obvious.
+- Never introduce secrets. Never modify security settings. No destructive operations outside files
+  you created in this run.
+- After code exists, use Graphify (`graphify update .`) to keep the knowledge graph current, and
+  `graphify query` for codebase questions in later phases.
+
+### 9.2 Logs the agent maintains
+- `DECISIONS.md`: every non-trivial decision and every realism review round.
+- `CREDITS.md`: every external asset (HDRI, textures, sounds, references) with source and licence.
+- `REPORT.md` (final): what was built per phase with tags, screenshots paths, what still falls
+  short, open questions for Lucas, sample/draft content to confirm, and morning to-dos.
+
+### 9.3 Gates (run before every phase merge)
+`npm run typecheck`, `npm run lint`, `npm run test` (Vitest, incl. all physics acceptance tests),
+`npm run build`, `npm run e2e` (Playwright: navigation, keyboard flow, reduced motion, no-WebGL
+fallback, wall colour match), screenshots at 1440 / 768 / 390 saved to
+`.artifacts/screens/<tag>/` (git-ignored) and reviewed by actually opening them. From Phase 06 on,
+also run the Taste skill `lint.mjs` and `inspect.mjs` (with the allow-list in Part 5) on the
+production build (`next build && next start`).
+
+---
+
+## Part 10. Phases
+
+Each phase = branch -> commits -> gates -> merge `--no-ff` -> tag -> (push) -> short entry in
+REPORT.md.
+
+**Phase 00 - Foundation** (`v0.0.0-foundation`)
+- Move references out of `assets/`: identity images -> `reference/identities/`, the atom video
+  -> `reference/identities/atom-motion.mp4`, `example-reference.png` and `hover-reference.png`
+  -> `reference/layout/`. Remove the empty `assets/` folder.
+- Scaffold Next.js (TypeScript strict, App Router, Tailwind v4, ESLint, Prettier), Vitest,
+  Playwright (msedge channel), scripts in package.json (`dev`, `build`, `start`, `typecheck`,
+  `lint`, `test`, `e2e`). `.gitignore` incl. `.next`, `node_modules`, `.artifacts`, `.taste-skill`,
+  `graphify-out/cache`.
+- Tokens, Fraunces, the static hero composition in HTML/CSS (corner lines, giant name, wall colour)
+  with a placeholder still where the cradle will go. Folder structure from 3.2. AGENTS.md updated
+  with real commands.
+
+**Phase 01 - Physics core** (`v0.1.0-physics`) *largest share of effort*
+- `src/physics` per 4.1, the visual rope sim per 4.2, collision events, drag and anchor command API.
+- All ten acceptance tests green. `/lab/physics` debugger.
+- Audio analysis of the recordings (4.4) and calibration of restitution/damping/length. Log the
+  calibrated numbers and the before/after plots in DECISIONS.md.
+
+**Phase 02 - The real object** (`v0.2.0-object`) *second largest share of effort*
+- Stage, camera, renderer, wall, museum light, soft wall shadows, HDRI candidates, chrome material
+  with imperfections, dynamic reflections, screw eyes, clear nylon strings, porcelain and dark
+  metal for comparison. `/lab` with material + HDRI + tone-mapping + shadow-technique switches.
+- At least three realism review rounds against `reference/realism/` photos (4.3).
+- Pre-rendered still for the LCP/fallback.
+
+**Phase 03 - Interaction and sound** (`v0.3.0-interaction`)
+- Pointer drag with the hand constraint, flicks, hover state, accessible projected buttons,
+  keyboard push, sleep/wake, frameloop control, WebAudio clacks with chain grouping and decay.
+
+**Phase 04 - Identities** (`v0.4.0-identities`)
+- Palette extraction. One identity fully finished first (People), then Ideas, Experiments,
+  Products. All animations (blink, flow, orbits, sway + clouds). Three reveal variants. Side-by-side
+  comparison rounds in `/lab` against the source images and the atom video frames.
+
+**Phase 05 - Story state** (`v0.5.0-story`)
+- Click choreography (4.7), identity routes, text column, back arrow, Escape, empty-wall click,
+  interruption safety, direct-load state, mobile two-tap behaviour, reduced-motion version.
+
+**Phase 06 - Site shell and home** (`v0.6.0-home`)
+- Corner `[more]` dialog, sticky stacked work exhibits with real media, wall labels, close/footer,
+  inner-page slim nav, 404, metadata.
+
+**Phase 07 - Case studies** (`v0.7.0-case-studies`)
+- Port content and media from `VuMadeIt/updated-portfolioi` (clone into a temp folder outside the
+  project; copy only what's used; optimise media). Template from 6.4. Shufflr, Ripple, Maple Leaf,
+  Warframe (under-wraps version). Headline-only skim test: reading only headlines tells the story.
+
+**Phase 08 - About and All work** (`v0.8.0-about`)
+- Museum room About page and the /work catalogue (6.3, 6.5).
+
+**Phase 09 - Polish** (`v0.9.0-polish`)
+- Responsive passes at 1440/1024/768/390, accessibility audit (keyboard, screen-reader names,
+  contrast), performance (bundle analysis, LCP, frame time), WebGL-off fallback, reduced motion,
+  Taste skill inspect + critique rounds, final copy pass.
+
+**Release candidate** (`v1.0.0-rc.1`) and REPORT.md.
+
+---
+
+## Part 11. Open questions for Lucas (do not block on these; defaults in brackets)
+1. Warframe / Digital Extremes: under NDA? [assume yes; under-wraps exhibit + email CTA]
+2. Atom reference video [received; see 4.5]
+3. Higher-resolution identity images (2048px+) [current 1024px are enough as references]
+4. Final identity copy (4.8) [drafts ship marked DRAFT]
+5. Hack Canada vs Hackathons North America naming [use LinkedIn: Hackathons North America]
+6. Domain name [none yet; Vercel URL]
+7. Which reveal variant and which material win [chrome + best-reviewed variant; all kept in /lab]

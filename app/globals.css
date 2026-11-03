@@ -148,9 +148,13 @@
 .hero-tagline {
   top: calc(var(--corner-top) + 76px);
 }
+/* On phones the balls fill the right edge, so the tagline reads across, under them. */
 @media (max-width: 639px) {
   .hero-tagline {
-    top: calc(var(--corner-top) + 150px);
+    top: auto;
+    right: auto;
+    left: var(--gutter);
+    bottom: calc(20vw + 56px);
   }
 }
 

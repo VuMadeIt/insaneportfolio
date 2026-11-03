@@ -11,6 +11,7 @@ const routes = [
   "/work",
   "/about",
   "/work/shufflr",
+  "/work/ripple",
   "/work/maple-leaf-foods",
   "/nope",
 ];

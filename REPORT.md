@@ -105,15 +105,26 @@ listed in DECISIONS.md with what was rebuilt (chapter rail, grey media stage, sn
 Next card). Maple Leaf follows the updated portfolio's overview plus three apps. Films:
 `.artifacts/scroll/cs-1440/`, `cr-1440/`, `cm-390/`.
 
+### Release candidate 2 (`v1.5.0-rc.2`)
+Phases 10 to 13 merged into `main` with `--no-ff`, one annotated tag each. Gates on the final
+build: typecheck clean, ESLint and Prettier clean, Vitest 32 tests (the ten physics acceptance
+tests, slow-motion determinism, copy rules including Caleb's rhythm), Playwright 30 tests on Edge
+with the real GPU, Taste inspector 0 FAIL on the home page with the allow-list in AGENTS.md (case
+studies: only defended warnings and the 390 px headline-length rule, see DECISIONS Phase 13).
+`scripts/sweep.mjs`: every route at 1440, 1024, 768 and 390, no console errors, no horizontal
+overflow. Screens: `.artifacts/screens/v1.5.0/`, sweep shots in `.artifacts/sweep/`.
+
 ## Where to look first
-1. `npm run build && npm run start`, open http://localhost:3000 . Drag a ball, flick it, let it go.
-   Hover each ball, click one, press Escape.
-2. `npm run dev`, then `/lab` (materials, HDRIs, tone mapping, shadows, strings, reveal variants),
-   `/lab/identity` (the four identities large; `?reveal=a|b|c&value=0.5`), `/lab/physics` (2D
-   debugger, scenarios, slow motion, the recording's onsets on the desk preset).
-3. Visual evidence: `.artifacts/identity/r1..r4.png` (identity rounds vs references),
-   `.artifacts/story/1440/sheet.png` and `390/sheet.png` (the choreography, frame by frame),
-   `.artifacts/lab/` (HDRI and material comparisons), `docs/physics/calibration.svg`.
+1. `npm run build && npm run start`, open http://localhost:3000 . Watch `LUCAS VU` rise in, drag a
+   ball, flick it, hover each ball, click one, press Escape. Scroll through the work stack.
+2. Slow motion: open `/?slowmo=1` (or `/lab`), swing the cradle, rest the mouse on a ball. Sound on
+   for the whooshes.
+3. A case study: `/work/shufflr` (wide screen 1760 px+ shows the chapter rail), then `/work/ripple`
+   and `/work/maple-leaf-foods`.
+4. `npm run dev`, then `/lab`, `/lab/identity`, `/lab/physics` as before.
+5. Visual evidence: `.artifacts/scroll/stack-1440/` (work stack), `.artifacts/scroll/cs-1440/`,
+   `cr-1440/`, `cm-390/` (case studies), `.artifacts/caleb/` (Caleb's page, filmed),
+   `.artifacts/folio/sheet.png` (Folio Stack demo), plus the earlier identity and story sheets.
 
 ## What still falls short
 - **Physics:** the sequential-impact contact model matches the recording's loudness for about a
@@ -121,48 +132,54 @@ Next card). Maple Leaf follows the updated portfolio's overview plus three apps.
   stays constant). A Hertzian contact model with micro-substeps during impacts would capture the
   wave dispersion; it is the main physics upgrade left.
 - **Chrome:** convincing at hero size, but reflections of the strings are not visible, and the
-  ball shadows are uniform rather than slightly darker at the core.
+  ball shadows are uniform rather than slightly darker at the core. The live balls show a pale rim
+  (the wall at grazing angles) that the pre-rendered still does not, so the crossfade changes the
+  rim slightly.
 - **Identities:** the orb's prismatic dispersion is subtler than the reference photo; the
   gladiolus florets are rounded blobs rather than open ruffled petals.
+- **Slow motion** only reacts to mouse moves: if the ball swings out from under a resting cursor
+  the world stays slow until the mouse moves or leaves. The whoosh volume was set by loudness
+  numbers, not by ear; check it with headphones.
+- **Case studies:** the "feedback" block on Shufflr has no picture (nothing in the old material);
+  headlines run three lines on phones (claim sentences, the skim test); the chapter rail only
+  appears from 1760 px wide, where it fits beside the content.
 - **Fallback still** is shot from one camera distance, so on screens far from 16:10 the shadows
-  shift a few pixels at the crossfade; on phones taller than about 1:2.2 the portrait still ends a
-  few pixels below the top edge.
-- **Not built:** per-page OG images (pages have OG titles and descriptions; case studies use their
-  poster), pre-rendered per-identity fallback stills (the no-WebGL story pages show the chrome
-  still with the story text), the lab's string material comparison is only visible at 1 px.
-- Case-study headlines run three to five lines on phones. They are claim sentences by design (the
-  skim test); shorten them if you want tighter headlines.
+  shift a few pixels at the crossfade.
+- **Not built:** per-page OG images, pre-rendered per-identity fallback stills.
 
 ## Open questions for Lucas
-1. Warframe / Digital Extremes: is any of it showable? The exhibit and page say "under wraps"
-   and invite an email.
-2. Identity copy (`src/content/identities.ts`) is the PLAN 4.8 draft. Edit freely.
-3. Reveal variant: B (glass) ships; A and C are in `/lab` and `?reveal=`. Material: chrome.
+1. Slow motion is off in production until you approve it (`?slowmo=1` to try). Turn it on by
+   setting `slowmo.enabled` from the flag check in `src/scene/Interaction.tsx`.
+2. Fonts: the ITF Free Font License allows self-hosting but forbids making the font files
+   available to third parties. A public GitHub repo exposes `app/fonts/*.woff2`. Options: make the
+   repo private, or switch to Fontshare's CSS API (no files in the repo).
+3. Identity copy (`src/content/identities.ts`) is the PLAN 4.8 draft. Edit freely.
 4. The 13-1-2 record: PLAN said soccer, your old site said the TCDSB West-End chess division. The
    site follows the old site.
-5. Is "Hackathons North America" right (the old site said Hack Canada)?
+5. The hero says "current product design lead of hack canada" (your words in PLAN 12.2); the
+   About chronology still says Hackathons North America (LinkedIn). Pick one.
 
 ## Draft or unconfirmed content to check
 - `src/content/projects.ts`: every `draft` field (roles on Shufflr, Ripple, Asper, Japan,
   Frictionless, SolarScore; Ripple team; SolarScore year; the song-search description, year and
-  GitHub link; Warframe medium). Frictionless team names were normalised from Devpost handles.
-- `src/content/caseStudies/*`: headlines rewritten as first-person claims (body copy is yours,
-  ported). The Maple Leaf reflection is a placeholder for you to write.
-- `src/components/MoreDialog.tsx`: the two-sentence intro.
+  GitHub link; Warframe medium). New: the one-line captions on the four home cards, cut from each
+  description.
+- `src/content/caseStudies/*`: headlines rewritten as first-person claims; block bodies condensed
+  from your old copy; Ripple's pros and cons per idea are drafted from the two criteria in your old
+  copy; Ripple's water number is restated as the paper gives it (500 mL per 10 to 50 responses,
+  not per 10). Maple Leaf has no reflection (the old placeholder no longer shows).
 - `src/components/Close.tsx`: "I'm looking for Summer 2027 co-op roles" (from LinkedIn S27).
 - `src/content/about.ts`: captions tightened from your old site; chronology dates from LinkedIn.
 
 ## Morning to-dos
 1. Connect the repo to Vercel; set `NEXT_PUBLIC_SITE_URL` to the production URL (sitemap, OG).
-2. Read the drafts above and edit the content files.
-3. Try it on a phone (two taps to open a story) and with sound on.
-4. If you want the lab in a preview build: `LAB=1` at build time.
-5. `bash scripts/audio/fetch.sh` restores the calibration recordings if you want to rerun
-   `scripts/audio/analyse.py` or `scripts/physics/calibrate.ts`.
+2. Decide on the font-licence question above before the site goes public.
+3. Try slow motion and decide; read the drafts above and edit the content files.
+4. Try it on a phone (two taps to open a story, the work stack, a case study) and with sound on.
+5. `bash scripts/audio/fetch.sh` restores the calibration recordings and the whoosh source.
 
 ## Git
-Branches `phase/00-foundation` to `phase/09-polish` and `release/1.0.0-rc.1`, tags
-`v0.0.0-foundation` to `v0.9.0-polish` and `v1.0.0-rc.1`, all pushed to origin. No force pushes,
-no rewritten history. One note: the first physics commit contains the four Freesound previews
-(they were untracked in the next commit); all four licences permit this with the attribution in
-CREDITS.md.
+Branches `phase/00-foundation` to `phase/13-case-studies`, `release/1.0.0-rc.1` and
+`release/1.5.0-rc.2`; tags `v0.0.0-foundation` to `v1.4.0-case-studies`, `v1.0.0-rc.1` and
+`v1.5.0-rc.2`, all pushed to origin. No force pushes, no rewritten history. `.gitattributes` now
+pins LF line endings (Windows checkouts had CRLF, which failed Prettier).

@@ -560,3 +560,11 @@ Microanimations found on calebwu.ca/RevisionDojo, and what we did with each:
   full-page capture runs before the scroll entrances; its own viewport captures show every block),
   `card-rows` (Caleb's criteria and quote cards), `size-count`, `palette-cream`,
   `statement-length` at 390 px (the HMW question is quoted whole).
+
+## Release candidate 2 (2026-11-03)
+
+- **Phone hero**: at 390 px the vertical tagline crossed the fourth ball and its shadow. Below
+  640 px it now reads across, left-aligned under the balls and above `[sound on]`, without the
+  scroll line; from 640 px up it is the mock's vertical line down the right edge.
+- **Sweep** (`scripts/sweep.mjs`, now including every case study): every route at 1440, 1024, 768
+  and 390, no console errors, no horizontal overflow.

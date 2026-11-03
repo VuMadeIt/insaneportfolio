@@ -1,7 +1,8 @@
-export function GiantName({ className = "" }: { className?: string }) {
+/** The name, edge to edge. On the hero it is the page's h1; in the close it is decoration. */
+export function GiantName({ className = "", as: Tag = "p" }: { className?: string; as?: "h1" | "p" }) {
   return (
-    <p
-      aria-hidden
+    <Tag
+      aria-hidden={Tag === "p" ? true : undefined}
       className={`pointer-events-none select-none whitespace-nowrap text-center font-normal leading-[0.82] tracking-[-0.04em] ${className}`}
       style={{
         fontSize: "var(--giant-size, 30.5vw)",
@@ -9,6 +10,6 @@ export function GiantName({ className = "" }: { className?: string }) {
       }}
     >
       Lucas Vu
-    </p>
+    </Tag>
   );
 }

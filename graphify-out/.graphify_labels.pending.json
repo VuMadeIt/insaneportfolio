@@ -1,8 +1,8 @@
 {
   "0": "package.json",
   "1": "compilerOptions",
-  "2": "cradle.ts",
-  "3": "HeroStage.tsx",
+  "2": "Cradle",
+  "3": "next",
   "4": "Stage.tsx",
   "5": "@playwright/test",
   "6": "scripts",
@@ -21,11 +21,17 @@
   "19": "material.ts",
   "20": "eslint-config-next",
   "21": "choreography.ts",
-  "22": "clack.ts",
+  "22": "Hero.tsx",
   "23": "@types/react-dom@19.3.0",
-  "24": "(hero)/page.tsx",
+  "24": "PhysicsLab.tsx",
   "25": "fetch.sh",
   "26": "SOURCES.md",
-  "27": "prettier@3.9.10",
-  "28": "@types/three@0.186.0"
+  "27": "cradle.ts",
+  "28": "@types/three@0.186.0",
+  "29": "Rope",
+  "30": "cradle.test.ts",
+  "31": "probe.ts",
+  "32": "media.sh",
+  "33": "tailwindcss@4.3.3",
+  "34": "@types/node@22.19.0"
 }

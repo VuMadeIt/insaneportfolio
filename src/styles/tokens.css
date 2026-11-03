@@ -1,7 +1,7 @@
 :root {
   --wall: #f3f1ec;
   --ink: #121212;
-  --muted: #76736c;
+  --muted: #68655e;
   --rule: #d9d6cf;
   --gutter: clamp(32px, 8vw, 128px);
   --corner-top: clamp(28px, 6vh, 72px);

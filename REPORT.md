@@ -47,3 +47,8 @@ still (input-shaped anchor motion), the name slides away, the wall text rises in
 Escape, empty wall and browser back reverse it; interrupting is safe; deep links and reduced
 motion enter the state directly. Filmed sheets: `.artifacts/story/1440/sheet.png`,
 `.artifacts/story/390/sheet.png`.
+
+### Phase 06: site shell and home (`v0.6.0-home`)
+`[more]` dialog, four full-screen sticky exhibits with real (re-encoded) media and wall labels,
+"View all work", the close with contact links and the returning name, inner-page slim nav, 404,
+favicon from the real render, sitemap, robots. Taste inspector: 0 FAIL with the PLAN allow-list.

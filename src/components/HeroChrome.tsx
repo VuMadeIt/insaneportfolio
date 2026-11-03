@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { identityIndex } from "@/content/identities";
 import { GiantName } from "./GiantName";
+import { MoreDialog } from "./MoreDialog";
 
 const useStoryOpen = () => identityIndex(usePathname().slice(1)) >= 0;
 
@@ -22,7 +23,9 @@ export function HeroCorners() {
           <span aria-hidden>&larr;</span> <span className="bracket">Back</span>
         </Link>
       ) : (
-        <p className="pointer-events-auto max-w-[15em]">I like getting things moving.</p>
+        <div className="pointer-events-auto max-w-[15em]">
+          I like getting things moving. <MoreDialog />
+        </div>
       )}
       <p
         className={`pointer-events-auto text-muted sm:text-right sm:text-ink ${story ? "max-sm:hidden" : ""}`}
@@ -43,7 +46,7 @@ export function HeroName() {
       className="absolute inset-x-0 bottom-[0.02em] transition-transform duration-[900ms] ease-[var(--ease-drawer)]"
       style={{ transform: story ? "translateY(115%)" : "none" }}
     >
-      <GiantName />
+      <GiantName as="h1" />
     </div>
   );
 }

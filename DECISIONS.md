@@ -280,3 +280,36 @@ phase. Format: decision, alternatives, why.
   cleared the hover the first tap had just set; only a mouse leaving now ends a hover.
 - **Taps vs drags.** A press that moves under 6 px and lasts under 400 ms is a tap; anything else
   is a drag (the chosen ball can still be dragged in the story state). Pointer cancels never tap.
+
+## Phase 06: site shell and home (2026-11-03)
+
+- **Media pipeline** (`scripts/media.sh`): Lucas's old repo cloned outside the project; only used
+  media copied. Videos re-encoded to H.264, max 1280 px, CRF 26, no audio, faststart (the 41 MB
+  Shufflr reel is now 0.8 MB), WebP posters (Maple Leaf's from 2 s in: its first frame is white).
+  Loops load nothing until visible (`preload="none"`), play only on screen, never under reduced
+  motion.
+- **Project facts** come from the old repo's content files and Devpost (event, team, prizes:
+  fetched with a browser UA). Roles and years not stated anywhere are marked `draft` in
+  `src/content/projects.ts` and listed in REPORT.md.
+- **Stacked exhibits**: plain `position: sticky` full-height articles. The covered exhibit dims to
+  12% ink, driven by the *next* exhibit's view timeline (`timeline-scope` on the section), CSS
+  only; browsers without scroll timelines get the stack without the dim. No position indicator:
+  four exhibits with their own titles read fine without "2 of 4", and it would be an eyebrow.
+- **Warframe** gets an exhibit with no picture: a tone-step field reading "Currently under
+  wraps.", the wall label, and "Ask me about it" (its case study page invites an email).
+- **Entrances**: `.reveal` uses CSS `animation-timeline: view()` (rise 14 px plus fade, staggered by
+  `--d`). Content is never hidden without JavaScript and is static under reduced motion.
+- **The giant name is the h1** (was a visually hidden h1 plus an aria-hidden name). The Taste
+  inspector flagged the hidden title; the visible name is the title.
+- **Muted ink #68655e** (was #76736c): the original failed 4.5:1 on the wall at 14 to 15 px.
+- **Taste gate**: `lint.mjs` on app and components (the WebGL shadow-map code in `src/scene` is the
+  wall shadow PLAN Part 5 allows); `inspect.mjs --allow shadow,rules,covered-text,late-title`.
+  `covered-text`: the stacking cards cover the previous exhibit by design (PLAN 6.1).
+  `late-title`: the transparent canvas lies over the name because the cradle hangs in front of
+  it (PLAN Part 5). Remaining warnings, defended: `palette-cream` (the museum wall #F3F1EC is the
+  brief), `first-action` (Sam-style hero, the cradle is the action), `name-only-title` (the corner
+  line says what Lucas does, at Sam's corner size), `size-count` at 390 px (revisit in Phase 09).
+- **Close**: "Let's get something moving." (36 px floor on phones so it stays on two lines), the
+  S27 co-op line from LinkedIn, contact in running text, the name returning at full width.
+- **404** "Nothing hangs here." Favicon: one chrome ball cropped from the real render with a
+  circular mask. Sitemap and robots (lab disallowed).

@@ -26,6 +26,12 @@ export class Cradle {
   time = 0;
   asleep = true;
   hand: Hand | null = null;
+  /**
+   * Called at the start of every fixed step with the time that step will reach. Choreography sets
+   * anchor offsets here, so kinematic motion is evaluated on simulation time and stays identical
+   * at any frame rate.
+   */
+  beforeStep: ((time: number) => void) | null = null;
   private accumulator = 0;
   private quietTime = 0;
   private readonly scratch = vec();
@@ -67,6 +73,7 @@ export class Cradle {
   /** One fixed step of `dt`, made of `substeps` XPBD substeps. */
   step(): void {
     const { dt, substeps } = this.config;
+    this.beforeStep?.(this.time + dt);
     for (const b of this.balls) copy(b.stepStart, b.pos);
     if (this.asleep) {
       this.time += dt;
@@ -210,6 +217,26 @@ export class Cradle {
     if (to.x === offset.x && to.y === offset.y && to.z === offset.z) return;
     copy(to, offset);
     this.wake();
+  }
+
+  /**
+   * Move ball `i`'s anchors to `offset` at once and carry the ball with them, hanging at rest. For
+   * entering a state directly (a deep link, reduced motion), never during motion.
+   */
+  teleportAnchors(i: number, offset: Vec3): void {
+    const b = this.balls[i]!;
+    const dx = offset.x - b.offsetTo.x;
+    const dy = offset.y - b.offsetTo.y;
+    const dz = offset.z - b.offsetTo.z;
+    copy(b.offsetFrom, offset);
+    copy(b.offsetTo, offset);
+    for (let k = 0; k < 2; k++) {
+      const r = b.restAnchors[k]!;
+      set(b.anchors[k]!, r.x + offset.x, r.y + offset.y, r.z + offset.z);
+    }
+    for (const p of [b.pos, b.prev, b.stepStart]) set(p, p.x + dx, p.y + dy, p.z + dz);
+    set(b.vel, 0, 0, 0);
+    set(b.anchorVel, 0, 0, 0);
   }
 
   /** Pop all impacts since the last call. */

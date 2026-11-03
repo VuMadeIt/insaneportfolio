@@ -1,13 +1,11 @@
 "use client";
 
 import { button, useControls } from "leva";
-import dynamic from "next/dynamic";
 import { useEffect, useState } from "react";
 import { cradle } from "@/scene/world";
 import { HDRIS, type Look, defaultLook, useLook } from "@/scene/look";
 import { type Material, type Reveal, useUi } from "@/state/ui";
 
-const Stage = dynamic(() => import("@/scene/Stage"), { ssr: false });
 const deg = (d: number) => (d * Math.PI) / 180;
 
 /**
@@ -163,5 +161,5 @@ export function ObjectLab() {
     [],
   );
 
-  return <Stage />;
+  return null;
 }

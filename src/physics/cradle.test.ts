@@ -278,3 +278,54 @@ describe("10. kinematic anchor glide", () => {
     expect(c.anchorMid(0).x).toBeCloseTo(glide, 9);
   });
 });
+
+describe("choreography hooks", () => {
+  it("beforeStep sees simulation time, so anchor paths are frame-rate independent", () => {
+    const hashes = [30, 144].map((fps) => {
+      const c = new Cradle();
+      c.beforeStep = (t) => c.setAnchorOffset(1, vec(0.2 * Math.min(1, t / 1.5), 0.1 * Math.sin(t), 0));
+      for (let f = 0; f < 3 * fps; f++) c.advance(1 / fps);
+      return c.hash();
+    });
+    expect(hashes[1]).toBe(hashes[0]);
+  });
+
+  it("teleportAnchors carries the ball with its anchors and leaves it hanging still", () => {
+    const c = new Cradle();
+    c.teleportAnchors(2, vec(-0.15, 0.3, 0));
+    c.wake();
+    runFor(c, 1);
+    expect(c.maxStringError()).toBeLessThan(1e-6);
+    expect(Math.abs(toDeg(c.angle(2)))).toBeLessThan(0.01);
+    expect(c.balls[2]!.pos.y).toBeCloseTo(0.3, 5);
+  });
+});
+
+describe("input-shaped glide (choreography)", () => {
+  it("two half moves half a period apart leave far less residual swing than one move", () => {
+    const residual = (shaped: boolean) => {
+      const c = new Cradle(withConfig({ count: 1 }));
+      const T = 2 * Math.PI * Math.sqrt(c.derived.pendulumLength / c.config.gravity);
+      const D = 0.45;
+      const move = 0.3;
+      const ease = (u: number) => (u < 0.5 ? 2 * u * u : 1 - 2 * (1 - u) ** 2);
+      const part = (t: number, start: number) => ease(Math.min(1, Math.max(0, (t - start) / D)));
+      c.beforeStep = (t) =>
+        c.setAnchorOffset(
+          0,
+          vec(shaped ? (move / 2) * (part(t, 0) + part(t, T / 2)) : move * part(t, 0), 0, 0),
+        );
+      c.wake();
+      let lag = 0;
+      runFor(c, D + T / 2, () => (lag = Math.max(lag, Math.abs(toDeg(c.angle(0))))));
+      let late = 0;
+      runFor(c, 3, () => (late = Math.max(late, Math.abs(toDeg(c.angle(0))))));
+      return { lag, late };
+    };
+    const single = residual(false);
+    const shaped = residual(true);
+    expect(shaped.lag).toBeGreaterThan(2);
+    expect(shaped.late).toBeLessThan(single.late * 0.25);
+    expect(shaped.late).toBeLessThan(0.6);
+  });
+});

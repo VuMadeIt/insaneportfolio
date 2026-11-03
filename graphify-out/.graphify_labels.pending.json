@@ -20,10 +20,12 @@
   "18": "Phases",
   "19": "material.ts",
   "20": "eslint-config-next",
-  "21": "tailwindcss@4.3.3",
-  "22": "@types/react@19.3.0",
+  "21": "choreography.ts",
+  "22": "clack.ts",
   "23": "@types/react-dom@19.3.0",
-  "24": "typescript@6.0.3",
+  "24": "(hero)/page.tsx",
   "25": "fetch.sh",
-  "26": "SOURCES.md"
+  "26": "SOURCES.md",
+  "27": "prettier@3.9.10",
+  "28": "@types/three@0.186.0"
 }

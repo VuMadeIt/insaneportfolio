@@ -39,3 +39,11 @@ People (iris with blinks, breathing pupil, gaze), Ideas (flowing AI-orb filament
 with drifting clouds), all rendered inside the ball in object space. Three reveal variants (A
 surface, B glass, C ripple; B default). Four compare rounds against the source images in
 `.artifacts/identity/`. 60 fps in every hover state.
+
+### Phase 05: story state (`v0.5.0-story`)
+Click (or Enter, or two taps on touch) opens `/people` etc.: strings dip, the others rise out of
+frame like a curtain, the chosen ball glides to the left third with a physical lag and arrives
+still (input-shaped anchor motion), the name slides away, the wall text rises in. Back arrow,
+Escape, empty wall and browser back reverse it; interrupting is safe; deep links and reduced
+motion enter the state directly. Filmed sheets: `.artifacts/story/1440/sheet.png`,
+`.artifacts/story/390/sheet.png`.

@@ -49,10 +49,10 @@ export function ScrollMotion() {
         // A jump (anchor, End key) passes parts that are already above the screen: show those at once.
         const passed = batch.filter((el) => el.getBoundingClientRect().bottom < 0);
         gsap.set(passed, { y: 0, opacity: 1 });
-        gsap.to(
-          batch.filter((el) => !passed.includes(el)),
-          { y: 0, opacity: 1, duration: 1.25, ease: "power4.out", stagger: 0.2, overwrite: true },
-        );
+        const entering = batch.filter((el) => !passed.includes(el));
+        // 0.2 s apart, but a big batch (a grid of cards) never takes more than 0.8 s to start entering.
+        const stagger = Math.min(0.2, 0.8 / entering.length);
+        gsap.to(entering, { y: 0, opacity: 1, duration: 1.25, ease: "power4.out", stagger, overwrite: true });
       },
     });
     return () => {

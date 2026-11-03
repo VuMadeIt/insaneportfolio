@@ -5,4 +5,4 @@ import type { CaseStudy } from "./types";
 
 export const caseStudies: CaseStudy[] = [shufflr, ripple, mapleLeaf];
 export const caseStudyBySlug = (slug: string) => caseStudies.find((c) => c.slug === slug);
-export type { CaseStudy, Section } from "./types";
+export type { Block, CaseStudy } from "./types";

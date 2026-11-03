@@ -95,6 +95,16 @@ as a pile. Title bottom left over the media, a one-line caption, `01 / 04`, a ta
 gone. Warframe is a card only: its still plays the glitch on hover, it says "coming soon", and
 `/work/warframe` no longer exists. Films: `.artifacts/scroll/stack-1440/`, `stack-390/`.
 
+### Phase 13: case studies v2 (`v1.4.0-case-studies`)
+Shufflr and Ripple now follow Caleb Wu's RevisionDojo rhythm block for block (problem, two
+insights side by side, two solutions, two design decisions, research, solution ideation, final
+solution, key learnings, Next), with a visual on almost every block: the real media first, then
+coded ones (counters, word-by-word statements, dots, drawn flow diagrams, criteria and pros/cons
+cards, a scroll-scrubbed prototype, the Figma prototype on request). Caleb's microanimations are
+listed in DECISIONS.md with what was rebuilt (chapter rail, grey media stage, snapshot box, dark
+Next card). Maple Leaf follows the updated portfolio's overview plus three apps. Films:
+`.artifacts/scroll/cs-1440/`, `cr-1440/`, `cm-390/`.
+
 ## Where to look first
 1. `npm run build && npm run start`, open http://localhost:3000 . Drag a ball, flick it, let it go.
    Hover each ball, click one, press Escape.

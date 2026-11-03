@@ -493,3 +493,70 @@ phase. Format: decision, alternatives, why.
   covered by the next card, which the probe does not see), `palette-cream` (the museum wall).
   Fixed: `no-poster` (the glitch loop has the still as poster), `size-count` (card titles share
   the close's size; captions and the close's paragraph use the body size).
+
+## Phase 13: case studies v2 (2026-11-03)
+
+### Caleb Wu's RevisionDojo, filmed first (`.artifacts/caleb/sheet1.png`, `sheet2.png`, `text.txt`)
+Microanimations found on calebwu.ca/RevisionDojo, and what we did with each:
+1. **Chapter rail** fixed down the left (Intro, Problem, Solution, Research, Design decisions, User
+   testing, Reflection); the current chapter darkens, the rail slides in from the left. *Rebuilt*:
+   our rail lists the block labels as chapters, the current one in ink with a metal marker that
+   grows in; shown from 2xl (1536 px), where the left margin can hold it. Narrower screens keep the
+   floating bar (chapter name, `n / N`, metal fill).
+2. **Fixed top pill** ("Caleb Wu . RevisionDojo") that appears after scrolling. *Not rebuilt*: our
+   fixed nav already holds the logo and the links; a second pill would be chrome.
+3. **Muted video loops that play only in view** (11 on the page: the chips flying round "My
+   courses", the growth bar, the drawings). *Already ours* (`ExhibitMedia`), now on every media
+   block.
+4. **Media on a light grey rounded stage** with a small centred caption under it. *Rebuilt*: a
+   tone-step panel (#e9e6df, 24 px radius) and a centred 15 px caption.
+5. **Two insights side by side.** *Rebuilt* (`pair` blocks).
+6. **Pros and cons cards in a carousel with dots.** *Rebuilt* as four cards: a row on desktop, a
+   thumb-swipe scroll-snap strip on phones (the strip's own edge says "more", so no dots); the
+   chosen idea is the ink card.
+7. **Reveal on scroll** of text and media. *Ours* (the Phase 11 text rise), now on labels,
+   headlines, bodies, figures, cards and quotes.
+8. **"This is just a snapshot... Say hello" box** before the end. *Rebuilt* with the `say hi` pill
+   (mailto with the project as subject).
+9. **Dark Next card** with the next project's picture. *Rebuilt*: ink card, title and caption on
+   the left, the next project's media on the right, which scales up slightly on hover.
+10. Hover transitions on links and the Next card (43 elements with transitions). *Ours*: metal
+    underlines, arrow nudge, media zoom.
+
+### Structure
+- **Shufflr and Ripple follow the rhythm exactly**: year, title, summary paragraph, team block,
+  hero, then The problem, Insight #1, Insight #2, Solution, Solution, Design decision, Design
+  decision, Research x3 (context, pain points, consolidating), Solution ideation x4 (ideas or
+  criteria, iterations, prototype, feedback), Final solution, Key learnings, Next. A Vitest case
+  checks the label sequence; another keeps every headline a first-person claim (the skim test).
+- **Maple Leaf follows the updated portfolio's format**: overview, then Maple Leaf Market, Project
+  Tracking and Reporting App, Service Penalty App (the order PLAN 12.6 lists), each with its text and
+  image, revealed on scroll. The placeholder reflection is no longer shown.
+- **Coded visuals, where no picture exists**, all built from the old copy: counters that count up
+  to the real number (prefix and suffix kept, screen readers get the final value), a large
+  statement whose words rise in (the HMW questions), 15 dots with 4 lighting up (the group-chat
+  quote), flow diagrams that draw in column by column with metal connectors (inputs to shuffle,
+  quotes to finding, feature to metric, Ripple's search-then-generate branch), criteria cards,
+  pros/cons cards, a scroll-scrubbed prototype video (the shuffle, re-encoded with a keyframe every
+  4 frames so seeking is smooth; it loads only when near the screen), and the Figma prototype as a
+  click-to-load embed. Without JavaScript, or already on screen at load, each drawing shows its
+  finished state; reduced motion skips the drawing.
+- **Media density**: every block but one ("feedback" on Shufflr, which has no picture in the old
+  material) has a visual. New from the old repo: Ripple's answer and history screens and the "best
+  LLM isn't an LLM" still (Ripple hero).
+- **Accuracy**: Ripple's three numbers now cite sources. The old copy said "every 10 ChatGPT
+  responses use 500 mL"; the paper (Li, Yang, Islam, Ren, arXiv 2304.03271) says roughly 10 to 50
+  GPT-3 responses per 500 mL, so the site says that. 6.6 billion m3 is the paper's upper 2027
+  estimate; 10x is EPRI's 2.9 Wh vs 0.3 Wh. Ripple's pros and cons are drafted from the two
+  criteria the old copy states (an everyday habit, a less discussed topic) and are listed as DRAFT.
+- **Taste inspector** on the case studies: `eyebrow` is allowed there, because PLAN 12.6 asks for
+  Caleb's small label above every headline. Fixed: headlines fit two lines at 1440 (wider measure,
+  26em; one Ripple headline cut), the case-study content now shares the nav's gutter (1400 px max)
+  instead of a centred 1100 px column, so the margins match; the chapter rail moved to 1760 px+
+  where it fits beside that; pros/cons wrap instead of side-scrolling; the summary is 18 px+ so the
+  first screen says what the project is; a big batch of reveals starts within 0.8 s (it used to
+  stagger 0.2 s per part, so a grid of cards could take two seconds). Defended: `headline-lines`
+  at 390 px (claim sentences, the skim test, as in Phase 09), `blank-gap` (the inspector's
+  full-page capture runs before the scroll entrances; its own viewport captures show every block),
+  `card-rows` (Caleb's criteria and quote cards), `size-count`, `palette-cream`,
+  `statement-length` at 390 px (the HMW question is quoted whole).

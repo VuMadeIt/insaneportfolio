@@ -1,6 +1,5 @@
 import { playWhoosh } from "@/audio/clack";
 import type { Cradle } from "@/physics/cradle";
-import { useUi } from "@/state/ui";
 
 /**
  * Slow motion on hover (PLAN 12.7). A time scale multiplies the real frame time fed to the world
@@ -15,8 +14,8 @@ const EASE_OUT = 0.4;
 const TRIGGER_SPEED = 0.05;
 
 export const slowmo = {
-  /** Behind a flag: `/lab` and `?slowmo=1` only, until Lucas approves it. */
-  enabled: false,
+  /** Approved by Lucas for production (2026-11-03); tests can switch it off. */
+  enabled: true,
   /** Ball under a mouse pointer (never touch or keyboard focus). */
   hover: null as number | null,
   slowing: false,
@@ -42,7 +41,7 @@ export function advanceClock(realDt: number, c: Cradle): number {
   const want = wanted(c);
   if (want !== slowmo.slowing) {
     slowmo.slowing = want;
-    playWhoosh(want ? "down" : "up", useUi.getState().sound);
+    playWhoosh(want ? "down" : "up");
   }
   slowmo.ramp = Math.min(1, Math.max(0, slowmo.ramp + realDt / (want ? EASE_IN : -EASE_OUT)));
   // Smoothstep in log time: the slowdown feels even, like a film ramp rather than a brake.
@@ -55,7 +54,7 @@ export function advanceClock(realDt: number, c: Cradle): number {
 
 /** Back to real time at once (a press on a ball, before any grab or choreography). */
 export function restoreTime(): void {
-  if (slowmo.slowing) playWhoosh("up", useUi.getState().sound);
+  if (slowmo.slowing) playWhoosh("up");
   slowmo.slowing = false;
   slowmo.ramp = 0;
   slowmo.scale = 1;

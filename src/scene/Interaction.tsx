@@ -27,8 +27,6 @@ export function Interaction() {
     let dragging: number | null = null;
     /** The ball last pressed: slow motion waits until the pointer has left it. */
     let pressedOn: number | null = null;
-    slowmo.enabled =
-      location.pathname.startsWith("/lab") || new URLSearchParams(location.search).get("slowmo") === "1";
     // A press that barely moves and ends quickly is a tap, not a drag.
     const press = { x: 0, y: 0, time: 0, ball: null as number | null };
     const isTap = (e: PointerEvent) =>

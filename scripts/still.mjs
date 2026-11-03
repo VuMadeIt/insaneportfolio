@@ -23,7 +23,7 @@ for (const s of shots) {
     viewport: { width: s.width, height: s.height },
     deviceScaleFactor: s.scale,
   });
-  await page.goto(`${base}${process.env.QUERY ?? ""}`, { waitUntil: "networkidle", timeout: 90_000 });
+  await page.goto(`${base}${process.env.QUERY ?? ""}`, { waitUntil: "load", timeout: 90_000 });
   await page.waitForSelector("body[data-ready]", { state: "attached", timeout: 90_000 });
   await page.waitForTimeout(6000);
   const png = `.artifacts/still/${s.name}.png`;

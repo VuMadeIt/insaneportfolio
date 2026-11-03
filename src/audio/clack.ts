@@ -13,7 +13,8 @@ const HERTZ = 1.2;
 const MASTER = 0.55;
 /** Slow motion pitches the clacks down with time, but never so far that they stop sounding like steel. */
 const MIN_RATE = 0.45;
-const WHOOSH_GAIN = 0.8;
+// Lucas: a third quieter than the first cut (0.8).
+const WHOOSH_GAIN = 0.53;
 
 let ctx: AudioContext | null = null;
 let buffer: AudioBuffer | null = null;
@@ -73,17 +74,17 @@ export function chainClacks(events: CollisionEvent[], last: number) {
 }
 
 /** Play one frame's impacts as clacks; `timeScale` < 1 is slow motion. */
-export function playImpacts(events: CollisionEvent[], enabled: boolean, timeScale = 1): void {
+export function playImpacts(events: CollisionEvent[], timeScale = 1): void {
   if (!events.length) return;
   const result = chainClacks(events, lastClack);
   lastClack = result.last;
-  if (!ctx || !buffer || !master || !enabled || ctx.state !== "running") return;
+  if (!ctx || !buffer || !master || ctx.state !== "running") return;
   for (const c of result.clacks) clack(c.speed, c.x, Math.max(MIN_RATE, timeScale));
 }
 
 /** The slow-motion whoosh: "down" as time slows, "up" (the same sound reversed) as it returns. */
-export function playWhoosh(kind: "down" | "up", enabled: boolean): void {
-  if (!ctx || !whooshBuffer || !master || !enabled || ctx.state !== "running") return;
+export function playWhoosh(kind: "down" | "up"): void {
+  if (!ctx || !whooshBuffer || !master || ctx.state !== "running") return;
   const clip = whooshes[kind];
   const source = ctx.createBufferSource();
   source.buffer = whooshBuffer;

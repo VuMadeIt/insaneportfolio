@@ -136,7 +136,7 @@ export function CradleModel() {
       kick.x = e.speed * STRING_KICK;
       for (const ball of [e.a, e.b]) for (const side of [0, 1] as const) ropeOf(ball, side).kick(kick);
     }
-    playImpacts(frame.events, useUi.getState().sound, slowmo.scale);
+    playImpacts(frame.events, slowmo.scale);
 
     ropes.forEach((rope, k) => {
       const ball = k >> 1;

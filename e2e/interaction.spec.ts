@@ -46,12 +46,3 @@ test.describe("reduced motion", () => {
     expect(Math.abs((await products.boundingBox())!.x - before)).toBeLessThan(1);
   });
 });
-
-test("sound toggle flips and remembers", async ({ page }) => {
-  await ready(page);
-  const toggle = page.getByRole("button", { name: "[sound on]" });
-  await toggle.click();
-  await expect(page.getByRole("button", { name: "[sound off]" })).toHaveAttribute("aria-pressed", "false");
-  await page.reload();
-  await expect(page.getByRole("button", { name: "[sound off]" })).toBeVisible();
-});

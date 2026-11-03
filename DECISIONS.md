@@ -568,3 +568,27 @@ Microanimations found on calebwu.ca/RevisionDojo, and what we did with each:
   scroll line; from 640 px up it is the mock's vertical line down the right edge.
 - **Sweep** (`scripts/sweep.mjs`, now including every case study): every route at 1440, 1024, 768
   and 390, no console errors, no horizontal overflow.
+
+## Phase 14: home v3 (2026-11-03)
+
+- **Home is the hero, the list, then the dark half** (PLAN 12.9). The work list reuses the /work
+  catalogue row (`WorkList.tsx`), so home and /work cannot drift apart. Videos in the rows play
+  only while their row is hovered or focused on desktop (13 HD loops would otherwise all stream at
+  once); on touch screens they play when on screen.
+- **The fade to black** tweens `background-color`, `color` and the `--color-muted` /
+  `--color-rule` variables on both the work section and the dark half, so there is never a hard
+  edge between them and the muted text stays readable on black. Without JavaScript the dark half
+  is simply dark (`.home-dark` sets the dark values in CSS).
+- **Timeline**: GSAP `matchMedia` pins the section and slides the track by its overflow while a
+  metal line fills along it; each stop rises in through `containerAnimation`. Under 768 px or with
+  reduced motion it is a native sideways scroller with snap points. Oldest first so the line ends
+  on the current role. Stops are small dark-metal balls, echoing the cradle.
+- **Every project is clickable**: Parrot links to parrotapp.com, Warframe to an email ("Ask me
+  about it") as PLAN 6.4 first suggested, Reboot to its case study on the old Framer site.
+- **404 reuses `Hero`** (name and corner link are props), so the balls stay live and playable.
+- **Taste inspector**: fixed `eyebrow` on home ("Selected work" is now a screen-reader heading).
+  Allowed: `eyebrow` on inner pages (the "Back to Site" link Lucas asked for), `mixed-font-headline`
+  (the italic "moving" from Lucas's own mock), and on /about `off-centre`, `edge-text`,
+  `side-scroll`, `long-pin` and `empty-screens`, which all come from the pinned horizontal
+  timeline Lucas chose (the track bleeds off the right edge on purpose so it reads as scrollable).
+  `blank-gap` and `palette-cream` as before.

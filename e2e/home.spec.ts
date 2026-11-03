@@ -1,68 +1,64 @@
 import { expect, test } from "@playwright/test";
 
-test("home shows the status lines, the tagline and the name", async ({ page }) => {
+test("the hero is only the balls and the name: no nav, no status lines, no tagline", async ({ page }) => {
   await page.goto("/");
-  await expect(page.getByText("product designer @ warframe")).toBeVisible();
-  await expect(page.getByText("the person who gets things moving")).toBeVisible();
   await expect(page.getByRole("heading", { level: 1 })).toHaveText(/Lucas Vu/);
+  await expect(page.getByRole("navigation", { name: "Site" })).toHaveCount(0);
+  await expect(page.getByText("product designer @ warframe")).toHaveCount(0);
+  await expect(page.getByText("the person who gets things moving")).toHaveCount(0);
 });
 
-test("the hero nav has about, work and a say hi pill, and no logo", async ({ page }) => {
+test("home lists the top four, each opening its case study or Devpost, with accolades", async ({ page }) => {
   await page.goto("/");
-  const nav = page.getByRole("navigation", { name: "Site" });
-  await expect(nav.getByRole("link", { name: "about" })).toHaveAttribute("href", "/about");
-  await expect(nav.getByRole("link", { name: "work" })).toHaveAttribute("href", "/work");
-  await expect(nav.getByRole("link", { name: "say hi" })).toHaveAttribute(
-    "href",
-    "mailto:lucasvu.work@gmail.com",
-  );
-  await expect(nav.getByRole("img")).toHaveCount(0);
-});
-
-test("the work stack: four cards in order, three open case studies, Warframe is coming soon", async ({
-  page,
-}) => {
-  await page.goto("/");
-  const titles = page.locator("#work h3");
-  await expect(titles).toHaveText(["Shufflr", "Ripple", "Maple Leaf Foods", "Warframe"]);
-  for (const [name, slug] of [
-    ["Shufflr", "shufflr"],
-    ["Ripple", "ripple"],
-    ["Maple Leaf Foods", "maple-leaf-foods"],
-  ]) {
-    await expect(page.getByRole("link", { name, exact: true })).toHaveAttribute("href", `/work/${slug}`);
+  await expect(page.locator("#work h3")).toHaveText([
+    "Ripple",
+    "Shufflr",
+    "We should go to Japan",
+    "Maple Leaf Foods",
+  ]);
+  for (const [name, href] of [
+    ["Ripple", "/work/ripple"],
+    ["Shufflr", "/work/shufflr"],
+    ["We should go to Japan", "https://devpost.com/software/a-nhsi8g"],
+    ["Maple Leaf Foods", "/work/maple-leaf-foods"],
+  ] as const) {
+    await expect(page.locator("#work").getByRole("link", { name, exact: true })).toHaveAttribute(
+      "href",
+      href,
+    );
   }
-  const warframe = page.getByRole("group", { name: "Warframe" });
-  await expect(warframe).toContainText("coming soon");
-  await expect(page.getByRole("link", { name: "Warframe", exact: true })).toHaveCount(0);
-  await expect(page.getByRole("link", { name: /View all work/ })).toHaveAttribute("href", "/work");
-  await expect(page.getByRole("link", { name: "lucasvu.work@gmail.com" })).toHaveAttribute(
-    "href",
-    "mailto:lucasvu.work@gmail.com",
-  );
+  await expect(page.locator("#work")).toContainText("Most Practical");
+  await expect(page.getByRole("link", { name: /View more work/ })).toHaveAttribute("href", "/work");
 });
 
-test("covered cards step back: the first card shrinks once the second has slid over it", async ({ page }) => {
+test("the page turns black at the quote; the about teaser and photos open /about", async ({ page }) => {
   await page.goto("/");
-  const first = page.locator("#work li").first();
-  const second = page.locator("#work li").nth(1);
-  await second.evaluate((el) => window.scrollTo(0, el.getBoundingClientRect().top + scrollY));
+  await page
+    .locator("#strip-title")
+    .evaluate((el) => window.scrollTo(0, el.getBoundingClientRect().top + scrollY));
   await expect
-    .poll(async () => (await first.locator("> *").boundingBox())!.width, { timeout: 5000 })
-    .toBeLessThan((await second.locator("> *").boundingBox())!.width);
+    .poll(() => page.locator("#work").evaluate((el) => getComputedStyle(el).backgroundColor), {
+      timeout: 8000,
+    })
+    .toBe("rgb(14, 14, 12)");
+  await expect(page.getByRole("heading", { name: /get things moving\./ })).toBeVisible();
+  await expect(page.getByRole("link", { name: /More about me/ })).toHaveAttribute("href", "/about");
+  await expect(page.getByRole("link", { name: /Read more on About/ })).toHaveCount(4);
+  await expect(page.getByRole("link", { name: /Remembrance Day/ })).toHaveAttribute("href", "/about#cadets");
 });
 
-test("unknown pages get the 404 in the site's voice", async ({ page }) => {
+test("unknown pages get the cradle with 404 where the name hangs", async ({ page }) => {
   const res = await page.goto("/nope");
   expect(res?.status()).toBe(404);
-  await expect(page.getByRole("heading", { level: 1 })).toHaveText("Nothing hangs here.");
+  await expect(page.getByRole("heading", { level: 1 })).toHaveText(/404/);
+  await expect(page.getByRole("link", { name: "return to main site" })).toHaveAttribute("href", "/");
 });
 
 test("smooth scrolling reaches the close, whose text has risen in", async ({ page }) => {
   await page.goto("/");
-  const close = page.getByRole("heading", { name: "Let's get something moving." });
+  const close = page.getByRole("heading", { name: "Let's talk." });
   const inView = () => close.evaluate((el) => el.getBoundingClientRect().top < innerHeight * 0.8);
-  for (let k = 0; k < 60 && !(await inView()); k++) {
+  for (let k = 0; k < 80 && !(await inView()); k++) {
     await page.mouse.wheel(0, 1200);
     await page.waitForTimeout(100);
   }

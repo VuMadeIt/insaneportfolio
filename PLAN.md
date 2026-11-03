@@ -865,3 +865,22 @@ rounded corners and log why.
 - **Phase 13 - Case studies v2** (`v1.4.0-case-studies`): 12.6.
 - **Release candidate 2** (`v1.5.0-rc.2`): full sweep (`scripts/sweep.mjs`), screenshots,
   REPORT.md updated.
+
+### 12.9 Revision 3 (Lucas, 2026-11-03). Overrides 12.2, 12.3, 12.5 and 6.1 where they conflict
+- **Material:** dark metal ("black porcelain") balls everywhere; slow motion on in production;
+  whoosh about 33% quieter; no sound toggle (sound always on).
+- **Home:** the hero is only the four balls and LUCAS VU (no nav, no status lines, no tagline).
+  Scrolling down shows the top four projects as catalogue rows (Ripple, Shufflr, We should go to
+  Japan, Maple Leaf Foods) with accolades and the project video on hover, then "View more work"
+  to `/work`. The Folio Stack cards are removed.
+- **Dark half:** as it arrives, GSAP scrubs the page from the wall colour to `#0e0e0c`; the line
+  "Let's get things moving." lights up word by word; then an about teaser (portrait, "Who's Vu?",
+  the statement, "More about me" to `/about`), a strip of four photos that open their object on
+  `/about#<id>`, and the contact close.
+- **/work:** every project, the top three first, then the rest newest first. Every row is a link
+  (case study, Devpost, live site, Framer case study, or an email for Warframe) and every row has a
+  video.
+- **/about:** the chronology is a pinned horizontal-scroll timeline, oldest first, with each
+  company's logo; native sideways scroll on phones and under reduced motion.
+- **Inner pages:** no nav bar and no "i am vu" logo, only a small "← Back to Site" link.
+- **404:** the live hero with "404" in place of the name and "return to main site".

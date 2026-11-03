@@ -76,14 +76,15 @@
   transform: translateX(4px);
 }
 
-/* Section entrances: parts rise in, staggered by --d, as they scroll into view. CSS only, so
-   nothing stays hidden without JavaScript; static where scroll timelines are unsupported. */
+/* Section entrances: parts rise in as they scroll into view; lower parts enter later, which is
+   the stagger. CSS only, so nothing stays hidden without JavaScript; static where scroll
+   timelines are unsupported. */
 @supports (animation-timeline: view()) {
   @media (prefers-reduced-motion: no-preference) {
     .reveal {
       animation: story-rise linear both;
       animation-timeline: view();
-      animation-range: entry 0% entry calc(70% + var(--d, 0ms) / 3);
+      animation-range: entry 5% cover 22%;
     }
     /* The covered exhibit dims a little while the next one slides over it. */
     .exhibit::after {
@@ -102,6 +103,22 @@
 @keyframes exhibit-dim {
   to {
     opacity: 0.12;
+  }
+}
+
+/* Catalogue previews appear beside the row on hover (desktop); inline on phones. */
+@media (min-width: 768px) {
+  .catalogue-preview {
+    opacity: 0;
+    transform: translateY(-50%) scale(0.97);
+    transition:
+      opacity 300ms var(--ease-out),
+      transform 500ms var(--ease-out);
+  }
+  .catalogue-row:hover .catalogue-preview,
+  .catalogue-row:focus-within .catalogue-preview {
+    opacity: 1;
+    transform: translateY(-50%) scale(1);
   }
 }
 

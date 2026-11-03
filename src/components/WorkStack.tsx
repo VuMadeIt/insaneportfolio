@@ -22,7 +22,7 @@ export function WorkStack() {
         >
           Selected work
         </h2>
-        <p className="reveal mt-6 max-w-[30em] text-[17px]" style={{ "--d": "80ms" } as React.CSSProperties}>
+        <p className="reveal mt-6 max-w-[30em] text-[17px]">
           Four exhibits: two concepts, an internship that shipped, and the job I cannot show you yet.
         </p>
       </div>

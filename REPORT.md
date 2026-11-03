@@ -57,3 +57,8 @@ favicon from the real render, sitemap, robots. Taste inspector: 0 FAIL with the 
 Shufflr, Ripple, Maple Leaf Foods and Warframe (under wraps) on one template: Sam's layout,
 Caleb's rhythm, Rachel Chen's claim headlines, square progress bar, Next exhibit card. Copy and
 media ported from the old repo; a test enforces the headline skim rule.
+
+### Phase 08: About and All work (`v0.8.0-about`)
+About as a museum room (statement and portrait, chronology, six labelled objects, the essay in a
+reading room) and the `/work` catalogue (11 projects, hover previews). Fixed an invalid scroll
+animation range that left text half-transparent.

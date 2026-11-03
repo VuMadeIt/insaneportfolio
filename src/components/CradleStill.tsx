@@ -6,7 +6,7 @@ import { getImageProps } from "next/image";
  * `.cradle-still` in globals.css with the same framing maths as the camera.
  */
 export function CradleStill() {
-  const common = { alt: "", sizes: "100vw", quality: 85 };
+  const common = { alt: "", sizes: "100vw" };
   const landscape = getImageProps({
     ...common,
     src: "/fallback/cradle-landscape.webp",

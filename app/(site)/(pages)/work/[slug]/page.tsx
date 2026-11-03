@@ -43,13 +43,12 @@ function Block({ section }: { section: Section }) {
         <h2
           id={`${section.id}-title`}
           className="reveal mt-3 text-[clamp(26px,2.6vw,36px)] font-normal leading-[1.15] tracking-[-0.01em]"
-          style={{ "--d": "60ms" } as React.CSSProperties}
         >
           {section.headline}
         </h2>
         <div className="mt-6 flex flex-col gap-4 text-[18px] leading-[1.6]">
           {section.body.map((b, k) => (
-            <p key={k} className="reveal" style={{ "--d": `${120 + k * 60}ms` } as React.CSSProperties}>
+            <p key={k} className="reveal">
               {b}
             </p>
           ))}

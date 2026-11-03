@@ -60,9 +60,9 @@
     "semantic_hash": ""
   },
   "src/components/CradleStill.tsx": {
-    "mtime": 1793683426.1807902,
-    "seen": 1793683433.6976697,
-    "ast_hash": "d193d0ab131a734bcc4318e3cde34aa0",
+    "mtime": 1793688729.414653,
+    "seen": 1793688917.326095,
+    "ast_hash": "a49d9ecf8c773b9534cfd32a9eaadf23",
     "semantic_hash": ""
   },
   "src/components/GiantName.tsx": {
@@ -102,9 +102,9 @@
     "semantic_hash": ""
   },
   "DECISIONS.md": {
-    "mtime": 1793688451.3939505,
-    "seen": 1793688452.3243346,
-    "ast_hash": "1d22fb028f0c7f2bd2051a14d03de079",
+    "mtime": 1793688792.7900345,
+    "seen": 1793688917.326095,
+    "ast_hash": "bde787214108a5611ba62a174bd7426d",
     "semantic_hash": ""
   },
   "PLAN.md": {
@@ -438,9 +438,9 @@
     "semantic_hash": ""
   },
   "REPORT.md": {
-    "mtime": 1793688451.3939505,
-    "seen": 1793688452.3243346,
-    "ast_hash": "9acd0de20a4b77a0d3d39f41028f30b3",
+    "mtime": 1793688792.806433,
+    "seen": 1793688917.326095,
+    "ast_hash": "2eb40fdcf392983f3ebfccdfa827b76b",
     "semantic_hash": ""
   },
   "reference/realism/SOURCES.md": {
@@ -1002,15 +1002,15 @@
     "semantic_hash": ""
   },
   "scripts/scroll.mjs": {
-    "mtime": 1793688451.4047277,
-    "seen": 1793688452.3243346,
-    "ast_hash": "106c777db3eade45f47a159499c55b1d",
+    "mtime": 1793688653.897414,
+    "seen": 1793688917.326095,
+    "ast_hash": "8a408a10c265f71b63820f926f6a8954",
     "semantic_hash": ""
   },
   "src/components/Close.tsx": {
-    "mtime": 1793688341.628813,
-    "seen": 1793688450.232262,
-    "ast_hash": "8f0f5be1ca3edfc9e03d92dc2699d070",
+    "mtime": 1793688653.9449291,
+    "seen": 1793688917.326095,
+    "ast_hash": "767d9c1421cc86b42d8cf35dae6e143c",
     "semantic_hash": ""
   },
   "src/components/ExhibitMedia.tsx": {
@@ -1038,9 +1038,9 @@
     "semantic_hash": ""
   },
   "src/components/WorkStack.tsx": {
-    "mtime": 1793688341.6985595,
-    "seen": 1793688450.232262,
-    "ast_hash": "308ffe3ab9e831a1bfc20961de8b1fed",
+    "mtime": 1793688654.0049365,
+    "seen": 1793688917.326095,
+    "ast_hash": "2fdf6163129e0f342b1f090d2a63795c",
     "semantic_hash": ""
   },
   "src/content/projects.ts": {
@@ -1254,63 +1254,165 @@
     "semantic_hash": ""
   },
   "app/(site)/(pages)/work/[slug]/page.tsx": {
-    "mtime": 1793688451.3959496,
-    "seen": 1793688452.3243346,
-    "ast_hash": "1bf714a8ab51af19a71fb70a658ee688",
+    "mtime": 1793688653.5553641,
+    "seen": 1793688917.326095,
+    "ast_hash": "b160916441fa1bef926c2ac036c00b52",
     "semantic_hash": ""
   },
   "e2e/case-study.spec.ts": {
-    "mtime": 1793688451.3959496,
-    "seen": 1793688452.3243346,
-    "ast_hash": "ba000af6ac1d88257535adb1b435ea04",
+    "mtime": 1793688653.7483993,
+    "seen": 1793688917.326095,
+    "ast_hash": "900bb49d078e3213b17c7d68ecc7eeb7",
     "semantic_hash": ""
   },
   "src/components/ProgressBar.tsx": {
-    "mtime": 1793688451.4047277,
-    "seen": 1793688452.3243346,
-    "ast_hash": "ad016f96a48b3e1b38f55e48b7966394",
+    "mtime": 1793688653.9739304,
+    "seen": 1793688917.326095,
+    "ast_hash": "36d3a887d1de35d5fb176236e64e6b60",
     "semantic_hash": ""
   },
   "src/content/caseStudies/index.ts": {
-    "mtime": 1793688451.4059103,
-    "seen": 1793688452.3243346,
-    "ast_hash": "f52b32887cb12c71f74a532f7e2ff8f5",
+    "mtime": 1793688654.0164514,
+    "seen": 1793688917.326095,
+    "ast_hash": "e3fc97ed1eca3cb5e8064ada47c83c2c",
     "semantic_hash": ""
   },
   "src/content/caseStudies/mapleLeaf.ts": {
-    "mtime": 1793688451.4059103,
-    "seen": 1793688452.3243346,
-    "ast_hash": "582de12292662d241551933aff5426b4",
+    "mtime": 1793688654.0214489,
+    "seen": 1793688917.326095,
+    "ast_hash": "45a9d808f239255e80848f773fbc796f",
     "semantic_hash": ""
   },
   "src/content/caseStudies/ripple.ts": {
-    "mtime": 1793688451.4069805,
-    "seen": 1793688452.3243346,
-    "ast_hash": "1c5a6074551f5e736adb69a358f131c1",
+    "mtime": 1793688654.025448,
+    "seen": 1793688917.326095,
+    "ast_hash": "7d4c3681aceb7eb080fef2a7ede071b4",
     "semantic_hash": ""
   },
   "src/content/caseStudies/shufflr.ts": {
-    "mtime": 1793688451.4069805,
-    "seen": 1793688452.3243346,
-    "ast_hash": "1f295d292d6c73865250c1e5385addf1",
+    "mtime": 1793688654.0324497,
+    "seen": 1793688917.326095,
+    "ast_hash": "e2ba4b22ac9407ad5711a558c90d7f0e",
     "semantic_hash": ""
   },
   "src/content/caseStudies/types.ts": {
-    "mtime": 1793688451.4079874,
-    "seen": 1793688452.3243346,
-    "ast_hash": "4a01fb4dde2b095ff2c721616d61e8d1",
+    "mtime": 1793688654.0374515,
+    "seen": 1793688917.326095,
+    "ast_hash": "e813c7c3968483f7b629ac8b6a3fd461",
     "semantic_hash": ""
   },
   "src/content/caseStudies/warframe.ts": {
-    "mtime": 1793688451.4079874,
-    "seen": 1793688452.3243346,
-    "ast_hash": "a79adb1a2e6996ee4a85555b6d487302",
+    "mtime": 1793688654.0404494,
+    "seen": 1793688917.326095,
+    "ast_hash": "09d68912c77fe9685e039e59479d2a65",
     "semantic_hash": ""
   },
   "src/content/content.test.ts": {
-    "mtime": 1793688451.4089882,
-    "seen": 1793688452.3243346,
-    "ast_hash": "31f8f66440b91b87e1980d9cd04f9adb",
+    "mtime": 1793688654.0454502,
+    "seen": 1793688917.326095,
+    "ast_hash": "45c2ce66078a8643d4959d0740a14528",
+    "semantic_hash": ""
+  },
+  "app/(site)/(pages)/about/page.tsx": {
+    "mtime": 1793688775.0127926,
+    "seen": 1793688917.326095,
+    "ast_hash": "a9a1080d6b44e5bfe0f853ceacafa239",
+    "semantic_hash": ""
+  },
+  "app/(site)/(pages)/work/page.tsx": {
+    "mtime": 1793688653.5673633,
+    "seen": 1793688917.326095,
+    "ast_hash": "0f0701fe3c8cbccb4ac3c475fd0d263a",
+    "semantic_hash": ""
+  },
+  "e2e/pages.spec.ts": {
+    "mtime": 1793688775.2815318,
+    "seen": 1793688917.326095,
+    "ast_hash": "e7f8b3a266da51a1a403badd961f075d",
+    "semantic_hash": ""
+  },
+  "src/content/about.ts": {
+    "mtime": 1793688654.011449,
+    "seen": 1793688917.326095,
+    "ast_hash": "e77514c6a28753092904e32a2cd0ac5a",
+    "semantic_hash": ""
+  },
+  "public/media/about/cadet-army-truck.png": {
+    "mtime": 1793688504.2579658,
+    "seen": 1793688917.326095,
+    "ast_hash": "f146a9121f9a711392e625ba10c55def",
+    "semantic_hash": ""
+  },
+  "public/media/about/cadet-remembrance-day-parade.png": {
+    "mtime": 1793688504.228722,
+    "seen": 1793688917.326095,
+    "ast_hash": "edab90aab6b28c37e5b495254fa49366",
+    "semantic_hash": ""
+  },
+  "public/media/about/cadet-uniform-aura.png": {
+    "mtime": 1793688504.283384,
+    "seen": 1793688917.326095,
+    "ast_hash": "3049d145ed80eaeadd4579e419c35366",
+    "semantic_hash": ""
+  },
+  "public/media/about/chess-club-meetings.png": {
+    "mtime": 1793688504.3839135,
+    "seen": 1793688917.326095,
+    "ast_hash": "f696540bb4bd686e4b3db116d2b7d569",
+    "semantic_hash": ""
+  },
+  "public/media/about/chess-first-award.png": {
+    "mtime": 1793688504.3595376,
+    "seen": 1793688917.326095,
+    "ast_hash": "245702f38c83dbe3ae613398237e4cdb",
+    "semantic_hash": ""
+  },
+  "public/media/about/chess-tcdsb-west-end.png": {
+    "mtime": 1793688504.3105319,
+    "seen": 1793688917.326095,
+    "ast_hash": "625a7eedc4b31a5660b2e6beb06a5538",
+    "semantic_hash": ""
+  },
+  "public/media/about/chess-volunteer-ceremony.png": {
+    "mtime": 1793688504.3355315,
+    "seen": 1793688917.326095,
+    "ast_hash": "f629d0f3cedf42067a28d182659e05c0",
+    "semantic_hash": ""
+  },
+  "public/media/about/essay-cover.png": {
+    "mtime": 1793688504.5200884,
+    "seen": 1793688917.326095,
+    "ast_hash": "fdd05d64515c255ee20d980ed9418364",
+    "semantic_hash": ""
+  },
+  "public/media/about/hack-the-6ix-2026.png": {
+    "mtime": 1793688504.4319081,
+    "seen": 1793688917.326095,
+    "ast_hash": "5d276cd2bcb48a7c951c752a67c0331c",
+    "semantic_hash": ""
+  },
+  "public/media/about/japan.png": {
+    "mtime": 1793688504.5020895,
+    "seen": 1793688917.326095,
+    "ast_hash": "25df82cee05ca0a240e11bb1f9016dee",
+    "semantic_hash": ""
+  },
+  "public/media/about/sidequesters-hack-the-ridge.png": {
+    "mtime": 1793688504.4559162,
+    "seen": 1793688917.326095,
+    "ast_hash": "1293e783837950af2b998c3e60367677",
+    "semantic_hash": ""
+  },
+  "public/media/about/sidequesters-rafting.png": {
+    "mtime": 1793688504.483651,
+    "seen": 1793688917.326095,
+    "ast_hash": "112deaf4dca12d2e5b730fb5c34ad614",
+    "semantic_hash": ""
+  },
+  "public/media/about/socratica-create-a-thon.png": {
+    "mtime": 1793688504.407909,
+    "seen": 1793688917.326095,
+    "ast_hash": "4d1634ac99c2ac9cd4a4605c0e37a05c",
     "semantic_hash": ""
   },
   "package-lock.json": {

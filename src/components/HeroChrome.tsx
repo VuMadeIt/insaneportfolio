@@ -43,10 +43,10 @@ export function HeroCorners() {
       <div
         className={`hero-tagline pointer-events-none absolute right-[calc(var(--gutter)-0.4em)] z-10 flex flex-col items-center gap-6 transition-opacity duration-500 ${story ? "opacity-0" : ""}`}
       >
-        <p className="font-display text-[16px] font-medium tracking-[-0.01em] [writing-mode:vertical-rl] sm:text-[18px]">
+        <p className="font-display text-[16px] font-medium tracking-[-0.01em] sm:text-[18px] sm:[writing-mode:vertical-rl]">
           the person who gets things <em>moving</em>
         </p>
-        <span aria-hidden className="relative block h-10 w-[1.5px] overflow-hidden">
+        <span aria-hidden className="relative hidden h-10 w-[1.5px] overflow-hidden sm:block">
           <span className="scroll-line absolute inset-0" style={{ background: "var(--metal-v)" }} />
         </span>
       </div>

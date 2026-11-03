@@ -8,9 +8,7 @@ export default function NotFound() {
     <>
       <SiteNav />
       <main className="flex min-h-[80dvh] flex-col justify-center px-[var(--gutter)]">
-        <h1 className="text-[clamp(48px,7vw,112px)] font-normal leading-[0.95] tracking-[-0.02em]">
-          Nothing hangs here.
-        </h1>
+        <h1 className="text-[clamp(48px,7vw,112px)] leading-[0.95]">Nothing hangs here.</h1>
         <p className="mt-6 max-w-[30em] text-[18px]">
           This page has swung out of reach. The cradle is still where you left it.
         </p>

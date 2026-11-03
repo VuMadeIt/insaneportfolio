@@ -1,6 +1,6 @@
 import type { Project } from "@/content/projects";
 
-/** A museum tombstone label: italic title, then year and medium, role, team, one-line credit. */
+/** A museum tombstone label: title, then year and medium, role, team, one-line credit. */
 export function WallLabel({
   project,
   as: Title = "h3",
@@ -12,7 +12,7 @@ export function WallLabel({
 }) {
   return (
     <div className={`text-[15px] leading-[1.5] ${className}`}>
-      <Title className="text-[clamp(22px,2vw,28px)] italic leading-[1.15]">{project.title}</Title>
+      <Title className="text-[clamp(22px,2vw,28px)] leading-[1.15]">{project.title}</Title>
       <p className="mt-2">
         {project.year}, {project.medium.charAt(0).toLowerCase() + project.medium.slice(1)}
       </p>

@@ -77,8 +77,8 @@ export function AccessibleTargets() {
           key={id.slug}
           ref={(c) => void (captions.current[i] = c)}
           aria-hidden
-          className="absolute left-0 top-0 whitespace-nowrap text-[15px] transition-opacity duration-300 ease-[var(--ease-out)]"
-          style={{ opacity: hovered === i && selected === null ? 1 : 0 }}
+          className="absolute left-0 top-0 whitespace-nowrap text-[15px] transition-[opacity,visibility] duration-300 ease-[var(--ease-out)]"
+          style={hovered === i && selected === null ? { opacity: 1 } : { opacity: 0, visibility: "hidden" }}
         >
           {id.title}
         </p>

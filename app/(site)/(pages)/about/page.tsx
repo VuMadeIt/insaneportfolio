@@ -17,10 +17,7 @@ export default function AboutPage() {
         className="grid gap-12 px-[var(--gutter)] pb-[clamp(96px,14vh,180px)] pt-[clamp(96px,16vh,180px)] md:grid-cols-[minmax(0,1fr)_minmax(0,0.8fr)] md:items-end"
       >
         <div>
-          <h1
-            id="about-title"
-            className="text-[clamp(56px,9vw,148px)] font-normal leading-[0.9] tracking-[-0.035em]"
-          >
+          <h1 id="about-title" className="text-[clamp(56px,9vw,148px)] leading-[0.9]">
             About
           </h1>
           <div className="mt-10 flex max-w-[34em] flex-col gap-5 text-[clamp(19px,1.6vw,23px)] leading-[1.5]">
@@ -38,21 +35,18 @@ export default function AboutPage() {
             width={portrait.width}
             height={portrait.height}
             sizes="(min-width: 768px) 40vw, 100vw"
-            className="h-auto w-full"
+            className="h-auto w-full rounded-md"
             priority
           />
           <figcaption className="mt-3 text-[15px] leading-[1.5]">
-            <span className="italic">Lucas at Senso-ji</span>
+            <span className="font-medium">Lucas at Senso-ji</span>
             <span className="block text-muted">Tokyo, a solo backpacking trip. Photograph.</span>
           </figcaption>
         </figure>
       </section>
 
       <section aria-labelledby="chronology-title" className="px-[var(--gutter)] pb-[clamp(96px,14vh,180px)]">
-        <h2
-          id="chronology-title"
-          className="reveal text-[clamp(36px,4.5vw,64px)] font-normal leading-[1] tracking-[-0.02em]"
-        >
+        <h2 id="chronology-title" className="reveal text-[clamp(36px,4.5vw,64px)] leading-[1]">
           Chronology
         </h2>
         <ol className="mt-10 max-w-[900px]">
@@ -70,10 +64,7 @@ export default function AboutPage() {
       </section>
 
       <section aria-labelledby="objects-title" className="px-[var(--gutter)] pb-[clamp(96px,14vh,180px)]">
-        <h2
-          id="objects-title"
-          className="reveal text-[clamp(36px,4.5vw,64px)] font-normal leading-[1] tracking-[-0.02em]"
-        >
+        <h2 id="objects-title" className="reveal text-[clamp(36px,4.5vw,64px)] leading-[1]">
           Selected objects
         </h2>
         <div className="mt-12 grid gap-x-12 gap-y-20 md:grid-cols-2 lg:grid-cols-3">
@@ -103,7 +94,7 @@ export default function AboutPage() {
                 />
               )}
               <figcaption className="mt-4 text-[15px] leading-[1.5]">
-                <h3 className="text-[18px] italic leading-[1.3]">{o.title}</h3>
+                <h3 className="text-[18px] leading-[1.3]">{o.title}</h3>
                 <p className="text-muted">
                   {o.year}. {o.medium}.
                 </p>
@@ -119,10 +110,7 @@ export default function AboutPage() {
         className="bg-[#e9e6df] px-[var(--gutter)] py-[clamp(96px,14vh,180px)]"
       >
         <div className="mx-auto max-w-[640px]">
-          <h2
-            id="essay-title"
-            className="text-[clamp(28px,4vw,56px)] font-normal leading-[1.05] tracking-[-0.02em]"
-          >
+          <h2 id="essay-title" className="text-[clamp(28px,4vw,56px)] leading-[1.05]">
             {essay.title}
           </h2>
           <p className="mt-4 text-[15px] text-muted">Reading room. An essay, {essay.date}.</p>

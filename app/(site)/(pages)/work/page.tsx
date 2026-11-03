@@ -10,9 +10,7 @@ export const metadata = {
 function Row({ p }: { p: Project }) {
   const href = p.caseStudy ? `/work/${p.slug}` : p.link?.href;
   const external = !p.caseStudy && !!p.link;
-  const Title = (
-    <h2 className="text-[clamp(30px,3.6vw,52px)] font-normal leading-[1] tracking-[-0.02em]">{p.title}</h2>
-  );
+  const Title = <h2 className="text-[clamp(30px,3.6vw,52px)] leading-[1]">{p.title}</h2>;
   return (
     <li className="catalogue-row reveal group relative border-t border-rule py-8 md:py-10">
       <div className="grid gap-3 md:grid-cols-[minmax(0,1.1fr)_minmax(0,1fr)_9em] md:gap-10">
@@ -54,10 +52,7 @@ export default function WorkPage() {
       aria-labelledby="work-title"
       className="px-[var(--gutter)] pb-[clamp(96px,14vh,180px)] pt-[clamp(96px,16vh,180px)]"
     >
-      <h1
-        id="work-title"
-        className="text-[clamp(56px,9vw,148px)] font-normal leading-[0.9] tracking-[-0.035em]"
-      >
+      <h1 id="work-title" className="text-[clamp(56px,9vw,148px)] leading-[0.9]">
         All work
       </h1>
       <p className="mt-8 max-w-[32em] text-[clamp(19px,1.6vw,23px)] leading-[1.5]">

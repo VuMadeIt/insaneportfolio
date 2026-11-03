@@ -403,3 +403,58 @@ phase. Format: decision, alternatives, why.
 - **Flag**: on in `/lab` (pathname) and with `?slowmo=1`; off in production. Browser check
   (`scripts/slowmo.mjs`, real GPU): outer balls move at 0.16x their speed while a middle ball is
   hovered (ramp included), 1.2x without the flag (sampling noise).
+
+## Phase 11: type, nav and motion (2026-11-03)
+
+- **Fonts**: General Sans (headings, the name, the tagline; roman and true italic) and Cabinet
+  Grotesk (body, nav, corner lines) as Fontshare's official variable woff2 files through
+  `next/font/local`. Not the old repo's TTFs: woff2 is a third of the size, and the ITF licence
+  forbids converting or subsetting, so we ship the files exactly as Fontshare publishes them.
+  Cabinet has no italic, so every Fraunces italic was re-cast: wall-label and object titles are
+  plain headings, the story line is Cabinet 300 (the old site's subtitle weight), quotations use
+  General Sans italic.
+- **Giant name**: `LUCAS VU`, General Sans 350, -0.035em, 21.5vw so the ink runs edge to edge with
+  ~40px margins at 1440 (measured in the browser). The line box is the cap height plus 0.09em under
+  the baseline, so the letters sit off the bottom edge as in the mock.
+- **Letter stagger, scroll line and nav slide in CSS, not GSAP**: the same values as the old
+  GSAP code (power4 curves as cubic-beziers, `y:100`, 1.5 s, 0.1 s stagger; the scroll line's
+  1.5 s sweep plus 0.5 s rest as a 2 s keyframe loop; the nav from -100% over 1.2 s after 0.5 s).
+  CSS starts with the first paint, so it never waits for hydration, never fights the LCP still,
+  and the name is never hidden if JavaScript fails. No font gating: the woff2 is preloaded by
+  next/font and the first letter starts 150 ms in. Reduced motion: none of the three run.
+- **Scroll line is vertical**, continuing the rotated tagline downward: Lucas's mock draws it that
+  way (zoomed in), and so did the old site (a rotated box).
+- **Hero nav is not fixed**: on the home hero the links sit top right inside the hero and scroll
+  away with it. A fixed bar would need a wall-coloured background over the strings, which would
+  cut them off below the top of the screen. Inner pages get the old site's fixed bar (logo left,
+  links right, solid wall ground, no border, no colour flip).
+- **`work` goes to `/work`** from every page (one predictable target) rather than an anchor on home.
+- **Metal accent**: `--metal` is a five-stop grey gradient sampled from the live chrome (dark edge
+  #474645, mid #8b8b8a, highlight darkened from #f1f0ee to #c4c3c0 so the middle of a 2 px line
+  does not vanish on the wall). Used only for underlines (`.u-grow` draws in over 300 ms ease-in-out
+  on hover; `.u-metal` is always present in running text and a highlight sweeps along it on hover),
+  the scroll line and the case-study progress fill. A deliberate exception to the Taste "no
+  gradients" rule, asked for in PLAN 12.1. The sound toggle carries it on an inner span, so the
+  button itself keeps a flat fill.
+- **Radius scale 8 / 16 / 24 px** (`rounded-sm/md/lg`), pills fully round. Media 16, the progress
+  bar 16, the `say hi` pill round. The Taste skill warns against the 9-16 px "soft" radius on
+  buttons, so buttons are either the pill or have no box at all; 16 px is for pictures, matching
+  the rounded media in Lucas's inspo references.
+- **Text rise**: GSAP ScrollTrigger `batch` on every `.reveal`: from y 40 and transparent to rest,
+  1.25 s power4.out, 0.2 s stagger within a batch (heading first, then body), once. Trigger at
+  `top 85%` rather than the old site's `top 400px`: with per-element triggers, 400 px would leave
+  the lower half of every screen empty while scrolling. Elements already on screen at first paint
+  are left alone (no flash of hidden text); after a client navigation everything rises (layout
+  effect, so nothing paints before it is hidden). Without JavaScript nothing is hidden.
+- **Lenis 1.3.27** (published 2026-10-15, the newest non-dev release older than 7 days), driven by
+  `gsap.ticker` with `lagSmoothing(0)` and feeding `ScrollTrigger.update`. Touch keeps native
+  scrolling (Lenis's default `syncTouch: false`), so the canvas's `touch-action: pan-y` and ball
+  capture behave as before; the sticky work stack is native `position: sticky` and unaffected.
+  Off under reduced motion. E2E: wheel-scrolls to the close and checks its heading has risen in.
+- **Taste inspector**: `eyebrow` was the hidden hover caption "People" (opacity 0) sitting above
+  the lowered name; captions are now `visibility: hidden` at rest. `button-fx` was the metal
+  underline on the sound toggle; moved to an inner span. `lopsided` ("Selected work" intro) goes
+  in Phase 12. `size-count` at 390 px is revisited after the work and case-study rebuilds.
+- **Not a regression**: the live chrome shows a pale rim (the wall reflected at grazing angles);
+  it was already there in Phase 04's captures. The v1.1.0 screenshot looked rimless only because
+  it was taken before the still had crossfaded to the canvas.

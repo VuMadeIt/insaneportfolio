@@ -90,21 +90,21 @@
     "semantic_hash": ""
   },
   "AGENTS.md": {
-    "mtime": 1793718797.9286222,
-    "seen": 1793718848.3266506,
-    "ast_hash": "ab6be7df1312330f32c41daf363049ce",
+    "mtime": 1793719075.6002812,
+    "seen": 1793719078.113079,
+    "ast_hash": "08a6b020be5661b2ec76b714cfc2138f",
     "semantic_hash": ""
   },
   "CREDITS.md": {
-    "mtime": 1793718797.9276018,
-    "seen": 1793718848.3266506,
-    "ast_hash": "86074f08c1b59537919f7c88ff2873c3",
+    "mtime": 1793719075.6012788,
+    "seen": 1793719078.113079,
+    "ast_hash": "202a9da4b6b3d085cec3457c69b6e27e",
     "semantic_hash": ""
   },
   "DECISIONS.md": {
-    "mtime": 1793718797.8914783,
-    "seen": 1793718848.3266506,
-    "ast_hash": "4b9879945b54b8fb0a318e60b4d1c9d4",
+    "mtime": 1793719075.6022778,
+    "seen": 1793719078.113079,
+    "ast_hash": "cb09c1a81421a3ea62b7b3dbf3ce68ff",
     "semantic_hash": ""
   },
   "PLAN.md": {
@@ -246,9 +246,9 @@
     "semantic_hash": ""
   },
   "scripts/audio/fetch.sh": {
-    "mtime": 1793718797.9286222,
-    "seen": 1793718848.3266506,
-    "ast_hash": "a3c9d75d61e54c04980253f10b060633",
+    "mtime": 1793719075.6137998,
+    "seen": 1793719078.113079,
+    "ast_hash": "119d99a126a0094d888e7c9ef761b9a9",
     "semantic_hash": ""
   },
   "app/lab/layout.tsx": {
@@ -366,8 +366,8 @@
     "semantic_hash": ""
   },
   "src/scene/Cradle.tsx": {
-    "mtime": 1793718827.815609,
-    "seen": 1793718848.3266506,
+    "mtime": 1793719075.616799,
+    "seen": 1793719078.113079,
     "ast_hash": "b07c395758d2c7349af1c2c76f7b8271",
     "semantic_hash": ""
   },
@@ -438,9 +438,9 @@
     "semantic_hash": ""
   },
   "REPORT.md": {
-    "mtime": 1793719019.9264703,
-    "seen": 1793719022.146078,
-    "ast_hash": "bfe400cd120a1a7ef10f8a51217b05f9",
+    "mtime": 1793719075.6032777,
+    "seen": 1793719078.113079,
+    "ast_hash": "975b081a3127db4633f8cf7719cb6a8e",
     "semantic_hash": ""
   },
   "reference/realism/SOURCES.md": {
@@ -516,8 +516,8 @@
     "semantic_hash": ""
   },
   "src/audio/clack.ts": {
-    "mtime": 1793718827.5517921,
-    "seen": 1793718848.3266506,
+    "mtime": 1793719075.6157992,
+    "seen": 1793719078.113079,
     "ast_hash": "56320723ba65f9a18bb39b806b6f1d94",
     "semantic_hash": ""
   },
@@ -546,8 +546,8 @@
     "semantic_hash": ""
   },
   "src/scene/Interaction.tsx": {
-    "mtime": 1793718827.8663926,
-    "seen": 1793718848.3266506,
+    "mtime": 1793719075.616799,
+    "seen": 1793719078.113079,
     "ast_hash": "163fae8a9ee3d710cedf793318bff110",
     "semantic_hash": ""
   },
@@ -966,8 +966,8 @@
     "semantic_hash": ""
   },
   "src/scene/choreography.ts": {
-    "mtime": 1793718827.800088,
-    "seen": 1793718848.3266506,
+    "mtime": 1793719075.6177988,
+    "seen": 1793719078.113079,
     "ast_hash": "329ff360252580c950c21c77a33fe989",
     "semantic_hash": ""
   },
@@ -1452,44 +1452,44 @@
     "semantic_hash": ""
   },
   "scripts/audio/whoosh.py": {
-    "mtime": 1793718387.5391777,
-    "seen": 1793718848.3266506,
-    "ast_hash": "93e2437fc88f11571da41fb982fd790a",
+    "mtime": 1793719075.6137998,
+    "seen": 1793719078.113079,
+    "ast_hash": "4a362433c193df57376ee7974e0246ec",
     "semantic_hash": ""
   },
   "scripts/slowmo.mjs": {
-    "mtime": 1793718827.5188074,
-    "seen": 1793718848.3266506,
+    "mtime": 1793719075.6147995,
+    "seen": 1793719078.113079,
     "ast_hash": "ae2179bfd9d01ed3a7e7fe8dce927daf",
     "semantic_hash": ""
   },
   "src/audio/whoosh.json": {
-    "mtime": 1793718827.5563476,
-    "seen": 1793718848.3266506,
+    "mtime": 1793719075.6157992,
+    "seen": 1793719078.113079,
     "ast_hash": "5309a4cd66881110744bda5acb78c870",
     "semantic_hash": ""
   },
   "src/scene/slowmo.test.ts": {
-    "mtime": 1793718827.8949597,
-    "seen": 1793718848.3266506,
+    "mtime": 1793719075.6177988,
+    "seen": 1793719078.113079,
     "ast_hash": "6a9c31b80af56ddd1b6ff0de6e4bd351",
     "semantic_hash": ""
   },
   "src/scene/slowmo.ts": {
-    "mtime": 1793718827.9024851,
-    "seen": 1793718848.3266506,
+    "mtime": 1793719075.619109,
+    "seen": 1793719078.113079,
     "ast_hash": "4c021fee4947fa1faf82df528940db8d",
     "semantic_hash": ""
   },
   "public/audio/whoosh.mp3": {
-    "mtime": 1793718387.979141,
-    "seen": 1793718848.3266506,
+    "mtime": 1793719075.611801,
+    "seen": 1793719078.113079,
     "ast_hash": "68faaa8ac217818eab728071c6d8a0af",
     "semantic_hash": ""
   },
   "public/audio/whoosh.webm": {
-    "mtime": 1793718387.9266152,
-    "seen": 1793718848.3266506,
+    "mtime": 1793719075.6128004,
+    "seen": 1793719078.113079,
     "ast_hash": "030d3c79d3860d10bcfc3222d323fbc9",
     "semantic_hash": ""
   },

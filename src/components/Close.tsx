@@ -10,7 +10,7 @@ export const CONTACT = {
 };
 
 const A = ({ href, children }: { href: string; children: React.ReactNode }) => (
-  <a href={href} className="underline decoration-1 underline-offset-[5px] transition-colors hover:text-muted">
+  <a href={href} className="u-metal">
     {children}
   </a>
 );
@@ -20,10 +20,7 @@ export function Close() {
   return (
     <footer aria-labelledby="close-title" className="relative z-10 overflow-hidden bg-wall">
       <div className="px-[var(--gutter)] pt-[clamp(120px,18vh,220px)]">
-        <h2
-          id="close-title"
-          className="reveal max-w-[12em] text-[clamp(36px,7vw,112px)] font-normal leading-[0.95] tracking-[-0.02em]"
-        >
+        <h2 id="close-title" className="reveal max-w-[12em] text-[clamp(36px,7vw,112px)] leading-[0.95]">
           Let&apos;s get something moving.
         </h2>
         <p className="reveal mt-8 max-w-[34em] text-[clamp(18px,1.5vw,22px)] leading-[1.5]">

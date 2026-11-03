@@ -3,10 +3,16 @@
 Every external asset used in the site or in the build pipeline, with source and licence.
 
 ## Type
-- **Fraunces** by Undercase Type (Phaedra Charles, Flavia Zimbardi). SIL Open Font License 1.1.
-  Served via `next/font/google` (self-hosted at build time).
+- **General Sans** (variable, roman and italic) and **Cabinet Grotesk** (variable) by Indian Type
+  Foundry, from https://www.fontshare.com , ITF Free Font License 2.0 (free for personal and
+  commercial use, self-hosting allowed; licence read in the download on 2026-11-03). The official
+  woff2 files are served unmodified from `app/fonts/` via `next/font/local` (the licence forbids
+  subsetting or format conversion). Note: the licence also forbids making the files available to
+  third parties; a public repository exposes them, see REPORT.md.
+- Fraunces (SIL OFL 1.1) was used until v1.1.0 and is no longer shipped.
 
 ## Lucas's own material
+- `public/logo.png` ("i am vu") from Lucas's old site, `VuMadeIt/lucasvu`.
 - Identity reference images and the atom motion video in `reference/identities/` belong to Lucas Vu.
   Not shipped; used as references only.
 - Visual inspo stills + screen recording in `reference/inspo/` (see that folder's `SOURCES.md`).

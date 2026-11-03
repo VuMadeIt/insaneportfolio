@@ -262,15 +262,19 @@
   animation-delay: calc(0.15s + var(--i) * 0.1s);
 }
 
-/* Case-study coded visuals (src/components/case/Visual.tsx): drawn once they are in view. Without
-   JavaScript `data-in` never turns true, so the resting state below is the finished drawing. */
+/* Case-study coded visuals (src/components/case): drawn once they are in view. Without
+   JavaScript `data-in` never turns false, so the resting state below is the finished drawing. */
 .statement span,
-.flow-box,
-.flow-line,
-.dot-lit {
+.dg-node,
+.dot-lit,
+.bar-fill,
+.bar-value,
+.fogg-point,
+.podium-step {
   transition:
     opacity 700ms var(--ease-out),
     transform 900ms var(--ease-out),
+    clip-path 1100ms var(--ease-out),
     background-color 500ms var(--ease-out);
 }
 .statement[data-in="false"] span {
@@ -279,32 +283,61 @@
 .statement span {
   transition-delay: calc(var(--i) * 45ms);
 }
-.flow[data-in="false"] .flow-box {
+.dg-node {
+  transition-delay: calc(var(--c) * 280ms);
+}
+.dg[data-in="false"] .dg-node {
   opacity: 0;
-  transform: translateY(12px);
+  transform: translateY(10px);
 }
-.flow-box {
-  transition-delay: calc(var(--c) * 260ms);
+.dg-wire {
+  stroke-dashoffset: 0;
+  transition: stroke-dashoffset 900ms var(--ease-out) calc(var(--c) * 280ms + 200ms);
 }
-.flow-line {
-  flex: 0 0 auto;
-  width: 2px;
-  height: 20px;
-  align-self: center;
-  background: var(--metal-v);
-  transform-origin: top;
-  transition-delay: calc(var(--c) * 260ms - 130ms);
+.dg-wire:not([stroke-dasharray]) {
+  stroke-dasharray: 1;
 }
-@media (min-width: 768px) {
-  .flow-line {
-    width: 40px;
-    height: 2px;
-    background: var(--metal);
-    transform-origin: left;
-  }
+.dg[data-in="false"] .dg-wire {
+  stroke-dashoffset: 1;
 }
-.flow[data-in="false"] .flow-line {
-  transform: scale(0);
+.bar-fill {
+  clip-path: inset(0 0 0 0 round 999px);
+  transition-delay: calc(var(--i) * 140ms);
+}
+.bars[data-in="false"] .bar-fill {
+  clip-path: inset(0 100% 0 0 round 999px);
+}
+.bar-value {
+  transition-delay: calc(var(--i) * 140ms + 500ms);
+}
+.bars[data-in="false"] .bar-value {
+  opacity: 0;
+}
+.fogg-curve,
+.fogg-move {
+  stroke-dashoffset: 0;
+  transition: stroke-dashoffset 1200ms var(--ease-out);
+}
+.fogg-move {
+  transition-delay: 1200ms;
+}
+.fogg[data-in="false"] .fogg-curve,
+.fogg[data-in="false"] .fogg-move {
+  stroke-dashoffset: 1;
+}
+.fogg-point {
+  transition-delay: calc(700ms + var(--i) * 400ms);
+}
+.fogg[data-in="false"] .fogg-point {
+  opacity: 0;
+}
+.podium-step {
+  transform-origin: bottom;
+  transition-delay: calc(var(--i) * 160ms);
+}
+.podium[data-in="false"] .podium-step {
+  transform: scaleY(0.2);
+  opacity: 0;
 }
 .dot {
   width: clamp(28px, 4vw, 44px);

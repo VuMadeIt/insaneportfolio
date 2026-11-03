@@ -1,48 +1,184 @@
 import type { CaseStudy } from "./types";
 
 /**
- * Ported from the previous portfolio (shufflrContent.ts) into Caleb Wu's rhythm; headlines are
- * first-person claims. Every fact, number and quote comes from that file.
+ * Shufflr, rewritten in revision 4 (PLAN 13.6). Facts from Lucas (48 hours, more than 20 people
+ * interviewed, his four roles, 1st place and Most Practical), his LinkedIn post (the challenge, the
+ * three inputs, 4 to 6 cards, the photo prompt) and the old case study (quotes, strategy, metrics,
+ * learnings). The Fogg reading and the Surgeon General figures are added context, labelled as such.
  */
 export const shufflr: CaseStudy = {
   slug: "shufflr",
   year: "2026",
+  accent: "#6a3df0",
+  accentSoft: "#e6defd",
   summary:
-    "Shufflr is a concept for bringing back spontaneous, low-stakes hangout moments. Put in a few loose preferences and it shuffles up a shortlist of things to do nearby, where people with overlapping interests are already showing up; afterwards it prompts the group to keep a memory of what they did, who with, and what it felt like.",
-  claim:
-    "I helped design a shuffle that turns a few loose preferences into a real hangout in under a minute.",
+    "Shufflr brings back spontaneous, low-stakes hangouts. Three inputs, time, budget and vibe, and a shuffle turns them into four to six things to do nearby, so a plan comes together in under a minute. During the hangout it prompts a photo for the group's private archive.",
+  claim: "We designed a shuffle that turns three loose preferences into a real hangout in under a minute.",
   meta: {
-    role: "Product designer",
+    role: "Interviews and research, product strategy, UI design, coded prototype",
     team: "Emma Phuntsok, Jasmine Kumar, Kelly M, Lucas Vu",
-    timeline: "Western University Product Design Sprint, 2026. 1st place and Most Practical",
-    scope: "Research, product strategy, interaction design, prototyping",
+    timeline: "48 hours, Western University Product Design Sprint, March 2026",
+    scope: "Interviews, synthesis, strategy, product design, prototyping",
+    outcome: "1st place and Most Practical",
   },
   link: { label: "Devpost", href: "https://devpost.com/software/shufflr" },
   hero: {
     image: "/media/shufflr/hero.webp",
     alt: "Shufflr on two phones: the shuffle and an activity card",
-    width: 1280,
-    height: 698,
+    width: 1920,
+    height: 1046,
   },
   blocks: [
     {
-      id: "problem",
-      label: "The problem",
-      headline: "We learned that planning, not desire, was what stopped people from hanging out.",
+      id: "brief",
+      label: "The brief",
+      headline: "We had 48 hours to bring back what made 2016 feel alive.",
       body: [
-        "University students want deeper friendships, but coordinating unstructured social time has become high-friction. Someone has to propose a plan, and nobody wants to be that person.",
+        "Western University and Western Founders Network ran the sprint. Every team got the same question about 2016 and a weekend to answer it.",
       ],
       visual: {
-        kind: "statement",
-        text: "How might we reduce the activation energy of in-person hangouts so that authentic connection becomes the path of least resistance?",
+        kind: "brief",
+        prompt:
+          "How might we design a digital experience that recaptures some of what made 2016 feel so alive, and translate it into something that works for people today?",
+        source: "The Product Design Sprint challenge",
+        facts: [
+          { label: "Event", value: "Western University Product Design Sprint 2026" },
+          { label: "Time", value: "48 hours" },
+          { label: "Team", value: "4 designers" },
+          { label: "Result", value: "1st place and Most Practical" },
+        ],
       },
-      caption: "The question the whole sprint answered.",
+    },
+    {
+      id: "role",
+      label: "My role",
+      headline: "I ran interviews, shaped the strategy, designed screens and coded the shuffle.",
+      body: ["Four of us split the weekend, and I worked across it:"],
+      visual: {
+        kind: "list",
+        items: [
+          "Interviews and research: talking to more than 20 people, and the numbers behind friendship and loneliness.",
+          "Product strategy: desirability, viability and feasibility, and the metric each feature had to move.",
+          "UI design: the shuffle, discover, connect and memories screens.",
+          "Coded prototype: the shuffle itself, built with Claude so we could feel its timing.",
+        ],
+      },
+    },
+    {
+      id: "reading",
+      label: "Reading the brief",
+      headline: "We decided what 2016 had was spontaneity: hangouts nobody had to plan.",
+      body: [
+        "We wanted to bring back the spontaneous, low-stakes moments many of us remember from back then: someone is free, someone suggests something, and you go.",
+      ],
+    },
+    {
+      id: "research-friendship",
+      label: "Research",
+      headline: "We started from the research: close friendships take time most students never get.",
+      body: ["Before any screens, we looked at what the research says about making friends at this age."],
+      visual: {
+        kind: "stats",
+        stats: [
+          {
+            value: "200",
+            text: "hours is how long it takes for someone to become a close friend.",
+            source: "Jeffrey A. Hall",
+            href: "https://journals.sagepub.com/doi/10.1177/0265407518761225",
+          },
+          {
+            value: "56%",
+            text: "of college students say it is difficult to make friends.",
+            source: "American Friendship Project",
+            href: "https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0305834",
+          },
+          {
+            value: "17%",
+            text: "of Canadians aged 15 to 24 often or always feel lonely.",
+            source: "Statistics Canada",
+            href: "https://www150.statcan.gc.ca/n1/pub/11-627-m/11-627-m2021052-eng.htm",
+          },
+        ],
+      },
+    },
+    {
+      id: "research-time",
+      label: "Research",
+      headline: "I found that young people's time with friends fell by about 70% in two decades.",
+      body: [
+        "The US Surgeon General's 2023 advisory, built on time-use diaries, shows the drop for 15 to 24 year olds. Wanting friends has not changed; the time spent together has.",
+      ],
+      visual: {
+        kind: "bars",
+        scale: "linear",
+        min: 0,
+        max: 160,
+        ticks: [0, 40, 80, 120, 160],
+        unit: "min a day",
+        bars: [
+          {
+            label: "2003",
+            sub: "In person with friends, ages 15 to 24",
+            value: 150,
+            display: "about 150 minutes",
+            tone: "soft",
+          },
+          {
+            label: "2020",
+            sub: "The same measure",
+            source: "US Surgeon General",
+            href: "https://www.hhs.gov/sites/default/files/surgeon-general-social-connection-advisory.pdf",
+            value: 40,
+            display: "about 40 minutes",
+            tone: "accent",
+          },
+        ],
+      },
+      caption:
+        "Added context for this case study, from the American Time Use Survey via the Surgeon General.",
+    },
+    {
+      id: "interviews",
+      label: "Research",
+      headline: "We talked to more than 20 people, and they all described the same stall.",
+      body: [
+        "Students, young professionals and people in their thirties told us the same story from different sides: everyone wants to hang out, and nothing gets planned.",
+      ],
+      visual: {
+        kind: "quotes",
+        quotes: [
+          {
+            text: "Nobody wants to be the one who plans something, so nothing happens.",
+            who: "Waterloo student",
+          },
+          {
+            text: "After work, I want to do something, but by the time I figure out what, I just go home.",
+            who: "Young professional",
+          },
+          {
+            text: "We have group chats with 15 people and still can\u2019t get four people to hang out.",
+            who: "Gen Z student",
+          },
+          {
+            text: "I have friends I\u2019d love to see more often. We just never actually make plans.",
+            who: "Young professional",
+          },
+          {
+            text: "We used to hang out because someone was bored. Now everyone needs to check their calendar.",
+            who: "30-year-old",
+          },
+          {
+            text: "Everything feels like an event now. Sometimes I just want to go do something stupid with my friends.",
+            who: "21-year-old",
+          },
+        ],
+      },
     },
     {
       id: "insight-1",
       label: "Insight #1",
       headline: "We heard that big group chats still don't turn into hangouts.",
-      body: ["A chat full of friends is not a plan, and someone still has to propose one."],
+      body: ["A chat full of friends is not a plan. Someone still has to propose one, and nobody wants to."],
       visual: { kind: "dots", total: 15, lit: 4 },
       caption:
         "\u201cWe have group chats with 15 people and still can\u2019t get four people to hang out.\u201d",
@@ -71,23 +207,169 @@ export const shufflr: CaseStudy = {
       pair: true,
     },
     {
-      id: "solution-shuffle",
-      label: "Solution",
-      headline: "So we made the plan the product: shuffle, pick, go.",
-      body: [
-        "Users enter a vibe, group size, distance and available time. Shufflr returns a shortlist of activities, cutting group negotiation to under a minute.",
-      ],
+      id: "synthesis",
+      label: "Synthesis",
+      headline: "We boiled it down to one finding: planning, not desire, is the friction.",
+      body: ["Every quote landed in one of three themes, and all three pointed at the same thing."],
       visual: {
-        kind: "flow",
-        columns: [["Vibe", "Group size", "Distance", "Available time"], ["Shuffle"], ["A shortlist nearby"]],
+        kind: "diagram",
+        cols: 3,
+        minWidth: 900,
+        widths: "minmax(0,1.2fr) minmax(0,0.9fr) minmax(0,0.9fr)",
+        nodes: [
+          {
+            id: "q1",
+            text: "\u201cNobody wants to be the one who plans\u201d",
+            col: 0,
+            row: 0,
+            tone: "chip",
+          },
+          { id: "q2", text: "\u201cWe just never actually make plans\u201d", col: 0, row: 1, tone: "chip" },
+          {
+            id: "q3",
+            text: "\u201cBy the time I figure out what, I go home\u201d",
+            col: 0,
+            row: 2,
+            tone: "chip",
+          },
+          {
+            id: "q4",
+            text: "\u201c15 people, can\u2019t get four to hang out\u201d",
+            col: 0,
+            row: 3,
+            tone: "chip",
+          },
+          {
+            id: "q5",
+            text: "\u201cEveryone needs to check their calendar\u201d",
+            col: 0,
+            row: 4,
+            tone: "chip",
+          },
+          { id: "q6", text: "\u201cEverything feels like an event\u201d", col: 0, row: 5, tone: "chip" },
+          { id: "t1", text: "Nobody owns the plan", col: 1, row: 0, rowSpan: 2, tone: "white" },
+          { id: "t2", text: "Deciding takes too long", col: 1, row: 2, rowSpan: 2, tone: "white" },
+          { id: "t3", text: "Every plan needs a schedule", col: 1, row: 4, rowSpan: 2, tone: "white" },
+          {
+            id: "f",
+            text: "Planning, not desire, is the friction",
+            sub: "So lower the activation energy of a hangout",
+            col: 2,
+            row: 0,
+            rowSpan: 6,
+            tone: "accent",
+          },
+        ],
+        edges: [
+          { from: "q1", to: "t1", tone: "muted" },
+          { from: "q2", to: "t1", tone: "muted" },
+          { from: "q3", to: "t2", tone: "muted" },
+          { from: "q4", to: "t2", tone: "muted" },
+          { from: "q5", to: "t3", tone: "muted" },
+          { from: "q6", to: "t3", tone: "muted" },
+          { from: "t1", to: "f", tone: "accent" },
+          { from: "t2", to: "f", tone: "accent" },
+          { from: "t3", to: "f", tone: "accent" },
+        ],
       },
-      caption: "Preference-aware randomness removes the main drop-off point in social coordination.",
+      caption: "From interview quotes to themes to the finding.",
     },
     {
-      id: "solution-discover",
+      id: "fogg",
+      label: "Synthesis",
+      headline: "I read the finding through the Fogg Behavior Model: high motivation, low ability.",
+      body: [
+        "BJ Fogg's model says a behaviour happens when motivation, ability and a prompt meet. People already wanted to hang out. Planning made it hard. So the job was not to make anyone want it more, but to make it easy enough that a prompt works.",
+      ],
+      visual: {
+        kind: "fogg",
+        points: [
+          { id: "now", label: "Hanging out today", ability: 0.18, motivation: 0.72, tone: "ink" },
+          { id: "shufflr", label: "With Shufflr", ability: 0.8, motivation: 0.72, tone: "accent" },
+        ],
+        move: ["now", "shufflr"],
+      },
+      caption:
+        "Our phrase was activation energy; in Fogg's terms it is ability. Added reading for this case study.",
+    },
+    {
+      id: "opportunity",
+      label: "The opportunity",
+      headline: "So we set ourselves one question.",
+      body: [],
+      visual: {
+        kind: "statement",
+        text: "How might we reduce the activation energy of in-person hangouts so that authentic connection becomes the path of least resistance?",
+      },
+    },
+    {
+      id: "solution",
+      label: "Solution",
+      headline: "We cut planning down to three inputs and a shuffle.",
+      body: [
+        "Time, budget and vibe. Everything else is the shuffle's job: it returns four to six activity cards nearby, so a group goes from idea to plan in under 60 seconds.",
+      ],
+      visual: {
+        kind: "diagram",
+        cols: 3,
+        minWidth: 720,
+        widths: "minmax(0,0.8fr) minmax(0,0.8fr) minmax(0,1fr)",
+        nodes: [
+          { id: "t", text: "Time", sub: "how long you have", col: 0, row: 0, tone: "white" },
+          { id: "b", text: "Budget", sub: "what you want to spend", col: 0, row: 1, tone: "white" },
+          { id: "v", text: "Vibe", sub: "chill, active, new", col: 0, row: 2, tone: "white" },
+          {
+            id: "s",
+            text: "The shuffle",
+            sub: "preference-aware randomness",
+            col: 1,
+            row: 0,
+            rowSpan: 3,
+            tone: "ink",
+          },
+          {
+            id: "c",
+            text: "4 to 6 activity cards nearby",
+            sub: "a plan in under 60 seconds",
+            col: 2,
+            row: 0,
+            rowSpan: 3,
+            tone: "accent",
+          },
+        ],
+        edges: [
+          { from: "t", to: "s" },
+          { from: "b", to: "s" },
+          { from: "v", to: "s" },
+          { from: "s", to: "c", tone: "accent" },
+        ],
+      },
+      caption: "Three inputs in, a shortlist out. The negotiation step is gone.",
+    },
+    {
+      id: "prototype",
+      label: "Prototype",
+      headline: "I coded the shuffle, because static frames could not show how it should feel.",
+      body: [
+        "Timing and randomness don't demo as flat screens, so I built the shuffle with Claude. Seeing it move changed decisions that frames never would have surfaced.",
+      ],
+      visual: {
+        kind: "scrub",
+        video: "/media/shufflr/shuffle-scrub.mp4",
+        poster: "/media/shufflr/shuffle.webp",
+        alt: "The shuffle prototype: preferences in, a shortlist out",
+        width: 1280,
+        height: 720,
+      },
+      caption: "Scroll to play the prototype frame by frame.",
+    },
+    {
+      id: "discover",
       label: "Solution",
       headline: "We put the next hangout one tap away with Discover and plan.",
-      body: ["Trending activities, low-stakes hangout sessions and events nearby, filtered by price."],
+      body: [
+        "Trending activities, low-stakes hangout sessions and events nearby, filtered by price, and an event made in a few taps.",
+      ],
       visual: {
         kind: "media",
         media: [
@@ -99,14 +381,14 @@ export const shufflr: CaseStudy = {
           },
         ],
       },
-      caption: "Home discovery, create event and group chat.",
+      caption: "Home, create an event, and the group chat it lands in.",
     },
     {
       id: "decision-connect",
       label: "Design decision",
       headline: "I designed connection around being in the same place, not around follow requests.",
       body: [
-        "People join nearby communities and chats and send invites without cold outreach. Every activity becomes a touchpoint, with no acquisition cost.",
+        "People join nearby communities and send invites without cold outreach. Every activity is a chance to meet someone, with no acquisition cost.",
       ],
       visual: {
         kind: "media",
@@ -127,7 +409,7 @@ export const shufflr: CaseStudy = {
       label: "Design decision",
       headline: "I turned every hangout into a memory, so the app means more the longer you stay.",
       body: [
-        "After each hangout the group is prompted for a photo, which builds a shared album of what they did and who with.",
+        "During the hangout, Shufflr sends a reminder to take a photo. It goes into the group's private archive with a line about how it went.",
       ],
       visual: {
         kind: "media",
@@ -143,149 +425,60 @@ export const shufflr: CaseStudy = {
       caption: "The photo prompt, a shared memory and the album.",
     },
     {
-      id: "research-context",
-      label: "Research",
-      headline: "We started from the numbers: close friendship takes time most students never get.",
-      body: ["Before any screens, we looked at what the research says about making friends at this age."],
-      visual: {
-        kind: "stats",
-        stats: [
-          {
-            value: "200",
-            text: "hours is how long it takes for someone to become a close friend.",
-            source: "Jeffrey A. Hall",
-            href: "https://journals.sagepub.com/doi/10.1177/0265407518761225",
-          },
-          {
-            value: "56%",
-            text: "of college students say it is difficult to make friends.",
-            source: "American Friendship Project",
-            href: "https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0305834",
-          },
-          {
-            value: "17%",
-            text: "of Canadians aged 15 to 24 often or always feel lonely.",
-            source: "Statistics Canada",
-            href: "https://www150.statcan.gc.ca/n1/pub/11-627-m/11-627-m2021052-eng.htm",
-          },
-        ],
-      },
-    },
-    {
-      id: "research-pain-points",
-      label: "Research",
-      headline: "I kept going back to interviews instead of assuming we already knew the problem.",
-      body: [
-        "Students, young professionals and a 30-year-old all described the same moment from different sides.",
-      ],
-      visual: {
-        kind: "quotes",
-        quotes: [
-          {
-            text: "Nobody wants to be the one who plans something, so nothing happens.",
-            who: "Waterloo student",
-          },
-          {
-            text: "After work, I want to do something, but by the time I figure out what, I just go home.",
-            who: "Young professional",
-          },
-          {
-            text: "I have friends I\u2019d love to see more often. We just never actually make plans.",
-            who: "Young professional",
-          },
-          {
-            text: "We have group chats with 15 people and still can\u2019t get four people to hang out.",
-            who: "Gen Z student",
-          },
-        ],
-      },
-    },
-    {
-      id: "research-consolidating",
-      label: "Research",
-      headline: "We boiled every interview down to one finding: the plan is the friction.",
-      body: [
-        "Different people, one pattern. Wanting to hang out was never the problem; deciding what to do was.",
-      ],
-      visual: {
-        kind: "flow",
-        columns: [
-          ["Nobody wants to plan", "Group chats stall", "Everything is an event"],
-          ["Planning, not desire, is the friction"],
-          ["Lower the activation energy of a hangout"],
-        ],
-      },
-      caption: "From interview quotes to the problem statement.",
-    },
-    {
-      id: "ideation-criteria",
-      label: "Solution ideation",
-      headline: "We tested the concept against desirability, viability and feasibility.",
+      id: "strategy",
+      label: "Product strategy",
+      headline: "I tested the concept against desirability, viability and feasibility.",
       body: ["A concept only survives the sprint if people want it, it can last, and it can be built."],
       visual: {
-        kind: "cards",
-        cards: [
+        kind: "compare",
+        columns: [
           {
             title: "Desirability",
-            body: "Targets the loneliness and social friction most acutely felt by 18 to 24 year olds, who over-index on mobile use and under-index on social satisfaction.",
+            items: [
+              "Targets the loneliness and social friction felt most by 18 to 24 year olds, who over-index on phone use and under-index on social satisfaction.",
+            ],
           },
           {
             title: "Viability",
-            body: "The memory archive is a retention flywheel: emotional investment grows with use, without needing constant feature novelty.",
+            tone: "accent",
+            items: [
+              "The memory archive is a retention flywheel: it means more the longer you use it, without needing new features.",
+            ],
           },
           {
             title: "Feasibility",
-            body: "Activity generation builds on existing maps, events and reviews services; Shufflr brings them together rather than rebuilding them.",
+            items: [
+              "Activities come from existing maps, events and reviews services; Shufflr brings them together instead of rebuilding them.",
+            ],
           },
         ],
       },
     },
     {
-      id: "ideation-metrics",
-      label: "Solution ideation",
+      id: "metrics",
+      label: "Product strategy",
       headline: "I tied each feature to the one number that would prove it worked.",
       body: ["Every surface had to earn its place with a metric we could actually watch."],
       visual: {
-        kind: "flow",
-        columns: [
-          ["The Shuffle", "Discover and plan", "Connect", "Profile and memories"],
-          ["Shuffle-to-hangout rate", "Weekly active completers", "7-day return rate", "Memory capture rate"],
+        kind: "table",
+        columns: ["What it proves", "The number"],
+        rows: [
+          {
+            label: "The shuffle",
+            cells: ["The algorithm picks well", "Shuffle-to-hangout rate"],
+            ours: true,
+          },
+          { label: "Discover and plan", cells: ["People actually go", "Weekly active completers"] },
+          { label: "Connect", cells: ["People come back", "7-day return rate"] },
+          { label: "Memories", cells: ["People care", "Memory capture rate"] },
         ],
       },
-      caption: "Feature to metric: algorithm quality, activation, retention, emotional investment.",
-    },
-    {
-      id: "ideation-prototype",
-      label: "Solution ideation",
-      headline: "I coded the shuffle, because flat frames could not show how it should feel.",
-      body: [
-        "The shuffle-to-result flow was impossible to judge as static screens, so I vibe coded it with Claude.",
-      ],
-      visual: {
-        kind: "scrub",
-        video: "/media/shufflr/shuffle-scrub.mp4",
-        poster: "/media/shufflr/shuffle.webp",
-        alt: "The shuffle prototype: preferences in, a shortlist out",
-        width: 1280,
-        height: 720,
-      },
-      caption: "Scroll to play the prototype frame by frame.",
-    },
-    {
-      id: "ideation-feedback",
-      label: "Solution ideation",
-      headline: "I found that seeing it move changed decisions static frames never would have surfaced.",
-      body: [
-        "Testing real timing and randomisation in the coded prototype told us more than any review of mockups could.",
-      ],
     },
     {
       id: "final",
       label: "Final solution",
       headline: "We ended with a loop that takes a group from idea to hangout in under a minute.",
-      body: [
-        "Shuffle, discover, connect, and keep the memory: one loop that gets people out the door and back again.",
-      ],
+      body: ["Shuffle, go, keep the memory, and shuffle again."],
       visual: {
         kind: "media",
         media: [
@@ -293,12 +486,50 @@ export const shufflr: CaseStudy = {
             video: "/media/shufflr/hero.mp4",
             poster: "/media/shufflr/hero.webp",
             alt: "Shufflr from shuffle to activity",
-            width: 1280,
-            height: 698,
+            width: 1920,
+            height: 1046,
           },
         ],
       },
       caption: "Shufflr, end to end.",
+    },
+    {
+      id: "outcome",
+      label: "Outcome",
+      headline: "We won 1st place and Most Practical.",
+      body: ["At Western University's Product Design Sprint, hosted with Western Founders Network."],
+      visual: { kind: "podium", place: 1, name: "Shufflr", extra: ["Most Practical"] },
+    },
+    {
+      id: "hindsight",
+      label: "Looking back",
+      headline: "I'd design for the second hangout, because one hangout doesn't make a friend.",
+      body: [
+        "Hall's research puts a close friendship at more than 200 hours together. One evening out is a sliver of that. Shufflr's real job is the repeat: the same people, again.",
+      ],
+      visual: {
+        kind: "bars",
+        scale: "linear",
+        min: 0,
+        max: 220,
+        ticks: [0, 50, 100, 150, 200],
+        unit: "hours",
+        bars: [
+          { label: "One evening out", sub: "for scale", value: 3, display: "3 hours", tone: "accent" },
+          { label: "Casual friend", value: 50, display: "about 50 hours", tone: "soft" },
+          { label: "Friend", value: 90, display: "about 90 hours", tone: "soft" },
+          {
+            label: "Close friend",
+            source: "Jeffrey A. Hall",
+            href: "https://journals.sagepub.com/doi/10.1177/0265407518761225",
+            value: 200,
+            display: "200+ hours",
+            tone: "ink",
+          },
+        ],
+      },
+      caption:
+        "What I'd change: make re-shuffling with the same group the default, and let the archive be the reason to meet again.",
     },
     {
       id: "learnings",
@@ -310,10 +541,11 @@ export const shufflr: CaseStudy = {
         items: [
           "Talk to people before you talk to Figma. Planning, not desire, was the friction, and that only came out because we ran interviews early and kept going back to them.",
           "Prototype the parts that don't demo well in static mockups. Seeing the shuffle move changed decisions that frames never would have surfaced.",
+          "Design for the repeat, not the first time. A friendship is hundreds of hours; a product that helps should count the second hangout, not the first.",
         ],
       },
     },
   ],
   next: "ripple",
-  draft: ["role", "headlines rewritten as first-person claims", "block bodies condensed from the old copy"],
+  draft: ["the three synthesis themes", "the 'one evening out' scale bar (illustrative)"],
 };

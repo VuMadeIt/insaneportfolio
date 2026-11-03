@@ -1,0 +1,388 @@
+"use client";
+
+import Image from "next/image";
+import { useState } from "react";
+import type { Visual } from "@/content/caseStudies/types";
+import { useInView } from "./useInView";
+
+type Of<K extends Visual["kind"]> = Extract<Visual, { kind: K }>;
+
+const fill = { accent: "bg-[var(--accent)]", ink: "bg-ink", soft: "bg-[var(--accent-soft)]" } as const;
+
+/**
+ * Horizontal bars, drawn in once on screen. A log scale for numbers that span orders of magnitude
+ * (water per prompt estimates differ by 100x), linear otherwise. A range is drawn low to high.
+ */
+export function Bars({ v }: { v: Of<"bars"> }) {
+  const [ref, inView] = useInView<HTMLDivElement>();
+  const pos = (n: number) =>
+    v.scale === "log"
+      ? (Math.log10(n) - Math.log10(v.min)) / (Math.log10(v.max) - Math.log10(v.min))
+      : (n - v.min) / (v.max - v.min);
+  const pct = (n: number) => `${Math.min(100, Math.max(0, pos(n) * 100))}%`;
+  return (
+    <div ref={ref} data-in={inView} className="bars">
+      <ul className="flex flex-col gap-6">
+        {v.bars.map((b, i) => {
+          const [lo, hi] = Array.isArray(b.value) ? b.value : [v.min, b.value];
+          return (
+            <li
+              key={b.label}
+              className="grid gap-2 md:grid-cols-[minmax(0,15em)_minmax(0,1fr)] md:items-center md:gap-8"
+            >
+              <div>
+                <p className="text-[16px] font-medium leading-[1.3]">{b.label}</p>
+                {(b.sub || b.source) && (
+                  <p className="mt-0.5 text-[14px] leading-[1.35] text-muted">
+                    {b.sub}
+                    {b.sub && b.source ? ". " : ""}
+                    {b.href ? (
+                      <a href={b.href} className="u-metal">
+                        {b.source}
+                      </a>
+                    ) : (
+                      b.source
+                    )}
+                  </p>
+                )}
+              </div>
+              <div className="relative flex h-9 items-center">
+                <span className="absolute inset-x-0 top-1/2 h-px -translate-y-1/2 bg-[#d3cfc6]" />
+                <span
+                  className={`bar-fill absolute top-0 h-full rounded-full ${fill[b.tone ?? "accent"]}`}
+                  style={
+                    { left: pct(lo), width: `calc(${pct(hi)} - ${pct(lo)})`, "--i": i } as React.CSSProperties
+                  }
+                />
+                <span
+                  className={`bar-value absolute whitespace-nowrap font-display text-[18px] font-medium tracking-[-0.02em] tabular-nums ${
+                    pos(hi) > 0.7
+                      ? `-translate-x-full pr-4 ${b.tone === "soft" ? "text-ink" : "text-white"}`
+                      : "pl-3"
+                  }`}
+                  style={{ left: pct(hi), "--i": i } as React.CSSProperties}
+                >
+                  {b.display}
+                </span>
+              </div>
+            </li>
+          );
+        })}
+      </ul>
+      <div className="relative mt-4 h-5 md:ml-[calc(15em+2rem)]">
+        {v.ticks.map((t) => (
+          <span
+            key={t}
+            className="absolute -translate-x-1/2 text-[13px] text-muted tabular-nums"
+            style={{ left: pct(t) }}
+          >
+            {t}
+            {t === v.ticks.at(-1) ? ` ${v.unit}` : ""}
+          </span>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+/**
+ * BJ Fogg's Behavior Model: behaviour happens above the action line, where motivation and ability
+ * are high enough together for a prompt to work. Points are placed in 0..1 on both axes.
+ */
+export function Fogg({ v }: { v: Of<"fogg"> }) {
+  const [ref, inView] = useInView<HTMLDivElement>();
+  const W = 640;
+  const H = 400;
+  const pad = { l: 56, r: 24, t: 20, b: 52 };
+  const X = (a: number) => pad.l + a * (W - pad.l - pad.r);
+  const Y = (m: number) => H - pad.b - m * (H - pad.t - pad.b);
+  // The action line: motivation x ability = k, so easier things need less motivation.
+  const k = 0.16;
+  const curve = Array.from({ length: 60 }, (_, i) => {
+    const a = 0.16 + (i / 59) * 0.84;
+    return `${i ? "L" : "M"}${X(a).toFixed(1)},${Y(Math.min(1, k / a)).toFixed(1)}`;
+  }).join(" ");
+  const at = (id: string) => v.points.find((p) => p.id === id)!;
+  const move = v.move ? ([at(v.move[0]), at(v.move[1])] as const) : null;
+  return (
+    <div ref={ref} data-in={inView} className="fogg mx-auto max-w-[760px]">
+      <svg
+        viewBox={`0 0 ${W} ${H}`}
+        className="block h-auto w-full overflow-visible"
+        role="img"
+        aria-label="Fogg Behavior Model chart"
+      >
+        <defs>
+          <marker
+            id="fogg-arrow"
+            viewBox="0 0 10 10"
+            refX="8"
+            refY="5"
+            markerWidth="8"
+            markerHeight="8"
+            orient="auto"
+          >
+            <path d="M0,0 L10,5 L0,10 z" fill="var(--accent)" />
+          </marker>
+        </defs>
+        <path d={`M${X(0)},${Y(1)} V${Y(0)} H${X(1)}`} fill="none" stroke="#3a3936" strokeWidth="1.5" />
+        <text x={X(0)} y={H - 18} className="fill-ink text-[14px]">
+          Hard to do
+        </text>
+        <text x={X(1)} y={H - 18} textAnchor="end" className="fill-ink text-[14px]">
+          Easy to do
+        </text>
+        <text x={X(0.5)} y={H - 18} textAnchor="middle" className="fill-[#68655e] text-[14px]">
+          Ability
+        </text>
+        <text
+          transform={`translate(${pad.l - 22} ${Y(0.5)}) rotate(-90)`}
+          textAnchor="middle"
+          className="fill-[#68655e] text-[14px]"
+        >
+          Motivation
+        </text>
+        <path
+          className="fogg-curve"
+          d={curve}
+          pathLength={1}
+          fill="none"
+          stroke="#3a3936"
+          strokeWidth="2"
+          strokeDasharray="1"
+        />
+        <text x={X(0.98)} y={Y(k / 0.98) - 12} textAnchor="end" className="fill-[#68655e] text-[13px]">
+          Action line
+        </text>
+        <text x={X(0.98)} y={Y(0.97)} textAnchor="end" className="fill-[#68655e] text-[13px]">
+          Prompts work here
+        </text>
+        <text x={X(0.04)} y={Y(0.06)} className="fill-[#68655e] text-[13px]">
+          Prompts fail here
+        </text>
+        {move && (
+          <path
+            className="fogg-move"
+            d={`M${X(move[0].ability) + 14},${Y(move[0].motivation)} L${X(move[1].ability) - 16},${Y(move[1].motivation)}`}
+            pathLength={1}
+            fill="none"
+            stroke="var(--accent)"
+            strokeWidth="2"
+            strokeDasharray="1"
+            markerEnd="url(#fogg-arrow)"
+          />
+        )}
+        {v.points.map((p, i) => (
+          <g key={p.id} className="fogg-point" style={{ "--i": i } as React.CSSProperties}>
+            <circle
+              cx={X(p.ability)}
+              cy={Y(p.motivation)}
+              r="9"
+              fill={p.tone === "accent" ? "var(--accent)" : "#3a3936"}
+            />
+            <text
+              x={X(p.ability)}
+              y={Y(p.motivation) - 18}
+              textAnchor="middle"
+              className="fill-ink text-[14px] font-medium"
+            >
+              {p.label}
+            </text>
+          </g>
+        ))}
+      </svg>
+    </div>
+  );
+}
+
+/** The placement on a podium (second, first, third), ours in the product's colour. */
+export function Podium({ v }: { v: Of<"podium"> }) {
+  const [ref, inView] = useInView<HTMLDivElement>();
+  const steps = [
+    { place: 2, h: 62 },
+    { place: 1, h: 100 },
+    { place: 3, h: 40 },
+  ];
+  const ord = ["", "1st", "2nd", "3rd"];
+  return (
+    <div ref={ref} data-in={inView} className="podium mx-auto flex max-w-[640px] flex-col items-center">
+      <div className="flex w-full items-end justify-center gap-3">
+        {steps.map((s, i) => (
+          <div key={s.place} className="flex flex-1 flex-col items-center gap-3">
+            {s.place === v.place && (
+              <p className="font-display text-[clamp(20px,2vw,28px)] font-medium tracking-[-0.02em]">
+                {v.name}
+              </p>
+            )}
+            <div
+              className={`podium-step flex w-full items-start justify-center rounded-t-md pt-4 font-display text-[clamp(22px,2.4vw,34px)] font-medium ${s.place === v.place ? "bg-[var(--accent)] text-white" : "bg-white text-muted"}`}
+              style={{ height: `${s.h * 2}px`, "--i": i } as React.CSSProperties}
+            >
+              {ord[s.place]}
+            </div>
+          </div>
+        ))}
+      </div>
+      {v.extra && (
+        <ul className="mt-6 flex flex-wrap justify-center gap-2">
+          {v.extra.map((x) => (
+            <li key={x} className="rounded-full bg-ink px-4 py-1.5 text-[15px] text-wall">
+              {x}
+            </li>
+          ))}
+        </ul>
+      )}
+    </div>
+  );
+}
+
+const Check = () => (
+  <svg width="18" height="18" viewBox="0 0 18 18" aria-label="Yes" role="img">
+    <circle cx="9" cy="9" r="9" fill="var(--accent)" />
+    <path
+      d="m5 9.2 2.6 2.6L13 6.4"
+      fill="none"
+      stroke="white"
+      strokeWidth="1.8"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+  </svg>
+);
+const Dash = () => (
+  <svg width="18" height="18" viewBox="0 0 18 18" aria-label="No" role="img">
+    <path d="M5 9h8" stroke="#a8a49b" strokeWidth="1.8" strokeLinecap="round" />
+  </svg>
+);
+
+/** A real table (allowed its lines): products down the side, what they do across the top. */
+export function Table({ v }: { v: Of<"table"> }) {
+  return (
+    <div className="-mx-2 overflow-x-auto px-2">
+      <table className="w-full min-w-[620px] border-collapse text-left text-[15px]">
+        <thead>
+          <tr>
+            <th className="w-[22%] pb-4" />
+            {v.columns.map((c) => (
+              <th key={c} scope="col" className="pb-4 pr-4 align-bottom font-normal leading-[1.3] text-muted">
+                {c}
+              </th>
+            ))}
+          </tr>
+        </thead>
+        <tbody>
+          {v.rows.map((r) => (
+            <tr key={r.label} className={r.ours ? "bg-white" : ""}>
+              <th
+                scope="row"
+                className={`rounded-l-sm py-3.5 pl-4 pr-4 font-medium ${r.ours ? "" : "border-t border-[#d9d6cf]"}`}
+              >
+                {r.label}
+              </th>
+              {r.cells.map((c, i) => (
+                <td
+                  key={i}
+                  className={`py-3.5 pr-4 ${i === r.cells.length - 1 ? "rounded-r-sm" : ""} ${r.ours ? "" : "border-t border-[#d9d6cf]"}`}
+                >
+                  {c === true ? <Check /> : c === false ? <Dash /> : c}
+                </td>
+              ))}
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  );
+}
+
+/** The event's own question, quoted large, and the facts of the event beneath it. */
+export function Brief({ v }: { v: Of<"brief"> }) {
+  return (
+    <figure>
+      <blockquote className="max-w-[26em] font-display text-[clamp(22px,2.4vw,34px)] font-medium leading-[1.22] tracking-[-0.02em]">
+        &ldquo;{v.prompt}&rdquo;
+      </blockquote>
+      {v.source && <figcaption className="mt-3 text-[15px] text-muted">{v.source}</figcaption>}
+      <dl className="mt-10 grid gap-x-8 gap-y-5 sm:grid-cols-2 lg:grid-cols-4">
+        {v.facts.map((f) => (
+          <div key={f.label} className="rounded-sm bg-wall px-5 py-4">
+            <dt className="text-[14px] text-muted">{f.label}</dt>
+            <dd className="mt-1 text-[17px] leading-[1.35]">{f.value}</dd>
+          </div>
+        ))}
+      </dl>
+    </figure>
+  );
+}
+
+/** A screen with numbered callouts; hovering a line of the legend lights its marker. */
+export function Anatomy({ v }: { v: Of<"anatomy"> }) {
+  const [on, setOn] = useState<number | null>(null);
+  return (
+    <div className="grid items-center gap-10 md:grid-cols-[minmax(0,0.9fr)_minmax(0,1fr)]">
+      <div
+        className="relative mx-auto w-full"
+        style={{ maxWidth: `min(${v.image.width}px, calc(70vh * ${v.image.width / v.image.height}))` }}
+      >
+        <Image
+          src={v.image.src}
+          alt={v.image.alt}
+          width={v.image.width}
+          height={v.image.height}
+          sizes="(min-width: 768px) 40vw, 100vw"
+          className="h-auto w-full"
+        />
+        {v.points.map((p, i) => (
+          <span
+            key={p.title}
+            aria-hidden
+            className={`absolute flex size-8 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full bg-[var(--accent)] text-[14px] font-medium text-white ring-4 transition-transform duration-300 ${on === i ? "scale-125 ring-[var(--accent-soft)]" : "ring-white/70"}`}
+            style={{ left: `${p.x}%`, top: `${p.y}%` }}
+          >
+            {i + 1}
+          </span>
+        ))}
+      </div>
+      <ol className="flex flex-col gap-6">
+        {v.points.map((p, i) => (
+          <li
+            key={p.title}
+            className="flex gap-4"
+            onPointerEnter={() => setOn(i)}
+            onPointerLeave={() => setOn(null)}
+          >
+            <span
+              aria-hidden
+              className="flex size-8 shrink-0 items-center justify-center rounded-full bg-[var(--accent)] text-[14px] font-medium text-white"
+            >
+              {i + 1}
+            </span>
+            <div>
+              <h3 className="text-[19px] leading-[1.25]">{p.title}</h3>
+              <p className="mt-1 text-[16px] leading-[1.5]">{p.text}</p>
+            </div>
+          </li>
+        ))}
+      </ol>
+    </div>
+  );
+}
+
+/** Two or three columns side by side: before and after, or one approach against another. */
+export function Compare({ v }: { v: Of<"compare"> }) {
+  const tone = { accent: "bg-[var(--accent)] text-white", ink: "bg-ink text-wall", plain: "bg-wall" };
+  return (
+    <div className={`grid gap-4 ${v.columns.length === 3 ? "md:grid-cols-3" : "md:grid-cols-2"}`}>
+      {v.columns.map((c) => (
+        <div key={c.title} className={`reveal rounded-sm p-6 ${tone[c.tone ?? "plain"]}`}>
+          <h3 className="text-[20px] leading-[1.2]">{c.title}</h3>
+          <ul className="mt-4 flex flex-col gap-2.5 text-[16px] leading-[1.45]">
+            {c.items.map((x) => (
+              <li key={x}>{x}</li>
+            ))}
+          </ul>
+        </div>
+      ))}
+    </div>
+  );
+}

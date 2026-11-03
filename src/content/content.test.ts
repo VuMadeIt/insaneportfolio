@@ -57,27 +57,36 @@ describe("site copy", () => {
     }
   });
 
-  it("Shufflr and Ripple follow Caleb Wu's rhythm", () => {
-    const rhythm = [
-      "The problem",
-      "Insight #1",
-      "Insight #2",
-      "Solution",
-      "Solution",
-      "Design decision",
-      "Design decision",
-      "Research",
-      "Research",
-      "Research",
-      "Solution ideation",
-      "Solution ideation",
-      "Solution ideation",
-      "Solution ideation",
-      "Final solution",
-      "Key learnings",
-    ];
-    for (const slug of ["shufflr", "ripple"])
-      expect(caseStudies.find((c) => c.slug === slug)!.blocks.map((b) => b.label)).toEqual(rhythm);
+  it("Shufflr and Ripple follow the case-study structure (PLAN 13.6)", () => {
+    for (const slug of ["shufflr", "ripple"]) {
+      const study = caseStudies.find((c) => c.slug === slug)!;
+      const labels = study.blocks.map((b) => b.label);
+      expect(labels.slice(0, 2), slug).toEqual(["The brief", "My role"]);
+      expect(labels.at(-1), slug).toBe("Key learnings");
+      for (const must of [
+        "Insight #1",
+        "Insight #2",
+        "Solution",
+        "Design decision",
+        "Outcome",
+        "Looking back",
+      ])
+        expect(labels, `${slug} ${must}`).toContain(must);
+      expect(labels.indexOf("Outcome")).toBeLessThan(labels.indexOf("Looking back"));
+      // A visual for nearly every block (Caleb's density).
+      expect(study.blocks.filter((b) => !b.visual).length, slug).toBeLessThanOrEqual(1);
+      expect(study.meta.outcome, slug).toBeTruthy();
+    }
+  });
+
+  it("every diagram edge joins two nodes that exist", () => {
+    for (const study of caseStudies)
+      for (const b of study.blocks)
+        if (b.visual?.kind === "diagram") {
+          const ids = new Set(b.visual.nodes.map((n) => n.id));
+          for (const e of b.visual.edges)
+            expect(ids.has(e.from) && ids.has(e.to), `${study.slug}/${b.id}`).toBe(true);
+        }
   });
 
   it("Maple Leaf is an overview and its three apps", () => {

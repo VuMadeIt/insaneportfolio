@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="360" font-family="Georgia" font-size="12">
+<rect width="640" height="360" fill="#f3f1ec"/>
+<text x="8" y="24">0 dB</text><line x1="50" x2="620" y1="20" y2="20" stroke="#d9d6cf"/>
+<text x="8" y="124">-10 dB</text><line x1="50" x2="620" y1="120" y2="120" stroke="#d9d6cf"/>
+<text x="8" y="224">-20 dB</text><line x1="50" x2="620" y1="220" y2="220" stroke="#d9d6cf"/>
+<text x="8" y="324">-30 dB</text><line x1="50" x2="620" y1="320" y2="320" stroke="#d9d6cf"/>
+<text x="260" y="352">clack index (after clipped clacks)</text>
+<polyline points="50.0,20.0 83.5,1.4 117.1,20.2 150.6,6.9 184.1,57.0 217.6,34.1 251.2,78.7 284.7,48.7 318.2,61.7 351.8,66.3 385.3,102.9 418.8,94.1 452.4,166.2 485.9,124.9 519.4,210.4 552.9,175.0 586.5,281.0 620.0,245.0" fill="none" stroke="#111" stroke-width="1.5"/><text x="340" y="40" fill="#111">recording (LoafDV 131596)</text>
+<polyline points="50.0,20.0 83.5,24.4 117.1,28.7 150.6,33.2 184.1,37.5 217.6,42.0 251.2,46.4 284.7,51.0 318.2,55.5 351.8,60.2 385.3,64.8 418.8,69.7 452.4,74.3 485.9,79.5 519.4,84.3 552.9,89.8 586.5,94.7 620.0,100.4" fill="none" stroke="#c0392b" stroke-width="1.5"/><text x="340" y="56" fill="#c0392b">before: e 0.985, hysteresis 0.004</text>
+<polyline points="50.0,20.0 83.5,27.5 117.1,35.0 150.6,42.5 184.1,50.1 217.6,57.6 251.2,65.3 284.7,72.9 318.2,80.8 351.8,88.5 385.3,96.6 418.8,104.5 452.4,112.9 485.9,120.9 519.4,129.6 552.9,137.8 586.5,147.0 620.0,155.3" fill="none" stroke="#2c7fb8" stroke-width="1.5"/><text x="340" y="72" fill="#2c7fb8">shipped: e 0.975, hysteresis 0.03</text>
+</svg>

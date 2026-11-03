@@ -1,0 +1,266 @@
+{
+  ".prettierrc.json": {
+    "mtime": 1793676069.1093347,
+    "seen": 1793676076.179438,
+    "ast_hash": "885894a29d0d099f09687573b3450bb6",
+    "semantic_hash": ""
+  },
+  "app/(site)/page.tsx": {
+    "mtime": 1793676069.1174488,
+    "seen": 1793676076.179438,
+    "ast_hash": "9db88f765332eef454bbc32e01a758a1",
+    "semantic_hash": ""
+  },
+  "app/layout.tsx": {
+    "mtime": 1793676069.119448,
+    "seen": 1793676076.179438,
+    "ast_hash": "b396f0cbe74194817f3fa45c021e495c",
+    "semantic_hash": ""
+  },
+  "e2e/home.spec.ts": {
+    "mtime": 1793676069.1224504,
+    "seen": 1793676076.179438,
+    "ast_hash": "6ade6fbd1812592ff75327d092f7b25a",
+    "semantic_hash": ""
+  },
+  "eslint.config.mjs": {
+    "mtime": 1793676069.1244538,
+    "seen": 1793676076.179438,
+    "ast_hash": "62d06f45bc0b7fee881cfb1c7bac6894",
+    "semantic_hash": ""
+  },
+  "next.config.ts": {
+    "mtime": 1793676069.1284533,
+    "seen": 1793676076.179438,
+    "ast_hash": "34dc96521f1c8463bbf74ad690de78eb",
+    "semantic_hash": ""
+  },
+  "package.json": {
+    "mtime": 1793676069.1346464,
+    "seen": 1793676076.179438,
+    "ast_hash": "2a63c0390fa62c394fafb8c0473d4280",
+    "semantic_hash": ""
+  },
+  "playwright.config.ts": {
+    "mtime": 1793676069.1356473,
+    "seen": 1793676076.179438,
+    "ast_hash": "17d14a46fde9a9231c46cb85d01eb689",
+    "semantic_hash": ""
+  },
+  "postcss.config.mjs": {
+    "mtime": 1793676069.1376505,
+    "seen": 1793676076.179438,
+    "ast_hash": "7912877b7790f1bbc5ada178ffffb564",
+    "semantic_hash": ""
+  },
+  "scripts/screens.mjs": {
+    "mtime": 1793677022.797355,
+    "seen": 1793677036.4246898,
+    "ast_hash": "ba58268b9afb6b8e13eb453b69f0ca4d",
+    "semantic_hash": ""
+  },
+  "scripts/serve.sh": {
+    "mtime": 1793676069.162552,
+    "seen": 1793676076.179438,
+    "ast_hash": "390c0d2b0750e9c1ff435a63c1a70ed6",
+    "semantic_hash": ""
+  },
+  "src/components/CradleStill.tsx": {
+    "mtime": 1793677021.8751252,
+    "seen": 1793677036.4246898,
+    "ast_hash": "c682d8b67db08eeba0ac2ecc35a87a6f",
+    "semantic_hash": ""
+  },
+  "src/components/GiantName.tsx": {
+    "mtime": 1793677021.8957365,
+    "seen": 1793677036.4246898,
+    "ast_hash": "d42b8c80033f1593f3f772399d4044ed",
+    "semantic_hash": ""
+  },
+  "src/components/Hero.tsx": {
+    "mtime": 1793677021.918189,
+    "seen": 1793677036.4246898,
+    "ast_hash": "0ab4446a5bad73cdb6f20eea69046407",
+    "semantic_hash": ""
+  },
+  "tsconfig.json": {
+    "mtime": 1793676069.168754,
+    "seen": 1793676076.179438,
+    "ast_hash": "0184550b11158a4f37a3878fa6687765",
+    "semantic_hash": ""
+  },
+  "vitest.config.ts": {
+    "mtime": 1793676069.1700346,
+    "seen": 1793676076.179438,
+    "ast_hash": "50386c4c24ebb496ea008d0cfc0a8ce3",
+    "semantic_hash": ""
+  },
+  "AGENTS.md": {
+    "mtime": 1793676069.1113336,
+    "seen": 1793676076.179438,
+    "ast_hash": "545eaa0b600e65532d334c91ae1ef8bd",
+    "semantic_hash": ""
+  },
+  "CREDITS.md": {
+    "mtime": 1793676069.1123333,
+    "seen": 1793676076.179438,
+    "ast_hash": "de645d7cb7c59e8cf9be8deb1613c81e",
+    "semantic_hash": ""
+  },
+  "DECISIONS.md": {
+    "mtime": 1793676069.1144516,
+    "seen": 1793676076.179438,
+    "ast_hash": "c5c7606295c9000c2ce2927c4c9becc5",
+    "semantic_hash": ""
+  },
+  "PLAN.md": {
+    "mtime": 1793674718.3837833,
+    "seen": 1793676076.179438,
+    "ast_hash": "5f525a23fe74ca7dec8fc6ecaf2534ec",
+    "semantic_hash": ""
+  },
+  "reference/identities/experiment-atom.png": {
+    "mtime": 1793676069.147727,
+    "seen": 1793676076.179438,
+    "ast_hash": "695bd7145e1a94db644ac1004eea500d",
+    "semantic_hash": ""
+  },
+  "reference/identities/idea-orb.jpg": {
+    "mtime": 1793676069.1497264,
+    "seen": 1793676076.179438,
+    "ast_hash": "9ba7d438727e20b08dfe13efeccd7a34",
+    "semantic_hash": ""
+  },
+  "reference/identities/people-eye.jpg": {
+    "mtime": 1793676069.1530955,
+    "seen": 1793676076.179438,
+    "ast_hash": "d9cf983cba39dcdcf8ed425172d4fb26",
+    "semantic_hash": ""
+  },
+  "reference/identities/product-flower.jpg": {
+    "mtime": 1793676069.1560943,
+    "seen": 1793676076.179438,
+    "ast_hash": "0711f5d7559fc3c2877f47955da36307",
+    "semantic_hash": ""
+  },
+  "reference/layout/example-reference.png": {
+    "mtime": 1793676069.1590943,
+    "seen": 1793676076.179438,
+    "ast_hash": "43fe1e9bb27463cf12a1a04d298e22ac",
+    "semantic_hash": ""
+  },
+  "reference/layout/hover-reference.png": {
+    "mtime": 1793676069.1601608,
+    "seen": 1793676076.179438,
+    "ast_hash": "c25144f7e9d426f5980a1f1f4302b341",
+    "semantic_hash": ""
+  },
+  "reference/identities/atom-motion.mp4": {
+    "mtime": 1793676069.1445484,
+    "seen": 1793676076.179438,
+    "ast_hash": "19fd303fb5c4474a99bc0ad09c6c255c",
+    "semantic_hash": ""
+  },
+  "reference/audio/analysis.json": {
+    "mtime": 1793676570.9868822,
+    "seen": 1793677036.4246898,
+    "ast_hash": "82f2659033ce7ad2ef9305119ff19f36",
+    "semantic_hash": ""
+  },
+  "scripts/audio/analyse.py": {
+    "mtime": 1793676567.935588,
+    "seen": 1793677036.4246898,
+    "ast_hash": "76dbc19162112676a44c9dc7b4bfbb53",
+    "semantic_hash": ""
+  },
+  "scripts/physics/calibrate.ts": {
+    "mtime": 1793677022.7083325,
+    "seen": 1793677036.4246898,
+    "ast_hash": "b53117b2a2acd6373ad92ce20bb756a8",
+    "semantic_hash": ""
+  },
+  "scripts/physics/probe.ts": {
+    "mtime": 1793677022.7377148,
+    "seen": 1793677036.4246898,
+    "ast_hash": "cff58f4443045516e740bd315db066bd",
+    "semantic_hash": ""
+  },
+  "src/physics/body.ts": {
+    "mtime": 1793677021.939882,
+    "seen": 1793677036.4246898,
+    "ast_hash": "0e7fe20ba9705a4f2cca9041aa96e702",
+    "semantic_hash": ""
+  },
+  "src/physics/config.ts": {
+    "mtime": 1793677021.997858,
+    "seen": 1793677036.4246898,
+    "ast_hash": "11d608c4ad96fd056cb16199d703138b",
+    "semantic_hash": ""
+  },
+  "src/physics/contacts.ts": {
+    "mtime": 1793677022.109627,
+    "seen": 1793677036.4246898,
+    "ast_hash": "ea63326d0d1b8d6e0c958339d9ff60e1",
+    "semantic_hash": ""
+  },
+  "src/physics/cradle.test.ts": {
+    "mtime": 1793677022.2860312,
+    "seen": 1793677036.4246898,
+    "ast_hash": "97423c942a5766eda4930b248b99cfa8",
+    "semantic_hash": ""
+  },
+  "src/physics/cradle.ts": {
+    "mtime": 1793677022.3855286,
+    "seen": 1793677036.4246898,
+    "ast_hash": "ede5f9c6ecbe4fee887df83e479355a5",
+    "semantic_hash": ""
+  },
+  "src/physics/drag.ts": {
+    "mtime": 1793677022.4153936,
+    "seen": 1793677036.4246898,
+    "ast_hash": "a033ad4b9184d9c9cd1142041dbf50ae",
+    "semantic_hash": ""
+  },
+  "src/physics/events.ts": {
+    "mtime": 1793677022.426397,
+    "seen": 1793677036.4246898,
+    "ast_hash": "c2910bf0c1b7bdd87167a0bec40854f1",
+    "semantic_hash": ""
+  },
+  "src/physics/rope.test.ts": {
+    "mtime": 1793677022.4554734,
+    "seen": 1793677036.4246898,
+    "ast_hash": "32de732e1d4a46348795375389554ebb",
+    "semantic_hash": ""
+  },
+  "src/physics/rope.ts": {
+    "mtime": 1793677022.4930243,
+    "seen": 1793677036.4246898,
+    "ast_hash": "4490c2b16351ef00a54646a3faa446cb",
+    "semantic_hash": ""
+  },
+  "src/physics/vec.ts": {
+    "mtime": 1793677022.5190594,
+    "seen": 1793677036.4246898,
+    "ast_hash": "59a7ee49ff1a48be63f61c91906e398f",
+    "semantic_hash": ""
+  },
+  "src/state/ui.ts": {
+    "mtime": 1793677022.5425746,
+    "seen": 1793677036.4246898,
+    "ast_hash": "52762e3851969259874d3e5d744e4c14",
+    "semantic_hash": ""
+  },
+  "scripts/audio/fetch.sh": {
+    "mtime": 1793677044.8532906,
+    "seen": 1793677048.3363552,
+    "ast_hash": "7c694ca52a844c6e3ffaa82d3c01d411",
+    "semantic_hash": ""
+  },
+  "package-lock.json": {
+    "mtime": 1793676069.1326482,
+    "seen": 1793676076.179438,
+    "ast_hash": "2b185ed5dab95c769f8561ce26a3af35",
+    "semantic_hash": ""
+  }
+}

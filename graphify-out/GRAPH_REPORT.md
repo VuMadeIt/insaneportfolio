@@ -1,17 +1,17 @@
 # Graph Report - insaneportfolio  (2026-11-03)
 
 ## Corpus Check
-- 129 files · ~60,584 words
+- 129 files · ~60,661 words
 - Verdict: corpus is large enough that graph structure adds value.
 - Unclassified: 15 file(s) not represented in the graph (top: .hdr 8, (none) 3, .woff2 3)
 
 ## Summary
-- 679 nodes · 1404 edges · 48 communities (39 shown, 9 thin omitted)
+- 680 nodes · 1405 edges · 43 communities (34 shown, 9 thin omitted)
 - Extraction: 98% EXTRACTED · 2% INFERRED · 0% AMBIGUOUS · INFERRED: 33 edges (avg confidence: 0.88)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `02cfb47c`
+- Built from commit: `5bd6e1fd`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -19,8 +19,7 @@
 - scroll.mjs
 - compilerOptions
 - Cradle
-- choreography.ts
-- clack.ts
+- Cradle.tsx
 - @playwright/test
 - Part 12. Revision 2 (Lucas, 2026-11-03). Overrides Parts 1-11 where they conflict
 - AGENTS.md
@@ -52,17 +51,13 @@
 - screens.mjs
 - next
 - Stage.tsx
-- dependencies
-- scripts
-- StillStage.tsx
 - Part 3. Technical architecture
 - slowmo.mjs
-- eslint-config-next
 - cradle.ts
 - [slug]/page.tsx
 - Rope
 - cradle.test.ts
-- config.ts
+- probe.ts
 
 ## God Nodes (most connected - your core abstractions)
 1. `Cradle` - 42 edges
@@ -72,26 +67,26 @@
 5. `react` - 23 edges
 6. `vec()` - 17 edges
 7. `compilerOptions` - 17 edges
-8. `Phases` - 16 edges
+8. `Decisions` - 16 edges
 9. `CradleModel()` - 16 edges
-10. `Decisions` - 15 edges
+10. `Phases` - 16 edges
 
 ## Surprising Connections (you probably didn't know these)
+- `Phase 03: interaction and sound (2026-11-03)` --references--> `requestRender()`  [INFERRED]
+  DECISIONS.md → src/scene/world.ts
+- `Phase 05: story state (2026-11-03)` --references--> `StoryController()`  [INFERRED]
+  DECISIONS.md → src/components/StoryController.tsx
 - `Caleb Wu's RevisionDojo, filmed first (`.artifacts/caleb/sheet1.png`, `sheet2.png`, `text.txt`)` --references--> `ExhibitMedia()`  [INFERRED]
   DECISIONS.md → src/components/ExhibitMedia.tsx
 - `Part 10. Phases` --references--> `build()`  [INFERRED]
   PLAN.md → app/lab/physics/PhysicsLab.tsx
-- `Phase 05: story state (2026-11-03)` --references--> `StoryController()`  [INFERRED]
-  DECISIONS.md → src/components/StoryController.tsx
-- `Phase 03: interaction and sound (2026-11-03)` --references--> `requestRender()`  [INFERRED]
-  DECISIONS.md → src/scene/world.ts
-- `Phase 04: identities (2026-11-03)` --references--> `withIdentity()`  [INFERRED]
-  DECISIONS.md → src/scene/identities/material.ts
+- `Phase 02: the real object (2026-11-02)` --references--> `frameFor()`  [INFERRED]
+  DECISIONS.md → src/scene/framing.ts
 
 ## Import Cycles
 - None detected.
 
-## Communities (48 total, 9 thin omitted)
+## Communities (43 total, 9 thin omitted)
 
 ### Community 0 - "scroll.mjs"
 Cohesion: 0.50
@@ -102,16 +97,12 @@ Cohesion: 0.10
 Nodes (19): compilerOptions, allowJs, esModuleInterop, incremental, isolatedModules, jsx, lib, module (+11 more)
 
 ### Community 2 - "Cradle"
-Cohesion: 0.16
-Nodes (5): Cradle, clampTarget(), createHand(), copy(), run()
+Cohesion: 0.19
+Nodes (4): build(), Cradle, clampTarget(), copy()
 
-### Community 3 - "choreography.ts"
-Cohesion: 0.45
-Nodes (11): StoryController(), vec(), begin(), close(), enter(), offsets, open(), reducedMotion() (+3 more)
-
-### Community 4 - "clack.ts"
-Cohesion: 0.13
-Nodes (13): vitest@4.1.12, vitest, [target, out, width = "1440", height = "900"], chainClacks(), clack(), playImpacts(), playWhoosh(), advanceClock() (+5 more)
+### Community 4 - "Cradle.tsx"
+Cohesion: 0.08
+Nodes (46): gsap@3.15.0, gsap, chainClacks(), clack(), playImpacts(), playWhoosh(), StoryController(), vec() (+38 more)
 
 ### Community 5 - "@playwright/test"
 Cohesion: 0.17
@@ -138,8 +129,8 @@ Cohesion: 0.16
 Nodes (13): Analysis, chains, first, pairMean(), recIntervals, recLevels, recPairs, results (+5 more)
 
 ### Community 11 - "Decisions"
-Cohesion: 0.10
-Nodes (19): Caleb Wu's RevisionDojo, filmed first (`.artifacts/caleb/sheet1.png`, `sheet2.png`, `text.txt`), Compare-and-fix rounds (`.artifacts/identity/r1..r4.png`, render above, reference below), Decisions, Phase 00 (2026-11-02), Phase 01: physics (2026-11-02), Phase 02: the real object (2026-11-02), Phase 03: interaction and sound (2026-11-03), Phase 04: identities (2026-11-03) (+11 more)
+Cohesion: 0.09
+Nodes (20): Caleb Wu's RevisionDojo, filmed first (`.artifacts/caleb/sheet1.png`, `sheet2.png`, `text.txt`), Compare-and-fix rounds (`.artifacts/identity/r1..r4.png`, render above, reference below), Decisions, Phase 00 (2026-11-02), Phase 01: physics (2026-11-02), Phase 02: the real object (2026-11-02), Phase 03: interaction and sound (2026-11-03), Phase 04: identities (2026-11-03) (+12 more)
 
 ### Community 15 - "ref_node_fs"
 Cohesion: 0.28
@@ -150,8 +141,8 @@ Cohesion: 0.16
 Nodes (4): analyse(), decode(), onsets(), cluster()
 
 ### Community 17 - "package.json"
-Cohesion: 0.10
-Nodes (26): devDependencies, eslint@9.39.4, leva@0.10.1, @playwright/test@1.64.1, prettier@3.9.10, tailwindcss@4.3.3, @tailwindcss/postcss@4.3.3, @types/node@22.19.0 (+18 more)
+Cohesion: 0.05
+Nodes (43): config, react-dom@19.3.1, devDependencies, eslint@9.39.4, eslint-config-next@16.4.3, leva@0.10.1, @playwright/test@1.64.1, prettier@3.9.10 (+35 more)
 
 ### Community 18 - "Phases"
 Cohesion: 0.08
@@ -159,7 +150,7 @@ Nodes (23): Draft or unconfirmed content to check, Git, Morning to-dos, Open que
 
 ### Community 19 - "material.ts"
 Cohesion: 0.11
-Nodes (25): Ball(), IdentityLab(), IdentityLabPage(), metadata, IdentitySlug, experiments, ideas, identityCommon (+17 more)
+Nodes (24): Ball(), IdentityLab(), IdentityLabPage(), metadata, experiments, ideas, identityCommon, people (+16 more)
 
 ### Community 20 - "Part 4. The hero object in detail (highest priority)"
 Cohesion: 0.25
@@ -190,8 +181,8 @@ Cohesion: 0.50
 Nodes (4): 9.1 Rules of engagement, 9.2 Logs the agent maintains, 9.3 Gates (run before every phase merge), Part 9. Execution protocol for the autonomous run
 
 ### Community 31 - "PhysicsLab.tsx"
-Cohesion: 0.20
-Nodes (11): metadata, PhysicsLabPage(), build(), COLORS, deg(), DESK, initial, Params (+3 more)
+Cohesion: 0.13
+Nodes (15): metadata, PhysicsLabPage(), COLORS, deg(), DESK, initial, Params, PhysicsLab() (+7 more)
 
 ### Community 34 - "screens.mjs"
 Cohesion: 0.27
@@ -199,23 +190,11 @@ Nodes (4): [tag = "dev", ...paths], widths, routes, widths
 
 ### Community 35 - "next"
 Cohesion: 0.07
-Nodes (32): metadata, metadata, ObjectLabPage(), metadata, NotFound(), dynamicParams, IdentityPage(), HeroLayout() (+24 more)
+Nodes (37): metadata, metadata, ObjectLabPage(), metadata, NotFound(), dynamicParams, IdentityPage(), HeroLayout() (+29 more)
 
 ### Community 36 - "Stage.tsx"
-Cohesion: 0.09
-Nodes (53): applyQuery(), deg(), ObjectLab(), react, @react-three/fiber, three, unlockAudio(), AccessibleTargets() (+45 more)
-
-### Community 37 - "dependencies"
-Cohesion: 0.15
-Nodes (13): dependencies, gsap@3.15.0, next@16.4.3, react@19.3.1, react-dom@19.3.1, @react-three/drei@10.7.9, @react-three/fiber@9.8.2, three@0.186.0 (+5 more)
-
-### Community 38 - "scripts"
-Cohesion: 0.22
-Nodes (9): scripts, build, dev, e2e, format, lint, start, test (+1 more)
-
-### Community 39 - "StillStage.tsx"
-Cohesion: 0.53
-Nodes (4): metadata, StillPage(), Stage, StillStage()
+Cohesion: 0.08
+Nodes (41): applyQuery(), deg(), ObjectLab(), metadata, StillPage(), Stage, StillStage(), dependencies (+33 more)
 
 ### Community 40 - "Part 3. Technical architecture"
 Cohesion: 0.33
@@ -225,29 +204,25 @@ Nodes (6): 3.1 Stack (pin exact versions; prefer releases published at least 7 d
 Cohesion: 0.67
 Nodes (3): balls, centre(), speed()
 
-### Community 42 - "eslint-config-next"
-Cohesion: 0.50
-Nodes (3): config, eslint-config-next@16.4.3, eslint-config-next
-
 ### Community 43 - "cradle.ts"
 Cohesion: 0.26
 Nodes (9): Body, solveContacts(), Hand, solveHand(), CollisionEvent, addScaled(), set(), sub() (+1 more)
 
 ### Community 44 - "[slug]/page.tsx"
 Cohesion: 0.06
-Nodes (52): HomePage(), AboutPage(), metadata, metadata, Row(), WorkPage(), BlockView(), CaseStudyPage() (+44 more)
+Nodes (50): AboutPage(), metadata, metadata, Row(), WorkPage(), BlockView(), CaseStudyPage(), dynamicParams (+42 more)
 
 ### Community 45 - "Rope"
-Cohesion: 0.22
-Nodes (7): Rope, anchor, ropeLength(), settle(), clone(), distance(), lerp()
+Cohesion: 0.19
+Nodes (9): createHand(), Rope, anchor, ropeLength(), settle(), clone(), distance(), lerp() (+1 more)
 
 ### Community 48 - "cradle.test.ts"
 Cohesion: 0.20
 Nodes (9): deg(), simulate(), withConfig(), maxPenetration(), lossless, measurePeriod(), runChain(), runFor() (+1 more)
 
-### Community 50 - "config.ts"
-Cohesion: 0.15
-Nodes (9): c, chains, db, e0, ConfigOverrides, CradleConfig, defaultConfig, derive() (+1 more)
+### Community 50 - "probe.ts"
+Cohesion: 0.29
+Nodes (4): c, chains, db, e0
 
 ## Knowledge Gaps
 - **9 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
@@ -255,17 +230,17 @@ Nodes (9): c, chains, db, e0, ConfigOverrides, CradleConfig, defaultConfig, deri
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
-- **Why does `react` connect `Stage.tsx` to `next`, `choreography.ts`, `dependencies`, `StillStage.tsx`, `[slug]/page.tsx`, `package.json`, `material.ts`, `app/layout.tsx`, `PhysicsLab.tsx`?**
-  _High betweenness centrality (0.161) - this node is a cross-community bridge._
+- **Why does `react` connect `Stage.tsx` to `next`, `Cradle.tsx`, `[slug]/page.tsx`, `package.json`, `material.ts`, `app/layout.tsx`, `PhysicsLab.tsx`?**
+  _High betweenness centrality (0.160) - this node is a cross-community bridge._
 - **Should `compilerOptions` be split into smaller, more focused modules?**
   _Cohesion score 0.1 - nodes in this community are weakly interconnected._
-- **Why does `next` connect `next` to `choreography.ts`, `Stage.tsx`, `dependencies`, `StillStage.tsx`, `[slug]/page.tsx`, `package.json`, `app/layout.tsx`?**
+- **Why does `next` connect `next` to `Stage.tsx`, `Cradle.tsx`, `[slug]/page.tsx`, `package.json`, `app/layout.tsx`?**
   _High betweenness centrality (0.119) - this node is a cross-community bridge._
-- **Should `clack.ts` be split into smaller, more focused modules?**
-  _Cohesion score 0.12666666666666668 - nodes in this community are weakly interconnected._
-- **Why does `build()` connect `PhysicsLab.tsx` to `cradle.test.ts`, `Cradle`, `choreography.ts`, `Lucas Vu Portfolio: Master Plan`?**
+- **Should `Cradle.tsx` be split into smaller, more focused modules?**
+  _Cohesion score 0.07886904761904762 - nodes in this community are weakly interconnected._
+- **Why does `build()` connect `Cradle` to `cradle.test.ts`, `Cradle.tsx`, `Lucas Vu Portfolio: Master Plan`, `PhysicsLab.tsx`?**
   _High betweenness centrality (0.101) - this node is a cross-community bridge._
 - **Should `Decisions` be split into smaller, more focused modules?**
-  _Cohesion score 0.1 - nodes in this community are weakly interconnected._
+  _Cohesion score 0.09090909090909091 - nodes in this community are weakly interconnected._
 - **Should `package.json` be split into smaller, more focused modules?**
-  _Cohesion score 0.10256410256410256 - nodes in this community are weakly interconnected._
+  _Cohesion score 0.05102040816326531 - nodes in this community are weakly interconnected._

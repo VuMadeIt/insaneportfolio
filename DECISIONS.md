@@ -352,3 +352,25 @@ phase. Format: decision, alternatives, why.
   browsers fell back to the whole cover range and text sat half-transparent mid-screen. Now one
   fixed range (`entry 5%` to `cover 22%`); the stagger comes from elements entering at different
   heights.
+
+## Phase 09: polish (2026-11-03)
+
+- **Sweep** (`scripts/sweep.mjs`): every route at 1440, 1024, 768 and 390: no console errors,
+  no horizontal overflow.
+- **Story layout follows the camera's aspect rule**, not a width breakpoint: at 768x1024 the ball
+  goes top centre (portrait framing) but the text was still to the right. `.story-panel` and the
+  sound toggle now use the same `max-aspect-ratio: 9/10` query as the framing and the still.
+- **Deep links skip the still** when WebGL is available: the still shows four balls at rest and
+  flashed the wrong state for ~1 s on `/people`.
+- **No-WebGL fallback now has the same doors**: four captioned links positioned over the still's
+  balls with the framing maths in CSS (captions staggered on phones, where names are wider than
+  the ball pitch). They open the same server-rendered story pages. E2E-tested.
+- **Taste second pass**: removed the section-label eyebrows from case studies (the labels live in
+  the progress bar), moved the essay date and "Next exhibit" under their titles, put catalogue
+  years inline on phones, kept catalogue previews inline below 1024 px (they overflowed at 768).
+  Defended, not changed: case-study headlines run three lines on desktop and up to five on phones,
+  because PLAN 6.4 requires first-person claim sentences (the skim test) and they are the story;
+  thin rules in the catalogue (PLAN Part 5); `blank-gap`, which is the inspector stitching
+  screenshots before scroll-driven entrances have run (its own stitched captures show the content).
+- **Bundles**: leva is only referenced by `/lab`; three.js and the scene (975 KB raw) load after
+  first paint via `next/dynamic` with the still as LCP.

@@ -38,15 +38,14 @@ function Block({ section }: { section: Section }) {
       aria-labelledby={`${section.id}-title`}
       className="scroll-mt-24 px-[var(--gutter)] py-[clamp(64px,10vh,120px)]"
     >
-      <div className="mx-auto max-w-[660px]">
-        <p className="reveal text-[15px] text-muted">{section.label}</p>
+      <div className="mx-auto max-w-[900px]">
         <h2
           id={`${section.id}-title`}
-          className="reveal mt-3 text-[clamp(26px,2.6vw,36px)] font-normal leading-[1.15] tracking-[-0.01em]"
+          className="reveal text-[clamp(24px,2.6vw,36px)] font-normal leading-[1.15] tracking-[-0.01em]"
         >
           {section.headline}
         </h2>
-        <div className="mt-6 flex flex-col gap-4 text-[18px] leading-[1.6]">
+        <div className="mt-6 flex max-w-[660px] flex-col gap-4 text-[18px] leading-[1.6]">
           {section.body.map((b, k) => (
             <p key={k} className="reveal">
               {b}
@@ -99,7 +98,7 @@ function Block({ section }: { section: Section }) {
         </div>
       )}
       {section.points && (
-        <dl className="mx-auto mt-12 grid max-w-[660px] gap-6">
+        <dl className="mx-auto mt-12 grid max-w-[900px] gap-6 md:grid-cols-2">
           {section.points.map((p) => (
             <div key={p.title} className="reveal">
               <dt className="text-[18px] italic">{p.title}</dt>
@@ -171,7 +170,6 @@ export default async function CaseStudyPage({ params }: { params: Promise<{ slug
         href={`/work/${next.slug}`}
         className="group mt-[clamp(64px,10vh,120px)] block bg-[#e9e6df] px-[var(--gutter)] py-[clamp(72px,12vh,140px)]"
       >
-        <p className="text-[15px] text-muted">Next exhibit</p>
         <p className="mt-3 text-[clamp(48px,7vw,112px)] leading-[0.95] tracking-[-0.02em]">
           {next.title}{" "}
           <span
@@ -181,7 +179,10 @@ export default async function CaseStudyPage({ params }: { params: Promise<{ slug
             &rarr;
           </span>
         </p>
-        <p className="mt-4 max-w-[30em] text-[17px]">{next.description}</p>
+        <p className="mt-4 max-w-[30em] text-[17px]">
+          <span className="text-muted">Next exhibit. </span>
+          {next.description}
+        </p>
       </Link>
     </article>
   );

@@ -5,7 +5,7 @@ for (const [slug, title, next] of [
   ["ripple", "Ripple", "Maple Leaf Foods"],
   ["maple-leaf-foods", "Maple Leaf Foods", "Warframe"],
   ["warframe", "Warframe", "Shufflr"],
-]) {
+] as const) {
   test(`${title} case study: title, wall label, claim headlines, next exhibit`, async ({ page }) => {
     await page.goto(`/work/${slug}`);
     await expect(page.getByRole("heading", { level: 1 })).toHaveText(title);

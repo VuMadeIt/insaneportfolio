@@ -90,15 +90,15 @@
     "semantic_hash": ""
   },
   "AGENTS.md": {
-    "mtime": 1793690092.2946649,
-    "seen": 1793690093.8016346,
-    "ast_hash": "5f6471fae6ac15a078d02a8e8837dc46",
+    "mtime": 1793718048.7277863,
+    "seen": 1793718270.9057703,
+    "ast_hash": "2878f470f7ab42b9ad4c6f6646351a5f",
     "semantic_hash": ""
   },
   "CREDITS.md": {
-    "mtime": 1793683406.145193,
-    "seen": 1793683407.311955,
-    "ast_hash": "ddeb926fdc0dae26cd6cb4594c594c40",
+    "mtime": 1793716514.7753851,
+    "seen": 1793718270.9057703,
+    "ast_hash": "e99e5c743738e54861a884339c3eec52",
     "semantic_hash": ""
   },
   "DECISIONS.md": {
@@ -108,9 +108,9 @@
     "semantic_hash": ""
   },
   "PLAN.md": {
-    "mtime": 1793674718.3837833,
-    "seen": 1793676076.179438,
-    "ast_hash": "5f525a23fe74ca7dec8fc6ecaf2534ec",
+    "mtime": 1793718066.2819705,
+    "seen": 1793718270.9057703,
+    "ast_hash": "4f434420cf0f3285388c9a3a0cd9d826",
     "semantic_hash": ""
   },
   "reference/identities/experiment-atom.png": {
@@ -1419,6 +1419,36 @@
     "mtime": 1793690092.3100271,
     "seen": 1793690093.8016346,
     "ast_hash": "74605bd29f41db645dfedf7e8349c50a",
+    "semantic_hash": ""
+  },
+  "reference/inspo/SOURCES.md": {
+    "mtime": 1793716510.3919423,
+    "seen": 1793718270.9057703,
+    "ast_hash": "8673b61ea05e99c9b0558d356be7cea7",
+    "semantic_hash": ""
+  },
+  "reference/inspo/editorial-tibetan-culture-layouts.png": {
+    "mtime": 1793716462.114122,
+    "seen": 1793718270.9057703,
+    "ast_hash": "f5daf972f35af0c2b2e274b6b44c24e9",
+    "semantic_hash": ""
+  },
+  "reference/inspo/lucas-vu-hero-mock.png": {
+    "mtime": 1793716462.114122,
+    "seen": 1793718270.9057703,
+    "ast_hash": "6c03bceba05b41a60f3e7417ab823dc3",
+    "semantic_hash": ""
+  },
+  "reference/inspo/studio-wentape-accordion.png": {
+    "mtime": 1793716462.114122,
+    "seen": 1793718270.9057703,
+    "ast_hash": "bacd3bae47c064525dcadea478be0d6c",
+    "semantic_hash": ""
+  },
+  "reference/inspo/20261103-1427-09.8724131.mp4": {
+    "mtime": 1793716036.2743876,
+    "seen": 1793718270.9057703,
+    "ast_hash": "913868b4368f45dbe154bc8cd3457e83",
     "semantic_hash": ""
   },
   "package-lock.json": {

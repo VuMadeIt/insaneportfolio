@@ -1,5 +1,6 @@
 import type { CollisionEvent } from "@/physics/events";
 import sprite from "./clacks.json";
+import whooshes from "./whoosh.json";
 
 /** Impacts closer together than this are one clack: a chain sounds as a single hit. */
 const CHAIN_WINDOW = 0.006;
@@ -10,9 +11,13 @@ const FULL_SPEED = 1.4;
 /** Hertz contact: peak force, and so peak pressure, grows as v^1.2 (see scripts/physics/calibrate.ts). */
 const HERTZ = 1.2;
 const MASTER = 0.55;
+/** Slow motion pitches the clacks down with time, but never so far that they stop sounding like steel. */
+const MIN_RATE = 0.45;
+const WHOOSH_GAIN = 0.8;
 
 let ctx: AudioContext | null = null;
 let buffer: AudioBuffer | null = null;
+let whooshBuffer: AudioBuffer | null = null;
 let master: GainNode | null = null;
 let loading: Promise<void> | null = null;
 let lastClack = -Infinity;
@@ -27,14 +32,14 @@ export function unlockAudio(): void {
   master = ctx.createGain();
   master.gain.value = MASTER;
   master.connect(ctx.destination);
-  const url = new Audio().canPlayType('audio/webm; codecs="opus"')
-    ? "/audio/clacks.webm"
-    : "/audio/clacks.mp3";
-  loading = fetch(url)
-    .then((r) => r.arrayBuffer())
-    .then((data) => ctx!.decodeAudioData(data))
-    .then((decoded) => void (buffer = decoded))
-    .catch(() => void (buffer = null));
+  const ext = new Audio().canPlayType('audio/webm; codecs="opus"') ? "webm" : "mp3";
+  const load = (name: string) =>
+    fetch(`/audio/${name}.${ext}`)
+      .then((r) => r.arrayBuffer())
+      .then((data) => ctx!.decodeAudioData(data))
+      .catch(() => null);
+  loading = load("clacks").then((decoded) => void (buffer = decoded));
+  void load("whoosh").then((decoded) => void (whooshBuffer = decoded));
   document.addEventListener("visibilitychange", () => {
     if (document.hidden) void ctx?.suspend();
     else void ctx?.resume();
@@ -67,22 +72,34 @@ export function chainClacks(events: CollisionEvent[], last: number) {
   return { clacks, last };
 }
 
-/** Play one frame's impacts as clacks. */
-export function playImpacts(events: CollisionEvent[], enabled: boolean): void {
+/** Play one frame's impacts as clacks; `timeScale` < 1 is slow motion. */
+export function playImpacts(events: CollisionEvent[], enabled: boolean, timeScale = 1): void {
   if (!events.length) return;
   const result = chainClacks(events, lastClack);
   lastClack = result.last;
   if (!ctx || !buffer || !master || !enabled || ctx.state !== "running") return;
-  for (const c of result.clacks) clack(c.speed, c.x);
+  for (const c of result.clacks) clack(c.speed, c.x, Math.max(MIN_RATE, timeScale));
 }
 
-function clack(speed: number, x: number): void {
+/** The slow-motion whoosh: "down" as time slows, "up" (the same sound reversed) as it returns. */
+export function playWhoosh(kind: "down" | "up", enabled: boolean): void {
+  if (!ctx || !whooshBuffer || !master || !enabled || ctx.state !== "running") return;
+  const clip = whooshes[kind];
+  const source = ctx.createBufferSource();
+  source.buffer = whooshBuffer;
+  const gain = ctx.createGain();
+  gain.gain.value = WHOOSH_GAIN;
+  source.connect(gain).connect(master);
+  source.start(0, clip.start, clip.duration);
+}
+
+function clack(speed: number, x: number, rate: number): void {
   if (speed < SILENT_BELOW || !ctx || !buffer || !master) return;
   const level = Math.min(1, Math.pow(speed / FULL_SPEED, HERTZ));
   const clip = sprite.clips[Math.floor(Math.random() * sprite.clips.length)]!;
   const source = ctx.createBufferSource();
   source.buffer = buffer;
-  source.playbackRate.value = 1 + (Math.random() * 2 - 1) * 0.03;
+  source.playbackRate.value = rate * (1 + (Math.random() * 2 - 1) * 0.03);
   // Soft hits sound duller: open the filter with impact speed.
   const filter = ctx.createBiquadFilter();
   filter.type = "lowpass";

@@ -22,6 +22,8 @@ commit). Licence verified on each page on 2026-11-02.
 - "Newtons Cradle 2" by LoafDV, https://freesound.org/s/131596/ , CC BY 4.0. Calibration only
   (onset timing and loudness decay).
 - "Newtons Cradle.mp3" by LoafDV, https://freesound.org/s/94030/ , CC BY 4.0. Calibration only.
+- "Woosh - Plastic Tray 5 Slowed" by Sadiquecat, https://freesound.org/s/742946/ , CC0 1.0
+  (verified 2026-11-03). The slow-motion whooshes (`scripts/audio/whoosh.py`).
 - "Newton's Cradle Toy" by HandroMyburg, https://freesound.org/s/763542/ , CC BY-NC 4.0.
   Calibration only, never shipped.
 

@@ -5,6 +5,7 @@ import { useEffect } from "react";
 import * as THREE from "three";
 import { unlockAudio } from "@/audio/clack";
 import { useUi } from "@/state/ui";
+import { restoreTime, slowmo } from "./slowmo";
 import { cradle, frame, requestRender, taps } from "./world";
 
 const HIT_RADIUS = cradle.config.ball.radius * 1.08;
@@ -24,6 +25,10 @@ export function Interaction() {
     const centre = new THREE.Vector3();
     const offset = new THREE.Vector3();
     let dragging: number | null = null;
+    /** The ball last pressed: slow motion waits until the pointer has left it. */
+    let pressedOn: number | null = null;
+    slowmo.enabled =
+      location.pathname.startsWith("/lab") || new URLSearchParams(location.search).get("slowmo") === "1";
     // A press that barely moves and ends quickly is a tap, not a drag.
     const press = { x: 0, y: 0, time: 0, ball: null as number | null };
     const isTap = (e: PointerEvent) =>
@@ -64,8 +69,11 @@ export function Interaction() {
 
     const down = (e: PointerEvent) => {
       unlockAudio();
+      restoreTime();
       aim(e);
       const i = pick();
+      pressedOn = i;
+      slowmo.hover = null;
       Object.assign(press, { x: e.clientX, y: e.clientY, time: performance.now(), ball: i });
       if (i === null) return;
       e.preventDefault();
@@ -95,6 +103,8 @@ export function Interaction() {
         frame.hit.y = hitPoint.y - c.y;
         frame.hit.z = hitPoint.z - c.z;
       }
+      if (i !== pressedOn) pressedOn = null;
+      slowmo.hover = pressedOn === null && useUi.getState().selected === null ? i : null;
       if (useUi.getState().hovered !== i) useUi.getState().setHovered(i);
       el.style.cursor = i === null ? "" : "grab";
     };
@@ -112,6 +122,7 @@ export function Interaction() {
     };
     // Touch pointers "leave" on every lift; only a mouse leaving the canvas ends a hover.
     const leave = (e: PointerEvent) => {
+      slowmo.hover = pressedOn = null;
       if (e.pointerType === "mouse" && dragging === null && useUi.getState().hovered !== null) {
         useUi.getState().setHovered(null);
       }

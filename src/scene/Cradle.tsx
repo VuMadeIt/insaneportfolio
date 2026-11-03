@@ -12,6 +12,7 @@ import { useLook } from "./look";
 import { materialFactories } from "./materials";
 import { stringMaterial } from "./materials/string";
 import { StringTube } from "./stringGeometry";
+import { advanceClock, slowmo } from "./slowmo";
 import { REFLECTION_LAYER } from "./Wall";
 import { afterFrame, anchorOf, cradle, frame, requestRender, ropeOf, ropes, tick } from "./world";
 
@@ -118,7 +119,7 @@ export function CradleModel() {
   }, [gl]);
 
   useFrame((state, delta) => {
-    const dt = Math.min(delta, MAX_FRAME);
+    const dt = advanceClock(Math.min(delta, MAX_FRAME), cradle);
     tick(dt);
     cradle.balls.forEach((_, i) => {
       const g = groups.current[i];
@@ -135,7 +136,7 @@ export function CradleModel() {
       kick.x = e.speed * STRING_KICK;
       for (const ball of [e.a, e.b]) for (const side of [0, 1] as const) ropeOf(ball, side).kick(kick);
     }
-    playImpacts(frame.events, useUi.getState().sound);
+    playImpacts(frame.events, useUi.getState().sound, slowmo.scale);
 
     ropes.forEach((rope, k) => {
       const ball = k >> 1;
@@ -182,7 +183,7 @@ export function CradleModel() {
       s.r = ((projected.x + 1) / 2) * state.size.width - x;
     });
     afterFrame.forEach((f) => f());
-    const animating = updateIdentities(state.clock.elapsedTime, dt);
+    const animating = updateIdentities(slowmo.clock, dt);
 
     // Keep rendering while anything moves; the strings get a moment to settle after the balls sleep.
     const now = state.clock.elapsedTime;

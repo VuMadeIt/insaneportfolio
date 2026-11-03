@@ -374,3 +374,32 @@ phase. Format: decision, alternatives, why.
   screenshots before scroll-driven entrances have run (its own stitched captures show the content).
 - **Bundles**: leva is only referenced by `/lab`; three.js and the scene (975 KB raw) load after
   first paint via `next/dynamic` with the still as LCP.
+
+## Phase 10: slow motion lab (2026-11-03)
+
+- **Time scale outside the physics**: `src/scene/slowmo.ts` multiplies the real frame time before
+  it reaches `cradle.advance`, the rope sim, the identity clocks (`slowmo.clock` replaces the R3F
+  clock for blinks and the weave) and the clack pitch. `dt`, constants, mass and the solver are
+  untouched, so the state after N fixed steps is bit-identical (Vitest, `slowmo.test.ts`). The
+  physics files never mention the flag (same test).
+- **Ramp**: smoothstep on a 0..1 ramp (300 ms in, 400 ms out), applied in log time
+  (`scale = 0.1^s`), so the slowdown reads as an even film ramp instead of a brake. Alternatives:
+  a linear lerp of the scale (spends most of the ramp near 1x, then drops abruptly) or an
+  exponential approach (never quite arrives).
+- **Trigger**: a mouse pointer on a ball while the sim is awake, no ball held, no choreography
+  moving the anchors, and some ball faster than 0.05 m/s (a 30 degree release hits at ~1.15).
+  Once slowed it stays slow while the pointer stays on a ball, even if that ball stops, so the
+  user can aim the click. Keyboard focus and touch never trigger it (`slowmo.hover` is set only by
+  mouse moves). Reduced motion disables it.
+- **Click**: a press on the canvas or any choreography call snaps back to 1x first (with the up
+  whoosh), so grabs and the curtain always run in real time. After a press, slow motion waits
+  until the pointer has left that ball, otherwise a flick would slow down the moment it is thrown.
+- **Sound**: "Woosh - Plastic Tray 5 Slowed" by Sadiquecat (Freesound 742946, CC0), a real swung
+  object rather than a designed sci-fi whoosh. `scripts/audio/whoosh.py` runs it through a
+  tape-stop (playback speed 1 to 0.45, so the pitch sinks like a film slowing), trims it to 0.95 s
+  so the reversed "up" clip peaks soon after the pointer leaves, and loudness-normalises to
+  -24 LUFS / -6 dBTP so it sits under the clacks. Clacks pitch down with the time scale, floored at
+  0.45x so they still sound like steel.
+- **Flag**: on in `/lab` (pathname) and with `?slowmo=1`; off in production. Browser check
+  (`scripts/slowmo.mjs`, real GPU): outer balls move at 0.16x their speed while a middle ball is
+  hovered (ramp included), 1.2x without the flag (sampling noise).

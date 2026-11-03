@@ -15,31 +15,92 @@ export const portrait = {
   height: 883,
 };
 
-/** Oldest first, read left to right. `dark` puts a white logo on a dark tile. */
-export const chronology: { when: string; role: string; place: string; logo: string; dark?: boolean }[] = [
-  { when: "Ongoing", role: "Systems Design Engineering", place: "University of Waterloo", logo: "uwaterloo" },
+export interface Role {
+  role: string;
+  place: string;
+  /** YYYY-MM; `end` null while it is still going. */
+  start: string;
+  end: string | null;
+  logo: string;
+  /** A white logo that needs a dark tile. */
+  dark?: boolean;
+  text: string;
+  link?: { label: string; href: string };
+}
+
+/**
+ * The chronology (PLAN 13.5), oldest first. Dates from LinkedIn and Lucas; lines from LinkedIn,
+ * his essay and Medium post. DRAFT: the WES, Creators Collective and Hackathons lines.
+ */
+export const chronology: Role[] = [
   {
-    when: "2025",
     role: "Systems Design and Ops Coordinator",
     place: "The Local Charity",
+    start: "2025-05",
+    end: "2025-08",
     logo: "local-charity",
+    text: "Ran the systems and operations behind the charity's programs, and learned I would rather build the product than run the machine.",
   },
   {
-    when: "2026",
+    role: "Systems Design Engineering",
+    place: "University of Waterloo",
+    start: "2025-09",
+    end: null,
+    logo: "uwaterloo",
+    text: "Human-centred design, systems thinking and real-world problem solving, the program I obsessed over in high school.",
+  },
+  {
     role: "Figma Design Director",
     place: "Waterloo Engineering Society",
+    start: "2026-01",
+    end: "2026-04",
     logo: "waterloo-engineering",
+    text: "Directed the society's design work in Figma for the winter term.",
   },
-  { when: "2026", role: "Digital Product Manager", place: "Maple Leaf Foods", logo: "maple-leaf-foods" },
-  { when: "2026", role: "Product Designer", place: "Creators Collective", logo: "creators-collective" },
-  { when: "2026", role: "Design Engineer", place: "Parrot (YC F25)", logo: "parrot-yc" },
-  { when: "2026, now", role: "Product Design Lead", place: "Hackathons North America", logo: "hack-canada" },
   {
-    when: "2026, now",
+    role: "Digital Product Manager",
+    place: "Maple Leaf Foods",
+    start: "2026-01",
+    end: "2026-04",
+    logo: "maple-leaf-foods",
+    text: "Product manager for the Service Penalty App ($14M+ a year), QA for the Maple Leaf Market launch, design engineer for the team's task tracker.",
+    link: { label: "Case study", href: "/work/maple-leaf-foods" },
+  },
+  {
+    role: "Product Designer",
+    place: "Creators Collective",
+    start: "2026-01",
+    end: "2026-06",
+    logo: "creators-collective",
+    text: "Product design for a student initiative that sets out to empower creators.",
+    link: { label: "Live site", href: "https://creatorscollective.framer.website/" },
+  },
+  {
+    role: "Product Design Lead",
+    place: "Hackathons North America",
+    start: "2026-05",
+    end: null,
+    logo: "hack-canada",
+    text: "Leading product design for Hack Canada and the hackathons around it.",
+  },
+  {
+    role: "Design Engineer",
+    place: "Parrot (YC F25)",
+    start: "2026-07",
+    end: "2026-08",
+    logo: "parrot-yc",
+    text: "Design engineering for the TikTok of language learning, over the summer.",
+    link: { label: "parrotapp.com", href: "https://parrotapp.com" },
+  },
+  {
     role: "Product Designer",
     place: "Digital Extremes",
+    start: "2026-09",
+    end: null,
     logo: "digital-extremes",
     dark: true,
+    text: "Product design on Warframe. The work is not public yet; ask me about it.",
+    link: { label: "Ask me about it", href: "mailto:lucasvu.work@gmail.com?subject=Warframe" },
   },
 ];
 

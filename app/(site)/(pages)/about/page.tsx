@@ -46,7 +46,7 @@ export default function AboutPage() {
         </figure>
       </section>
 
-      <Timeline />
+      <Timeline now={new Date().toISOString().slice(0, 7)} />
 
       <section aria-labelledby="objects-title" className="px-[var(--gutter)] pb-[clamp(96px,14vh,180px)]">
         <h2 id="objects-title" className="reveal text-[clamp(36px,4.5vw,64px)] leading-[1]">

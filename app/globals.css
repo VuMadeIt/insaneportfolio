@@ -200,9 +200,20 @@
   height: 0.55em;
   transform: translateY(-0.05em);
 }
-.timeline-knob {
-  width: 16px;
-  height: 16px;
+/* The pinned timeline's stage (Timeline.tsx): one role at a time rises into place. */
+.timeline-stop:not(.reveal) {
+  opacity: 0;
+  transform: translateY(24px);
+  pointer-events: none;
+  transition:
+    opacity 400ms var(--ease-out),
+    transform 700ms var(--ease-out);
+}
+.timeline-stop[data-on] {
+  opacity: 1;
+  transform: none;
+  pointer-events: auto;
+  transition-delay: 120ms;
 }
 
 /* The footer's name (Footer.tsx): Lucas's Framer close, set in General Sans, lowercase. */

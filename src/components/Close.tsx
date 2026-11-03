@@ -26,10 +26,7 @@ export function Close() {
         >
           Let&apos;s get something moving.
         </h2>
-        <p
-          className="reveal mt-8 max-w-[34em] text-[clamp(18px,1.5vw,22px)] leading-[1.5]"
-          style={{ "--d": "90ms" } as React.CSSProperties}
-        >
+        <p className="reveal mt-8 max-w-[34em] text-[clamp(18px,1.5vw,22px)] leading-[1.5]">
           I&apos;m looking for Summer 2027 co-op roles. Write to{" "}
           <A href={`mailto:${CONTACT.email}`}>{CONTACT.email}</A>, or find me on{" "}
           <A href={CONTACT.linkedin}>LinkedIn</A>, <A href={CONTACT.github}>GitHub</A>,{" "}

@@ -332,3 +332,23 @@ phase. Format: decision, alternatives, why.
   to write it, rather than an invented reflection.
 - **Warframe**: one section ("I would rather show you this in person.") and a mailto "Ask me
   about it". No invented content.
+
+## Phase 08: About and All work (2026-11-03)
+
+- **About as a museum room**: wall-text statement (from the old About page) beside a portrait (the
+  Senso-ji photo from the solo Japan trip, the only portrait in the old assets), a chronology as a
+  plain ordered list (year, role, place; LinkedIn plus the old experience list), six "selected
+  objects" with tombstone labels (title in italic, context, medium, one line), staggered in a
+  three-column hang, and a reading room on a tone-step ground for the essay "Why I'm finally ready
+  to call myself a designer", ported with only typographic fixes (no em dashes).
+- **Accuracy correction**: PLAN 2.5 lists "soccer (TCDSB West-End, last season 13-1-2)", but the
+  old site's own caption puts the 13-1-2 record in the TCDSB West-End *chess* division. The site
+  follows Lucas's caption. Listed for him to confirm.
+- **Catalogue `/work`**: Sam-style rows, thin rules (allowed by PLAN Part 5), large title, two-line
+  description, medium and credit in muted ink, year at the right. Preview media appear beside the
+  row on hover or focus on desktop and sit inline on phones. Case-study rows link to the study;
+  others link to Devpost or GitHub; Parrot and Creators Collective have no public link.
+- **Entrance timing bug fixed**: the `.reveal` range used `calc(% + ms)`, which is invalid, so
+  browsers fell back to the whole cover range and text sat half-transparent mid-screen. Now one
+  fixed range (`entry 5%` to `cover 22%`); the stagger comes from elements entering at different
+  heights.

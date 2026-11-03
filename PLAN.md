@@ -4,6 +4,9 @@ This file is the single source of truth for building Lucas Vu's portfolio. It is
 executed by an autonomous agent in a long unattended session (overnight). Read it fully before
 touching anything. Then follow **Part 9 (Execution protocol)** exactly.
 
+**Revision 2 (2026-11-03): Part 12 overrides earlier parts wherever they conflict** (typeface,
+rounded corners, nav, hero copy, work section, case studies, Warframe, slow motion).
+
 Kickoff prompt Lucas will paste into a fresh session:
 
 > Read PLAN.md and AGENTS.md in full. Execute the plan autonomously from Phase 00 onward, following
@@ -726,3 +729,139 @@ REPORT.md.
 5. Hack Canada vs Hackathons North America naming [use LinkedIn: Hackathons North America]
 6. Domain name [none yet; Vercel URL]
 7. Which reveal variant and which material win [chrome + best-reviewed variant; all kept in /lab]
+
+---
+
+## Part 12. Revision 2 (Lucas, 2026-11-03). Overrides Parts 1-11 where they conflict
+
+Answers from Lucas's Q&A on 2026-11-03. Everything not mentioned here stays as written above.
+Physics (Part 4.1) is untouched; slow motion below is a playback-rate change only.
+
+### 12.1 Typeface and style (from the old site, vumadeit.github.io/lucasvu, repo `VuMadeIt/lucasvu`)
+- **Fraunces is removed everywhere.** Two families, as on the old site:
+  - **General Sans** (variable 200-700): headings, page titles, the giant name. Old values: h1
+    500 with -0.03em tracking; section titles 500, -0.03em; h3 600, -0.03em, leading 1.25.
+    The hero name is weight ~350, uppercase **LUCAS VU**, tracking tight, leading 1.
+  - **Cabinet Grotesk** (variable 100-900): body, nav, corner lines, labels. Body 400 at
+    ~17.6-20.8px, leading 1.5; subtitles 300.
+  - Self-host with `next/font/local`. Prefer woff2 from Fontshare; the old repo has the TTFs at
+    `src/assets/fonts/{GeneralSans,CabinetGrotesk}-Variable.ttf`. Both are under the ITF Free Font
+    License (free for commercial use); verify on fontshare.com and credit in `CREDITS.md`.
+- **Colour:** ink and muted grey stay as in Part 5. The old site's olive/brown text colours
+  (`#8C8C73`, `#AEAE9D`, `#D1D1C7`) are **not** brought back for text or titles.
+- **Metallic grey accent (replaces the old gold/brown), for microanimations only:** link and nav
+  underlines, the `say hi` underline, the hero scroll line, the case-study progress fill. Never
+  used for titles or body text. It should read like the chrome balls: a narrow grey gradient
+  sampled from a real screenshot of the rendered chrome (dark edge, mid grey, light highlight),
+  optionally with a slow highlight sweep on hover. Define it once as `--metal` in tokens. This is
+  a deliberate exception to the "no gradients in UI" rule (log in DECISIONS.md).
+- **Rounded corners are now allowed across the whole site** (cards, buttons, media, the nav pill,
+  the progress bar). Pick one radius scale (e.g. 8 / 16 / 24px) that matches the Taste skill and
+  Lucas's references in `reference/inspo/`; record it in tokens and DECISIONS.md.
+- Copy style follows the old site and the mock: **lowercase** nav and corner lines.
+
+### 12.2 Hero (follow `reference/inspo/lucas-vu-hero-mock.png`)
+- Top-left, three lowercase lines: `systems design eng @ uwaterloo` /
+  `product designer @ warframe` (current role, not "prev") /
+  `current product design lead of hack canada`.
+- Right edge: the vertical tagline **"the person who gets things *moving*"** ("moving" in italic),
+  rotated 90 degrees, with the old site's **scroll line** under it: a short metallic line inside a
+  clipped box that sweeps in on a loop (old code: `gsap.timeline({repeat:-1, repeatDelay:0.5})
+  .from(line, {x:-40, duration:1.5, ease:"power4.inOut"})`). This replaces the top-left
+  "I like getting things moving. [more]" line; the `[more]` dialog goes.
+- Giant **LUCAS VU** along the bottom (General Sans, uppercase), cradle hanging in front.
+- **Letter stagger on load** (old Hero.jsx): once fonts are loaded, each letter rises from
+  `y:100, opacity:0` over 1.5s, `power4.out`, stagger 0.1. Must not fight the LCP still or the
+  story-state slide-down. Reduced motion: no stagger.
+- `[sound on]` stays bottom-right.
+
+### 12.3 Nav (old `NavBar.jsx`, adapted)
+- **Home hero: links only, no logo**, top-right: `about`, `work`, and a rounded `say hi` pill
+  (mailto). The status lines keep the top-left; the vertical tagline sits below the nav.
+- **Inner pages:** the full old nav, with the `logo.png` ("i am vu", old repo
+  `src/assets/icons/Navbar/logo.png`) on the left and the same links on the right. Identity routes
+  (`/people` etc.) keep the back arrow for the story state.
+- Fixed, slides down from `y:-100%` on load (`power4.inOut`, ~1.2s, delay 0.5s; the old 3s is too
+  slow). Underline on hover grows from 0 to full width (300ms, ease-in-out), in `--metal`.
+- No colour flip on dark sections.
+
+### 12.4 Site-wide motion
+- **Text rise on scroll** (old About.jsx): headings and paragraphs start at `y:40, opacity:0`
+  and rise in when their section reaches ~`top 400px` (heading first, body 0.2s later, 1.25s,
+  `power4.out`, plays once). GSAP ScrollTrigger (GSAP is installed).
+- **Lenis smooth scroll** on the whole site (package `lenis`, pinned, a release at least 7 days
+  old), driven from GSAP's ticker so ScrollTrigger stays in sync. Off for reduced motion. It must
+  not break the sticky work stack, the canvas pointer capture, or `touch-action: pan-y` on mobile.
+
+### 12.5 Work section: Folio Stack, cleaner
+- Remove the "Selected work / Four exhibits: ..." intro; the section is the projects only.
+- Keep the full-screen stacked cards, rebuilt after **Folio Stack** (framer.com/marketplace/
+  components/folio-stack, demo `drab-flexibility-030161.framer.app/folio-stack`): full-bleed
+  rounded cards that pin with a small top offset; as the next card slides over, the previous one
+  **steps back, shrinks a little (~0.94-0.96) and dims**, and a thin **peek** of each earlier card's
+  top edge stays visible so the stack reads as a pile. On each card: a big title bottom-left over
+  the media (light shade on the media for legibility), a one-line caption under it, an index
+  `01 / 04` top-left and a tag top-right (e.g. "mobile app concept"). Pure CSS sticky plus one
+  scroll listener (or ScrollTrigger); reduced motion keeps the stack without scaling.
+- Order: Shufflr, Ripple, Maple Leaf Foods, Warframe.
+- **Warframe = card only. No case-study page.** Cover still (`apple-still.jpg`) that plays the
+  **glitch on hover** (`apple-hover.gif` from `VuMadeIt/updated-portfolioi/public/images/`;
+  6.5 MB, so convert it to a looping muted webm/mp4 with ffmpeg and play it on hover, falling back
+  to the still). Tag/caption "coming soon"; the card isn't a link. Remove `/work/warframe` and its
+  content file; leave it out of "Next" cards and the sitemap; in `/work` it's listed as coming soon
+  without a link.
+
+### 12.6 Case studies: Caleb Wu's RevisionDojo (calebwu.ca/RevisionDojo)
+- **Shufflr and Ripple** follow Caleb's rhythm exactly: year, title, one-paragraph summary,
+  Team block, hero images, then **The problem -> Insight #1 -> Insight #2 -> Solution ->
+  Solution -> Design decision -> Design decision -> Research (context, pain points, consolidating
+  data) -> Solution ideation (ideas with pros/cons, iterations, prototype, feedback) -> Final
+  solution -> Key learnings -> Next project card**. Each block: small label, one-sentence headline,
+  two lines of text, then large media with a small caption under it. Headlines keep the
+  Rachel Chen skim test (headlines alone tell the story).
+- **Media density like Caleb's:** a visual for almost every block. Use what already exists first
+  (`public/media/{shufflr,ripple}`, plus anything still unused in `VuMadeIt/updated-portfolioi`
+  `public/{images,videos}/{shufflr,ripple}`), then **coded visuals**: animated stat counters,
+  diagrams that draw in, scroll-scrubbed video, before/after sliders, pros/cons cards. Don't record
+  new media.
+- **Study Caleb's microanimations first:** film the page in a real browser (as `scripts/story.mjs`
+  does), list every microanimation in DECISIONS.md (reveals, hover states, sticky media, counters,
+  the Next card), then rebuild the ones that suit this site.
+- **Maple Leaf Foods follows the updated portfolio's format**
+  (`src/components/project/maple-leaf/MapleLeafCaseStudy.tsx` + `mapleLeafContent.ts`): overview,
+  then the three app blocks (Maple Leaf Market, Project Tracking App, Service Penalty App), each
+  with its image and text, revealed on scroll.
+- Accuracy rule (2.5) still applies: copy comes from the old content files; nothing invented.
+
+### 12.7 Slow motion on hover (experimental, lab first)
+- **What:** hovering a sphere while the cradle is moving eases the whole simulation into
+  **0.1x speed** so it can be clicked; leaving the sphere eases back to 1x. It should feel like
+  real film slow motion: inertia, arcs and collisions stay the same, just slower.
+- **How (physics stays pure):** a `timeScale` (0.1..1) multiplies the real elapsed time fed to
+  the fixed-step accumulator. It never touches dt, constants, mass or the solver, so trajectories
+  in sim time are identical. Ease `timeScale` over ~300ms in and ~400ms out. The rope sim, the
+  identity shader clocks and the clack scheduling all use the same scaled clock. Clacks pitch down
+  with the slowdown (playbackRate floored around 0.4-0.5 so they stay recognisable). A click during
+  slow motion restores 1x before the choreography starts.
+- **Trigger:** only when the sim is awake and the hovered ball (or the cradle) has meaningful
+  speed; hovering a still cradle does nothing new. Desktop hover only (no touch).
+- **Sound:** a cinematic **whoosh down** on entry and a reversed **whoosh up** on exit, from a
+  CC0 Freesound sample (licence checked, credited in CREDITS.md), sliced and loudness-matched
+  with the existing audio pipeline, then played through the same WebAudio master and sound toggle.
+- **Behind a flag:** on in `/lab` and with `?slowmo=1`; off in production until Lucas approves it.
+- **Test:** a Vitest case showing that stepping with a varying timeScale gives the same state hash
+  after N sim steps as normal stepping, and that physics never imports the flag.
+- Reduced motion: disabled.
+
+### 12.8 Phases for revision 2
+Same protocol as Part 9 (branch, small commits, gates, `--no-ff` merge, annotated tag, REPORT).
+Gates still include the Taste `inspect.mjs`; update its allow-list for the metal gradient and
+rounded corners and log why.
+- **Phase 10 - Slow motion lab** (`v1.1.0-slowmo`): 12.7.
+- **Phase 11 - Type, nav and motion** (`v1.2.0-type-nav`): 12.1-12.4, the hero rework, AGENTS.md
+  conventions updated.
+- **Phase 12 - Work stack** (`v1.3.0-work-stack`): 12.5, including the Warframe glitch card and
+  removing the Warframe page.
+- **Phase 13 - Case studies v2** (`v1.4.0-case-studies`): 12.6.
+- **Release candidate 2** (`v1.5.0-rc.2`): full sweep (`scripts/sweep.mjs`), screenshots,
+  REPORT.md updated.

@@ -47,7 +47,8 @@ vision, architecture, phases, git workflow and the autonomous execution protocol
 ## Conventions
 - Physics in `src/physics` is pure TypeScript: no three.js, React, or UI-state imports.
 - Visual changes never alter physics (mass, collider, string length).
-- No rounded corners, one typeface (Fraunces), no em dashes in site copy.
+- No em dashes in site copy. Type, corners, nav and accent colour follow PLAN.md Part 12
+  (General Sans + Cabinet Grotesk, rounded corners allowed, `--metal` accent for microanimations only).
 - Conventional Commits; one branch per phase; annotated tag per merged phase.
 
 <!-- BEGIN:nextjs-agent-rules -->

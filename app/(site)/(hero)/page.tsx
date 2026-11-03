@@ -1,9 +1,10 @@
 import Link from "next/link";
+import { Footer } from "@/components/Footer";
 import { HomeAbout } from "@/components/HomeAbout";
 import { WorkList } from "@/components/WorkList";
 import { homeProjects } from "@/content/projects";
 
-/** Under the hero: the four strongest projects, a way to the rest, then the dark about half. */
+/** Under the hero: the two strongest projects, a way to the rest, the about teaser, the ball-pit footer. */
 export default function HomePage() {
   return (
     <>
@@ -21,6 +22,7 @@ export default function HomePage() {
         </Link>
       </section>
       <HomeAbout />
+      <Footer physics />
     </>
   );
 }

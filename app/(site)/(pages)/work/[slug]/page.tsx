@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Visual } from "@/components/case/Visual";
-import { CONTACT } from "@/components/Close";
+import { CONTACT } from "@/content/contact";
 import { ExhibitMedia } from "@/components/ExhibitMedia";
 import { ProgressBar } from "@/components/ProgressBar";
 import { type Block, caseStudies, caseStudyBySlug } from "@/content/caseStudies";

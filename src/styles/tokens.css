@@ -12,9 +12,9 @@
   /* GSAP power4 curves, for CSS-only moves that copy the old site's GSAP ones. */
   --ease-power4-out: cubic-bezier(0.165, 0.84, 0.44, 1);
   --ease-power4-in-out: cubic-bezier(0.77, 0, 0.175, 1);
-  /* Brushed chrome, sampled from a render of the balls (dark edge, mid grey, highlight), darkened
-     at the highlight so it still reads on the wall. Microanimations only, never text. */
-  --metal-stops: #474645 0%, #8b8b8a 30%, #c4c3c0 50%, #8b8b8a 70%, #474645 100%;
-  --metal: linear-gradient(90deg, var(--metal-stops));
-  --metal-v: linear-gradient(180deg, var(--metal-stops));
+  /* Hover underlines (PLAN 13.1): light grey, never a gradient. */
+  --underline: #b8b5ad;
+  /* Thin progress fills and lines: the dark grey of the cursor and the balls. */
+  --metal: #3a3936;
+  --metal-v: #3a3936;
 }

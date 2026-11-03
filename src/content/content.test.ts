@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { caseStudies } from "./caseStudies";
 import { identities } from "./identities";
-import { allProjects, homeProjects, hrefOf, projects } from "./projects";
+import { allProjects, homeProjects, hrefOf, monthOf, projects } from "./projects";
 
 const allText = JSON.stringify({ identities, projects, caseStudies });
 
@@ -29,14 +29,19 @@ describe("site copy", () => {
       expect(hrefOf(p), p.slug).toBeTruthy();
       expect(p.media.video ?? p.media.hover, p.slug).toBeTruthy();
     }
-    expect(homeProjects.map((p) => p.slug)).toEqual([
+    expect(homeProjects.map((p) => p.slug)).toEqual(["ripple", "shufflr"]);
+    expect(allProjects.slice(0, 3).map((p) => p.slug)).toEqual([
       "ripple",
       "shufflr",
       "we-should-go-to-japan",
-      "maple-leaf-foods",
     ]);
-    expect(allProjects.slice(0, 3)).toEqual(homeProjects.slice(0, 3));
     expect(new Set(allProjects).size).toBe(projects.length);
+  });
+
+  it("dates show as a month, with the year only when it is not this year", () => {
+    const now = new Date(2026, 10, 3);
+    expect(monthOf("2026-03", now)).toBe("March");
+    expect(monthOf("2025-06", now)).toBe("June 2025");
   });
 
   it("third-party stats keep their sources", () => {

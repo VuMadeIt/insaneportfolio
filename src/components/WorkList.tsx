@@ -1,78 +1,129 @@
+"use client";
+
 import Link from "next/link";
-import { type Project, hrefOf } from "@/content/projects";
+import { useEffect, useRef, useState } from "react";
+import { type Project, hrefOf, monthOf } from "@/content/projects";
 import { ExhibitMedia } from "./ExhibitMedia";
 
-/**
- * One project row (Sam-style catalogue): title and accolades, description, year, thin rules, and
- * the project's video beside the row on hover (inline on tablets and phones). Every row opens
- * something: the case study, else its Devpost, live site or an email.
- */
-function Row({ p, level: H }: { p: Project; level: "h2" | "h3" }) {
-  const href = hrefOf(p)!;
-  const external = !p.caseStudy;
-  const media = p.media.hover ? { ...p.media, video: p.media.hover, poster: p.media.image } : p.media;
-  const meta = [p.event !== p.title && p.event, p.medium, p.credit].filter(Boolean).join(". ");
-  const title = <H className="text-[clamp(30px,3.6vw,52px)] leading-[1]">{p.title}</H>;
-  const cover = "after:absolute after:inset-0";
-  return (
-    <li className="catalogue-row reveal group relative border-t border-rule py-8 md:py-10">
-      <div className="grid gap-3 md:grid-cols-[minmax(0,1.1fr)_minmax(0,1fr)_9em] md:gap-10">
-        <div>
-          {external ? (
-            <a
-              href={href}
-              className={cover}
-              {...(href.startsWith("http") ? { target: "_blank", rel: "noreferrer" } : {})}
-            >
-              {title}
-            </a>
-          ) : (
-            <Link href={href} className={cover}>
-              {title}
-            </Link>
-          )}
-          {p.accolades && (
-            <ul className="mt-4 flex flex-col gap-1.5 text-[15px] leading-[1.35]">
-              {p.accolades.map((a) => (
-                <li key={a} className="flex items-baseline gap-2.5">
-                  <span aria-hidden className="award-dot" />
-                  {a}
-                </li>
-              ))}
-            </ul>
-          )}
-        </div>
-        <div className="text-[16px] leading-[1.5]">
-          <p>{p.description}</p>
-          <p className="mt-2 text-[15px] text-muted">
-            {!meta.includes(p.year) && <span className="md:hidden">{p.year}. </span>}
-            {meta}.{" "}
-            <span className="whitespace-nowrap">
-              {p.caseStudy ? "Case study" : p.link!.label}{" "}
-              <span
-                aria-hidden
-                className="inline-block transition-transform duration-300 group-hover:translate-x-1"
-              >
-                {href.startsWith("http") ? "\u2197" : "\u2192"}
-              </span>
-            </span>
-          </p>
-        </div>
-        <p className="hidden text-[15px] text-muted md:block md:text-right">{p.year}</p>
-      </div>
-      <div className="catalogue-preview mt-6 lg:pointer-events-none lg:absolute lg:right-[12em] lg:top-1/2 lg:z-10 lg:mt-0 lg:w-[clamp(300px,26vw,400px)]">
-        <ExhibitMedia media={media} sizes="(min-width: 1024px) 400px, 100vw" hoverPlay />
-      </div>
-    </li>
-  );
-}
+const previewMedia = (p: Project) =>
+  p.media.hover ? { ...p.media, video: p.media.hover, poster: p.media.image } : p.media;
 
+/**
+ * The project list (PLAN 13.3): title and accolades, the description, the month, nothing else.
+ * Every row opens something: the case study, else its Devpost, live site or an email. On desktop
+ * the row's video follows the pointer and is the cursor while over the row; it shows on pointer
+ * hover only (never on focus after a click, which left it stuck). Keyboard focus shows it beside
+ * the row. Phones and tablets get the video inline.
+ */
 export function WorkList({ projects, level = "h2" }: { projects: Project[]; level?: "h2" | "h3" }) {
+  const [active, setActive] = useState<number | null>(null);
+  const layer = useRef<HTMLDivElement>(null);
+  const to = useRef({ x: 0, y: 0 });
+
+  useEffect(() => {
+    if (active === null) return;
+    const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const pos = { ...to.current };
+    let raf = 0;
+    const tick = () => {
+      const k = reduced ? 1 : 0.18;
+      pos.x += (to.current.x - pos.x) * k;
+      pos.y += (to.current.y - pos.y) * k;
+      if (layer.current) layer.current.style.transform = `translate3d(${pos.x}px, ${pos.y}px, 0)`;
+      raf = requestAnimationFrame(tick);
+    };
+    raf = requestAnimationFrame(tick);
+    // Leaving for another tab (an external link opened) must never leave the preview behind.
+    const clear = () => setActive(null);
+    addEventListener("blur", clear);
+    return () => {
+      cancelAnimationFrame(raf);
+      removeEventListener("blur", clear);
+    };
+  }, [active]);
+
+  const follow = (e: React.PointerEvent) => {
+    to.current = { x: e.clientX, y: e.clientY };
+  };
+
   return (
-    <ul className="border-b border-rule">
-      {projects.map((p) => (
-        <Row key={p.slug} p={p} level={level} />
-      ))}
-    </ul>
+    <>
+      <ul className="border-b border-rule">
+        {projects.map((p, i) => {
+          const href = hrefOf(p)!;
+          const external = href.startsWith("http");
+          const H = level;
+          const title = <H className="text-[clamp(30px,3.6vw,52px)] leading-[1]">{p.title}</H>;
+          const linkProps = {
+            className: "after:absolute after:inset-0",
+            onFocus: (e: React.FocusEvent<HTMLAnchorElement>) => {
+              if (!e.currentTarget.matches(":focus-visible")) return;
+              const r = e.currentTarget.closest("li")!.getBoundingClientRect();
+              to.current = { x: r.right - 260, y: r.top + r.height / 2 };
+              setActive(i);
+            },
+            onBlur: () => setActive(null),
+          };
+          return (
+            <li
+              key={p.slug}
+              data-cursor="hide"
+              className="catalogue-row reveal group relative border-t border-rule py-8 md:py-10"
+              onPointerEnter={(e) => {
+                if (e.pointerType !== "mouse") return;
+                to.current = { x: e.clientX, y: e.clientY };
+                setActive(i);
+              }}
+              onPointerMove={follow}
+              onPointerLeave={() => setActive(null)}
+            >
+              <div className="grid gap-3 md:grid-cols-[minmax(0,1.1fr)_minmax(0,1fr)_7em] md:gap-10">
+                <div>
+                  {p.caseStudy ? (
+                    <Link href={href} {...linkProps}>
+                      {title}
+                    </Link>
+                  ) : (
+                    <a
+                      href={href}
+                      {...(external ? { target: "_blank", rel: "noreferrer" } : {})}
+                      {...linkProps}
+                    >
+                      {title}
+                    </a>
+                  )}
+                  {p.accolades && (
+                    <ul className="mt-4 flex flex-col gap-1.5 text-[15px] leading-[1.35]">
+                      {p.accolades.map((a) => (
+                        <li key={a} className="flex items-baseline gap-2.5">
+                          <span aria-hidden className="award-dot" />
+                          {a}
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+                </div>
+                <p className="max-w-[34em] text-[17px] leading-[1.5]">{p.description}</p>
+                <p className="text-[15px] text-muted md:text-right">{monthOf(p.date)}</p>
+              </div>
+              <div className="mt-6 lg:hidden">
+                <ExhibitMedia media={previewMedia(p)} sizes="100vw" />
+              </div>
+            </li>
+          );
+        })}
+      </ul>
+      <div ref={layer} aria-hidden className="pointer-events-none fixed left-0 top-0 z-50 hidden lg:block">
+        {projects.map((p, i) => (
+          <div
+            key={p.slug}
+            className="work-preview absolute w-[clamp(300px,24vw,380px)]"
+            data-on={active === i ? "" : undefined}
+          >
+            <ExhibitMedia media={previewMedia(p)} sizes="380px" play={active === i} />
+          </div>
+        ))}
+      </div>
+    </>
   );
 }

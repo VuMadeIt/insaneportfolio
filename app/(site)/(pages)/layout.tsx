@@ -1,15 +1,13 @@
-import { Close } from "@/components/Close";
-import { BackToSite } from "@/components/SiteNav";
+import { Footer } from "@/components/Footer";
+import { SiteNav } from "@/components/SiteNav";
 
-/** Work, About and the case studies: a small way back home, the page, the shared close. */
+/** Work, About and the case studies: the site nav, the page, the shared footer. */
 export default function PagesLayout({ children }: { children: React.ReactNode }) {
   return (
     <>
-      <div className="px-[var(--gutter)] pt-[var(--corner-top)]">
-        <BackToSite />
-      </div>
+      <SiteNav />
       <main>{children}</main>
-      <Close />
+      <Footer />
     </>
   );
 }

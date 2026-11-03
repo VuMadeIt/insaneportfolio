@@ -22,6 +22,22 @@ let whooshBuffer: AudioBuffer | null = null;
 let master: GainNode | null = null;
 let loading: Promise<void> | null = null;
 let lastClack = -Infinity;
+/** The nav's sound button (PLAN 13.1); remembered in localStorage, read on first use. */
+let muted: boolean | null = null;
+const listeners = new Set<() => void>();
+
+export const isMuted = (): boolean =>
+  (muted ??= typeof localStorage !== "undefined" && localStorage.getItem("sound") === "off");
+export function setMuted(value: boolean): void {
+  muted = value;
+  localStorage.setItem("sound", value ? "off" : "on");
+  if (master) master.gain.value = value ? 0 : MASTER;
+  listeners.forEach((l) => l());
+}
+export function subscribeMuted(listener: () => void): () => void {
+  listeners.add(listener);
+  return () => listeners.delete(listener);
+}
 
 /** Create the audio context on the first user gesture and load the sample sprite. */
 export function unlockAudio(): void {
@@ -31,7 +47,7 @@ export function unlockAudio(): void {
   }
   ctx = new AudioContext();
   master = ctx.createGain();
-  master.gain.value = MASTER;
+  master.gain.value = isMuted() ? 0 : MASTER;
   master.connect(ctx.destination);
   const ext = new Audio().canPlayType('audio/webm; codecs="opus"') ? "webm" : "mp3";
   const load = (name: string) =>
@@ -78,13 +94,13 @@ export function playImpacts(events: CollisionEvent[], timeScale = 1): void {
   if (!events.length) return;
   const result = chainClacks(events, lastClack);
   lastClack = result.last;
-  if (!ctx || !buffer || !master || ctx.state !== "running") return;
+  if (!ctx || !buffer || !master || isMuted() || ctx.state !== "running") return;
   for (const c of result.clacks) clack(c.speed, c.x, Math.max(MIN_RATE, timeScale));
 }
 
 /** The slow-motion whoosh: "down" as time slows, "up" (the same sound reversed) as it returns. */
 export function playWhoosh(kind: "down" | "up"): void {
-  if (!ctx || !whooshBuffer || !master || ctx.state !== "running") return;
+  if (!ctx || !whooshBuffer || !master || isMuted() || ctx.state !== "running") return;
   const clip = whooshes[kind];
   const source = ctx.createBufferSource();
   source.buffer = whooshBuffer;
@@ -94,7 +110,13 @@ export function playWhoosh(kind: "down" | "up"): void {
   source.start(0, clip.start, clip.duration);
 }
 
-function clack(speed: number, x: number, rate: number): void {
+/** One clack from outside the cradle (the footer's balls); `pan` -1..1, `gain` scales the level. */
+export function playClack(speed: number, pan = 0, gain = 1): void {
+  if (!ctx || !buffer || !master || isMuted() || ctx.state !== "running") return;
+  clack(speed, pan * 0.3 * 2, 1, gain);
+}
+
+function clack(speed: number, x: number, rate: number, gainScale = 1): void {
   if (speed < SILENT_BELOW || !ctx || !buffer || !master) return;
   const level = Math.min(1, Math.pow(speed / FULL_SPEED, HERTZ));
   const clip = sprite.clips[Math.floor(Math.random() * sprite.clips.length)]!;
@@ -106,7 +128,7 @@ function clack(speed: number, x: number, rate: number): void {
   filter.type = "lowpass";
   filter.frequency.value = 3500 + 14500 * Math.min(1, speed / FULL_SPEED);
   const gain = ctx.createGain();
-  gain.gain.value = level;
+  gain.gain.value = level * gainScale;
   const pan = ctx.createStereoPanner();
   pan.pan.value = Math.max(-1, Math.min(1, x / 0.3)) * 0.5;
   source.connect(filter).connect(gain).connect(pan).connect(master);

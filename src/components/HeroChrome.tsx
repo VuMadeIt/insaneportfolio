@@ -4,29 +4,32 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { identityIndex } from "@/content/identities";
 import { GiantName } from "./GiantName";
+import { SiteNav } from "./SiteNav";
 
 const useStoryOpen = () => identityIndex(usePathname().slice(1)) >= 0;
 
 /**
- * The hero is only the balls and the name. In the story state a back arrow appears top left; the
- * 404 passes its own link instead.
+ * The hero's top edge: the site nav, which gives way to a back arrow while a story is open. The
+ * 404 adds its own link under the nav.
  */
 export function HeroCorners({ children }: { children?: React.ReactNode }) {
   const story = useStoryOpen();
-  if (!story && !children) return null;
   return (
-    <div className="pointer-events-none absolute left-[var(--gutter)] top-[var(--corner-top)] z-10">
+    <div className="pointer-events-none absolute inset-x-0 top-0 z-10">
       {story ? (
         <Link
           href="/"
           scroll={false}
           aria-label="Back to the cradle"
-          className="u-grow pointer-events-auto text-[16px]"
+          className="u-grow pointer-events-auto absolute left-[var(--gutter)] top-[var(--corner-top)] text-[16px]"
         >
           <span aria-hidden>&larr;</span> back
         </Link>
       ) : (
-        children
+        <>
+          <SiteNav className="pointer-events-auto" />
+          {children && <div className="pointer-events-auto mt-6 px-[var(--gutter)]">{children}</div>}
+        </>
       )}
     </div>
   );

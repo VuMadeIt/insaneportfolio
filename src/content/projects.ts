@@ -20,7 +20,7 @@ export interface Media {
 export interface Project {
   slug: string;
   title: string;
-  /** 1 to 4: the home page shows these in order; 1 to 3 also lead the /work list. */
+  /** 1 to 4: the home page shows 1 and 2; 1 to 3 lead the /work list. */
   rank?: number;
   /** YYYY-MM, for the chronological list (newest first). */
   date: string;
@@ -323,10 +323,32 @@ export const projectBySlug = (slug: string) => projects.find((p) => p.slug === s
 /** Where a project opens: its case study, else its public link. */
 export const hrefOf = (p: Project) => (p.caseStudy ? `/work/${p.slug}` : p.link?.href);
 
+const MONTHS = [
+  "January",
+  "February",
+  "March",
+  "April",
+  "May",
+  "June",
+  "July",
+  "August",
+  "September",
+  "October",
+  "November",
+  "December",
+];
+
+/** "2026-03" as "March", with the year only when it is not this year ("June 2025"). */
+export function monthOf(date: string, now = new Date()): string {
+  const [year, month] = date.split("-").map(Number);
+  const name = MONTHS[month! - 1]!;
+  return year === now.getFullYear() ? name : `${name} ${year}`;
+}
+
 const ranked = (n: number) => projects.filter((p) => p.rank && p.rank <= n).sort((a, b) => a.rank! - b.rank!);
 
-/** The home page: the four strongest. */
-export const homeProjects = ranked(4);
+/** The home page: the two strongest (PLAN 13.3). */
+export const homeProjects = ranked(2);
 
 /** /work: the top three, then everything else, newest first. */
 export const allProjects = [

@@ -54,29 +54,34 @@
 }
 
 @layer components {
-  /* Metal underlines (PLAN 12.1). `.u-grow` draws in from the left on hover (nav); `.u-metal` is
-     always there and a highlight sweeps along it on hover (links in running text). */
+  /* Underlines (PLAN 13.1). `.u-grow` (nav, standalone links) and `.link-arrow` draw a light grey
+     line in from the left on hover only; `.u-metal` (links inside running text) keeps a faint line
+     at rest so a link never relies on colour alone, and darkens it on hover. */
   .u-grow,
-  .u-metal {
-    background-image: var(--metal);
+  .link-arrow {
+    background-image: linear-gradient(var(--underline), var(--underline));
     background-repeat: no-repeat;
     background-position: 0 100%;
-    background-size: 0% 0.1em;
-    padding-bottom: 0.08em;
-    transition:
-      background-size 300ms ease-in-out,
-      background-position 900ms ease-in-out,
-      color 200ms var(--ease-out);
+    background-size: 0% 1.5px;
+    padding-bottom: 0.1em;
+    transition: background-size 300ms ease-in-out;
   }
   .u-grow:hover,
-  .u-grow:focus-visible {
-    background-size: 100% 0.1em;
+  .u-grow:focus-visible,
+  .link-arrow:hover,
+  .link-arrow:focus-visible {
+    background-size: 100% 1.5px;
   }
   .u-metal {
-    background-size: 200% 0.08em;
+    text-decoration-line: underline;
+    text-decoration-color: var(--rule);
+    text-decoration-thickness: 1.5px;
+    text-underline-offset: 0.2em;
+    transition: text-decoration-color 200ms var(--ease-out);
   }
-  .u-metal:hover {
-    background-position: 100% 100%;
+  .u-metal:hover,
+  .u-metal:focus-visible {
+    text-decoration-color: var(--underline);
   }
   .sr-only-focusable:not(:focus-visible) {
     position: absolute;
@@ -88,18 +93,82 @@
   }
 }
 
-/* Arrow links: a metal underline, and the arrow nudges on hover. */
-.link-arrow {
-  background-image: var(--metal);
-  background-repeat: no-repeat;
-  background-position: 0 100%;
-  background-size: 200% 0.08em;
-  padding-bottom: 0.12em;
-  transition: background-position 900ms ease-in-out;
+/* The custom cursor (Cursor.tsx, PLAN 13.1). The native cursor hides only where ours runs. */
+.custom-cursor,
+.custom-cursor * {
+  cursor: none !important;
 }
-.link-arrow:hover {
-  background-position: 100% 100%;
+.cursor-outer {
+  display: none;
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 100;
+  pointer-events: none;
+  transition: opacity 200ms var(--ease-out);
 }
+.custom-cursor .cursor-outer {
+  display: block;
+}
+.cursor-outer[data-away] {
+  opacity: 0;
+}
+.cursor-ball {
+  --size: 12px;
+  position: absolute;
+  left: calc(var(--size) / -2);
+  top: calc(var(--size) / -2);
+  width: var(--size);
+  height: var(--size);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  background: radial-gradient(circle at 34% 28%, #9a9995 0%, #55544f 30%, #2f2e2c 68%, #1d1d1b 100%);
+  transition:
+    width 450ms var(--ease-out),
+    height 450ms var(--ease-out),
+    left 450ms var(--ease-out),
+    top 450ms var(--ease-out),
+    opacity 300ms var(--ease-out),
+    transform 450ms var(--ease-out);
+}
+.cursor-ball[data-state="link"] {
+  transform: scale(3);
+  opacity: 0.22;
+}
+.cursor-ball[data-state="grab"] {
+  transform: scale(2);
+  opacity: 0.55;
+}
+.cursor-ball[data-state="hide"] {
+  transform: scale(0.2);
+  opacity: 0;
+}
+.cursor-ball[data-state="drop"] {
+  --size: 96px;
+}
+.cursor-ball[data-pressed] {
+  transform: scale(0.8);
+}
+.cursor-label {
+  color: var(--wall);
+  font-size: 15px;
+  line-height: 1;
+  white-space: nowrap;
+  opacity: 0;
+  transform: scale(0.6);
+  transition:
+    opacity 250ms var(--ease-out),
+    transform 450ms var(--ease-out);
+}
+.cursor-ball[data-state="drop"] .cursor-label {
+  opacity: 1;
+  transform: none;
+  transition-delay: 120ms;
+}
+
+/* Arrow links: the arrow nudges on hover. */
 .link-arrow span {
   display: inline-block;
   transition: transform 300ms var(--ease-out);
@@ -136,27 +205,25 @@
   height: 16px;
 }
 
-/* The home page's dark half: muted text and rules re-tuned for the black (HomeAbout.tsx scrubs
-   the work list above into the same values). */
-.home-dark {
-  --color-muted: #a29f97;
-  --color-rule: #2c2c29;
+/* The footer's name (Footer.tsx): Lucas's Framer close, set in General Sans, lowercase. */
+.footer-name {
+  font-size: clamp(56px, 12.2vw, 236px);
+  font-weight: 500;
+  letter-spacing: -0.05em;
+  line-height: 1;
 }
 
-/* Catalogue previews appear beside the row on hover (desktop); inline on tablets and phones. */
-@media (min-width: 1024px) {
-  .catalogue-preview {
-    opacity: 0;
-    transform: translateY(-50%) scale(0.97);
-    transition:
-      opacity 300ms var(--ease-out),
-      transform 500ms var(--ease-out);
-  }
-  .catalogue-row:hover .catalogue-preview,
-  .catalogue-row:focus-within .catalogue-preview {
-    opacity: 1;
-    transform: translateY(-50%) scale(1);
-  }
+/* The work list's floating preview (WorkList.tsx): centred on the pointer, it is the cursor. */
+.work-preview {
+  transform: translate(-50%, -50%) scale(0.85);
+  opacity: 0;
+  transition:
+    opacity 250ms var(--ease-out),
+    transform 500ms var(--ease-out);
+}
+.work-preview[data-on] {
+  transform: translate(-50%, -50%);
+  opacity: 1;
 }
 
 /* LUCAS VU along the bottom: General Sans ~350, capitals, tight (old Hero.jsx). --giant-size makes

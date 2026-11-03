@@ -2,7 +2,7 @@ import { readFileSync, readdirSync } from "node:fs";
 import { join } from "node:path";
 import { describe, expect, it } from "vitest";
 import { Cradle } from "@/physics/cradle";
-import { SLOW, advanceClock, restoreTime, slowmo } from "./slowmo";
+import { HOLD, SLOW, advanceClock, restoreTime, slowmo } from "./slowmo";
 
 const STEPS = 2400;
 
@@ -33,6 +33,23 @@ describe("slow motion (PLAN 12.7)", () => {
     });
     expect(Math.min(...scales)).toBeCloseTo(SLOW, 3);
     expect(slowed).toBe(real);
+  });
+
+  it("one frame of contact with a swinging ball holds slow motion for HOLD seconds, then eases back", () => {
+    restoreTime();
+    slowmo.enabled = true;
+    const c = new Cradle();
+    c.lift(0, (-30 * Math.PI) / 180);
+    for (let f = 0; f < 30; f++) c.advance(advanceClock(1 / 60, c));
+    slowmo.hover = 0;
+    c.advance(advanceClock(1 / 60, c));
+    slowmo.hover = null;
+    const scaleAt = (seconds: number) => {
+      for (let t = 0; t < seconds; t += 1 / 60) c.advance(advanceClock(1 / 60, c));
+      return slowmo.scale;
+    };
+    expect(scaleAt(HOLD - 0.1)).toBeCloseTo(SLOW, 3);
+    expect(scaleAt(1.2)).toBe(1);
   });
 
   it("the physics never imports the slow-motion flag", () => {

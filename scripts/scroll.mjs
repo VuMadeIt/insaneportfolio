@@ -15,7 +15,7 @@ const browser = await chromium.launch({
 const page = await browser.newPage({ viewport: { width, height } });
 page.on("pageerror", (e) => console.log("[pageerror]", e.message));
 await page.goto(`http://localhost:${process.env.PORT ?? 3100}/${route === "home" ? "" : route}`, {
-  waitUntil: "networkidle",
+  waitUntil: "load",
 });
 await page.waitForTimeout(2500);
 const total = await page.evaluate(() => document.documentElement.scrollHeight - innerHeight);

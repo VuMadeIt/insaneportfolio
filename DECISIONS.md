@@ -199,3 +199,51 @@ phase. Format: decision, alternatives, why.
   `[sound on]` sits at the right gutter just above the giant name, remembered in localStorage.
 - **String shiver** on impact: both strings of both balls in an impact get a transverse kick of
   0.05 m/s per m/s of impact speed.
+
+## Phase 04: identities (2026-11-03)
+
+- **Rendering inside the ball, in the fragment shader.** Each ball's chrome material is patched
+  (`withIdentity`) with a per-identity GLSL body that takes the ray entering the unit sphere in
+  object space, so the identity swings and turns with the ball. No geometry inside the sphere,
+  no transparency sorting, black is depth. Only uniforms change on reveal; physics untouched.
+- **Palettes** from `scripts/palette.py` (k-means on all non-black pixels, plus a "vivid" pass on
+  high-saturation pixels, because averaging washed the iris's cyan, magenta and salmon to grey).
+  Shaders use the vivid colours, slightly pushed.
+- **People.** Iris on a disc behind the cornea; fibres are noise around the ring at high frequency
+  whose angle wanders with radius (hair, not spokes); hue per strand from a slow noise field
+  (crimson and pink near the pupil, blues and cyans outward, salmon and cream sectors); collarette,
+  crypts, white flecks, tufted feathery edge, limbal darkening. Life: blinks every 3 to 7 s (120 ms
+  close, 180 ms open, two dark lids), pupil breathing, gaze toward the cursor with micro-saccades.
+- **Ideas.** 10-step jittered march through domain-warped direction noise (it integrates into
+  radial filaments), white-hot core, warm/cool whites with faint prismatic fringes, breathing,
+  flows 1.8x faster when revealed. Cost-tuned: 3-octave warps and a 4-octave filament field.
+- **Experiments.** 30 tilted great circles (9 bright with comet electrons, 21 faint). Instead of
+  marching, each thin line glows where the ray crosses its orbit plane, divided by the crossing
+  angle: crisp at any size and cheap. Trails fade with angular distance behind the head; `uWeave`
+  restarts at 0 on reveal and grows over 4 s from sparse arcs to a full lattice; the nucleus
+  flare (core plus four-point glint) lands as the reveal completes. Deep navy interior.
+- **Products.** SDF gladiolus (bent stem swaying, five ruffled florets growing larger toward the
+  bottom, three green buds), 48-step march, Lambert plus back-light translucency; sky gradient
+  with drifting FBM clouds behind; thin-film soap interference (650/530/440 nm, film 320 to
+  620 nm swirling) on the shell.
+- **Reveal variants.** A: identity becomes the surface finish under a faint sheen. B: dielectric
+  shell (Schlick F0 0.04 reflection) with the identity inside and the page showing through the
+  clear rim (alpha falls where the fresnel is low). C: a liquid-metal ripple front from the hover
+  point with mercury bands, revealing B behind it. **Default B**: it is the only one that reads
+  as a physical object changing state (a chrome ball becoming glass) rather than a texture swap;
+  A looks like a decal, C is striking once but busy at 60 px. All three in /lab and `?reveal=`.
+- **Tween.** GSAP 0.8 s with the site ease as a CustomEase (cubic-bezier .23,1,.32,1); instant
+  under reduced motion, where identities also hold a still frame.
+- **Performance.** All four hover states hold 60 fps at 1440x900 DPR 2 on the integrated GPU.
+  Reflection passes use `uDetail = 0` (fewer steps and orbits) because neighbours see the
+  revealed ball at a few pixels.
+
+### Compare-and-fix rounds (`.artifacts/identity/r1..r4.png`, render above, reference below)
+- **Round 1.** Iris a rigid starburst; orb nearly black; atom thick blurry bands; flower good.
+- **Round 2.** Wandering fibres and strand hues (iris now reads as hair); orb blown out to a white
+  blob; atom switched to analytic plane crossings (crisp but busy); deeper sky.
+- **Round 3.** Orb contrast up, too spiky and violet; atom calmer and closer to the reference's
+  few bright rings over many faint strands; florets larger at the bottom.
+- **Round 4.** Orb softened to warm and cool white wisps around a white core. Still short of the
+  reference: the orb's prismatic dispersion is subtler than the photo's, and the florets are
+  rounded blobs rather than open ruffled petals.

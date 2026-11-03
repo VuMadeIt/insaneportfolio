@@ -5,7 +5,7 @@ import dynamic from "next/dynamic";
 import { useEffect, useState } from "react";
 import { cradle } from "@/scene/world";
 import { HDRIS, type Look, defaultLook, useLook } from "@/scene/look";
-import { type Material, useUi } from "@/state/ui";
+import { type Material, type Reveal, useUi } from "@/state/ui";
 
 const Stage = dynamic(() => import("@/scene/Stage"), { ssr: false });
 const deg = (d: number) => (d * Math.PI) / 180;
@@ -29,6 +29,8 @@ function applyQuery() {
   useLook.getState().set(patch);
   const material = q.get("material");
   if (material) useUi.getState().setMaterial(material as Material);
+  const reveal = q.get("reveal");
+  if (reveal) useUi.getState().setReveal(reveal as Reveal);
 }
 
 export function ObjectLab() {
@@ -39,6 +41,7 @@ export function ObjectLab() {
   }, []);
   const set = useLook((s) => s.set);
   const setMaterial = useUi((s) => s.setMaterial);
+  const setReveal = useUi((s) => s.setReveal);
 
   useControls(
     "object",
@@ -52,6 +55,18 @@ export function ObjectLab() {
         value: useLook.getState().string,
         options: ["nylon", "thread", "wire"],
         onChange: (v: Look["string"]) => set({ string: v }),
+      },
+      reveal: {
+        value: useUi.getState().reveal,
+        options: ["a", "b", "c"],
+        onChange: (v: Reveal) => setReveal(v),
+      },
+      revealAll: {
+        value: useLook.getState().revealAll,
+        min: -1,
+        max: 1,
+        step: 0.01,
+        onChange: (v: number) => set({ revealAll: v }),
       },
       "lift 1": button(() => cradle.lift(0, deg(-30))),
       "lift 2": button(() => [0, 1].forEach((i) => cradle.lift(i, deg(-30)))),

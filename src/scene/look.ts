@@ -32,6 +32,8 @@ export interface Look {
   wallDistance: number;
   string: StringLook;
   pool: number;
+  /** Lab only: force every ball's reveal to this value (-1 = follow hover). */
+  revealAll: number;
 }
 
 export const defaultLook: Look = {
@@ -48,6 +50,7 @@ export const defaultLook: Look = {
   wallDistance: 0.3,
   string: "nylon",
   pool: 0.03,
+  revealAll: -1,
 };
 
 export const useLook = create<Look & { set: (patch: Partial<Look>) => void }>((set) => ({

@@ -10,7 +10,7 @@ const config = [
   {
     // three.js objects (materials, uniforms, the scene) are mutated imperatively every frame by
     // design; React Compiler's immutability rule cannot model that.
-    files: ["src/scene/**/*.{ts,tsx}"],
+    files: ["src/scene/**/*.{ts,tsx}", "app/lab/**/*.tsx"],
     rules: { "react-hooks/immutability": "off" },
   },
   {

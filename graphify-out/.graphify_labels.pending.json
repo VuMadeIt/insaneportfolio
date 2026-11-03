@@ -1,19 +1,19 @@
 {
   "0": "package.json",
   "1": "compilerOptions",
-  "2": "dependencies",
+  "2": "cradle.ts",
   "3": "layout.tsx",
   "4": "page.tsx",
-  "5": "@playwright/test",
+  "5": "cradle.test.ts",
   "6": "scripts",
   "7": "AGENTS.md",
   "8": "Credits",
   "9": "Lucas Vu Portfolio: Master Plan",
-  "10": "vitest",
+  "10": "calibrate.ts",
   "11": "Decisions",
   "12": "postcss.config.mjs",
   "13": ".prettierrc.json",
   "14": "serve.sh",
-  "15": "Part 4. The hero object in detail (highest priority)",
-  "16": "Part 6. Pages"
+  "15": "Cradle",
+  "16": "analyse.py"
 }

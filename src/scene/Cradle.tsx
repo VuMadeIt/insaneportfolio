@@ -4,7 +4,10 @@ import { useFrame, useThree } from "@react-three/fiber";
 import { useEffect, useMemo, useRef } from "react";
 import * as THREE from "three";
 import { playImpacts } from "@/audio/clack";
+import { identities } from "@/content/identities";
 import { useUi } from "@/state/ui";
+import { withIdentity } from "./identities/material";
+import { useIdentities } from "./identities/useIdentities";
 import { useLook } from "./look";
 import { materialFactories } from "./materials";
 import { stringMaterial } from "./materials/string";
@@ -61,13 +64,15 @@ export function CradleModel() {
 
   const ballMaterials = useMemo(
     () =>
-      cubes.map((c) => {
-        const m = materialFactories[material]();
+      cubes.map((c, i) => {
+        const m = withIdentity(materialFactories[material](), identities[i]!.slug, R, i * 1.7);
         m.envMap = c.target.texture;
         return m;
       }),
     [cubes, material],
   );
+  const identityUniforms = useMemo(() => ballMaterials.map((m) => m.userData.identity), [ballMaterials]);
+  const updateIdentities = useIdentities(identityUniforms);
   useEffect(() => () => ballMaterials.forEach((m) => m.dispose()), [ballMaterials]);
   useEffect(() => {
     ballMaterials.forEach((m) => (m.envMapIntensity = look.envIntensity));
@@ -147,6 +152,7 @@ export function CradleModel() {
       // The six cube faces must not each re-render the shadow map (it is redrawn for the main view).
       const autoShadows = gl.shadowMap.autoUpdate;
       gl.shadowMap.autoUpdate = false;
+      identityUniforms.forEach((u) => (u.uDetail.value = 0));
       for (let k = 0; k < batch; k++) {
         const i = (n + k) % cubes.length;
         const cube = cubes[i]!;
@@ -161,6 +167,7 @@ export function CradleModel() {
         cube.target.texture.needsPMREMUpdate = true;
       }
       gl.shadowMap.autoUpdate = autoShadows;
+      identityUniforms.forEach((u) => (u.uDetail.value = 1));
     }
 
     // Project the balls for the DOM layer (accessible buttons, captions).
@@ -175,11 +182,13 @@ export function CradleModel() {
       s.r = ((projected.x + 1) / 2) * state.size.width - x;
     });
     afterFrame.forEach((f) => f());
+    const animating = updateIdentities(state.clock.elapsedTime, dt);
 
     // Keep rendering while anything moves; the strings get a moment to settle after the balls sleep.
     const now = state.clock.elapsedTime;
     if (!cradle.asleep) lastActive.current = now;
-    const busy = !cradle.asleep || now - lastActive.current < SETTLE_TIME || frameCount.current < 8;
+    const busy =
+      animating || !cradle.asleep || now - lastActive.current < SETTLE_TIME || frameCount.current < 8;
     if (busy && onScreen.current) state.invalidate();
   });
 

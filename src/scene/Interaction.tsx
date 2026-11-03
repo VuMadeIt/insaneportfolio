@@ -33,14 +33,18 @@ export function Interaction() {
     /** Nearest ball the ray passes through, or null. */
     const sphere = new THREE.Sphere(new THREE.Vector3(), HIT_RADIUS);
     const hitPoint = new THREE.Vector3();
+    const scratch = new THREE.Vector3();
     const pick = () => {
       let best: number | null = null;
       let bestT = Infinity;
       frame.centres.forEach((c, i) => {
         sphere.center.set(c.x, c.y, c.z);
-        const hit = ray.ray.intersectSphere(sphere, hitPoint);
+        const hit = ray.ray.intersectSphere(sphere, scratch);
         const t = hit ? ray.ray.origin.distanceTo(hit) : Infinity;
-        if (t < bestT) [best, bestT] = [i, t];
+        if (t < bestT) {
+          [best, bestT] = [i, t];
+          hitPoint.copy(scratch);
+        }
       });
       return best;
     };
@@ -77,6 +81,15 @@ export function Interaction() {
       }
       if (e.pointerType !== "mouse") return;
       const i = pick();
+      const p = onPlane(target);
+      frame.pointer.x = p.x;
+      frame.pointer.y = p.y;
+      if (i !== null) {
+        const c = frame.centres[i]!;
+        frame.hit.x = hitPoint.x - c.x;
+        frame.hit.y = hitPoint.y - c.y;
+        frame.hit.z = hitPoint.z - c.z;
+      }
       if (useUi.getState().hovered !== i) useUi.getState().setHovered(i);
       el.style.cursor = i === null ? "" : "grab";
     };

@@ -21,6 +21,9 @@ export const frame = {
   events: [] as CollisionEvent[],
   /** Ball centres and radii projected to CSS pixels in the canvas, for the DOM buttons. */
   screen: cradle.balls.map(() => ({ x: 0, y: 0, r: 0 })),
+  /** Pointer on the swing plane (world, m), and the hover point's direction from the hovered ball. */
+  pointer: vec(0, 0, 1),
+  hit: vec(0, 0, 1),
 };
 
 /** Two visual strings per ball: front then back anchor. */

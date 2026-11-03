@@ -32,3 +32,10 @@ where every problem starts. Open story."), on-demand rendering with sleep and of
 WebAudio clacks from a CC0 recording grouped per chain and scaled by impact speed, `[sound on]`
 toggle. 60 fps at 1440x900 DPR 2 on an integrated GPU after a shadow-map fix. E2E: keyboard flow,
 push, reduced motion, sound toggle.
+
+### Phase 04: identities (`v0.4.0-identities`)
+People (iris with blinks, breathing pupil, gaze), Ideas (flowing AI-orb filaments), Experiments
+(comet electrons weaving a lattice, nucleus flare), Products (gladiolus in a thin-film bubble
+with drifting clouds), all rendered inside the ball in object space. Three reveal variants (A
+surface, B glass, C ripple; B default). Four compare rounds against the source images in
+`.artifacts/identity/`. 60 fps in every hover state.

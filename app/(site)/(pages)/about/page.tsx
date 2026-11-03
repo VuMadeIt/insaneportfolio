@@ -1,6 +1,7 @@
 import Image from "next/image";
 import { ExhibitMedia } from "@/components/ExhibitMedia";
-import { chronology, essay, objects, portrait, statement } from "@/content/about";
+import { Timeline } from "@/components/Timeline";
+import { essay, objects, portrait, statement } from "@/content/about";
 
 export const metadata = {
   title: "About",
@@ -8,13 +9,13 @@ export const metadata = {
     "Lucas Vu: product designer, Systems Design Engineering at Waterloo, cadet, chess player, fisherman.",
 };
 
-/** About as a museum room: wall text with a portrait, a chronology, objects with labels, a reading room. */
+/** About as a museum room: wall text with a portrait, the timeline, objects with labels, a reading room. */
 export default function AboutPage() {
   return (
     <>
       <section
         aria-labelledby="about-title"
-        className="grid gap-12 px-[var(--gutter)] pb-[clamp(96px,14vh,180px)] pt-[clamp(96px,16vh,180px)] md:grid-cols-[minmax(0,1fr)_minmax(0,0.8fr)] md:items-end"
+        className="grid gap-12 px-[var(--gutter)] pb-[clamp(96px,14vh,180px)] pt-[clamp(72px,12vh,140px)] md:grid-cols-[minmax(0,1fr)_minmax(0,0.8fr)] md:items-end"
       >
         <div>
           <h1 id="about-title" className="text-[clamp(56px,9vw,148px)] leading-[0.9]">
@@ -45,23 +46,7 @@ export default function AboutPage() {
         </figure>
       </section>
 
-      <section aria-labelledby="chronology-title" className="px-[var(--gutter)] pb-[clamp(96px,14vh,180px)]">
-        <h2 id="chronology-title" className="reveal text-[clamp(36px,4.5vw,64px)] leading-[1]">
-          Chronology
-        </h2>
-        <ol className="mt-10 max-w-[900px]">
-          {chronology.map((c) => (
-            <li
-              key={c.role + c.place}
-              className="reveal grid grid-cols-[7.5em_1fr] gap-6 py-3 text-[17px] sm:grid-cols-[9em_1fr_1fr]"
-            >
-              <span className="text-muted tabular-nums">{c.when}</span>
-              <span>{c.role}</span>
-              <span className="col-start-2 text-muted sm:col-start-auto sm:text-ink">{c.place}</span>
-            </li>
-          ))}
-        </ol>
-      </section>
+      <Timeline />
 
       <section aria-labelledby="objects-title" className="px-[var(--gutter)] pb-[clamp(96px,14vh,180px)]">
         <h2 id="objects-title" className="reveal text-[clamp(36px,4.5vw,64px)] leading-[1]">
@@ -69,7 +54,7 @@ export default function AboutPage() {
         </h2>
         <div className="mt-12 grid gap-x-12 gap-y-20 md:grid-cols-2 lg:grid-cols-3">
           {objects.map((o, k) => (
-            <figure key={o.title} className={`reveal ${k % 3 === 1 ? "lg:mt-24" : ""}`}>
+            <figure key={o.id} id={o.id} className={`reveal scroll-mt-24 ${k % 3 === 1 ? "lg:mt-24" : ""}`}>
               {o.image && (
                 <ExhibitMedia
                   media={{

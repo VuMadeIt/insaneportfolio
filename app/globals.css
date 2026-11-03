@@ -6,6 +6,7 @@
   --color-ink: var(--ink);
   --color-muted: var(--muted);
   --color-rule: var(--rule);
+  --color-night: var(--night);
   --font-display: var(--font-general), "Helvetica Neue", Arial, sans-serif;
   --font-sans: var(--font-cabinet), "Helvetica Neue", Arial, sans-serif;
   /* One radius scale (PLAN 12.1): small controls, media, cards. Pills use rounded-full. */
@@ -109,13 +110,37 @@
 
 /* Section entrances (`.reveal`) are driven by GSAP ScrollTrigger in ScrollMotion.tsx. */
 
-/* The home work stack (WorkStack.tsx): cards fill the small viewport less the inset and the peeks
-   of the three cards that can sit above the last one. */
-:root {
-  --card-inset: clamp(10px, 1.4vw, 20px);
-  --card-h: calc(100svh - 2 * var(--card-inset) - 3 * 14px);
-  /* Scroll each card stays whole before the next one starts to cover it. */
-  --card-hold: 45svh;
+/* Back links: the arrow nudges back on hover. */
+.back-link span {
+  display: inline-block;
+  transition: transform 300ms var(--ease-out);
+}
+.back-link:hover span {
+  transform: translateX(-4px);
+}
+
+/* A tiny dark-metal ball, like the cradle's: accolade bullets and the timeline's stops. */
+.metal-ball,
+.award-dot {
+  flex: none;
+  border-radius: 999px;
+  background: radial-gradient(circle at 35% 30%, #d8d7d4 0%, #6d6c6a 28%, #1d1d1c 70%, #0b0b0a 100%);
+}
+.award-dot {
+  width: 0.55em;
+  height: 0.55em;
+  transform: translateY(-0.05em);
+}
+.timeline-knob {
+  width: 16px;
+  height: 16px;
+}
+
+/* The home page's dark half: muted text and rules re-tuned for the black (HomeAbout.tsx scrubs
+   the work list above into the same values). */
+.home-dark {
+  --color-muted: #a29f97;
+  --color-rule: #2c2c29;
 }
 
 /* Catalogue previews appear beside the row on hover (desktop); inline on tablets and phones. */
@@ -145,19 +170,6 @@
   /* The line box is the cap height; this lifts the baseline off the bottom edge like the mock. */
   padding-bottom: 0.09em;
 }
-.hero-tagline {
-  top: calc(var(--corner-top) + 76px);
-}
-/* On phones the balls fill the right edge, so the tagline reads across, under them. */
-@media (max-width: 639px) {
-  .hero-tagline {
-    top: auto;
-    right: auto;
-    left: var(--gutter);
-    bottom: calc(20vw + 56px);
-  }
-}
-
 /* The giant name rises in letter by letter once (old Hero.jsx: y 100, 1.5 s, power4.out, 0.1 s
    stagger). CSS only, so it never waits for JavaScript and never hides the name without it. */
 @keyframes letter-rise {
@@ -170,32 +182,6 @@
   display: inline-block;
   animation: letter-rise 1.5s var(--ease-power4-out) both;
   animation-delay: calc(0.15s + var(--i) * 0.1s);
-}
-
-/* The hero's scroll line: a short metal line sweeping into a clipped box on a loop (old site:
-   from x -40, 1.5 s power4.inOut, 0.5 s pause). */
-@keyframes scroll-line {
-  0% {
-    transform: translateY(-100%);
-    animation-timing-function: var(--ease-power4-in-out);
-  }
-  75%,
-  100% {
-    transform: none;
-  }
-}
-.scroll-line {
-  animation: scroll-line 2s infinite;
-}
-
-/* The nav slides down on load (old NavBar, 1.2 s instead of 3 s). */
-@keyframes nav-in {
-  from {
-    transform: translateY(-100%);
-  }
-}
-.nav-in {
-  animation: nav-in 1.2s var(--ease-power4-in-out) 0.5s both;
 }
 
 /* Case-study coded visuals (src/components/case/Visual.tsx): drawn once they are in view. Without
@@ -346,9 +332,7 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .giant-letter,
-  .scroll-line,
-  .nav-in {
+  .giant-letter {
     animation: none;
   }
   *,

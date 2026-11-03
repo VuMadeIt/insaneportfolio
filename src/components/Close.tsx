@@ -15,13 +15,22 @@ const A = ({ href, children }: { href: string; children: React.ReactNode }) => (
   </a>
 );
 
-/** The designed close: one line in Lucas's voice, contact in running text, the name at full width. */
-export function Close() {
+/**
+ * The designed close: one line in Lucas's voice, contact in running text, the name at full width.
+ * The home page sets it on the dark section with its own line.
+ */
+export function Close({
+  title = "Let\u2019s get something moving.",
+  className = "bg-wall",
+}: {
+  title?: string;
+  className?: string;
+}) {
   return (
-    <footer aria-labelledby="close-title" className="relative z-10 overflow-hidden bg-wall">
+    <footer aria-labelledby="close-title" className={`relative z-10 overflow-hidden ${className}`}>
       <div className="px-[var(--gutter)] pt-[clamp(120px,18vh,220px)]">
         <h2 id="close-title" className="reveal max-w-[12em] text-[clamp(36px,7vw,112px)] leading-[0.95]">
-          Let&apos;s get something moving.
+          {title}
         </h2>
         <p className="reveal mt-8 max-w-[34em] leading-[1.5]">
           I&apos;m looking for Summer 2027 co-op roles. Write to{" "}

@@ -3,6 +3,8 @@
   --ink: #121212;
   --muted: #68655e;
   --rule: #d9d6cf;
+  /* The home page's dark half (the old site's ink). */
+  --night: #0e0e0c;
   --gutter: clamp(32px, 8vw, 128px);
   --corner-top: clamp(28px, 6vh, 72px);
   --ease-out: cubic-bezier(0.23, 1, 0.32, 1);

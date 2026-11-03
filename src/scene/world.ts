@@ -47,6 +47,12 @@ export const anchorOf = (ball: number, side: 0 | 1): Vec3 => cradle.balls[ball]!
 /** Called after every rendered frame (the DOM layer positions its buttons from `frame.screen`). */
 export const afterFrame = new Set<() => void>();
 
+/** Taps on the canvas, handled by the interface layer (StoryController). */
+export const taps: { ball: (ball: number, pointerType: string) => void; wall: () => void } = {
+  ball: () => {},
+  wall: () => {},
+};
+
 /** The canvas renders on demand; anything that changes the world from outside calls this. */
 let invalidate: () => void = () => {};
 export const setInvalidate = (fn: () => void) => void (invalidate = fn);

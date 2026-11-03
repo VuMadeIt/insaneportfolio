@@ -247,3 +247,36 @@ phase. Format: decision, alternatives, why.
 - **Round 4.** Orb softened to warm and cool white wisps around a white core. Still short of the
   reference: the orb's prismatic dispersion is subtler than the photo's, and the florets are
   rounded blobs rather than open ruffled petals.
+
+## Phase 05: story state (2026-11-03)
+
+- **Routes are the source of truth.** `app/(site)/(hero)/layout.tsx` holds the hero and canvas;
+  `/` and `/people`, `/ideas`, `/experiments`, `/products` are pages inside it, so the canvas never
+  remounts. Taps, Enter, the back arrow, Escape and empty-wall clicks only navigate;
+  `StoryController` turns route changes into choreography. Browser back works for free. Each
+  identity page is statically generated with its own title, description, canonical and OG text,
+  and server-renders the story text (readable without JavaScript or WebGL).
+- **The choreography drives anchors only, on simulation time.** A paused GSAP timeline is seeked
+  from `cradle.beforeStep(time)` (new physics hook, tested frame-rate independent), and its values
+  go to `setAnchorOffset`. The balls are always simulated.
+- **No anchor motion is faster than physics allows.** First pass: the rise ended at full speed and
+  the hidden balls flew on slack strings and were still swinging when they came back; the dip and
+  descent started with instant velocity. Now every phase starts and ends at rest or at matched
+  velocity: dip `sine.inOut`; rise `power3.in` to 0.45 m (balls leave the frame accelerating, the
+  "theatre curtain") then a matched-velocity `power2.out` brake off-screen to 0.75 m (deceleration
+  under g, strings stay taut); return `power2.inOut` over 1.4 s, staggered 60 ms left to right.
+- **The glide uses zero-vibration input shaping** (as on cranes): the move is split into two
+  half moves (each 0.45 s, `power2.inOut`) half a pendulum period (0.71 s) apart. The ball visibly
+  lags and swings while its anchor travels, and the second half cancels the swing the first
+  started, so it arrives hanging still with no damping or scripting of the ball. Unit test: residual
+  swing under a quarter of an unshaped move's. Total glide 1.16 s (PLAN: 0.9 to 1.2 s).
+- **Target.** Wide screens: the selected ball's anchor goes to the left third of the visible width.
+  Phones: top centre, 24% from the top, text below like a sheet; the sound toggle hides there.
+- **Deep links and reduced motion** use `teleportAnchors` (new, tested): anchors and ball jump
+  together and hang still, no intro animation. The story text animates only when mounted by a
+  navigation (a flag set after hydration); a direct load shows it at once.
+- **Mobile two-tap.** The first tap reveals and names the ball, the second opens the story.
+  Bug found while filming it: touch pointers fire `pointerleave` after every `pointerup`, which
+  cleared the hover the first tap had just set; only a mouse leaving now ends a hover.
+- **Taps vs drags.** A press that moves under 6 px and lasts under 400 ms is a tap; anything else
+  is a drag (the chosen ball can still be dragged in the story state). Pointer cancels never tap.

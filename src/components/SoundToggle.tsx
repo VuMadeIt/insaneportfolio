@@ -1,12 +1,16 @@
 "use client";
 
+import { usePathname } from "next/navigation";
 import { useEffect } from "react";
+import { identityIndex } from "@/content/identities";
 import { unlockAudio } from "@/audio/clack";
 import { useUi } from "@/state/ui";
 
 /** Sam-style bracketed corner toggle. Sound is on by default and starts with the first interaction. */
 export function SoundToggle({ className = "" }: { className?: string }) {
   const sound = useUi((s) => s.sound);
+  // On phones the story text takes the bottom of the screen.
+  const story = identityIndex(usePathname().slice(1)) >= 0;
   useEffect(() => {
     if (localStorage.getItem("sound") === "off") useUi.setState({ sound: false });
   }, []);
@@ -14,7 +18,7 @@ export function SoundToggle({ className = "" }: { className?: string }) {
     <button
       type="button"
       aria-pressed={sound}
-      className={`bracket text-[15px] ${className}`}
+      className={`bracket z-10 text-[15px] ${className} ${story ? "max-sm:hidden" : ""}`}
       onClick={() => {
         unlockAudio();
         useUi.getState().setSound(!sound);

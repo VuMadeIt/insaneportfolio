@@ -5,7 +5,7 @@ import { useEffect } from "react";
 import * as THREE from "three";
 import { unlockAudio } from "@/audio/clack";
 import { useUi } from "@/state/ui";
-import { cradle, frame, requestRender } from "./world";
+import { cradle, frame, requestRender, taps } from "./world";
 
 const HIT_RADIUS = cradle.config.ball.radius * 1.08;
 
@@ -24,6 +24,10 @@ export function Interaction() {
     const centre = new THREE.Vector3();
     const offset = new THREE.Vector3();
     let dragging: number | null = null;
+    // A press that barely moves and ends quickly is a tap, not a drag.
+    const press = { x: 0, y: 0, time: 0, ball: null as number | null };
+    const isTap = (e: PointerEvent) =>
+      Math.hypot(e.clientX - press.x, e.clientY - press.y) < 6 && performance.now() - press.time < 400;
 
     const aim = (e: { clientX: number; clientY: number }) => {
       const r = el.getBoundingClientRect();
@@ -62,6 +66,7 @@ export function Interaction() {
       unlockAudio();
       aim(e);
       const i = pick();
+      Object.assign(press, { x: e.clientX, y: e.clientY, time: performance.now(), ball: i });
       if (i === null) return;
       e.preventDefault();
       el.setPointerCapture(e.pointerId);
@@ -94,6 +99,10 @@ export function Interaction() {
       el.style.cursor = i === null ? "" : "grab";
     };
     const up = (e: PointerEvent) => {
+      if (e.type === "pointerup" && isTap(e)) {
+        if (press.ball === null) taps.wall();
+        else taps.ball(press.ball, e.pointerType);
+      }
       if (dragging === null) return;
       if (el.hasPointerCapture(e.pointerId)) el.releasePointerCapture(e.pointerId);
       dragging = null;
@@ -101,8 +110,11 @@ export function Interaction() {
       el.style.cursor = "grab";
       requestRender();
     };
-    const leave = () => {
-      if (dragging === null && useUi.getState().hovered !== null) useUi.getState().setHovered(null);
+    // Touch pointers "leave" on every lift; only a mouse leaving the canvas ends a hover.
+    const leave = (e: PointerEvent) => {
+      if (e.pointerType === "mouse" && dragging === null && useUi.getState().hovered !== null) {
+        useUi.getState().setHovered(null);
+      }
     };
     // A touch that starts on a ball belongs to the ball, not to page scrolling.
     const touch = (e: TouchEvent) => {

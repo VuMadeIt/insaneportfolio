@@ -62,6 +62,17 @@
   }
 }
 
+/* Story wall text rises in after the glide begins. */
+@keyframes story-rise {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+}
+.story-rise {
+  animation: story-rise 900ms var(--ease-out) both;
+}
+
 /* Invisible buttons over the balls; the focus ring is the only thing drawn. */
 .cradle-target {
   background: transparent;

@@ -6,9 +6,8 @@ export const metadata = { title: "Object lab" };
 export default function ObjectLabPage() {
   return (
     <main>
-      <Hero>
-        <ObjectLab />
-      </Hero>
+      <ObjectLab />
+      <Hero />
     </main>
   );
 }

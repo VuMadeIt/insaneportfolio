@@ -1,5 +1,6 @@
 "use client";
 
+import { useRouter } from "next/navigation";
 import { useEffect, useRef } from "react";
 import { unlockAudio } from "@/audio/clack";
 import { identities } from "@/content/identities";
@@ -19,6 +20,8 @@ export function AccessibleTargets() {
   const buttons = useRef<(HTMLButtonElement | null)[]>([]);
   const captions = useRef<(HTMLParagraphElement | null)[]>([]);
   const hovered = useUi((s) => s.hovered);
+  const selected = useUi((s) => s.selected);
+  const router = useRouter();
 
   useEffect(() => {
     const place = () => {
@@ -61,9 +64,11 @@ export function AccessibleTargets() {
           onFocus={() => useUi.getState().setHovered(i)}
           onBlur={() => useUi.getState().setHovered(null)}
           onKeyDown={onKey(i)}
+          hidden={selected !== null && selected !== i}
+          aria-disabled={selected === i}
           onClick={() => {
             unlockAudio();
-            useUi.getState().setSelected(i);
+            if (selected === null) router.push(`/${id.slug}`, { scroll: false });
           }}
         />
       ))}
@@ -73,7 +78,7 @@ export function AccessibleTargets() {
           ref={(c) => void (captions.current[i] = c)}
           aria-hidden
           className="absolute left-0 top-0 whitespace-nowrap text-[15px] transition-opacity duration-300 ease-[var(--ease-out)]"
-          style={{ opacity: hovered === i ? 1 : 0 }}
+          style={{ opacity: hovered === i && selected === null ? 1 : 0 }}
         >
           {id.title}
         </p>

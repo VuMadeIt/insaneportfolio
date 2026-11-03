@@ -90,8 +90,8 @@
     "semantic_hash": ""
   },
   "AGENTS.md": {
-    "mtime": 1793690013.8184023,
-    "seen": 1793690091.2262342,
+    "mtime": 1793690092.2946649,
+    "seen": 1793690093.8016346,
     "ast_hash": "5f6471fae6ac15a078d02a8e8837dc46",
     "semantic_hash": ""
   },
@@ -102,9 +102,9 @@
     "semantic_hash": ""
   },
   "DECISIONS.md": {
-    "mtime": 1793690013.7823644,
-    "seen": 1793690091.2262342,
-    "ast_hash": "7e02599791c40f9f1e01a2532eb1fac9",
+    "mtime": 1793690092.2958865,
+    "seen": 1793690093.8016346,
+    "ast_hash": "93c994e6480de864be24167e7bc07677",
     "semantic_hash": ""
   },
   "PLAN.md": {
@@ -312,9 +312,9 @@
     "semantic_hash": ""
   },
   "e2e/fallback.spec.ts": {
-    "mtime": 1793689238.5991943,
-    "seen": 1793690091.2262342,
-    "ast_hash": "20a511f7a61f341bea86c8139bf8965c",
+    "mtime": 1793690092.3010938,
+    "seen": 1793690093.8016346,
+    "ast_hash": "70370c7296ad951b90f6c10509bcc589",
     "semantic_hash": ""
   },
   "e2e/hero.spec.ts": {
@@ -324,9 +324,9 @@
     "semantic_hash": ""
   },
   "scripts/align.mjs": {
-    "mtime": 1793689049.672888,
-    "seen": 1793690091.2262342,
-    "ast_hash": "c02821c51bf21ae718d9d0b81b21cf0c",
+    "mtime": 1793690092.3100271,
+    "seen": 1793690093.8016346,
+    "ast_hash": "8c0fc5049678b43180aa37e732decf19",
     "semantic_hash": ""
   },
   "scripts/console.mjs": {
@@ -360,9 +360,9 @@
     "semantic_hash": ""
   },
   "src/components/HeroStage.tsx": {
-    "mtime": 1793689238.818751,
-    "seen": 1793690091.2262342,
-    "ast_hash": "ec1527c7c87799472de72763f719da4e",
+    "mtime": 1793690092.3112805,
+    "seen": 1793690093.8016346,
+    "ast_hash": "4b2448013c9b23900a209550a49e7558",
     "semantic_hash": ""
   },
   "src/scene/Cradle.tsx": {
@@ -534,9 +534,9 @@
     "semantic_hash": ""
   },
   "src/components/SoundToggle.tsx": {
-    "mtime": 1793689238.8367445,
-    "seen": 1793690091.2262342,
-    "ast_hash": "50781834327ac4800ad1db25f32db3ce",
+    "mtime": 1793690092.3112805,
+    "seen": 1793690093.8016346,
+    "ast_hash": "eaab4ceab83fb9b9ca9e209c3c2e220e",
     "semantic_hash": ""
   },
   "src/content/identities.ts": {
@@ -960,9 +960,9 @@
     "semantic_hash": ""
   },
   "src/components/StoryPanel.tsx": {
-    "mtime": 1793689238.8509037,
-    "seen": 1793690091.2262342,
-    "ast_hash": "6a811ec1d7a7a731baedae25e03fd6f2",
+    "mtime": 1793690092.3122866,
+    "seen": 1793690093.8016346,
+    "ast_hash": "26f80da6c81648a56ac7f9baa5637ed3",
     "semantic_hash": ""
   },
   "src/scene/choreography.ts": {
@@ -1254,15 +1254,15 @@
     "semantic_hash": ""
   },
   "app/(site)/(pages)/work/[slug]/page.tsx": {
-    "mtime": 1793689872.8910308,
-    "seen": 1793690091.2262342,
-    "ast_hash": "83545baeaa7a77455fbb209c5800b187",
+    "mtime": 1793690092.2968957,
+    "seen": 1793690093.8016346,
+    "ast_hash": "76f8cefde81b0402bb44675b9ad478ef",
     "semantic_hash": ""
   },
   "e2e/case-study.spec.ts": {
-    "mtime": 1793689871.461183,
-    "seen": 1793690091.2262342,
-    "ast_hash": "fd9871639eda5e9bf957701903967307",
+    "mtime": 1793690092.2999046,
+    "seen": 1793690093.8016346,
+    "ast_hash": "29129db381c5a134b3130e7723d94809",
     "semantic_hash": ""
   },
   "src/components/ProgressBar.tsx": {
@@ -1314,15 +1314,15 @@
     "semantic_hash": ""
   },
   "app/(site)/(pages)/about/page.tsx": {
-    "mtime": 1793689646.6300087,
-    "seen": 1793690091.2262342,
-    "ast_hash": "28e025ac2b7f4c2e0cd85e1e78e5b8f9",
+    "mtime": 1793690092.2968957,
+    "seen": 1793690093.8016346,
+    "ast_hash": "8db8856d53f27d134850c0c57e3a80d4",
     "semantic_hash": ""
   },
   "app/(site)/(pages)/work/page.tsx": {
-    "mtime": 1793689872.9025705,
-    "seen": 1793690091.2262342,
-    "ast_hash": "9112171b2c756074d369a1060a1cae56",
+    "mtime": 1793690092.2979028,
+    "seen": 1793690093.8016346,
+    "ast_hash": "6678181124e505fda9fc885065eee80f",
     "semantic_hash": ""
   },
   "e2e/pages.spec.ts": {
@@ -1416,9 +1416,9 @@
     "semantic_hash": ""
   },
   "scripts/sweep.mjs": {
-    "mtime": 1793689238.766574,
-    "seen": 1793690091.2262342,
-    "ast_hash": "551a4f4d280f93ae33ddaccf64c0e773",
+    "mtime": 1793690092.3100271,
+    "seen": 1793690093.8016346,
+    "ast_hash": "74605bd29f41db645dfedf7e8349c50a",
     "semantic_hash": ""
   },
   "package-lock.json": {

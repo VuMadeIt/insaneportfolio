@@ -1,0 +1,26 @@
+# Report
+
+Overnight build of Lucas Vu's portfolio, following PLAN.md. This file is updated at the end of
+every phase; the final section is written last.
+
+## Phases
+
+### Phase 00: foundation (`v0.0.0-foundation`)
+Next.js 16.4.3 App Router, TypeScript strict, Tailwind v4, ESLint, Prettier, Vitest, Playwright on
+Edge. Tokens, Fraunces, the static hero (corner lines, edge-to-edge giant name). References moved
+to `reference/`. Screens: `.artifacts/screens/v0.0.0/`.
+
+### Phase 01: physics (`v0.1.0-physics`)
+Custom XPBD Newton's cradle in SI units: bifilar unilateral strings, impulse contacts with
+restitution, damped XPBD hand, kinematic anchors, sleep, collision events, a visual rope sim.
+All ten acceptance tests pass (`npm run test`, 18 tests). Restitution 0.975 and hysteresis 0.03/s
+calibrated against a real recording (`docs/physics/calibration.svg`). `/lab/physics` debugger
+(dev only, or `LAB=1`).
+
+### Phase 02: the real object (`v0.2.0-object`)
+R3F stage with a transparent canvas over the page wall, long-lens shift camera, gallery HDRI
+(white-balanced), chrome with fingerprints and per-ball cube reflections, screw eyes, clear nylon
+strings with a 1 px minimum, VSM wall shadows sized to a 5 cm museum spot, analytic string
+shadows, porcelain and dark metal for comparison, `/lab` with every switch. Pre-rendered still as
+LCP and no-WebGL fallback, aligned to the live canvas. Four realism rounds in DECISIONS.md.
+Screens: `.artifacts/screens/v0.2.0/`, lab sheets in `.artifacts/lab/`.

@@ -62,6 +62,31 @@
   }
 }
 
+/* Mirrors frameFor() in src/scene/framing.ts. --s is pixels per metre at the ball plane. */
+.hero-frame {
+  container-type: size;
+}
+.cradle-still {
+  --s: min(calc(100cqh / 0.48), calc(100cqw / 0.8));
+  position: absolute;
+  left: 50%;
+  width: calc(0.8 * var(--s));
+  height: calc(0.8 * var(--s));
+  max-width: none;
+  top: calc(50cqh - 0.4 * var(--s));
+  transform: translateX(-50%);
+  pointer-events: none;
+}
+/* Same query as the <picture> source, so image and box always agree. */
+@media (max-aspect-ratio: 9/10) {
+  .cradle-still {
+    --s: max(calc(100cqh / 0.95), min(calc(100cqh / 0.48), calc(100cqw / 0.36)));
+    width: calc(0.36 * var(--s));
+    height: calc(0.78 * var(--s));
+    top: calc(48cqh - 0.48 * 0.78 * var(--s));
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,

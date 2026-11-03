@@ -5,7 +5,7 @@ export function Hero({ children }: { children?: React.ReactNode }) {
     <section aria-label="Lucas Vu" className="relative h-dvh min-h-[560px] w-full overflow-hidden bg-wall">
       <h1 className="sr-only">Lucas Vu, product designer</h1>
       <GiantName className="absolute inset-x-0 bottom-[0.02em]" />
-      <div className="absolute inset-0">{children}</div>
+      <div className="hero-frame absolute inset-0">{children}</div>
       <div className="pointer-events-none absolute inset-x-[var(--gutter)] top-[var(--corner-top)] flex flex-col gap-3 text-[15px] leading-[1.45] sm:flex-row sm:justify-between sm:text-[16px]">
         <p className="pointer-events-auto max-w-[15em]">I like getting things moving.</p>
         <p className="pointer-events-auto text-muted sm:text-right sm:text-ink">

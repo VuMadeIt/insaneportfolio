@@ -16,10 +16,7 @@ export function WorkStack() {
       style={{ timelineScope: featured.map((_, i) => `--exhibit-${i}`).join(", ") } as React.CSSProperties}
     >
       <div className="px-[var(--gutter)] pb-[clamp(48px,8vh,96px)] pt-[clamp(120px,18vh,200px)]">
-        <h2
-          id="work-title"
-          className="reveal text-[clamp(48px,7vw,112px)] font-normal leading-[0.95] tracking-[-0.02em]"
-        >
+        <h2 id="work-title" className="reveal text-[clamp(48px,7vw,112px)] leading-[0.95]">
           Selected work
         </h2>
         <p className="reveal mt-6 max-w-[30em] text-[17px]">
@@ -38,14 +35,16 @@ export function WorkStack() {
           <div className="grid items-end gap-8 md:grid-cols-[minmax(0,1fr)_minmax(220px,300px)] md:gap-12">
             <Link href={`/work/${p.slug}`} className="group block" tabIndex={-1} aria-hidden>
               {p.media ? (
-                <div className="overflow-hidden">
+                <div className="overflow-hidden rounded-md">
                   <div className="transition-transform duration-700 ease-[var(--ease-out)] group-hover:scale-[1.015]">
                     <ExhibitMedia media={p.media} sizes="(min-width: 768px) 65vw, 100vw" />
                   </div>
                 </div>
               ) : (
-                <div className="flex aspect-[16/9] w-full items-center justify-center bg-[#e9e6df]">
-                  <p className="text-[clamp(20px,2vw,28px)] italic text-muted">Currently under wraps.</p>
+                <div className="flex aspect-[16/9] w-full items-center justify-center rounded-md bg-[#e9e6df]">
+                  <p className="font-display text-[clamp(20px,2vw,28px)] text-muted">
+                    Currently under wraps.
+                  </p>
                 </div>
               )}
             </Link>

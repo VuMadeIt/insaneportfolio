@@ -78,6 +78,16 @@ trajectories in simulation time are bit-identical (Vitest). Whoosh down/up from 
 recording through a tape-stop (`scripts/audio/whoosh.py`). Behind a flag: on in `/lab` and with
 `?slowmo=1`, off in production. `scripts/slowmo.mjs` measures the speed ratio in a real browser.
 
+### Phase 11: type, nav and motion (`v1.2.0-type-nav`)
+Fraunces is gone: General Sans for headings and the name, Cabinet Grotesk for everything else
+(Fontshare woff2, self-hosted). The hero follows Lucas's mock: three lowercase status lines, the
+links-only nav with a `say hi` pill, the vertical tagline "the person who gets things *moving*"
+with the old site's looping scroll line, and `LUCAS VU` in capitals rising in letter by letter.
+Inner pages get the old fixed bar with the "i am vu" logo. A `--metal` grey gradient sampled from
+the chrome draws the underlines, the scroll line and the progress fill; rounded corners (8/16/24)
+are allowed. Text rises in on scroll (GSAP ScrollTrigger) over Lenis smooth scrolling. Screens:
+`.artifacts/screens/v1.2.0/`.
+
 ## Where to look first
 1. `npm run build && npm run start`, open http://localhost:3000 . Drag a ball, flick it, let it go.
    Hover each ball, click one, press Escape.

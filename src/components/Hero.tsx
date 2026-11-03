@@ -12,7 +12,7 @@ export function Hero() {
         <HeroStage />
       </div>
       <HeroCorners />
-      <SoundToggle className="absolute bottom-[calc(30.5vw*0.86)] right-[var(--gutter)]" />
+      <SoundToggle className="absolute bottom-[20vw] right-[var(--gutter)]" />
       <StoryController />
     </section>
   );

@@ -6,7 +6,7 @@ import type { Media } from "@/content/projects";
 
 /**
  * A project's picture: a muted loop that only loads and plays while on screen (and never under
- * reduced motion, where the poster stays), or a still image. Square corners, always.
+ * reduced motion, where the poster stays), or a still image, with the site's media radius.
  */
 export function ExhibitMedia({
   media,
@@ -33,7 +33,7 @@ export function ExhibitMedia({
     return () => io.disconnect();
   }, []);
 
-  const box = "block h-auto w-full bg-[#e9e6df]";
+  const box = "block h-auto w-full rounded-md bg-[#e9e6df]";
   if (media.video) {
     return (
       <video

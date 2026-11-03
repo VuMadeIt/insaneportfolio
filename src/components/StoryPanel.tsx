@@ -23,12 +23,12 @@ export function StoryPanel({ identity }: { identity: Identity }) {
       <div className="pointer-events-auto max-w-[34em]">
         <h2
           id="story-title"
-          className={`${cls} text-[clamp(48px,7vw,112px)] font-normal leading-[0.95] tracking-[-0.02em]`}
+          className={`${cls} text-[clamp(48px,7vw,112px)] leading-[0.95]`}
           style={rise(650)}
         >
           {identity.title}
         </h2>
-        <p className={`${cls} mt-4 text-[clamp(19px,1.6vw,24px)] italic`} style={rise(760)}>
+        <p className={`${cls} mt-4 text-[clamp(19px,1.6vw,24px)] font-light`} style={rise(760)}>
           {identity.line}
         </p>
         <div className="mt-8 flex flex-col gap-3 text-[17px] leading-[1.55]">

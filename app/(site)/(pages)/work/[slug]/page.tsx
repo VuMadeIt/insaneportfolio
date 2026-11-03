@@ -39,10 +39,7 @@ function Block({ section }: { section: Section }) {
       className="scroll-mt-24 px-[var(--gutter)] py-[clamp(64px,10vh,120px)]"
     >
       <div className="mx-auto max-w-[900px]">
-        <h2
-          id={`${section.id}-title`}
-          className="reveal text-[clamp(24px,2.6vw,36px)] font-normal leading-[1.15] tracking-[-0.01em]"
-        >
+        <h2 id={`${section.id}-title`} className="reveal text-[clamp(24px,2.6vw,36px)] leading-[1.15]">
           {section.headline}
         </h2>
         <div className="mt-6 flex max-w-[660px] flex-col gap-4 text-[18px] leading-[1.6]">
@@ -57,7 +54,9 @@ function Block({ section }: { section: Section }) {
         <dl className="mx-auto mt-14 grid max-w-[1100px] gap-10 md:grid-cols-3">
           {section.stats.map((s) => (
             <div key={s.value} className="reveal">
-              <dt className="text-[clamp(56px,6vw,88px)] leading-none tracking-[-0.03em]">{s.value}</dt>
+              <dt className="font-display text-[clamp(56px,6vw,88px)] font-medium leading-none tracking-[-0.03em]">
+                {s.value}
+              </dt>
               <dd className="mt-3 text-[17px] leading-[1.5]">
                 {s.text}{" "}
                 <a href={s.href} className="text-muted underline decoration-1 underline-offset-4">
@@ -72,7 +71,7 @@ function Block({ section }: { section: Section }) {
         <div className="mx-auto mt-14 grid max-w-[1100px] gap-x-12 gap-y-10 md:grid-cols-2">
           {section.quotes.map((q) => (
             <figure key={q.text} className="reveal">
-              <blockquote className="text-[clamp(20px,1.8vw,26px)] italic leading-[1.35]">
+              <blockquote className="font-display text-[clamp(20px,1.8vw,26px)] italic leading-[1.35] tracking-[-0.01em]">
                 &ldquo;{q.text}&rdquo;
               </blockquote>
               <figcaption className="mt-3 text-[15px] text-muted">{q.who}</figcaption>
@@ -101,7 +100,7 @@ function Block({ section }: { section: Section }) {
         <dl className="mx-auto mt-12 grid max-w-[900px] gap-6 md:grid-cols-2">
           {section.points.map((p) => (
             <div key={p.title} className="reveal">
-              <dt className="text-[18px] italic">{p.title}</dt>
+              <dt className="font-display text-[18px] font-semibold tracking-[-0.02em]">{p.title}</dt>
               <dd className="mt-1 text-[17px] leading-[1.55]">{p.body}</dd>
             </div>
           ))}
@@ -127,9 +126,7 @@ export default async function CaseStudyPage({ params }: { params: Promise<{ slug
   return (
     <article>
       <header className="px-[var(--gutter)] pb-[clamp(48px,8vh,96px)] pt-[clamp(96px,16vh,180px)]">
-        <h1 className="text-[clamp(56px,9vw,148px)] font-normal leading-[0.9] tracking-[-0.035em]">
-          {project.title}
-        </h1>
+        <h1 className="text-[clamp(56px,9vw,148px)] leading-[0.9]">{project.title}</h1>
         <p className="mt-8 max-w-[28em] text-[clamp(20px,1.9vw,28px)] leading-[1.35]">{study.claim}</p>
         <dl className="mt-12 grid max-w-[1100px] gap-6 text-[15px] leading-[1.5] sm:grid-cols-2 lg:grid-cols-4">
           {meta.map(([k, v]) => (
@@ -170,7 +167,7 @@ export default async function CaseStudyPage({ params }: { params: Promise<{ slug
         href={`/work/${next.slug}`}
         className="group mt-[clamp(64px,10vh,120px)] block bg-[#e9e6df] px-[var(--gutter)] py-[clamp(72px,12vh,140px)]"
       >
-        <p className="mt-3 text-[clamp(48px,7vw,112px)] leading-[0.95] tracking-[-0.02em]">
+        <p className="mt-3 font-display text-[clamp(48px,7vw,112px)] font-medium leading-[0.95] tracking-[-0.03em]">
           {next.title}{" "}
           <span
             aria-hidden

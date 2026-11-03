@@ -6,30 +6,41 @@
   --color-ink: var(--ink);
   --color-muted: var(--muted);
   --color-rule: var(--rule);
-  --font-serif: var(--font-fraunces), Georgia, serif;
+  --font-display: var(--font-general), "Helvetica Neue", Arial, sans-serif;
+  --font-sans: var(--font-cabinet), "Helvetica Neue", Arial, sans-serif;
+  /* One radius scale (PLAN 12.1): small controls, media, cards. Pills use rounded-full. */
   --radius-*: initial;
+  --radius-sm: 8px;
+  --radius-md: 16px;
+  --radius-lg: 24px;
   --ease-out: var(--ease-out);
   --ease-drawer: var(--ease-drawer);
 }
 
 @layer base {
-  * {
-    border-radius: 0;
-  }
   html {
     background: var(--wall);
     color: var(--ink);
-    font-family: var(--font-serif);
-    font-optical-sizing: auto;
-    font-variation-settings:
-      "SOFT" 0,
-      "WONK" 0;
+    font-family: var(--font-sans);
     -webkit-font-smoothing: antialiased;
     text-rendering: optimizeLegibility;
   }
   body {
-    font-size: 17px;
+    font-size: clamp(17.6px, 1.35vw, 20.8px);
     line-height: 1.5;
+  }
+  /* Headings in General Sans, as on the old site; body, nav and labels in Cabinet Grotesk. */
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: var(--font-display);
+    font-weight: 500;
+    letter-spacing: -0.03em;
+  }
+  h3 {
+    font-weight: 600;
+    line-height: 1.25;
   }
   ::selection {
     background: var(--ink);
@@ -42,15 +53,29 @@
 }
 
 @layer components {
-  .bracket {
-    color: var(--muted);
-    text-decoration: underline;
-    text-underline-offset: 3px;
-    text-decoration-thickness: 1px;
-    transition: color 200ms var(--ease-out);
+  /* Metal underlines (PLAN 12.1). `.u-grow` draws in from the left on hover (nav); `.u-metal` is
+     always there and a highlight sweeps along it on hover (links in running text). */
+  .u-grow,
+  .u-metal {
+    background-image: var(--metal);
+    background-repeat: no-repeat;
+    background-position: 0 100%;
+    background-size: 0% 0.1em;
+    padding-bottom: 0.08em;
+    transition:
+      background-size 300ms ease-in-out,
+      background-position 900ms ease-in-out,
+      color 200ms var(--ease-out);
   }
-  .bracket:hover {
-    color: var(--ink);
+  .u-grow:hover,
+  .u-grow:focus-visible {
+    background-size: 100% 0.1em;
+  }
+  .u-metal {
+    background-size: 200% 0.08em;
+  }
+  .u-metal:hover {
+    background-position: 100% 100%;
   }
   .sr-only-focusable:not(:focus-visible) {
     position: absolute;
@@ -62,11 +87,17 @@
   }
 }
 
-/* Arrow links: the arrow nudges on hover. */
+/* Arrow links: a metal underline, and the arrow nudges on hover. */
 .link-arrow {
-  text-decoration: underline;
-  text-decoration-thickness: 1px;
-  text-underline-offset: 6px;
+  background-image: var(--metal);
+  background-repeat: no-repeat;
+  background-position: 0 100%;
+  background-size: 200% 0.08em;
+  padding-bottom: 0.12em;
+  transition: background-position 900ms ease-in-out;
+}
+.link-arrow:hover {
+  background-position: 100% 100%;
 }
 .link-arrow span {
   display: inline-block;
@@ -76,16 +107,9 @@
   transform: translateX(4px);
 }
 
-/* Section entrances: parts rise in as they scroll into view; lower parts enter later, which is
-   the stagger. CSS only, so nothing stays hidden without JavaScript; static where scroll
-   timelines are unsupported. */
+/* Section entrances (`.reveal`) are driven by GSAP ScrollTrigger in ScrollMotion.tsx. */
 @supports (animation-timeline: view()) {
   @media (prefers-reduced-motion: no-preference) {
-    .reveal {
-      animation: story-rise linear both;
-      animation-timeline: view();
-      animation-range: entry 5% cover 22%;
-    }
     /* The covered exhibit dims a little while the next one slides over it. */
     .exhibit::after {
       content: "";
@@ -122,13 +146,64 @@
   }
 }
 
-.more-dialog {
-  inset: var(--corner-top) auto auto var(--gutter);
-  margin-top: 2.2em;
-  box-shadow: 0 24px 60px rgb(18 18 18 / 0.14); /* taste-skill-ignore: a modal dialog truly floats */
+/* LUCAS VU along the bottom: General Sans ~350, capitals, tight (old Hero.jsx). --giant-size makes
+   the line run edge to edge with a small margin. */
+.giant-name {
+  --giant-size: 21.5vw;
+  font-size: var(--giant-size);
+  font-weight: 350;
+  letter-spacing: -0.035em;
+  line-height: 0.74;
+  /* The line box is the cap height; this lifts the baseline off the bottom edge like the mock. */
+  padding-bottom: 0.09em;
 }
-.more-dialog::backdrop {
-  background: rgb(243 241 236 / 0.6);
+.hero-tagline {
+  top: calc(var(--corner-top) + 76px);
+}
+@media (max-width: 639px) {
+  .hero-tagline {
+    top: calc(var(--corner-top) + 150px);
+  }
+}
+
+/* The giant name rises in letter by letter once (old Hero.jsx: y 100, 1.5 s, power4.out, 0.1 s
+   stagger). CSS only, so it never waits for JavaScript and never hides the name without it. */
+@keyframes letter-rise {
+  from {
+    opacity: 0;
+    transform: translateY(100px);
+  }
+}
+.giant-letter {
+  display: inline-block;
+  animation: letter-rise 1.5s var(--ease-power4-out) both;
+  animation-delay: calc(0.15s + var(--i) * 0.1s);
+}
+
+/* The hero's scroll line: a short metal line sweeping into a clipped box on a loop (old site:
+   from x -40, 1.5 s power4.inOut, 0.5 s pause). */
+@keyframes scroll-line {
+  0% {
+    transform: translateY(-100%);
+    animation-timing-function: var(--ease-power4-in-out);
+  }
+  75%,
+  100% {
+    transform: none;
+  }
+}
+.scroll-line {
+  animation: scroll-line 2s infinite;
+}
+
+/* The nav slides down on load (old NavBar, 1.2 s instead of 3 s). */
+@keyframes nav-in {
+  from {
+    transform: translateY(-100%);
+  }
+}
+.nav-in {
+  animation: nav-in 1.2s var(--ease-power4-in-out) 0.5s both;
 }
 
 /* Story wall text rises in after the glide begins. */
@@ -221,6 +296,11 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .giant-letter,
+  .scroll-line,
+  .nav-in {
+    animation: none;
+  }
   *,
   *::before,
   *::after {

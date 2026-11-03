@@ -1,0 +1,10 @@
+.next
+node_modules
+reference
+graphify-out
+.artifacts
+.devin
+.windsurf
+public
+package-lock.json
+*.md

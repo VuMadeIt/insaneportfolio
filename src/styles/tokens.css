@@ -1,0 +1,10 @@
+:root {
+  --wall: #f3f1ec;
+  --ink: #121212;
+  --muted: #76736c;
+  --rule: #d9d6cf;
+  --gutter: clamp(32px, 8vw, 128px);
+  --corner-top: clamp(28px, 6vh, 72px);
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+  --ease-drawer: cubic-bezier(0.32, 0.72, 0, 1);
+}

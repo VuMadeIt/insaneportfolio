@@ -569,6 +569,15 @@ Microanimations found on calebwu.ca/RevisionDojo, and what we did with each:
 - **Sweep** (`scripts/sweep.mjs`, now including every case study): every route at 1440, 1024, 768
   and 390, no console errors, no horizontal overflow.
 
+## USE NOW inspo (2026-11-03 afternoon)
+
+Lucas dropped two screenshots marked **USE NOW** (not archive inspo):
+- `reference/inspo/USE-NOW-framer-dark-home.png` — his Framer dark homepage. Use for the dark half
+  / contact close: black + cream lowercase, top-left availability block, pages/socials columns,
+  giant "i am lucas vu.", wifi+good vibes tagline. Logged as PLAN 12.10.
+- `reference/inspo/USE-NOW-drop-me-drag-hint.png` — purple "drop me" chip with one sharp corner.
+  Use as the cradle first-visit drag affordance. Logged as PLAN 12.10.
+
 ## Phase 14: home v3 (2026-11-03)
 
 - **Home is the hero, the list, then the dark half** (PLAN 12.9). The work list reuses the /work

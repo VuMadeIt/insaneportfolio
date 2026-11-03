@@ -16,7 +16,8 @@ Every external asset used in the site or in the build pipeline, with source and 
 - Identity reference images and the atom motion video in `reference/identities/` belong to Lucas Vu.
   Not shipped; used as references only.
 - Visual inspo stills + screen recording in `reference/inspo/` (see that folder's `SOURCES.md`).
-  Includes Lucas's own hero mock and Screen Sketch recording `20261103-1427-09.8724131.mp4`.
+  Includes Lucas's own hero mock, Screen Sketch recording `20261103-1427-09.8724131.mp4`, and
+  **USE NOW** refs: Framer dark home + purple "drop me" drag chip (Lucas-owned screenshots).
   Third-party stills (Studio Wentape accordion frames; Xiaohongshu editorial spreads) are
   reference-only, not shipped.
 

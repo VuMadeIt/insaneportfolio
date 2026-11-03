@@ -34,7 +34,8 @@ vision, architecture, phases, git workflow and the autonomous execution protocol
   for interaction tests). Wait for `load`, not `networkidle` (video loops never go idle).
 - Visual review helpers: `scripts/lab-shots.mjs` (lab variants via query), `scripts/identity-shots.mjs`
   (identities vs references), `scripts/story.mjs` (films the choreography), `scripts/scroll.mjs`
-  (scrolling contact sheet), `scripts/sweep.mjs` (all routes x 4 widths, console errors, overflow),
+  (scrolling contact sheet), `scripts/slowmo.mjs` (slow-motion speed ratio, dev server URL),
+  `scripts/sweep.mjs` (all routes x 4 widths, console errors, overflow),
   `scripts/align.mjs` (still vs live canvas), `scripts/still.mjs` (re-render fallback stills; needs a
   dev server because /lab 404s in production). `scripts/sheet.py` resizes tiles to a fixed size:
   check raw files before judging proportions.

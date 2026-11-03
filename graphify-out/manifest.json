@@ -90,27 +90,27 @@
     "semantic_hash": ""
   },
   "AGENTS.md": {
-    "mtime": 1793690092.2946649,
-    "seen": 1793690093.8016346,
-    "ast_hash": "5f6471fae6ac15a078d02a8e8837dc46",
+    "mtime": 1793718797.9286222,
+    "seen": 1793718848.3266506,
+    "ast_hash": "ab6be7df1312330f32c41daf363049ce",
     "semantic_hash": ""
   },
   "CREDITS.md": {
-    "mtime": 1793683406.145193,
-    "seen": 1793683407.311955,
-    "ast_hash": "ddeb926fdc0dae26cd6cb4594c594c40",
+    "mtime": 1793718797.9276018,
+    "seen": 1793718848.3266506,
+    "ast_hash": "86074f08c1b59537919f7c88ff2873c3",
     "semantic_hash": ""
   },
   "DECISIONS.md": {
-    "mtime": 1793690092.2958865,
-    "seen": 1793690093.8016346,
-    "ast_hash": "93c994e6480de864be24167e7bc07677",
+    "mtime": 1793718797.8914783,
+    "seen": 1793718848.3266506,
+    "ast_hash": "4b9879945b54b8fb0a318e60b4d1c9d4",
     "semantic_hash": ""
   },
   "PLAN.md": {
-    "mtime": 1793674718.3837833,
-    "seen": 1793676076.179438,
-    "ast_hash": "5f525a23fe74ca7dec8fc6ecaf2534ec",
+    "mtime": 1793718066.2819705,
+    "seen": 1793718270.9057703,
+    "ast_hash": "4f434420cf0f3285388c9a3a0cd9d826",
     "semantic_hash": ""
   },
   "reference/identities/experiment-atom.png": {
@@ -246,9 +246,9 @@
     "semantic_hash": ""
   },
   "scripts/audio/fetch.sh": {
-    "mtime": 1793677327.3111384,
-    "seen": 1793677328.5582132,
-    "ast_hash": "7c694ca52a844c6e3ffaa82d3c01d411",
+    "mtime": 1793718797.9286222,
+    "seen": 1793718848.3266506,
+    "ast_hash": "a3c9d75d61e54c04980253f10b060633",
     "semantic_hash": ""
   },
   "app/lab/layout.tsx": {
@@ -312,9 +312,9 @@
     "semantic_hash": ""
   },
   "e2e/fallback.spec.ts": {
-    "mtime": 1793690092.3010938,
-    "seen": 1793690093.8016346,
-    "ast_hash": "70370c7296ad951b90f6c10509bcc589",
+    "mtime": 1793718827.3596961,
+    "seen": 1793718848.3266506,
+    "ast_hash": "20a511f7a61f341bea86c8139bf8965c",
     "semantic_hash": ""
   },
   "e2e/hero.spec.ts": {
@@ -324,9 +324,9 @@
     "semantic_hash": ""
   },
   "scripts/align.mjs": {
-    "mtime": 1793690092.3100271,
-    "seen": 1793690093.8016346,
-    "ast_hash": "8c0fc5049678b43180aa37e732decf19",
+    "mtime": 1793718827.4327824,
+    "seen": 1793718848.3266506,
+    "ast_hash": "c02821c51bf21ae718d9d0b81b21cf0c",
     "semantic_hash": ""
   },
   "scripts/console.mjs": {
@@ -360,15 +360,15 @@
     "semantic_hash": ""
   },
   "src/components/HeroStage.tsx": {
-    "mtime": 1793690092.3112805,
-    "seen": 1793690093.8016346,
-    "ast_hash": "4b2448013c9b23900a209550a49e7558",
+    "mtime": 1793718827.5885234,
+    "seen": 1793718848.3266506,
+    "ast_hash": "ec1527c7c87799472de72763f719da4e",
     "semantic_hash": ""
   },
   "src/scene/Cradle.tsx": {
-    "mtime": 1793686836.9692905,
-    "seen": 1793687098.6181474,
-    "ast_hash": "f16eab23ed43c76560d53304f95969e8",
+    "mtime": 1793718827.815609,
+    "seen": 1793718848.3266506,
+    "ast_hash": "b07c395758d2c7349af1c2c76f7b8271",
     "semantic_hash": ""
   },
   "src/scene/Lighting.tsx": {
@@ -438,9 +438,9 @@
     "semantic_hash": ""
   },
   "REPORT.md": {
-    "mtime": 1793690121.8457866,
-    "seen": 1793690123.2070615,
-    "ast_hash": "861562eccb4f541dcfae388c998faf07",
+    "mtime": 1793719019.9264703,
+    "seen": 1793719022.146078,
+    "ast_hash": "bfe400cd120a1a7ef10f8a51217b05f9",
     "semantic_hash": ""
   },
   "reference/realism/SOURCES.md": {
@@ -516,9 +516,9 @@
     "semantic_hash": ""
   },
   "src/audio/clack.ts": {
-    "mtime": 1793686091.0185952,
-    "seen": 1793686260.9773557,
-    "ast_hash": "2ba8cae07bdf737220e0289e03cbba4b",
+    "mtime": 1793718827.5517921,
+    "seen": 1793718848.3266506,
+    "ast_hash": "56320723ba65f9a18bb39b806b6f1d94",
     "semantic_hash": ""
   },
   "src/audio/clacks.json": {
@@ -534,9 +534,9 @@
     "semantic_hash": ""
   },
   "src/components/SoundToggle.tsx": {
-    "mtime": 1793690092.3112805,
-    "seen": 1793690093.8016346,
-    "ast_hash": "eaab4ceab83fb9b9ca9e209c3c2e220e",
+    "mtime": 1793718827.6070468,
+    "seen": 1793718848.3266506,
+    "ast_hash": "50781834327ac4800ad1db25f32db3ce",
     "semantic_hash": ""
   },
   "src/content/identities.ts": {
@@ -546,9 +546,9 @@
     "semantic_hash": ""
   },
   "src/scene/Interaction.tsx": {
-    "mtime": 1793687810.2009315,
-    "seen": 1793688034.7171125,
-    "ast_hash": "f4b52356bb492f5646a59ae356fe6d80",
+    "mtime": 1793718827.8663926,
+    "seen": 1793718848.3266506,
+    "ast_hash": "163fae8a9ee3d710cedf793318bff110",
     "semantic_hash": ""
   },
   "public/audio/clacks.mp3": {
@@ -960,15 +960,15 @@
     "semantic_hash": ""
   },
   "src/components/StoryPanel.tsx": {
-    "mtime": 1793690092.3122866,
-    "seen": 1793690093.8016346,
-    "ast_hash": "26f80da6c81648a56ac7f9baa5637ed3",
+    "mtime": 1793718827.6238792,
+    "seen": 1793718848.3266506,
+    "ast_hash": "6a811ec1d7a7a731baedae25e03fd6f2",
     "semantic_hash": ""
   },
   "src/scene/choreography.ts": {
-    "mtime": 1793687810.1306207,
-    "seen": 1793688034.7171125,
-    "ast_hash": "9f159b84ac2bc801d164ebd956da3a44",
+    "mtime": 1793718827.800088,
+    "seen": 1793718848.3266506,
+    "ast_hash": "329ff360252580c950c21c77a33fe989",
     "semantic_hash": ""
   },
   "app/(site)/(pages)/layout.tsx": {
@@ -1254,15 +1254,15 @@
     "semantic_hash": ""
   },
   "app/(site)/(pages)/work/[slug]/page.tsx": {
-    "mtime": 1793690092.2968957,
-    "seen": 1793690093.8016346,
-    "ast_hash": "76f8cefde81b0402bb44675b9ad478ef",
+    "mtime": 1793718827.1440146,
+    "seen": 1793718848.3266506,
+    "ast_hash": "83545baeaa7a77455fbb209c5800b187",
     "semantic_hash": ""
   },
   "e2e/case-study.spec.ts": {
-    "mtime": 1793690092.2999046,
-    "seen": 1793690093.8016346,
-    "ast_hash": "29129db381c5a134b3130e7723d94809",
+    "mtime": 1793718827.3515205,
+    "seen": 1793718848.3266506,
+    "ast_hash": "fd9871639eda5e9bf957701903967307",
     "semantic_hash": ""
   },
   "src/components/ProgressBar.tsx": {
@@ -1314,15 +1314,15 @@
     "semantic_hash": ""
   },
   "app/(site)/(pages)/about/page.tsx": {
-    "mtime": 1793690092.2968957,
-    "seen": 1793690093.8016346,
-    "ast_hash": "8db8856d53f27d134850c0c57e3a80d4",
+    "mtime": 1793718827.1019585,
+    "seen": 1793718848.3266506,
+    "ast_hash": "28e025ac2b7f4c2e0cd85e1e78e5b8f9",
     "semantic_hash": ""
   },
   "app/(site)/(pages)/work/page.tsx": {
-    "mtime": 1793690092.2979028,
-    "seen": 1793690093.8016346,
-    "ast_hash": "6678181124e505fda9fc885065eee80f",
+    "mtime": 1793718827.154525,
+    "seen": 1793718848.3266506,
+    "ast_hash": "9112171b2c756074d369a1060a1cae56",
     "semantic_hash": ""
   },
   "e2e/pages.spec.ts": {
@@ -1416,9 +1416,81 @@
     "semantic_hash": ""
   },
   "scripts/sweep.mjs": {
-    "mtime": 1793690092.3100271,
-    "seen": 1793690093.8016346,
-    "ast_hash": "74605bd29f41db645dfedf7e8349c50a",
+    "mtime": 1793718827.533526,
+    "seen": 1793718848.3266506,
+    "ast_hash": "551a4f4d280f93ae33ddaccf64c0e773",
+    "semantic_hash": ""
+  },
+  "reference/inspo/SOURCES.md": {
+    "mtime": 1793716510.3919423,
+    "seen": 1793718270.9057703,
+    "ast_hash": "8673b61ea05e99c9b0558d356be7cea7",
+    "semantic_hash": ""
+  },
+  "reference/inspo/editorial-tibetan-culture-layouts.png": {
+    "mtime": 1793716462.114122,
+    "seen": 1793718270.9057703,
+    "ast_hash": "f5daf972f35af0c2b2e274b6b44c24e9",
+    "semantic_hash": ""
+  },
+  "reference/inspo/lucas-vu-hero-mock.png": {
+    "mtime": 1793716462.114122,
+    "seen": 1793718270.9057703,
+    "ast_hash": "6c03bceba05b41a60f3e7417ab823dc3",
+    "semantic_hash": ""
+  },
+  "reference/inspo/studio-wentape-accordion.png": {
+    "mtime": 1793716462.114122,
+    "seen": 1793718270.9057703,
+    "ast_hash": "bacd3bae47c064525dcadea478be0d6c",
+    "semantic_hash": ""
+  },
+  "reference/inspo/20261103-1427-09.8724131.mp4": {
+    "mtime": 1793716036.2743876,
+    "seen": 1793718270.9057703,
+    "ast_hash": "913868b4368f45dbe154bc8cd3457e83",
+    "semantic_hash": ""
+  },
+  "scripts/audio/whoosh.py": {
+    "mtime": 1793718387.5391777,
+    "seen": 1793718848.3266506,
+    "ast_hash": "93e2437fc88f11571da41fb982fd790a",
+    "semantic_hash": ""
+  },
+  "scripts/slowmo.mjs": {
+    "mtime": 1793718827.5188074,
+    "seen": 1793718848.3266506,
+    "ast_hash": "ae2179bfd9d01ed3a7e7fe8dce927daf",
+    "semantic_hash": ""
+  },
+  "src/audio/whoosh.json": {
+    "mtime": 1793718827.5563476,
+    "seen": 1793718848.3266506,
+    "ast_hash": "5309a4cd66881110744bda5acb78c870",
+    "semantic_hash": ""
+  },
+  "src/scene/slowmo.test.ts": {
+    "mtime": 1793718827.8949597,
+    "seen": 1793718848.3266506,
+    "ast_hash": "6a9c31b80af56ddd1b6ff0de6e4bd351",
+    "semantic_hash": ""
+  },
+  "src/scene/slowmo.ts": {
+    "mtime": 1793718827.9024851,
+    "seen": 1793718848.3266506,
+    "ast_hash": "4c021fee4947fa1faf82df528940db8d",
+    "semantic_hash": ""
+  },
+  "public/audio/whoosh.mp3": {
+    "mtime": 1793718387.979141,
+    "seen": 1793718848.3266506,
+    "ast_hash": "68faaa8ac217818eab728071c6d8a0af",
+    "semantic_hash": ""
+  },
+  "public/audio/whoosh.webm": {
+    "mtime": 1793718387.9266152,
+    "seen": 1793718848.3266506,
+    "ast_hash": "030d3c79d3860d10bcfc3222d323fbc9",
     "semantic_hash": ""
   },
   "package-lock.json": {

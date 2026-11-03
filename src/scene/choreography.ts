@@ -1,6 +1,7 @@
 import gsap from "gsap";
 import { type Vec3, vec } from "@/physics/vec";
 import { frameFor } from "./framing";
+import { restoreTime } from "./slowmo";
 import { cradle, requestRender } from "./world";
 
 /**
@@ -46,6 +47,7 @@ function storyOffset(i: number): Vec3 {
 }
 
 function begin(): gsap.core.Timeline {
+  restoreTime();
   timeline?.kill();
   startedAt = cradle.time;
   cradle.wake();
@@ -94,6 +96,7 @@ export function close(): void {
 
 /** Jump straight into a state with everything hanging still (deep links, reduced motion). */
 export function enter(selected: number | null): void {
+  restoreTime();
   timeline?.kill();
   timeline = null;
   cradle.balls.forEach((_, i) => {

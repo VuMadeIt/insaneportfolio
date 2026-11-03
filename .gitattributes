@@ -1,1 +1,7 @@
+* text=auto eol=lf
+*.png binary
+*.jpg binary
+*.mp4 binary
+*.webm binary
+*.mp3 binary
 graphify-out/graph.json merge=graphify

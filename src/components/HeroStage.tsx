@@ -2,6 +2,7 @@
 
 import dynamic from "next/dynamic";
 import { useState, useSyncExternalStore } from "react";
+import { AccessibleTargets } from "./AccessibleTargets";
 import { CradleStill } from "./CradleStill";
 
 const Stage = dynamic(() => import("@/scene/Stage"), { ssr: false });
@@ -26,6 +27,7 @@ export function HeroStage() {
         <CradleStill />
       </div>
       {canRender && <Stage onFirstFrame={() => setLive(true)} />}
+      {canRender && <AccessibleTargets />}
     </>
   );
 }

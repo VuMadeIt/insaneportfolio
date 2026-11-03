@@ -53,6 +53,9 @@ export function Lighting() {
     const penumbra = (look.lightSize * look.wallDistance) / lightDistance;
     const texel = (2 * (lightDistance + look.wallDistance) * Math.tan(spot.angle)) / spot.shadow.mapSize.x;
     spot.shadow.radius = look.shadow === "vsm" ? Math.max(1, penumbra / texel / 2) : 1;
+    // three renders VSM receivers into the shadow map too, so the wall would shadow itself (acne
+    // on real GPUs) without a receiver bias well above half-float depth precision.
+    spot.shadow.bias = look.shadow === "vsm" ? -0.002 : -0.00005;
     spot.shadow.blurSamples = 24;
     spot.shadow.needsUpdate = true;
   }, [spot, look.keyPosition, look.wallDistance, look.shadow, look.lightSize]);

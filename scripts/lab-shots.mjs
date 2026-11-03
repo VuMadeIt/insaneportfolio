@@ -10,7 +10,9 @@ const clip = process.env.CLIP ? JSON.parse(process.env.CLIP) : { x: 380, y: 200,
 mkdirSync(dir, { recursive: true });
 const browser = await chromium.launch({
   channel: "msedge",
-  args: ["--use-angle=swiftshader", "--enable-unsafe-swiftshader", "--ignore-gpu-blocklist"],
+  args: process.env.SWIFTSHADER
+    ? ["--use-angle=swiftshader", "--enable-unsafe-swiftshader"]
+    : ["--enable-gpu", "--ignore-gpu-blocklist"],
 });
 async function shoot(name, query) {
   const page = await browser.newPage({ viewport: { width, height } });

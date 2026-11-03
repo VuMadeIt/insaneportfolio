@@ -1,4 +1,5 @@
 import { Cradle } from "@/physics/cradle";
+import type { CollisionEvent } from "@/physics/events";
 import { Rope } from "@/physics/rope";
 import { type Vec3, vec } from "@/physics/vec";
 
@@ -10,12 +11,16 @@ const ROPE_SEGMENTS = 20;
  */
 export const cradle = new Cradle();
 
-/** Render-time state shared by the scene components each frame. */
+/** Render-time state shared by the scene and the DOM layer each frame. */
 export const frame = {
   alpha: 0,
   /** Interpolated ball centres and eyelets for this frame. */
   centres: cradle.balls.map(() => vec()),
   eyelets: cradle.balls.map(() => vec()),
+  /** Impacts during this frame. */
+  events: [] as CollisionEvent[],
+  /** Ball centres and radii projected to CSS pixels in the canvas, for the DOM buttons. */
+  screen: cradle.balls.map(() => ({ x: 0, y: 0, r: 0 })),
 };
 
 /** Two visual strings per ball: front then back anchor. */
@@ -26,6 +31,7 @@ export const ropes: Rope[] = cradle.balls.flatMap((b, i) =>
 /** Advance physics by one render frame and refresh the interpolated frame state. */
 export function tick(dt: number): void {
   frame.alpha = cradle.advance(dt);
+  frame.events = cradle.drainEvents();
   cradle.balls.forEach((_, i) => {
     cradle.renderPosition(i, frame.alpha, frame.centres[i]);
     cradle.eyelet(i, frame.centres[i], frame.eyelets[i]);
@@ -34,3 +40,11 @@ export function tick(dt: number): void {
 
 export const ropeOf = (ball: number, side: 0 | 1) => ropes[ball * 2 + side]!;
 export const anchorOf = (ball: number, side: 0 | 1): Vec3 => cradle.balls[ball]!.anchors[side];
+
+/** Called after every rendered frame (the DOM layer positions its buttons from `frame.screen`). */
+export const afterFrame = new Set<() => void>();
+
+/** The canvas renders on demand; anything that changes the world from outside calls this. */
+let invalidate: () => void = () => {};
+export const setInvalidate = (fn: () => void) => void (invalidate = fn);
+export const requestRender = () => invalidate();

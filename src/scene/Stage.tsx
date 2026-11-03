@@ -5,10 +5,12 @@ import { Suspense, useEffect, useRef } from "react";
 import * as THREE from "three";
 import { CradleModel } from "./Cradle";
 import { CAMERA_HEIGHT, FOV, frameFor } from "./framing";
+import { Interaction } from "./Interaction";
 import { Lighting } from "./Lighting";
 import { useLook } from "./look";
 import { StringShadows } from "./StringShadows";
 import { Wall } from "./Wall";
+import { setInvalidate } from "./world";
 
 const TONE_MAPS = {
   neutral: THREE.NeutralToneMapping,
@@ -28,6 +30,16 @@ function Rig() {
     cam.setViewOffset(size.width, size.height, 0, f.shiftPx, size.width, size.height);
     cam.updateProjectionMatrix();
   }, [camera, size.width, size.height]);
+  return null;
+}
+
+/** Lets the DOM layer wake the on-demand render loop. */
+function RenderHook() {
+  const invalidate = useThree((s) => s.invalidate);
+  useEffect(() => {
+    setInvalidate(invalidate);
+    return () => setInvalidate(() => {});
+  }, [invalidate]);
   return null;
 }
 
@@ -57,12 +69,15 @@ export default function Stage({ onFirstFrame }: { onFirstFrame?: () => void }) {
       className="!absolute inset-0"
       gl={{ antialias: true, alpha: true, powerPreference: "high-performance" }}
       dpr={[1, 2]}
+      frameloop="demand"
       shadows
       camera={{ fov: FOV, near: 0.05, far: 20 }}
       onCreated={({ gl }) => gl.setClearColor(0x000000, 0)}
     >
       <Rig />
       <Exposure />
+      <RenderHook />
+      <Interaction />
       <Suspense fallback={null}>
         <Lighting />
         <Wall />

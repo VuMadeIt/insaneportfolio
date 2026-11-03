@@ -7,7 +7,9 @@ const [target, out, width = "1440", height = "900"] = process.argv.slice(2);
 const url = /^https?:/.test(target) ? target : pathToFileURL(resolve(target)).href;
 const browser = await chromium.launch({
   channel: "msedge",
-  args: ["--use-angle=swiftshader", "--enable-unsafe-swiftshader", "--ignore-gpu-blocklist"],
+  args: process.env.SWIFTSHADER
+    ? ["--use-angle=swiftshader", "--enable-unsafe-swiftshader"]
+    : ["--enable-gpu", "--ignore-gpu-blocklist"],
 });
 const page = await browser.newPage({ viewport: { width: Number(width), height: Number(height) } });
 await page.goto(url, { waitUntil: "networkidle" });

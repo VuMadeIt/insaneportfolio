@@ -160,3 +160,42 @@ phase. Format: decision, alternatives, why.
   lights). Still fake: shadow core slightly heavy and uniform (opacity 0.3 to 0.24), porcelain flat
   (darker base, rougher, clearcoat), dark metal banded by anisotropy (removed). Remaining: the
   balls do not show the strings in their reflections at this size; acceptable.
+
+## Phase 03: interaction and sound (2026-11-03)
+
+- **Drag.** Pointer rays are intersected analytically with the four balls (no mesh raycast) and
+  with the swing plane z = 0. The grab keeps the offset between the grab point and the ball
+  centre, so the ball does not jump under the cursor. Release keeps velocity, so flicks throw.
+- **Touch.** The canvas is `touch-action: pan-y`; a non-passive `touchstart` cancels scrolling
+  only when the touch lands on a ball (touch-action cannot change mid-gesture).
+- **Accessible targets.** Real buttons positioned every rendered frame from projected ball
+  positions (`frame.screen`, written by the scene, read by the DOM layer through `afterFrame`).
+  They are `pointer-events: none` so the canvas keeps mouse and touch; keyboard and screen readers
+  use them. Focus ring is a square 1 px ink outline 8 px off the sphere (house rule: no rounded
+  corners, even around a ball). Captions are one element per ball so they can fade out with their
+  own text. Arrow keys push 0.32 m/s (about 9 degrees); disabled under reduced motion.
+- **On-demand rendering.** `frameloop="demand"`. The scene keeps invalidating while the cradle is
+  awake, for 1.5 s after it sleeps (strings settle), and for the first 8 frames (reflections). An
+  IntersectionObserver stops it off-screen. Input from the DOM wakes it via `requestRender()`.
+  Frame dt is clamped to 50 ms, so a tab that slept does not jump the swing.
+- **Performance fix: cube cameras no longer re-render the shadow map.** three redraws shadow maps
+  on every `render()` call, so each of the six cube faces redrew the 2048 VSM map and its blur.
+  Disabling `shadowMap.autoUpdate` during cube renders took the hero from 38 fps to a vsync-locked
+  60 fps on an Intel Arc 140V at 1440x900, DPR 2.
+- **Tests run on the real GPU now.** SwiftShader managed 0.7 fps with this scene, which starved
+  CSS transitions and made interaction tests meaningless. Playwright and all scripts use
+  `--enable-gpu --ignore-gpu-blocklist`; `SWIFTSHADER=1` restores the software path.
+- **VSM receiver bias -0.002.** On a real GPU the shadow-catcher plane shadowed itself (diagonal
+  acne bands over the whole wall), because three renders VSM receivers into the map too.
+  SwiftShader had hidden it.
+- **Light size 8 cm** (was 5 cm): on the GPU path the VSM penumbra rendered crisper than in
+  SwiftShader; 8 cm is a typical museum spot reflector and gives an 8 mm penumbra.
+- **Sound.** 12 isolated, unclipped clacks sliced from the CC0 recording (drewtait 676377) into one
+  sprite, 160 ms each with a squared 40 ms fade, peak -1 dBFS: `clacks.webm` (Opus, 28 KB) and
+  `clacks.mp3` (27 KB) for Safari. The AudioContext is created on the first pointer down, key
+  push, or toggle click. Impacts within 6 ms are one clack (unit-tested), level = (v / 1.4)^1.2
+  (the Hertz exponent used in calibration), low-pass opening from 3.5 to 18 kHz with speed,
+  rate 1 +/- 3%, pan by x. Below 1.5 cm/s silent. The context suspends while the tab is hidden.
+  `[sound on]` sits at the right gutter just above the giant name, remembered in localStorage.
+- **String shiver** on impact: both strings of both balls in an impact get a transverse kick of
+  0.05 m/s per m/s of impact speed.

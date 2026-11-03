@@ -62,6 +62,18 @@
   }
 }
 
+/* Invisible buttons over the balls; the focus ring is the only thing drawn. */
+.cradle-target {
+  background: transparent;
+  border: 0;
+  padding: 0;
+  will-change: transform;
+}
+.cradle-target:focus-visible {
+  outline: 1px solid var(--ink);
+  outline-offset: 8px;
+}
+
 /* Mirrors frameFor() in src/scene/framing.ts. --s is pixels per metre at the ball plane. */
 .hero-frame {
   container-type: size;

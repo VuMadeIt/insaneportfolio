@@ -14,7 +14,9 @@ const shots = [
 mkdirSync(".artifacts/still", { recursive: true });
 const browser = await chromium.launch({
   channel: "msedge",
-  args: ["--use-angle=swiftshader", "--enable-unsafe-swiftshader", "--ignore-gpu-blocklist"],
+  args: process.env.SWIFTSHADER
+    ? ["--use-angle=swiftshader", "--enable-unsafe-swiftshader"]
+    : ["--enable-gpu", "--ignore-gpu-blocklist"],
 });
 for (const s of shots) {
   const page = await browser.newPage({

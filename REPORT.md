@@ -70,6 +70,14 @@ rope, choreography, audio grouping and copy rules), Playwright 27 tests on Edge 
 Taste inspector 0 FAIL on the home page with the PLAN allow-list. Screens:
 `.artifacts/screens/v0.9.0/` (home, people, work, about, work/shufflr at 1440, 768, 390).
 
+### Phase 10: slow motion lab (`v1.1.0-slowmo`)
+Hovering a ball while the cradle swings eases the whole world to 0.1x (300 ms in, 400 ms out) so
+it can be clicked; leaving eases back. The time scale multiplies the real frame time fed to the
+physics accumulator, the rope sim, the identity clocks and the clack pitch (floored at 0.45x), so
+trajectories in simulation time are bit-identical (Vitest). Whoosh down/up from a CC0 Freesound
+recording through a tape-stop (`scripts/audio/whoosh.py`). Behind a flag: on in `/lab` and with
+`?slowmo=1`, off in production. `scripts/slowmo.mjs` measures the speed ratio in a real browser.
+
 ## Where to look first
 1. `npm run build && npm run start`, open http://localhost:3000 . Drag a ball, flick it, let it go.
    Hover each ball, click one, press Escape.

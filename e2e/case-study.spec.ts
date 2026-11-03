@@ -12,7 +12,7 @@ for (const [slug, title, next] of [
     await expect(page).toHaveTitle(`${title} | Lucas Vu`);
     await expect(page.getByText("Role", { exact: true })).toBeVisible();
     expect(await page.getByRole("heading", { level: 2 }).count()).toBeGreaterThan(0);
-    await expect(page.getByRole("link", { name: new RegExp(`^Next exhibit ${next}`) })).toBeVisible();
+    await expect(page.getByRole("link", { name: new RegExp(`^${next}.*Next exhibit`) })).toBeVisible();
     await expect(
       page.getByRole("navigation", { name: "Site" }).getByRole("link", { name: "Work" }),
     ).toBeVisible();

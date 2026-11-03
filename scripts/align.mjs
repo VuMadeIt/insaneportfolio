@@ -12,6 +12,8 @@ const sizes = [
   [1100, 900],
   [390, 844],
   [430, 932],
+  [768, 1024],
+  [1024, 768],
 ];
 for (const webgl of [true, false]) {
   const args = webgl

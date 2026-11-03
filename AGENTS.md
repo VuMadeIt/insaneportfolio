@@ -30,6 +30,19 @@ vision, architecture, phases, git workflow and the autonomous execution protocol
   `.artifacts/screens/<tag>/`. Routes have no leading slash (`home`, `people`, `work/shufflr`)
   because Git Bash rewrites `/x` arguments. `SETTLE=ms`, `FULL=1` for full page.
 - Installs need `legacy-peer-deps` (set in `.npmrc`; npm 10.9 peer-set bug).
+- Browser scripts use the real GPU (`--enable-gpu`); `SWIFTSHADER=1` for software (0.7 fps, too slow
+  for interaction tests). Wait for `load`, not `networkidle` (video loops never go idle).
+- Visual review helpers: `scripts/lab-shots.mjs` (lab variants via query), `scripts/identity-shots.mjs`
+  (identities vs references), `scripts/story.mjs` (films the choreography), `scripts/scroll.mjs`
+  (scrolling contact sheet), `scripts/sweep.mjs` (all routes x 4 widths, console errors, overflow),
+  `scripts/align.mjs` (still vs live canvas), `scripts/still.mjs` (re-render fallback stills; needs a
+  dev server because /lab 404s in production). `scripts/sheet.py` resizes tiles to a fixed size:
+  check raw files before judging proportions.
+- Physics probes: `npx jiti scripts/physics/probe.ts`, `npx jiti scripts/physics/calibrate.ts`.
+- Taste gate: `node <taste>/scripts/inspect.mjs http://localhost:3100/<route> --allow shadow,rules,hairline,covered-text,late-title`
+  (allow-list reasons in DECISIONS.md, Phases 06 and 09).
+- Editing after Prettier: re-read the file first; scripted string replacements silently miss
+  reformatted lines.
 
 ## Conventions
 - Physics in `src/physics` is pure TypeScript: no three.js, React, or UI-state imports.

@@ -14,7 +14,7 @@ function Row({ p }: { p: Project }) {
     <h2 className="text-[clamp(30px,3.6vw,52px)] font-normal leading-[1] tracking-[-0.02em]">{p.title}</h2>
   );
   return (
-    <li className="catalogue-row group relative border-t border-rule py-8 md:py-10">
+    <li className="catalogue-row reveal group relative border-t border-rule py-8 md:py-10">
       <div className="grid gap-3 md:grid-cols-[minmax(0,1.1fr)_minmax(0,1fr)_9em] md:gap-10">
         {href ? (
           <Link
@@ -30,16 +30,17 @@ function Row({ p }: { p: Project }) {
         <div className="text-[16px] leading-[1.5]">
           <p>{p.description}</p>
           <p className="mt-2 text-[15px] text-muted">
+            <span className="md:hidden">{p.year}. </span>
             {p.medium}
             {p.credit ? `. ${p.credit}` : ""}
             {external ? `. ${p.link!.label}` : ""}
           </p>
         </div>
-        <p className="text-[15px] text-muted md:text-right">{p.year}</p>
+        <p className="hidden text-[15px] text-muted md:block md:text-right">{p.year}</p>
       </div>
       {p.media && (
-        <div className="catalogue-preview mt-6 md:pointer-events-none md:absolute md:right-[12em] md:top-1/2 md:z-10 md:mt-0 md:w-[280px] md:-translate-y-1/2">
-          <ExhibitMedia media={p.media} sizes="(min-width: 768px) 280px, 100vw" />
+        <div className="catalogue-preview mt-6 lg:pointer-events-none lg:absolute lg:right-[12em] lg:top-1/2 lg:z-10 lg:mt-0 lg:w-[280px] lg:-translate-y-1/2">
+          <ExhibitMedia media={p.media} sizes="(min-width: 1024px) 280px, 100vw" />
         </div>
       )}
     </li>

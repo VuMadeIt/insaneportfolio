@@ -18,7 +18,7 @@ export function StoryPanel({ identity }: { identity: Identity }) {
   return (
     <article
       aria-labelledby="story-title"
-      className="pointer-events-none absolute inset-x-0 top-0 z-10 flex h-dvh min-h-[560px] items-end px-[var(--gutter)] pb-[12vh] sm:items-center sm:pb-0 sm:pl-[46vw]"
+      className="story-panel pointer-events-none absolute inset-x-0 top-0 z-10 flex h-dvh min-h-[560px] px-[var(--gutter)]"
     >
       <div className="pointer-events-auto max-w-[34em]">
         <h2

@@ -119,13 +119,13 @@ export default function AboutPage() {
         className="bg-[#e9e6df] px-[var(--gutter)] py-[clamp(96px,14vh,180px)]"
       >
         <div className="mx-auto max-w-[640px]">
-          <p className="text-[15px] text-muted">Reading room, {essay.date}</p>
           <h2
             id="essay-title"
-            className="mt-3 text-[clamp(34px,4vw,56px)] font-normal leading-[1.05] tracking-[-0.02em]"
+            className="text-[clamp(28px,4vw,56px)] font-normal leading-[1.05] tracking-[-0.02em]"
           >
             {essay.title}
           </h2>
+          <p className="mt-4 text-[15px] text-muted">Reading room. An essay, {essay.date}.</p>
           <div className="mt-10 flex flex-col gap-6 text-[19px] leading-[1.65]">
             {essay.paragraphs.map((p, k) => (
               <p key={k}>{p}</p>

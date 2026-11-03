@@ -106,8 +106,8 @@
   }
 }
 
-/* Catalogue previews appear beside the row on hover (desktop); inline on phones. */
-@media (min-width: 768px) {
+/* Catalogue previews appear beside the row on hover (desktop); inline on tablets and phones. */
+@media (min-width: 1024px) {
   .catalogue-preview {
     opacity: 0;
     transform: translateY(-50%) scale(0.97);
@@ -142,6 +142,23 @@
   animation: story-rise 900ms var(--ease-out) both;
 }
 
+/* Story text sits right of the ball on landscape screens and below it on portrait ones: the same
+   aspect rule the camera framing and the choreography use (PORTRAIT_BELOW in framing.ts). */
+.story-panel {
+  align-items: center;
+  padding-left: 46vw;
+}
+@media (max-aspect-ratio: 9/10) {
+  .story-panel {
+    align-items: flex-end;
+    padding-left: var(--gutter);
+    padding-bottom: 12vh;
+  }
+  .story-hide-portrait {
+    display: none;
+  }
+}
+
 /* Invisible buttons over the balls; the focus ring is the only thing drawn. */
 .cradle-target {
   background: transparent;
@@ -152,6 +169,30 @@
 .cradle-target:focus-visible {
   outline: 1px solid var(--ink);
   outline-offset: 8px;
+}
+
+/* Without WebGL: plain links over the still's balls, captioned, same framing maths as the still. */
+.fallback-target {
+  --s: min(calc(100cqh / 0.48), calc(100cqw / 0.8));
+  --top: 50cqh;
+  position: absolute;
+  left: calc(50% + var(--i) * 0.0651 * var(--s));
+  top: calc(var(--top) - 0.0325 * var(--s));
+  width: calc(0.065 * var(--s));
+  padding-top: calc(0.065 * var(--s) + 14px);
+  transform: translateX(-50%);
+  text-align: center;
+}
+@media (max-aspect-ratio: 9/10) {
+  .fallback-target {
+    --s: max(calc(100cqh / 0.95), min(calc(100cqh / 0.48), calc(100cqw / 0.36)));
+    --top: 48cqh;
+    font-size: 13px;
+  }
+  /* Neighbouring captions are wider than the ball pitch on phones: stagger them. */
+  .fallback-target:nth-child(even) {
+    padding-top: calc(0.065 * var(--s) + 32px);
+  }
 }
 
 /* Mirrors frameFor() in src/scene/framing.ts. --s is pixels per metre at the ball plane. */

@@ -8,7 +8,7 @@
 //
 // Loudness model: Hertzian contact gives peak force ~ v^(6/5), and the peak sound pressure follows the
 // peak force, so level_dB = 24 log10(v_impact) + const. Clacks that clip (> -1 dBFS) are excluded.
-import { readFileSync } from "node:fs";
+import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { withConfig } from "../../src/physics/config";
 import { Cradle } from "../../src/physics/cradle";
 
@@ -93,6 +93,43 @@ for (const r of results.slice(0, 8))
 
 const best = results[0]!;
 const chains = simulate(best.e, best.h, best.lift, bestLength);
+
+// Before (first-guess constants) vs after (shipped constants) vs the recording, as an SVG.
+const curve = (cs: { v: number }[]) =>
+  recLevels.map((_, k) => 20 * HERTZ_EXPONENT * Math.log10(cs[first + k]!.v / cs[first]!.v));
+const series = [
+  { name: "recording (LoafDV 131596)", color: "#111", data: recLevels },
+  {
+    name: "before: e 0.985, hysteresis 0.004",
+    color: "#c0392b",
+    data: curve(simulate(0.985, 0.004, 30, bestLength)),
+  },
+  {
+    name: "shipped: e 0.975, hysteresis 0.03",
+    color: "#2c7fb8",
+    data: curve(simulate(0.975, 0.03, 30, bestLength)),
+  },
+];
+const W = 640;
+const H = 360;
+const x = (k: number) => 50 + (k / (recLevels.length - 1)) * (W - 70);
+const y = (db: number) => 20 + (-db / 30) * (H - 60);
+const svg = [
+  `<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}" font-family="Georgia" font-size="12">`,
+  `<rect width="${W}" height="${H}" fill="#f3f1ec"/>`,
+  ...[0, -10, -20, -30].map(
+    (d) =>
+      `<text x="8" y="${y(d) + 4}">${d} dB</text><line x1="50" x2="${W - 20}" y1="${y(d)}" y2="${y(d)}" stroke="#d9d6cf"/>`,
+  ),
+  `<text x="${W / 2 - 60}" y="${H - 8}">clack index (after clipped clacks)</text>`,
+  ...series.map((s, i) => {
+    const pts = s.data.map((d, k) => `${x(k).toFixed(1)},${y(d).toFixed(1)}`).join(" ");
+    return `<polyline points="${pts}" fill="none" stroke="${s.color}" stroke-width="1.5"/><text x="${W - 300}" y="${40 + i * 16}" fill="${s.color}">${s.name}</text>`;
+  }),
+  `</svg>`,
+].join("\n");
+mkdirSync("docs/physics", { recursive: true });
+writeFileSync("docs/physics/calibration.svg", svg);
 console.log("clack   rec dB   sim dB   rec dt   sim dt");
 for (let k = 0; k < recLevels.length; k++) {
   const i = first + k;

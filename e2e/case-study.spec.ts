@@ -1,19 +1,21 @@
 import { expect, test } from "@playwright/test";
 
 for (const [slug, title, next] of [
-  ["shufflr", "Shufflr", "Ripple"],
+  ["shufflr", "Shufflr", "Reboot"],
   ["ripple", "Ripple", "Shufflr"],
-  ["maple-leaf-foods", "Maple Leaf Foods", "Shufflr"],
+  ["reboot", "Reboot", "Maple Leaf Foods"],
+  ["maple-leaf-foods", "Maple Leaf Foods", "Ripple"],
 ] as const) {
-  test(`${title} case study: title, wall label, claim headlines, next exhibit`, async ({ page }) => {
+  test(`${title} case study: title, no date above it, claim headlines, next project`, async ({ page }) => {
     await page.goto(`/work/${slug}`);
     await expect(page.getByRole("heading", { level: 1 })).toHaveText(title);
+    await expect(page.locator("article header p").first()).not.toHaveText(/^\d{4}$/);
     await expect(page).toHaveTitle(`${title} | Lucas Vu`);
     await expect(page.getByText("Role", { exact: true })).toBeVisible();
     expect(await page.getByRole("heading", { level: 2 }).count()).toBeGreaterThan(0);
-    await expect(page.getByRole("link", { name: new RegExp(`^Next exhibit ${next}`) })).toBeVisible();
+    await expect(page.getByRole("link", { name: new RegExp(`^Next project ${next}`) })).toBeVisible();
     await expect(
-      page.getByRole("navigation", { name: "Site" }).getByRole("link", { name: "work" }),
+      page.getByRole("navigation", { name: "Site" }).getByRole("link", { name: "Work" }),
     ).toHaveAttribute("href", "/work");
   });
 }

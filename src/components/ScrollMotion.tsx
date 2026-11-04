@@ -23,7 +23,7 @@ export function ScrollMotion() {
   useEffect(() => {
     if (reducedMotion()) return;
     // Touch keeps native scrolling (syncTouch off), so the canvas's pan-y and ball capture still work.
-    const lenis = new Lenis({ autoRaf: false });
+    const lenis = new Lenis({ autoRaf: false, anchors: true });
     lenis.on("scroll", ScrollTrigger.update);
     const raf = (time: number) => lenis.raf(time * 1000);
     gsap.ticker.add(raf);

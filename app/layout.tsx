@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import localFont from "next/font/local";
 import { Cursor } from "@/components/Cursor";
 import { ScrollMotion } from "@/components/ScrollMotion";
+import { SiteNav } from "@/components/SiteNav";
 import "lenis/dist/lenis.css";
 import "./globals.css";
 
@@ -33,6 +34,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en" className={`${generalSans.variable} ${cabinetGrotesk.variable}`}>
       <body>
+        <SiteNav />
         {children}
         <ScrollMotion />
         <Cursor />

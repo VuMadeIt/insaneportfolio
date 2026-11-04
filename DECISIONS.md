@@ -647,3 +647,54 @@ Lucas dropped two screenshots marked **USE NOW** (not archive inspo):
   `long-pin` (the pinned timeline). Defended on the case studies: `blank-gap` (the full-page
   capture runs before the scroll entrances; viewport captures show every block) and
   `headline-lines` at 390 px (claim headlines, the skim test).
+
+## Revision 5 (2026-11-04)
+
+Lucas's notes after revision 4, with his Q&A answers. PLAN.md Part 14 is the spec.
+
+- **Voice.** Removed every line that explained the writing or claimed outside research as ours:
+  the Fogg Behavior Model block on Shufflr ("I read the finding through...", "Added reading for
+  this case study") is gone because the team never used it, and so is the Surgeon General time-use
+  block that had been added as context. Alt text and captions say "me", not "Lucas". Museum
+  labels that read as generated ("Photograph.", "Video, 26 seconds", "Reading room") are gone.
+  "Next exhibit" is "Next project". A content test now fails on notes like "for this case study".
+- **Type.** Nothing heavier than the hero name: headings, `.font-display` and table headers are
+  350; Cabinet Grotesk never goes above regular. Checked with a computed-style sweep of every route.
+- **Nav.** Research: NN/g ("Sticky Headers: 5 Ways to Make Them Better") and Smashing Magazine
+  (2023) both describe the partially persistent header (hides on scroll down, slides back on any
+  scroll up, ~300-400 ms) as the best fit when a fixed bar would cover content; always-visible is
+  least distracting only when the bar is slim. Lucas chose show-on-scroll-up. The bar is one fixed
+  element in the root layout (no more copy inside the hero), transparent at the top of the page,
+  wall-coloured with a hairline once scrolled, and it always reappears when a link inside it gets
+  keyboard focus. Left: a render of the four balls (Lucas's pick over the wordmark). Right: About,
+  Work, Contact (scrolls to the footer) and the sound button (Lucas kept it in the nav).
+- **Footer.** Rebuilt after `footer-reference.png`: hairline, then `lucas vu` with the live
+  Toronto time (moon after 6 PM), Work / About, "Let's work together!" with the email and
+  LinkedIn / Instagram / GitHub icons (Simple Icons paths, CC0). The ball pit, its solver, its
+  tests, the "drop me" cursor state and `check-footer.mjs` are deleted.
+- **Prize objects.** Rendered from our own three.js scene (`/lab/object`) rather than stock
+  images, so they share the cradle's realism: medals are lathed discs with a struck relief
+  (laurel and the place, a bump map) on a grosgrain ribbon; the cash is 140 individual notes under
+  a mustard bank strap, the top note textured with the public-domain series 2009 $100 obverse
+  (Wikimedia Commons, US government work; shown far below 75% of real size); the AirPods are an
+  open case clipped from rounded boxes with the buds seated. Metals use measured F0 values. Lit in
+  a Lightformer studio (soft key, strip fill, top light, rim). All share one 240 px square at 2x,
+  fitted by projecting every vertex, so they sit at the same size; on the page they are 1em of the
+  title. One object per project: its best prize. Silver was modelled and dropped (no 2nd place).
+- **Work.** Two groups, hackathon wins then selected projects; ranked projects lead each group,
+  the rest newest first. The prize sentence opens the description on /work; home shows only the
+  object (with the prize as its alt text). Dates are month and year everywhere.
+- **"moving".** The words rise out of masks, then the ball drops from above the top of the
+  screen into the "o" under real gravity at its real size (65 mm, scaled to the type), restitution
+  0.55, a clack per landing through the shared audio master. Browsers only allow audio after a
+  click or key press, so on a pure scroll-only visit it lands silently. Not draggable; a glint
+  slides across it on hover. Reduced motion or already on screen: it is simply there.
+- **New work.** Sweaterify (sweaterify.vercel.app, from `VuMadeIt/sweatertexture`) and Liam's
+  portfolio (liamvu.vercel.app; Lucas pointed at the Vercel name). Hover videos filmed from the
+  live sites with `scripts/record-sites.mjs`.
+- **Reboot case study.** Adapted from the Framer page: the survey charts are redrawn as coded
+  bars and stats from the survey image's real numbers; the home page gets numbered callouts, the
+  product, builder and impact screens are the Framer images. Dropped what could not be verified
+  (the "2-4 year GPU lifecycle" figure had no source) and the stock photos. No "Looking back" or
+  learnings were invented. The next-project chain is Ripple, Shufflr, Reboot, Maple Leaf.
+- **About.** The timeline's "At the same time" lists are gone; overlapping bars still light up.

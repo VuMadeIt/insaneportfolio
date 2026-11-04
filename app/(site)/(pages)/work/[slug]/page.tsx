@@ -42,7 +42,6 @@ const PANELLED = new Set([
   "scrub",
   "diagram",
   "bars",
-  "fogg",
   "podium",
   "table",
   "brief",
@@ -145,8 +144,7 @@ export default async function CaseStudyPage({ params }: { params: Promise<{ slug
     <article style={{ "--accent": study.accent, "--accent-soft": study.accentSoft } as React.CSSProperties}>
       <header className="px-[var(--gutter)] pb-[clamp(40px,6vh,72px)] pt-[clamp(72px,12vh,140px)]">
         <div className="mx-auto max-w-[1400px]">
-          <p className="text-[15px] text-muted">{study.year}</p>
-          <h1 className="mt-2 text-[clamp(56px,9vw,148px)] leading-[0.9]">{project.title}</h1>
+          <h1 className="text-[clamp(56px,9vw,148px)] leading-[0.9]">{project.title}</h1>
           <p className="mt-8 max-w-[36em] text-[clamp(18px,1.5vw,22px)] leading-[1.5]">{study.summary}</p>
           <dl className="mt-10 grid gap-6 text-[15px] leading-[1.5] sm:grid-cols-2 lg:grid-cols-5">
             {meta.map(([k, v]) => (
@@ -193,8 +191,8 @@ export default async function CaseStudyPage({ params }: { params: Promise<{ slug
           className="group mx-auto grid max-w-[1400px] overflow-hidden rounded-lg bg-ink text-wall md:grid-cols-[minmax(0,2fr)_minmax(0,3fr)]"
         >
           <div className="flex flex-col justify-end p-[clamp(24px,3vw,40px)]">
-            <p className="text-[15px] text-wall/70">Next exhibit</p>
-            <p className="mt-1 font-display text-[clamp(36px,5vw,72px)] font-medium leading-[1] tracking-[-0.03em]">
+            <p className="text-[15px] text-wall/70">Next project</p>
+            <p className="mt-1 font-display text-[clamp(36px,5vw,72px)] font-[350] leading-[1] tracking-[-0.03em]">
               {next.title}{" "}
               <span
                 aria-hidden

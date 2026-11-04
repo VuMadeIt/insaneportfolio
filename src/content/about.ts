@@ -10,7 +10,7 @@ export const statement = [
 
 export const portrait = {
   src: "/media/about/japan.png",
-  alt: "Lucas giving a thumbs up in front of Senso-ji in Tokyo, on a solo backpacking trip",
+  alt: "Me giving a thumbs up in front of Senso-ji in Tokyo, on a solo backpacking trip",
   width: 1024,
   height: 883,
 };
@@ -108,8 +108,8 @@ export interface ObjectItem {
   /** Anchor on /about, linked from the home page's photo strip. */
   id: string;
   title: string;
-  year: string;
-  medium: string;
+  /** Where or when, under the title. */
+  context: string;
   text: string;
   image?: { src: string; alt: string; width: number; height: number };
   video?: { src: string; poster: string; alt: string; width: number; height: number };
@@ -119,8 +119,7 @@ export const objects: ObjectItem[] = [
   {
     id: "cadets",
     title: "Remembrance Day parade in the snow",
-    year: "Cadets",
-    medium: "Photograph",
+    context: "Cadets",
     text: "I joined cadets to get past my anxiety. Week-long camping trips, instructing classes of 70+, parading in the snow and fundraising for veterans shaped me more than anything else in my childhood.",
     image: {
       src: "/media/about/cadet-remembrance-day-parade.png",
@@ -132,12 +131,11 @@ export const objects: ObjectItem[] = [
   {
     id: "chess",
     title: "My last game in the TCDSB West-End division",
-    year: "High school chess",
-    medium: "Photograph",
+    context: "High school chess",
     text: "Chess was how I made friends before I got over my anxiety. I left the division with a record of 13-1-2, and later founded a program pairing high schoolers with elderly residents at The Village of Humber Heights.",
     image: {
       src: "/media/about/chess-tcdsb-west-end.png",
-      alt: "Lucas at a chess board in the TCDSB West-End division",
+      alt: "Me at a chess board in the TCDSB West-End division",
       width: 585,
       height: 1024,
     },
@@ -145,12 +143,11 @@ export const objects: ObjectItem[] = [
   {
     id: "speech",
     title: "After a 15-minute speech",
-    year: "Volunteer Appreciation Ceremony",
-    medium: "Photograph",
+    context: "Volunteer Appreciation Ceremony",
     text: "Fifteen minutes on a stage, about the chess program and the people in it. I like being on stages more than I expected to.",
     image: {
       src: "/media/about/chess-volunteer-ceremony.png",
-      alt: "Lucas after his speech at the Volunteer Appreciation Ceremony",
+      alt: "Me after my speech at the Volunteer Appreciation Ceremony",
       width: 1010,
       height: 754,
     },
@@ -158,8 +155,7 @@ export const objects: ObjectItem[] = [
   {
     id: "hack-the-6ix",
     title: "Winning $1,400 USD",
-    year: "Hack the 6ix 2026",
-    medium: "Photograph",
+    context: "Hack the 6ix 2026",
     text: "If there's a design event at Waterloo or Toronto, I'm probably there. This one paid.",
     image: {
       src: "/media/about/hack-the-6ix-2026.png",
@@ -171,8 +167,7 @@ export const objects: ObjectItem[] = [
   {
     id: "socratica",
     title: "Socratica's Create-a-thon",
-    year: "Socratica, UW/UX, Blueprint",
-    medium: "Photograph",
+    context: "Socratica, UW/UX, Blueprint",
     text: "I'm proud to be part of a community of makers, artists and builders who simply work on what they love.",
     image: {
       src: "/media/about/socratica-create-a-thon.png",
@@ -184,8 +179,7 @@ export const objects: ObjectItem[] = [
   {
     id: "fishing",
     title: "A hummingbird on the tip of my rod",
-    year: "Fishing at 4am",
-    medium: "Video, 26 seconds",
+    context: "Fishing at 4am",
     text: "It hovered over the red tip of my fishing rod like it had found a flower, then realised and darted off. The essay below is about that morning.",
     video: {
       src: "/media/about/hummingbird.mp4",

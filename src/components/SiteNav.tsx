@@ -1,14 +1,16 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
-import { useSyncExternalStore } from "react";
+import { usePathname } from "next/navigation";
+import { useEffect, useRef, useSyncExternalStore } from "react";
 import { isMuted, setMuted, subscribeMuted, unlockAudio } from "@/audio/clack";
-import { CONTACT } from "@/content/contact";
+import { identityIndex } from "@/content/identities";
 
 /** Speaker with sound waves, or with a cross when muted. */
 function SpeakerIcon({ on }: { on: boolean }) {
   return (
-    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden>
+    <svg width="18" height="18" viewBox="0 0 20 20" fill="none" aria-hidden>
       <path d="M3 7.5h3l4-3.5v12l-4-3.5H3z" fill="currentColor" />
       {on ? (
         <path
@@ -24,7 +26,7 @@ function SpeakerIcon({ on }: { on: boolean }) {
   );
 }
 
-/** Mutes every sound on the site (the cradle, slow motion, the footer's balls). */
+/** Mutes every sound on the site (the cradle, slow motion, the ball in "moving"). */
 export function SoundButton() {
   const on = !useSyncExternalStore(subscribeMuted, isMuted, () => false);
   return (
@@ -33,7 +35,7 @@ export function SoundButton() {
       aria-pressed={on}
       aria-label={on ? "Sound on" : "Sound off"}
       title={on ? "Sound on" : "Sound off"}
-      className="-m-2 rounded-full p-2 text-ink transition-opacity duration-200 hover:opacity-60"
+      className="-m-2 rounded-full p-2 text-muted transition-colors duration-200 hover:text-ink"
       onClick={() => {
         unlockAudio();
         setMuted(on);
@@ -44,34 +46,78 @@ export function SoundButton() {
   );
 }
 
+const LINKS = [
+  ["About", "/about"],
+  ["Work", "/work"],
+  ["Contact", "#contact"],
+] as const;
+
 /**
- * The same bar on every page (PLAN 13.1): the name home on the left; work, about, the say hi
- * action and the sound button on the right. Underlines only appear on hover.
+ * The same slim bar on every page (PLAN 14.3): the four balls home on the left; About, Work,
+ * Contact and the sound button on the right. It hides while you scroll down and comes back on any
+ * scroll up; at the top of the page it is always there. An open story hands the corner to its
+ * back arrow.
  */
-export function SiteNav({ className = "" }: { className?: string }) {
+export function SiteNav() {
+  const pathname = usePathname();
+  const bar = useRef<HTMLElement>(null);
+  const story = identityIndex(pathname.slice(1)) >= 0;
+
+  useEffect(() => {
+    const el = bar.current;
+    if (!el) return;
+    let last = scrollY;
+    const onScroll = () => {
+      const y = scrollY;
+      el.toggleAttribute("data-scrolled", y > 8);
+      if (y < 80 || y < last - 4) el.removeAttribute("data-hidden");
+      else if (y > last + 4) el.setAttribute("data-hidden", "");
+      if (Math.abs(y - last) > 4) last = y;
+    };
+    onScroll();
+    addEventListener("scroll", onScroll, { passive: true });
+    return () => removeEventListener("scroll", onScroll);
+  }, [pathname]);
+
+  if (pathname.startsWith("/lab")) return null;
   return (
-    <nav
-      aria-label="Site"
-      className={`flex items-center justify-between px-[var(--gutter)] pt-[var(--corner-top)] text-[16px] sm:text-[17px] ${className}`}
+    <header
+      ref={bar}
+      className="site-nav fixed inset-x-0 top-0 z-40"
+      style={story ? { transform: "translateY(calc(-100% - 2px))" } : undefined}
+      inert={story}
     >
-      <Link href="/" className="u-grow font-display font-medium tracking-[-0.02em]">
-        lucas vu
-      </Link>
-      <div className="flex items-center gap-5 sm:gap-7">
-        <Link href="/work" className="u-grow">
-          work
-        </Link>
-        <Link href="/about" className="u-grow">
-          about
-        </Link>
-        <a
-          href={`mailto:${CONTACT.email}`}
-          className="rounded-full bg-ink px-4 py-1.5 text-wall transition-colors duration-300 hover:bg-[#3a3936] sm:px-5 sm:py-2"
+      <nav
+        aria-label="Site"
+        className="flex h-[var(--nav-h)] items-center justify-between px-[var(--gutter)] text-[16px]"
+      >
+        <Link
+          href="/"
+          aria-label="Lucas Vu, home"
+          className="-m-2 p-2 transition-opacity duration-200 hover:opacity-75"
         >
-          say hi
-        </a>
-        <SoundButton />
-      </div>
-    </nav>
+          <Image
+            src="/media/objects/balls.webp"
+            alt=""
+            width={88}
+            height={22}
+            priority
+            className="h-[22px] w-auto"
+          />
+        </Link>
+        <div className="flex items-center gap-6 sm:gap-8">
+          {LINKS.map(([name, href]) => (
+            <Link
+              key={name}
+              href={href}
+              className="u-grow text-muted transition-colors duration-200 hover:text-ink"
+            >
+              {name}
+            </Link>
+          ))}
+          <SoundButton />
+        </div>
+      </nav>
+    </header>
   );
 }

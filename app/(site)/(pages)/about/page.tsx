@@ -5,11 +5,10 @@ import { essay, objects, portrait, statement } from "@/content/about";
 
 export const metadata = {
   title: "About",
-  description:
-    "Lucas Vu: product designer, Systems Design Engineering at Waterloo, cadet, chess player, fisherman.",
+  description: "Product designer, Systems Design Engineering at Waterloo, cadet, chess player, fisherman.",
 };
 
-/** About as a museum room: wall text with a portrait, the timeline, objects with labels, a reading room. */
+/** About: who I am with a portrait, the timeline, things from outside work, an essay. */
 export default function AboutPage() {
   return (
     <>
@@ -40,8 +39,8 @@ export default function AboutPage() {
             priority
           />
           <figcaption className="mt-3 text-[15px] leading-[1.5]">
-            <span className="font-medium">Lucas at Senso-ji</span>
-            <span className="block text-muted">Tokyo, a solo backpacking trip. Photograph.</span>
+            <span>Senso-ji, Tokyo</span>
+            <span className="block text-muted">A solo backpacking trip.</span>
           </figcaption>
         </figure>
       </section>
@@ -80,9 +79,7 @@ export default function AboutPage() {
               )}
               <figcaption className="mt-4 text-[15px] leading-[1.5]">
                 <h3 className="text-[18px] leading-[1.3]">{o.title}</h3>
-                <p className="text-muted">
-                  {o.year}. {o.medium}.
-                </p>
+                <p className="text-muted">{o.context}</p>
                 <p className="mt-2 max-w-[30em] text-[16px]">{o.text}</p>
               </figcaption>
             </figure>
@@ -98,7 +95,7 @@ export default function AboutPage() {
           <h2 id="essay-title" className="text-[clamp(28px,4vw,56px)] leading-[1.05]">
             {essay.title}
           </h2>
-          <p className="mt-4 text-[15px] text-muted">Reading room. An essay, {essay.date}.</p>
+          <p className="mt-4 text-[15px] text-muted">An essay, {essay.date}.</p>
           <div className="mt-10 flex flex-col gap-6 text-[19px] leading-[1.65]">
             {essay.paragraphs.map((p, k) => (
               <p key={k}>{p}</p>

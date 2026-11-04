@@ -4,11 +4,10 @@ import type { CaseStudy } from "./types";
  * Shufflr, rewritten in revision 4 (PLAN 13.6). Facts from Lucas (48 hours, more than 20 people
  * interviewed, his four roles, 1st place and Most Practical), his LinkedIn post (the challenge, the
  * three inputs, 4 to 6 cards, the photo prompt) and the old case study (quotes, strategy, metrics,
- * learnings). The Fogg reading and the Surgeon General figures are added context, labelled as such.
+ * learnings).
  */
 export const shufflr: CaseStudy = {
   slug: "shufflr",
-  year: "2026",
   accent: "#6a3df0",
   accentSoft: "#e6defd",
   summary:
@@ -100,42 +99,6 @@ export const shufflr: CaseStudy = {
           },
         ],
       },
-    },
-    {
-      id: "research-time",
-      label: "Research",
-      headline: "I found that young people's time with friends fell by about 70% in two decades.",
-      body: [
-        "The US Surgeon General's 2023 advisory, built on time-use diaries, shows the drop for 15 to 24 year olds. Wanting friends has not changed; the time spent together has.",
-      ],
-      visual: {
-        kind: "bars",
-        scale: "linear",
-        min: 0,
-        max: 160,
-        ticks: [0, 40, 80, 120, 160],
-        unit: "min a day",
-        bars: [
-          {
-            label: "2003",
-            sub: "In person with friends, ages 15 to 24",
-            value: 150,
-            display: "about 150 minutes",
-            tone: "soft",
-          },
-          {
-            label: "2020",
-            sub: "The same measure",
-            source: "US Surgeon General",
-            href: "https://www.hhs.gov/sites/default/files/surgeon-general-social-connection-advisory.pdf",
-            value: 40,
-            display: "about 40 minutes",
-            tone: "accent",
-          },
-        ],
-      },
-      caption:
-        "Added context for this case study, from the American Time Use Survey via the Surgeon General.",
     },
     {
       id: "interviews",
@@ -273,24 +236,6 @@ export const shufflr: CaseStudy = {
         ],
       },
       caption: "From interview quotes to themes to the finding.",
-    },
-    {
-      id: "fogg",
-      label: "Synthesis",
-      headline: "I read the finding through the Fogg Behavior Model: high motivation, low ability.",
-      body: [
-        "BJ Fogg's model says a behaviour happens when motivation, ability and a prompt meet. People already wanted to hang out. Planning made it hard. So the job was not to make anyone want it more, but to make it easy enough that a prompt works.",
-      ],
-      visual: {
-        kind: "fogg",
-        points: [
-          { id: "now", label: "Hanging out today", ability: 0.18, motivation: 0.72, tone: "ink" },
-          { id: "shufflr", label: "With Shufflr", ability: 0.8, motivation: 0.72, tone: "accent" },
-        ],
-        move: ["now", "shufflr"],
-      },
-      caption:
-        "Our phrase was activation energy; in Fogg's terms it is ability. Added reading for this case study.",
     },
     {
       id: "opportunity",
@@ -546,6 +491,6 @@ export const shufflr: CaseStudy = {
       },
     },
   ],
-  next: "ripple",
+  next: "reboot",
   draft: ["the three synthesis themes", "the 'one evening out' scale bar (illustrative)"],
 };

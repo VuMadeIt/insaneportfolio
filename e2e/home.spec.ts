@@ -4,14 +4,25 @@ test("the hero: the name, the balls and the site nav with a sound button", async
   await page.goto("/");
   await expect(page.getByRole("heading", { level: 1 })).toHaveText(/Lucas Vu/);
   const nav = page.getByRole("navigation", { name: "Site" });
-  await expect(nav.getByRole("link", { name: "lucas vu" })).toHaveAttribute("href", "/");
-  await expect(nav.getByRole("link", { name: "work" })).toHaveAttribute("href", "/work");
-  await expect(nav.getByRole("link", { name: "about" })).toHaveAttribute("href", "/about");
-  await expect(nav.getByRole("link", { name: "say hi" })).toHaveAttribute(
-    "href",
-    "mailto:lucasvu.work@gmail.com",
-  );
+  await expect(nav.getByRole("link", { name: "Lucas Vu, home" })).toHaveAttribute("href", "/");
+  await expect(nav.getByRole("link", { name: "Work" })).toHaveAttribute("href", "/work");
+  await expect(nav.getByRole("link", { name: "About" })).toHaveAttribute("href", "/about");
+  await expect(nav.getByRole("link", { name: "Contact" })).toHaveAttribute("href", "#contact");
   await expect(page.getByText("product designer @ warframe")).toHaveCount(0);
+});
+
+test("the nav hides while scrolling down and comes back on scroll up", async ({ page }) => {
+  await page.goto("/");
+  const bar = page.locator("header.site-nav");
+  await expect(bar).not.toHaveAttribute("data-hidden");
+  // Hydrated: smooth scrolling has started.
+  await expect(page.locator("html.lenis")).toHaveCount(1);
+  await page.mouse.move(700, 500);
+  await page.mouse.wheel(0, 1200);
+  await expect(bar).toHaveAttribute("data-hidden", "");
+  await expect.poll(() => page.evaluate(() => scrollY)).toBeGreaterThan(1150);
+  await page.mouse.wheel(0, -200);
+  await expect(bar).not.toHaveAttribute("data-hidden");
 });
 
 test("the sound button mutes and remembers it", async ({ page }) => {
@@ -23,16 +34,16 @@ test("the sound button mutes and remembers it", async ({ page }) => {
   await expect(page.getByRole("button", { name: "Sound off" })).toBeVisible();
 });
 
-test("home lists Ripple and Shufflr with accolades and months, then View more", async ({ page }) => {
+test("home lists Ripple and Shufflr with their prize objects and dates, then View more", async ({ page }) => {
   await page.goto("/");
   await expect(page.locator("#work h3")).toHaveText(["Ripple", "Shufflr"]);
   await expect(page.locator("#work").getByRole("link", { name: "Ripple", exact: true })).toHaveAttribute(
     "href",
     "/work/ripple",
   );
-  await expect(page.locator("#work")).toContainText("Most Practical");
-  await expect(page.locator("#work")).toContainText("March");
-  await expect(page.locator("#work")).not.toContainText("2026");
+  await expect(page.locator("#work")).not.toContainText("Most Practical");
+  await expect(page.locator("#work").getByAltText(/1st place/)).toHaveCount(1);
+  await expect(page.locator("#work")).toContainText("March 2026");
   await expect(page.getByRole("link", { name: /View more work/ })).toHaveAttribute("href", "/work");
 });
 
@@ -60,20 +71,16 @@ test("the page stays light: no fade to black", async ({ page }) => {
     );
 });
 
-test("footer: clicking empty space drops a ball, clicking a link does not", async ({ page }) => {
+test("the ball drops into the o of moving and comes to rest", async ({ page }) => {
   await page.setViewportSize({ width: 1440, height: 900 });
   await page.goto("/");
-  const footer = page.locator("footer");
-  await footer.scrollIntoViewIfNeeded();
-  await page.waitForTimeout(800);
-  const f = (await footer.boundingBox())!;
-  const balls = page.locator("footer canvas");
-  await page.mouse.move(f.x + f.width / 2, f.y + f.height * 0.4);
-  await expect(page.locator(".cursor-ball")).toHaveAttribute("data-state", "drop");
-  await page.mouse.click(f.x + f.width / 2, f.y + f.height * 0.4);
-  await expect(balls).toHaveAttribute("data-balls", "1");
-  await page.locator("footer a", { hasText: "linkedin" }).dispatchEvent("pointerdown", { button: 0 });
-  await expect(balls).toHaveAttribute("data-balls", "1");
+  const line = page.locator(".moving-line");
+  await expect(line).toHaveAttribute("data-armed", "");
+  await line.scrollIntoViewIfNeeded();
+  await expect(line).toHaveAttribute("data-in", "");
+  const ball = page.locator(".moving-ball");
+  await expect.poll(() => ball.evaluate((el) => el.style.transform), { timeout: 5000 }).toBe("");
+  await expect(page.getByRole("heading", { name: "Let's get things moving." })).toBeVisible();
 });
 
 test("unknown pages get the cradle with 404 where the name hangs", async ({ page }) => {
@@ -85,7 +92,7 @@ test("unknown pages get the cradle with 404 where the name hangs", async ({ page
 
 test("smooth scrolling reaches the footer", async ({ page }) => {
   await page.goto("/");
-  const name = page.getByRole("heading", { name: "i am lucas vu." });
+  const name = page.locator("footer#contact");
   const inView = () => name.evaluate((el) => el.getBoundingClientRect().top < innerHeight);
   for (let k = 0; k < 80 && !(await inView()); k++) {
     await page.mouse.wheel(0, 1200);

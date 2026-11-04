@@ -4,7 +4,7 @@ import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import type { Stat, Visual as VisualData } from "@/content/caseStudies/types";
 import { ExhibitMedia } from "../ExhibitMedia";
-import { Anatomy, Bars, Brief, Compare, Fogg, Podium, Table } from "./Charts";
+import { Anatomy, Bars, Brief, Compare, Podium, Table } from "./Charts";
 import { Diagram } from "./Diagram";
 import { reducedMotion, useInView } from "./useInView";
 
@@ -43,7 +43,7 @@ function Stats({ stats }: { stats: Stat[] }) {
     <dl className="grid gap-10 md:grid-cols-3">
       {stats.map((s) => (
         <div key={s.value + s.text} className="reveal">
-          <dt className="font-display text-[clamp(56px,6vw,88px)] font-medium leading-none tracking-[-0.03em]">
+          <dt className="font-display text-[clamp(56px,6vw,88px)] font-[350] leading-none tracking-[-0.03em]">
             <Counter value={s.value} />
           </dt>
           <dd className="mt-3 leading-[1.5]">
@@ -67,7 +67,7 @@ function Statement({ text }: { text: string }) {
     <p
       ref={ref}
       data-in={inView}
-      className="statement max-w-[24em] font-display text-[clamp(22px,2.6vw,36px)] font-medium leading-[1.2] tracking-[-0.02em]"
+      className="statement max-w-[24em] font-display text-[clamp(22px,2.6vw,36px)] font-[350] leading-[1.2] tracking-[-0.02em]"
     >
       {text.split(" ").map((w, i) => (
         <span key={i} style={{ "--i": i } as React.CSSProperties}>
@@ -204,7 +204,7 @@ export function Visual({ visual }: { visual: VisualData }) {
               <span aria-hidden className="block font-display text-[44px] leading-[0.6] text-[var(--accent)]">
                 &ldquo;
               </span>
-              <blockquote className="mt-2 font-display text-[clamp(19px,1.6vw,23px)] font-medium leading-[1.3] tracking-[-0.01em]">
+              <blockquote className="mt-2 font-display text-[clamp(19px,1.6vw,23px)] font-[350] leading-[1.3] tracking-[-0.01em]">
                 {q.text}
               </blockquote>
               <figcaption className="mt-3 text-[15px] text-muted">{q.who}</figcaption>
@@ -220,8 +220,6 @@ export function Visual({ visual }: { visual: VisualData }) {
       return <Diagram data={visual} />;
     case "bars":
       return <Bars v={visual} />;
-    case "fogg":
-      return <Fogg v={visual} />;
     case "podium":
       return <Podium v={visual} />;
     case "table":
@@ -237,7 +235,7 @@ export function Visual({ visual }: { visual: VisualData }) {
         <dl className="grid gap-4 md:grid-cols-3">
           {visual.cards.map((c) => (
             <div key={c.title} className="reveal rounded-md bg-wall p-6">
-              <dt className="font-display text-[22px] font-semibold tracking-[-0.02em]">{c.title}</dt>
+              <dt className="font-display text-[22px] font-[350] tracking-[-0.02em]">{c.title}</dt>
               <dd className="mt-2 text-[16px] leading-[1.5]">{c.body}</dd>
             </div>
           ))}
@@ -264,7 +262,7 @@ export function Visual({ visual }: { visual: VisualData }) {
                   </li>
                 ))}
               </ul>
-              {o.chosen && <p className="mt-4 text-[15px] font-medium">The one we built</p>}
+              {o.chosen && <p className="mt-4 text-[15px]">The one we built</p>}
             </li>
           ))}
         </ul>

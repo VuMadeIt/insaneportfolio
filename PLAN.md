@@ -885,7 +885,7 @@ rounded corners and log why.
 - **/about:** the chronology is a pinned horizontal-scroll timeline, oldest first, with each
   company's logo; native sideways scroll on phones and under reduced motion.
 - **Inner pages:** no nav bar and no "i am vu" logo, only a small "← Back to Site" link.
-- **404:** the live hero with "404" in place of the name and "return to main site".
+- **404:** the live hero with "404" in place of the name (no return link).
 
 ### 12.10 USE NOW refs (Lucas, 2026-11-03). Apply immediately; overrides 12.9 dark/contact copy and drag UI
 Source files: `reference/inspo/USE-NOW-framer-dark-home.png`,
@@ -950,10 +950,11 @@ over speed; take as long as needed. Answers from the Q&A are recorded inline.
 - Hero (balls + name), nav on top, Ripple + Shufflr rows, then the about teaser **in light mode,
   no photos**: the line "Let's get things moving." and a short who-I-am paragraph with "More about
   me", then the physics footer.
-- **Physics footer (home only):** layout from `reference/inspo/USE-NOW-framer-dark-home.png` in the
-  site's light colours: top-left contact block (`email` / `based in` / `available for`), top-right
-  `pages` and `socials` columns, a giant `i am lucas vu.` centred, bottom-left
-  `to excel, all i need is wifi + good vibes.` Every text box is solid. It starts with **no balls**.
+- **Physics footer (home only):** primary layout ref `reference/inspo/footer-reference.png`
+  (three columns: name + local time left; Work / About centre; “Let’s work together!” + email +
+  social icons right). Keep contact hierarchy from `USE-NOW-framer-dark-home.png` where it still
+  helps (`email` / `based in` / `available for`, pages + socials, giant `i am lucas vu.`,
+  wifi tagline) in the site's light colours. Every text box is solid. It starts with **no balls**.
   Clicking empty space drops a dark-metal ball at the cursor; balls fall, bounce off the footer's
   walls and floor and off every word box, roll off edges, and collide with each other. Clicking a
   link never drops a ball. Soft clacks on impacts through the shared audio master (muted by the nav

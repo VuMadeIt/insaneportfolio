@@ -10,7 +10,7 @@ const useStoryOpen = () => identityIndex(usePathname().slice(1)) >= 0;
 
 /**
  * The hero's top edge: the site nav, which gives way to a back arrow while a story is open. The
- * 404 adds its own link under the nav.
+ * Optional corner slot for route-specific chrome.
  */
 export function HeroCorners({ children }: { children?: React.ReactNode }) {
   const story = useStoryOpen();

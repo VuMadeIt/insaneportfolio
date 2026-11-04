@@ -569,6 +569,13 @@ Microanimations found on calebwu.ca/RevisionDojo, and what we did with each:
 - **Sweep** (`scripts/sweep.mjs`, now including every case study): every route at 1440, 1024, 768
   and 390, no console errors, no horizontal overflow.
 
+## 404 + footer reference (2026-11-03 evening)
+
+- Removed "← return to main site" from `app/not-found.tsx`; 404 is only the live cradle with "404"
+  as the name (PLAN 12.9 updated). E2E asserts the link is gone.
+- Added `reference/inspo/footer-reference.png` as the primary footer layout reference (three
+  columns: name/time, Work/About, CTA/email/socials). PLAN 13.4 and `SOURCES.md` point to it.
+
 ## USE NOW inspo (2026-11-03 afternoon)
 
 Lucas dropped two screenshots marked **USE NOW** (not archive inspo):

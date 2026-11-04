@@ -8,7 +8,7 @@ export function Hero({
   label,
   corner,
 }: {
-  /** The 404 swaps the name for "404" and adds its own link. */
+  /** The 404 swaps the name for "404". */
   name?: string;
   label?: string;
   corner?: React.ReactNode;

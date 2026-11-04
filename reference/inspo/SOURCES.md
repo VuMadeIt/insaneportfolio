@@ -1,9 +1,16 @@
 # Visual inspo (not shipped)
 
+## Footer reference (2026-11-03 evening) — USE for footer layout
+
+- `footer-reference.png` — three-column light footer: left **lucas vu** + moon + local time
+  (`9 46 PM, Toronto`); centre stacked **Work** / **About**; right **Let’s work together!** +
+  email + LinkedIn / Instagram / GitHub icons. Hairline rule above. Primary layout target for
+  `Footer.tsx` / PLAN 13.4 (alongside the Framer dark-home copy hierarchy).
+
 ## USE NOW (2026-11-03 afternoon) — apply immediately
 
-These two override earlier inspo wherever they conflict. Prefer them for the dark half,
-contact/close, and cradle drag affordance.
+These override earlier inspo wherever they conflict. Prefer them for contact copy tone and
+drag affordance; footer **structure** prefers `footer-reference.png` above.
 
 - `USE-NOW-framer-dark-home.png` — Lucas's Framer site (`i am lucas vu.`): solid black ground,
   cream lowercase type, top-left contact block (`email` / `based in` / `available for`), top-right

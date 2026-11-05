@@ -38,6 +38,10 @@ describe("site copy", () => {
     expect(wins.every((p) => p.prize)).toBe(true);
     expect(selected.some((p) => p.prize)).toBe(false);
     expect(new Set([...wins, ...selected]).size).toBe(projects.length);
+    const after = (list: typeof wins, a: string, b: string) =>
+      list.findIndex((p) => p.slug === a) > list.findIndex((p) => p.slug === b);
+    expect(after(wins, "asper", "reboot")).toBe(true);
+    expect(after(selected, "warframe", "parrot")).toBe(true);
   });
 
   it("dates show as the month and the year", () => {

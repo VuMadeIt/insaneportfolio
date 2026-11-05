@@ -17,7 +17,7 @@ export const reboot: CaseStudy = {
   meta: {
     role: "Product manager and designer",
     team: "Jenny Yang, Kelly M, Lucas Vu",
-    timeline: "UofT UDesignathon, March 2026",
+    timeline: "UofT UDesignathon, February 2026",
     scope: "Survey research, product strategy, product design in Figma",
     outcome: "3rd place",
   },

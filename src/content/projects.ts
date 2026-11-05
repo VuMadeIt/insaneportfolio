@@ -23,8 +23,6 @@ export type Prize = "gold" | "bronze" | "cash" | "airpods";
 export interface Project {
   slug: string;
   title: string;
-  /** 1 to 4: ranked projects lead their group on /work. */
-  rank?: number;
   /** YYYY-MM, for the chronological list (newest first). */
   date: string;
   year: string;
@@ -52,7 +50,6 @@ export const projects: Project[] = [
   {
     slug: "ripple",
     title: "Ripple",
-    rank: 1,
     date: "2026-03",
     year: "2026",
     medium: "LLM product concept",
@@ -79,8 +76,7 @@ export const projects: Project[] = [
   {
     slug: "shufflr",
     title: "Shufflr",
-    rank: 2,
-    date: "2026-03",
+    date: "2026-04",
     year: "2026",
     medium: "Mobile app concept",
     role: "Product designer",
@@ -104,7 +100,6 @@ export const projects: Project[] = [
   {
     slug: "we-should-go-to-japan",
     title: "We should go to Japan",
-    rank: 3,
     date: "2026-07",
     year: "2026",
     medium: "Group trip planner",
@@ -132,7 +127,6 @@ export const projects: Project[] = [
   {
     slug: "maple-leaf-foods",
     title: "Maple Leaf Foods",
-    rank: 4,
     date: "2026-04",
     year: "2026",
     medium: "Internal tools, three projects",
@@ -300,7 +294,7 @@ export const projects: Project[] = [
   {
     slug: "reboot",
     title: "Reboot",
-    date: "2026-03",
+    date: "2026-02",
     year: "2026",
     medium: "Marketplace and project builder",
     role: "Product manager and designer",
@@ -389,15 +383,19 @@ export function monthOf(date: string): string {
   return `${MONTHS[month! - 1]} ${year}`;
 }
 
-/** The ranked ones first, then the rest newest first. */
-const ordered = (list: Project[]) => [
-  ...list.filter((p) => p.rank).sort((a, b) => a.rank! - b.rank!),
-  ...list.filter((p) => !p.rank).sort((a, b) => b.date.localeCompare(a.date)),
-];
-
 /** The home page: the two strongest, then Reboot (PLAN 15.5). */
 export const homeProjects = ["ripple", "shufflr", "reboot"].map((slug) => projectBySlug(slug)!);
 
-/** /work (PLAN 14.6): hackathon wins, then selected projects. */
-export const wins = ordered(projects.filter((p) => p.prize));
-export const selected = ordered(projects.filter((p) => !p.prize));
+/** /work (PLAN 14.6, 15.16): hackathon wins, then selected projects, in my own order. */
+const pick = (slugs: string[]) => slugs.map((slug) => projectBySlug(slug)!);
+export const wins = pick(["ripple", "shufflr", "we-should-go-to-japan", "reboot", "asper", "solarscore"]);
+export const selected = pick([
+  "maple-leaf-foods",
+  "sweaterify",
+  "liam-vu",
+  "frictionless",
+  "parrot",
+  "warframe",
+  "google-song-search",
+  "creators-collective",
+]);

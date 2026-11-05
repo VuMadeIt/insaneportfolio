@@ -1215,3 +1215,15 @@ Branch `phase/16-revision-5` (continues it). Answers from the Q&A are recorded i
   Filmed from the real scene, one exact 1/30 s frame at a time (`scripts/og.mjs`, `/lab/og`,
   `capture` in `src/scene/world.ts`). Case studies keep their own poster.
 - `metadataBase` falls back to Vercel's production domain, so the preview URLs are absolute there.
+
+### 15.15 About, part 2 (Lucas, 2026-11-05 night)
+- Selected objects pins and turns as you scroll: each object holds the stage for 0.75 of a screen
+  of scroll. The strip of prints is replaced by a section index on the left, after Caleb Wu's case
+  studies (and docs sites like Stripe's): Cadets, Chess, Volunteer work, Hackathons, Socratica; the
+  one on stage is in ink at weight 500, the rest muted at 350; clicking one glides there (Lenis).
+  Phones: the index is one row under the title and keeps the current object in view.
+- Copy: new cadet photo titled "Annual 2025 Ceremony"; chess ends "known as Chess Jesus"; the
+  volunteer object is "Life Changing Memories with the Elderly"; the hackathon line drops "This one
+  paid."
+- Digital Extremes' white logo sits on an ink tile again (the tile's colour went with the removed
+  dark-half token).

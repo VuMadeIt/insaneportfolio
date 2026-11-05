@@ -390,7 +390,7 @@
   }
 }
 
-/* Selected objects (SelectedObjects.tsx, PLAN 15.13): turning the page. */
+/* Selected objects (SelectedObjects.tsx, PLAN 15.13, 15.15): turning the page. */
 @keyframes obj-rise {
   from {
     opacity: 0;
@@ -416,36 +416,24 @@
 .obj-wipe .obj-photo {
   animation: obj-settle 1400ms var(--ease-out) both;
 }
-.obj-tab {
-  position: relative;
-  padding-bottom: 10px;
+/* The section index (Caleb Wu's case studies): the object on stage a little heavier, in ink. */
+.obj-link {
+  color: var(--muted);
+  font-weight: 350;
+  transition:
+    color 300ms var(--ease-out),
+    font-weight 300ms var(--ease-out);
 }
-.obj-tab > span:first-child {
-  opacity: 0.55;
-  transition: opacity 400ms var(--ease-out);
+.obj-link:hover,
+.obj-link:focus-visible {
+  color: var(--ink);
 }
-.obj-tab:hover > span:first-child,
-.obj-tab:focus-visible > span:first-child,
-.obj-tab[data-on] > span:first-child {
-  opacity: 1;
+.obj-link[data-on] {
+  color: var(--ink);
+  font-weight: 500;
 }
-.obj-tab::after {
-  content: "";
-  position: absolute;
-  inset: auto 0 0;
-  height: 1px;
-  background: var(--ink);
-  transform: scaleX(0);
-  transform-origin: 0;
-  transition: transform 600ms var(--ease-out);
-}
-.obj-tab[data-on]::after {
-  transform: scaleX(1);
-}
-@media (max-width: 767px) {
-  .obj-strip {
-    grid-auto-columns: 38vw;
-  }
+.obj-index {
+  scrollbar-width: none;
 }
 
 /* Case-study coded visuals (src/components/case): drawn once they are in view. Without

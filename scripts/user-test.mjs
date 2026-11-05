@@ -307,20 +307,25 @@ async function home(scenario) {
           () => false,
         );
       record(scenario, "nav hides on scroll after a click", hidden);
-      // About: choosing a print opens its object.
-      const tabs = page.getByRole("tablist", { name: "Objects" }).getByRole("tab");
-      await tabs.nth(2).scrollIntoViewIfNeeded();
-      await tabs.nth(2).click();
-      await page.waitForTimeout(400);
-      const opened = await page
-        .getByRole("tabpanel")
+      // About: scrolling moves through the objects; the index jumps straight to one.
+      const index = page.getByRole("navigation", { name: "Objects" }).getByRole("link");
+      await page.locator("#objects-title").scrollIntoViewIfNeeded();
+      await page.waitForTimeout(800);
+      const first = await index.first().getAttribute("aria-current");
+      await page.mouse.wheel(0, 900);
+      await page.waitForTimeout(1500);
+      const scrolled = await index.nth(1).getAttribute("aria-current");
+      await index.nth(2).click();
+      await page.waitForTimeout(1800);
+      const jumped = await page
         .getByRole("heading", { name: "Life Changing Memories with the Elderly" })
         .isVisible()
         .catch(() => false);
       record(
         scenario,
-        "about: a print opens its object",
-        opened && (await tabs.nth(2).getAttribute("aria-selected")) === "true",
+        "about: scroll moves to the next object, index jumps",
+        first === "true" && scrolled === "true" && jumped,
+        `first ${first}, after scroll ${scrolled}, jumped ${jumped}`,
       );
       await page.evaluate(() => scrollTo(0, 0));
       await page.waitForTimeout(400);

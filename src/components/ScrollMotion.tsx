@@ -4,13 +4,21 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Lenis from "lenis";
 import { usePathname } from "next/navigation";
-import { useEffect, useLayoutEffect, useRef } from "react";
+import { useEffect, useLayoutEffect } from "react";
 
 gsap.registerPlugin(ScrollTrigger);
 
 const reducedMotion = () => window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 /** Parts already on screen when the page first paints stay put (no flash of hidden text). */
 let firstPaint = true;
+/** The site's smooth scroller, while it runs (off under reduced motion). */
+let smooth: Lenis | null = null;
+
+/** Scroll the page to `y` the way the site scrolls: Lenis's glide, else the browser's. */
+export function scrollToY(y: number): void {
+  if (smooth) smooth.scrollTo(y, { duration: 1.1 });
+  else window.scrollTo({ top: y, behavior: reducedMotion() ? "auto" : "smooth" });
+}
 
 /**
  * Site-wide scroll motion (PLAN 12.4): Lenis smooth scrolling driven from GSAP's ticker, so
@@ -19,13 +27,12 @@ let firstPaint = true;
  */
 export function ScrollMotion() {
   const pathname = usePathname();
-  const smooth = useRef<Lenis | null>(null);
 
   useEffect(() => {
     if (reducedMotion()) return;
     // Touch keeps native scrolling (syncTouch off), so the canvas's pan-y and ball capture still work.
     const lenis = new Lenis({ autoRaf: false, anchors: true });
-    smooth.current = lenis;
+    smooth = lenis;
     lenis.on("scroll", ScrollTrigger.update);
     const raf = (time: number) => lenis.raf(time * 1000);
     gsap.ticker.add(raf);
@@ -33,14 +40,14 @@ export function ScrollMotion() {
     return () => {
       gsap.ticker.remove(raf);
       lenis.destroy();
-      smooth.current = null;
+      smooth = null;
     };
   }, []);
 
   // A smooth scroll still gliding when the page changes (a link or Back clicked mid-scroll) would
   // carry on over the new page, burying the hero; adopt wherever Next has put the page instead.
   useLayoutEffect(() => {
-    smooth.current?.scrollTo(scrollY, { immediate: true, force: true });
+    smooth?.scrollTo(scrollY, { immediate: true, force: true });
   }, [pathname]);
 
   useLayoutEffect(() => {

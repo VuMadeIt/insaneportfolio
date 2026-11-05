@@ -6,6 +6,8 @@ touching anything. Then follow **Part 9 (Execution protocol)** exactly.
 
 **Revision 2 (2026-11-03): Part 12 overrides earlier parts wherever they conflict** (typeface,
 rounded corners, nav, hero copy, work section, case studies, Warframe, slow motion).
+**Revision 4 (2026-11-03 evening): Part 13 overrides Parts 1-12** (light only, nav, cursor, work
+rows, physics footer, timeline, how case studies are written and drawn).
 
 Kickoff prompt Lucas will paste into a fresh session:
 
@@ -865,3 +867,181 @@ rounded corners and log why.
 - **Phase 13 - Case studies v2** (`v1.4.0-case-studies`): 12.6.
 - **Release candidate 2** (`v1.5.0-rc.2`): full sweep (`scripts/sweep.mjs`), screenshots,
   REPORT.md updated.
+
+### 12.9 Revision 3 (Lucas, 2026-11-03). Overrides 12.2, 12.3, 12.5 and 6.1 where they conflict
+- **Material:** dark metal ("black porcelain") balls everywhere; slow motion on in production;
+  whoosh about 33% quieter; no sound toggle (sound always on).
+- **Home:** the hero is only the four balls and LUCAS VU (no nav, no status lines, no tagline).
+  Scrolling down shows the top four projects as catalogue rows (Ripple, Shufflr, We should go to
+  Japan, Maple Leaf Foods) with accolades and the project video on hover, then "View more work"
+  to `/work`. The Folio Stack cards are removed.
+- **Dark half:** as it arrives, GSAP scrubs the page from the wall colour to `#0e0e0c`; the line
+  "Let's get things moving." lights up word by word; then an about teaser (portrait, "Who's Vu?",
+  the statement, "More about me" to `/about`), a strip of four photos that open their object on
+  `/about#<id>`, and the contact close.
+- **/work:** every project, the top three first, then the rest newest first. Every row is a link
+  (case study, Devpost, live site, Framer case study, or an email for Warframe) and every row has a
+  video.
+- **/about:** the chronology is a pinned horizontal-scroll timeline, oldest first, with each
+  company's logo; native sideways scroll on phones and under reduced motion.
+- **Inner pages:** no nav bar and no "i am vu" logo, only a small "← Back to Site" link.
+- **404:** the live hero with "404" in place of the name (no return link).
+
+### 12.10 USE NOW refs (Lucas, 2026-11-03). Apply immediately; overrides 12.9 dark/contact copy and drag UI
+Source files: `reference/inspo/USE-NOW-framer-dark-home.png`,
+`reference/inspo/USE-NOW-drop-me-drag-hint.png` (see that folder's `SOURCES.md`).
+- **Dark home / contact close:** follow the Framer screenshot. Black ground, cream lowercase type.
+  Top-left stack: `email: lucasvu.work@gmail.com` / `based in: toronto ontario` /
+  `available for: fall 2026 coops`. Top-right: two muted columns `pages` (home, about, work) and
+  `socials` (instagram, medium, linkedin). Giant line **"i am lucas vu."** as the dark-half
+  statement (can replace or sit with "Let's get things moving." — prefer this hierarchy).
+  Bottom-left tagline: `to excel, all i need is wifi + good vibes.` Do **not** ship the
+  "Made in Framer" badge.
+- **Cradle drag hint:** the purple **"drop me"** chip (sharp top-left corner, other corners
+  rounded, soft shadow). Show on an idle sphere as a first-visit drag affordance; dismiss after
+  first drag or click. One vivid accent is allowed for this chip only.
+
+---
+
+## Part 13. Revision 4 (Lucas, 2026-11-03 evening). Overrides Parts 1-12 where they conflict
+
+Lucas's verdict on Phase 14: rushed, too word-heavy, the Taste skill not really used, the
+case-study graphics poor ("the lines aren't even connected"), the timeline not researched. Quality
+over speed; take as long as needed. Answers from the Q&A are recorded inline.
+
+### 13.1 Site-wide
+- **Light mode only.** No scroll-driven colour change to black anywhere.
+- **Underlines:** no metal gradient. A light grey underline (`--rule`-ish, ~#c9c6bf) that appears
+  **only on hover/focus** for nav links and standalone links. Links inside running text keep a
+  faint grey underline at rest (WCAG 1.4.1: links in text must not rely on colour alone) and darken
+  on hover. `--metal` is retired from the UI.
+- **Nav bar on every page, the same everywhere:** left `lucas vu` (home link, text wordmark, no
+  "i am vu" image); right `work`, `about`, `say hi` (mailto), and a **sound icon button** that mutes
+  and unmutes all site audio (persisted in localStorage, `aria-pressed`, label "Sound on/off").
+  Replaces "Back to Site". Identity routes keep the story back arrow.
+- **Custom cursor** (desktop, fine pointer only; native cursor hidden there): a small dark grey ball
+  (~12px, the old GitHub site's cursor, `vumadeit.github.io/lucasvu` `Cursor.jsx`, coloured dark
+  grey and shaded like the hero's dark metal balls). Over links/buttons it swells and fades (old
+  site: nav hover scale 5, opacity 0). Over work rows it hides: the floating project video is the
+  cursor. In the home footer it grows to ~96px with **"drop me" inside the ball** (Lucas's Framer
+  "click to open" effect); near anything clickable it shrinks back and the label disappears.
+  Touch and reduced motion: native behaviour, no custom cursor travel.
+- **Taste skill for real:** run its process (argument, copy deck, inspect at 1440/768/390, look at
+  every screenshot, critique in `references/critique.md` format, fix top three, re-run).
+
+### 13.2 Slow motion (amends 12.7)
+- Problem: a swinging ball leaves the pointer within a frame or two, so slow motion ended at once.
+- Once the pointer touches a moving ball, slow motion **holds for at least 1.5 s of real time**
+  after the last contact (about double what it was), eases out over ~0.8 s, and re-arms on every
+  new contact. Clicking still restores 1x first. Physics untouched (time scale only).
+
+### 13.3 Work rows (home and /work)
+- Per row: **title**, **accolades** (metal-ball bullets), the **description**, and the **month**
+  (`Mar` style month name; the year only when it is not the current year, e.g. `Jun 2025`). No
+  event/medium/"Case study" meta line, no year column.
+- **The video follows the cursor** (fixed-position, lerped, `pointer-events: none`), appears on
+  pointer hover only, never on focus or after a click (that was the "stuck video" bug: the old
+  preview showed on `:focus-within`, so after clicking an external link it stayed). Keyboard focus
+  shows a static preview beside the row. Touch: inline video in the row.
+- **Home shows Ripple and Shufflr only**, then "View more work". /work keeps everything (top three
+  first, then newest first).
+
+### 13.4 Home
+- Hero (balls + name), nav on top, Ripple + Shufflr rows, then the about teaser **in light mode,
+  no photos**: the line "Let's get things moving." and a short who-I-am paragraph with "More about
+  me", then the physics footer.
+- **Physics footer (home only):** primary layout ref `reference/inspo/footer-reference.png`
+  (three columns: name + local time left; Work / About centre; “Let’s work together!” + email +
+  social icons right). Keep contact hierarchy from `USE-NOW-framer-dark-home.png` where it still
+  helps (`email` / `based in` / `available for`, pages + socials, giant `i am lucas vu.`,
+  wifi tagline) in the site's light colours. Every text box is solid. It starts with **no balls**.
+  Clicking empty space drops a dark-metal ball at the cursor; balls fall, bounce off the footer's
+  walls and floor and off every word box, roll off edges, and collide with each other. Clicking a
+  link never drops a ball. Soft clacks on impacts through the shared audio master (muted by the nav
+  toggle). 2D solver is pure TypeScript (`src/footer-physics/`), tested, independent of the cradle.
+  Inner pages get the same footer layout without physics.
+
+### 13.5 About timeline (replaces 12.9's horizontal list)
+- Research: Awwwards "Gantt chart with scroll" (Wallnut: staircase bars that overlap as you
+  scroll, a playhead with a dot), "Work timeline: a scrolling gantt of ten years" (Bryan Oh: year
+  axis, role bars with logos, an orange playhead), Blackbook "Career graph" (gantt lanes, a detail
+  panel per role), Diego Sevilla (each experience gets its own scene with photos).
+- Design: a pinned stage. **The time axis runs across the bottom centre** (months, Sep 2025 to
+  now); each role is a bar above it in its own lane, so **overlaps are visible** (Jan-Apr 2026 has
+  three at once). A small dark-metal ball is the playhead and rolls along the axis as you scroll.
+  The role(s) under the playhead get **their own section above the axis**: logo, role, company,
+  dates and one or two lines; concurrent roles sit side by side. Phones: the same gantt, scrubbed
+  natively; reduced motion: all sections listed.
+- Dates (LinkedIn, Lucas): UWaterloo Systems Design Engineering Sep 2025-now; The Local Charity
+  May-Aug 2025; Waterloo Engineering Society Jan-Apr 2026; Maple Leaf Foods Jan-Apr 2026;
+  Creators Collective Jan-Jun 2026; Hackathons North America May 2026-now; Parrot (YC F25)
+  Jul-Aug 2026; Digital Extremes Sep 2026-now.
+
+### 13.6 Case studies: Ripple and Shufflr rewritten as deep case studies
+Facts from Lucas (Q&A): on both he did research, concept, UI design and the prototype/pitch
+(Shufflr: interviews and research, product strategy, UI, the coded prototype). Shufflr: more than
+20 people interviewed; Western PDS was 48 hours; 1st place and Most Practical. Ripple: desk
+research, interviews/chats, competitor review; BLOOM was 8 hours; 3rd place; team Samuel Huang,
+Jonathan Zhou, Grace Yu, Lucas. Outside research may be cited (always as context with a source,
+never as the team's own findings). Nothing else may be invented.
+
+**How a good case study is written (Rachel Chen + Caleb Wu; use this every time):**
+1. Header: title, one-sentence claim, metadata (Role, Team, Timeline, Scope), the outcome.
+2. Overview: what it is in one sentence, then the constraint (8 hours / 48 hours) and "My role"
+   as its own block in the first person.
+3. Every section opens with a **claim headline in the first person**; reading only the headlines
+   tells the whole story (the skim test).
+4. Problem as one bold sentence, then the opportunity as a "How might we".
+5. Research with real numbers and their sources, then the insights (each one sentence + proof).
+6. **Explorations that lost, and why** (Rachel's "This just wasn't possible", Caleb's pros/cons):
+   at least two rejected directions with their trade-offs.
+7. The solution, then design decisions, each with the reason and the trade-off accepted.
+8. Outcome (placement, what judges reacted to only if known), then a reflection: what I'd change
+   now, with hindsight from newer research.
+9. Short paragraphs (2-3 sentences), a visual for nearly every block, captions under visuals.
+
+**Graphics language (Caleb's RevisionDojo, studied at calebwu.ca/RevisionDojo):** each visual sits
+on a light tone-step panel (rounded, no border, no shadow), is drawn precisely in HTML/SVG, uses
+the ink plus **one accent from the product's own UI** (Ripple water blue, Shufflr its own pink),
+and shows one idea: a branching tree whose connectors actually join (SVG paths computed from the
+boxes), an annotated anatomy with numbered callouts, two circles for relevant vs irrelevant, a
+pair of bars, floating chips for chaos, option cards with check/cross lists, a callout card for the
+verdict. Every connector is computed from element positions so it always meets its boxes.
+
+### 13.7 Verified outside sources (for the case studies)
+- Li, Yang, Islam, Ren, "Making AI Less Thirsty" (arXiv 2304.03271): ~500 mL per 10-50 GPT-3
+  responses; 4.2-6.6 billion m3 water withdrawal for AI by 2027.
+- Google, "Measuring the environmental impact of delivering AI at Google scale" (arXiv
+  2508.15734, Aug 2025): median Gemini Apps text prompt 0.24 Wh, 0.26 mL water, 0.03 gCO2e; 33x
+  energy reduction in a year. Critics (The Verge) note indirect water from electricity is omitted.
+- Sam Altman, "The Gentle Singularity" (10 June 2025): average ChatGPT query ~0.34 Wh and
+  ~0.000085 gallons (~0.32 mL) of water; not peer reviewed.
+- Axios / The Verge (July 2025): ChatGPT receives over 2.5 billion prompts a day.
+- EPRI (2024): a ChatGPT request ~2.9 Wh vs ~0.3 Wh for a Google search (the old 10x claim).
+- Gill et al., MeanCache (arXiv 2403.02694): ~31% of a user's ChatGPT queries are semantically
+  similar to their earlier ones; ~33% of search queries are resubmitted (Markatos 2001).
+- Li et al., SCALM (arXiv 2406.00025): in public chat logs only ~7.5% (LMSYS) / ~4.5% (MOSS) of
+  questions could be answered from an earlier similar one; writing/brainstorming ~13%.
+- Hall, "How many hours does it take to make a friend?" (JSPR 2019): ~50 h casual friend, ~90 h
+  friend, 200+ h close friend (KU summary).
+- US Surgeon General, "Our Epidemic of Loneliness and Isolation" (2023, ATUS data): 15-24 year
+  olds spent ~70% less time with friends in person in 2020 than in 2003 (~150 to ~40 min/day).
+- BJ Fogg, Behavior Model (B=MAP): behaviour happens when motivation, ability and a prompt meet;
+  "activation energy" is the ability side.
+- Existing: American Friendship Project (56% of college students find it hard to make friends),
+  Statistics Canada (17% of 15-24 often/always lonely).
+
+### 13.8 How 13 relates to 12.10
+12.10's footer copy and hierarchy stand (contact block, pages + socials incl. Medium
+`medium.com/@beinglucasvu`, giant "i am lucas vu.", the wifi tagline), but in the **light** palette
+and as the home physics footer. "available for" follows LinkedIn: summer 2027 co-ops. The "drop me"
+label lives in the footer cursor (13.1, 13.4), not as a chip on the cradle.
+
+### 13.9 Phases for revision 4 (branch `phase/15-revision-4`)
+1. Basics: light only, underlines, nav with sound, cursor, slow-motion hold.
+2. Work rows and home.
+3. Physics footer.
+4. About timeline.
+5. Case studies (research, copy deck, graphics), Ripple then Shufflr.
+6. Gates (Taste lint + inspect + critique rounds, Vitest, Playwright, sweep), docs, merge and tag
+   `v1.6.0-revision-4` only after Lucas has looked.

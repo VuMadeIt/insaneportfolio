@@ -1,10 +1,32 @@
 # Visual inspo (not shipped)
 
-New references collected 2026-11-03. Use for layout / interaction feel — not for copying
-branding, type, or rounded-card aesthetics that conflict with PLAN.md (museum-white, Fraunces,
-square corners).
+## Footer reference (2026-11-03 evening) — USE for footer layout
 
-## Files
+- `footer-reference.png` — three-column light footer: left **lucas vu** + moon + local time
+  (`9 46 PM, Toronto`); centre stacked **Work** / **About**; right **Let’s work together!** +
+  email + LinkedIn / Instagram / GitHub icons. Hairline rule above. Primary layout target for
+  `Footer.tsx` / PLAN 13.4 (alongside the Framer dark-home copy hierarchy).
+
+## USE NOW (2026-11-03 afternoon) — apply immediately
+
+These override earlier inspo wherever they conflict. Prefer them for contact copy tone and
+drag affordance; footer **structure** prefers `footer-reference.png` above.
+
+- `USE-NOW-framer-dark-home.png` — Lucas's Framer site (`i am lucas vu.`): solid black ground,
+  cream lowercase type, top-left contact block (`email` / `based in` / `available for`), top-right
+  two-column `pages` + `socials`, giant centred **"i am lucas vu."**, bottom-left tagline
+  `to excel, all i need is wifi + good vibes.` Use this for the **dark half + contact close**
+  hierarchy and copy tone (not the "Made in Framer" badge).
+- `USE-NOW-drop-me-drag-hint.png` — purple "drop me" chip: three rounded corners, **sharp top-left
+  corner**, soft shadow, white sans label, cursor resting on the sharp corner. Use this as the
+  **drag affordance** on a cradle sphere (first-visit / idle hint): colour can stay a single vivid
+  accent; shape and "drop me" copy are the point.
+
+---
+
+## Earlier inspo (still useful; lower priority than USE NOW)
+
+Use for layout / interaction feel — not for copying branding that conflicts with PLAN.md Part 12.
 
 - `lucas-vu-hero-mock.png` — Lucas's own hero frame: top-left status lines, four hanging white
   spheres, vertical right-edge line ("the person who gets things moving"), giant **LUCAS VU** at

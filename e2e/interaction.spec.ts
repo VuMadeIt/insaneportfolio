@@ -2,7 +2,7 @@ import { expect, test } from "@playwright/test";
 
 const ready = async (page: import("@playwright/test").Page) => {
   await page.goto("/");
-  await expect(page.locator("canvas")).toBeVisible({ timeout: 30_000 });
+  await expect(page.locator(".hero-frame canvas")).toBeVisible({ timeout: 30_000 });
   await page.waitForTimeout(4000);
 };
 
@@ -45,13 +45,4 @@ test.describe("reduced motion", () => {
     await page.waitForTimeout(500);
     expect(Math.abs((await products.boundingBox())!.x - before)).toBeLessThan(1);
   });
-});
-
-test("sound toggle flips and remembers", async ({ page }) => {
-  await ready(page);
-  const toggle = page.getByRole("button", { name: "[sound on]" });
-  await toggle.click();
-  await expect(page.getByRole("button", { name: "[sound off]" })).toHaveAttribute("aria-pressed", "false");
-  await page.reload();
-  await expect(page.getByRole("button", { name: "[sound off]" })).toBeVisible();
 });

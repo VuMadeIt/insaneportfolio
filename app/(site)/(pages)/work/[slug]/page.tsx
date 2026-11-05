@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Visual } from "@/components/case/Visual";
-import { CONTACT } from "@/components/Close";
+import { CONTACT } from "@/content/contact";
 import { ExhibitMedia } from "@/components/ExhibitMedia";
 import { ProgressBar } from "@/components/ProgressBar";
 import { type Block, caseStudies, caseStudyBySlug } from "@/content/caseStudies";
@@ -32,10 +32,26 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 }
 
 /** Visuals that sit on a tone-step panel (Caleb's grey stage); numbers and lists sit on the wall. */
-const PANELLED = new Set(["media", "statement", "dots", "flow", "quotes", "cards", "options", "scrub"]);
+const PANELLED = new Set([
+  "media",
+  "statement",
+  "dots",
+  "quotes",
+  "cards",
+  "options",
+  "scrub",
+  "diagram",
+  "bars",
+  "fogg",
+  "podium",
+  "table",
+  "brief",
+  "anatomy",
+  "compare",
+]);
 
 /** Visuals whose parts rise in one by one themselves; the others rise in as one figure. */
-const STAGGERED = new Set(["stats", "quotes", "cards", "options", "list"]);
+const STAGGERED = new Set(["stats", "quotes", "cards", "options", "list", "compare"]);
 
 /** The rail and progress bar group blocks by label: "Insight #1" and "Insight #2" are "Insight". */
 const group = (label: string) => label.replace(/\s*#\d+$/, "");
@@ -86,7 +102,7 @@ function BlockView({ blocks }: { blocks: Block[] }) {
     >
       <div className={`mx-auto max-w-[1400px] ${pair ? "grid gap-12 md:grid-cols-2" : ""}`}>
         {blocks.map((b) => (
-          <div key={b.id} id={b === blocks[0] ? undefined : b.id}>
+          <div key={b.id} id={b === blocks[0] ? undefined : b.id} className="min-w-0">
             <Text block={b} />
             <Figure block={b} />
           </div>
@@ -118,6 +134,7 @@ export default async function CaseStudyPage({ params }: { params: Promise<{ slug
     ["Team", study.meta.team],
     ["Timeline", study.meta.timeline],
     ["Scope", study.meta.scope],
+    ["Outcome", study.meta.outcome],
   ].filter((m): m is [string, string] => !!m[1]);
   const sections = grouped(study.blocks);
   const rail = sections
@@ -125,13 +142,13 @@ export default async function CaseStudyPage({ params }: { params: Promise<{ slug
     .filter((s, i, all) => all.findIndex((x) => x.label === s.label) === i);
 
   return (
-    <article>
+    <article style={{ "--accent": study.accent, "--accent-soft": study.accentSoft } as React.CSSProperties}>
       <header className="px-[var(--gutter)] pb-[clamp(40px,6vh,72px)] pt-[clamp(72px,12vh,140px)]">
         <div className="mx-auto max-w-[1400px]">
           <p className="text-[15px] text-muted">{study.year}</p>
           <h1 className="mt-2 text-[clamp(56px,9vw,148px)] leading-[0.9]">{project.title}</h1>
           <p className="mt-8 max-w-[36em] text-[clamp(18px,1.5vw,22px)] leading-[1.5]">{study.summary}</p>
-          <dl className="mt-10 grid gap-6 text-[15px] leading-[1.5] sm:grid-cols-2 lg:grid-cols-4">
+          <dl className="mt-10 grid gap-6 text-[15px] leading-[1.5] sm:grid-cols-2 lg:grid-cols-5">
             {meta.map(([k, v]) => (
               <div key={k}>
                 <dt className="text-muted">{k}</dt>

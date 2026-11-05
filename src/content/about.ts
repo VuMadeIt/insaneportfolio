@@ -15,18 +15,98 @@ export const portrait = {
   height: 883,
 };
 
-export const chronology: { when: string; role: string; place: string }[] = [
-  { when: "2026, now", role: "Product Designer", place: "Digital Extremes" },
-  { when: "2026, now", role: "Product Design Lead", place: "Hackathons North America" },
-  { when: "2026", role: "Design Engineer", place: "Parrot (YC F25)" },
-  { when: "2026", role: "Product Designer", place: "Creators Collective" },
-  { when: "2026", role: "Digital Product Manager", place: "Maple Leaf Foods" },
-  { when: "2026", role: "Figma Design Director", place: "Waterloo Engineering Society" },
-  { when: "2025", role: "Systems Design and Ops Coordinator", place: "The Local Charity" },
-  { when: "Ongoing", role: "Systems Design Engineering", place: "University of Waterloo" },
+export interface Role {
+  role: string;
+  place: string;
+  /** YYYY-MM; `end` null while it is still going. */
+  start: string;
+  end: string | null;
+  logo: string;
+  /** A white logo that needs a dark tile. */
+  dark?: boolean;
+  text: string;
+  link?: { label: string; href: string };
+}
+
+/**
+ * The chronology (PLAN 13.5), oldest first. Dates from LinkedIn and Lucas; lines from LinkedIn,
+ * his essay and Medium post. DRAFT: the WES, Creators Collective and Hackathons lines.
+ */
+export const chronology: Role[] = [
+  {
+    role: "Systems Design and Ops Coordinator",
+    place: "The Local Charity",
+    start: "2025-05",
+    end: "2025-08",
+    logo: "local-charity",
+    text: "Ran the systems and operations behind the charity's programs, and learned I would rather build the product than run the machine.",
+  },
+  {
+    role: "Systems Design Engineering",
+    place: "University of Waterloo",
+    start: "2025-09",
+    end: null,
+    logo: "uwaterloo",
+    text: "Human-centred design, systems thinking and real-world problem solving, the program I obsessed over in high school.",
+  },
+  {
+    role: "Figma Design Director",
+    place: "Waterloo Engineering Society",
+    start: "2026-01",
+    end: "2026-04",
+    logo: "waterloo-engineering",
+    text: "Directed the society's design work in Figma for the winter term.",
+  },
+  {
+    role: "Digital Product Manager",
+    place: "Maple Leaf Foods",
+    start: "2026-01",
+    end: "2026-04",
+    logo: "maple-leaf-foods",
+    text: "Product manager for the Service Penalty App ($14M+ a year), QA for the Maple Leaf Market launch, design engineer for the team's task tracker.",
+    link: { label: "Case study", href: "/work/maple-leaf-foods" },
+  },
+  {
+    role: "Product Designer",
+    place: "Creators Collective",
+    start: "2026-01",
+    end: "2026-06",
+    logo: "creators-collective",
+    text: "Product design for Creators Collective, a student initiative for people who make things.",
+    link: { label: "Live site", href: "https://creatorscollective.framer.website/" },
+  },
+  {
+    role: "Product Design Lead",
+    place: "Hackathons North America",
+    start: "2026-05",
+    end: null,
+    logo: "hack-canada",
+    text: "Leading product design for Hack Canada and the hackathons around it.",
+  },
+  {
+    role: "Design Engineer",
+    place: "Parrot (YC F25)",
+    start: "2026-07",
+    end: "2026-08",
+    logo: "parrot-yc",
+    text: "Design engineering for the TikTok of language learning, over the summer.",
+    link: { label: "parrotapp.com", href: "https://parrotapp.com" },
+  },
+  {
+    role: "Product Designer",
+    place: "Digital Extremes",
+    start: "2026-09",
+    end: null,
+    logo: "digital-extremes",
+    dark: true,
+    text: "Product design on Warframe. The work is not public yet; ask me about it.",
+    link: { label: "Ask me about it", href: "mailto:lucasvu.work@gmail.com?subject=Warframe" },
+  },
 ];
 
 export interface ObjectItem {
+  /** Anchor on /about, linked from the home page's photo strip. */
+  id: string;
   title: string;
   year: string;
   medium: string;
@@ -37,6 +117,7 @@ export interface ObjectItem {
 
 export const objects: ObjectItem[] = [
   {
+    id: "cadets",
     title: "Remembrance Day parade in the snow",
     year: "Cadets",
     medium: "Photograph",
@@ -49,6 +130,7 @@ export const objects: ObjectItem[] = [
     },
   },
   {
+    id: "chess",
     title: "My last game in the TCDSB West-End division",
     year: "High school chess",
     medium: "Photograph",
@@ -61,6 +143,7 @@ export const objects: ObjectItem[] = [
     },
   },
   {
+    id: "speech",
     title: "After a 15-minute speech",
     year: "Volunteer Appreciation Ceremony",
     medium: "Photograph",
@@ -73,6 +156,7 @@ export const objects: ObjectItem[] = [
     },
   },
   {
+    id: "hack-the-6ix",
     title: "Winning $1,400 USD",
     year: "Hack the 6ix 2026",
     medium: "Photograph",
@@ -85,6 +169,7 @@ export const objects: ObjectItem[] = [
     },
   },
   {
+    id: "socratica",
     title: "Socratica's Create-a-thon",
     year: "Socratica, UW/UX, Blueprint",
     medium: "Photograph",
@@ -97,6 +182,7 @@ export const objects: ObjectItem[] = [
     },
   },
   {
+    id: "fishing",
     title: "A hummingbird on the tip of my rod",
     year: "Fishing at 4am",
     medium: "Video, 26 seconds",

@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import localFont from "next/font/local";
+import { Cursor } from "@/components/Cursor";
 import { ScrollMotion } from "@/components/ScrollMotion";
 import "lenis/dist/lenis.css";
 import "./globals.css";
@@ -34,6 +35,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body>
         {children}
         <ScrollMotion />
+        <Cursor />
       </body>
     </html>
   );

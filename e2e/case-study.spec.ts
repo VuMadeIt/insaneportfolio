@@ -2,7 +2,7 @@ import { expect, test } from "@playwright/test";
 
 for (const [slug, title, next] of [
   ["shufflr", "Shufflr", "Ripple"],
-  ["ripple", "Ripple", "Maple Leaf Foods"],
+  ["ripple", "Ripple", "Shufflr"],
   ["maple-leaf-foods", "Maple Leaf Foods", "Shufflr"],
 ] as const) {
   test(`${title} case study: title, wall label, claim headlines, next exhibit`, async ({ page }) => {
@@ -14,9 +14,38 @@ for (const [slug, title, next] of [
     await expect(page.getByRole("link", { name: new RegExp(`^Next exhibit ${next}`) })).toBeVisible();
     await expect(
       page.getByRole("navigation", { name: "Site" }).getByRole("link", { name: "work" }),
-    ).toBeVisible();
+    ).toHaveAttribute("href", "/work");
   });
 }
+
+test("every diagram arrow ends on a box (the arrows are computed, never drawn by hand)", async ({ page }) => {
+  for (const slug of ["ripple", "shufflr"]) {
+    await page.goto(`/work/${slug}`);
+    const misses = await page.locator(".dg").evaluateAll((dgs) =>
+      dgs.flatMap((dg) => {
+        const nodes = [...dg.querySelectorAll(":scope > .dg-node:not(span)")].map((n) =>
+          n.getBoundingClientRect(),
+        );
+        return [...dg.querySelectorAll("path.dg-wire")].flatMap((p) => {
+          const path = p as SVGPathElement;
+          const svg = path.ownerSVGElement!.getBoundingClientRect();
+          const end = path.getPointAtLength(path.getTotalLength());
+          const start = path.getPointAtLength(0);
+          const near = (pt: DOMPoint, pad: number) =>
+            nodes.some(
+              (r) =>
+                svg.left + pt.x >= r.left - pad &&
+                svg.left + pt.x <= r.right + pad &&
+                svg.top + pt.y >= r.top - pad &&
+                svg.top + pt.y <= r.bottom + pad,
+            );
+          return near(start, 2) && near(end, 10) ? [] : [path.getAttribute("d")];
+        });
+      }),
+    );
+    expect(misses, slug).toEqual([]);
+  }
+});
 
 test("Warframe has no case study page", async ({ page }) => {
   const res = await page.goto("/work/warframe");

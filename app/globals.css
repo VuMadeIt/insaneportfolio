@@ -6,6 +6,7 @@
   --color-ink: var(--ink);
   --color-muted: var(--muted);
   --color-rule: var(--rule);
+  --color-night: var(--night);
   --font-display: var(--font-general), "Helvetica Neue", Arial, sans-serif;
   --font-sans: var(--font-cabinet), "Helvetica Neue", Arial, sans-serif;
   /* One radius scale (PLAN 12.1): small controls, media, cards. Pills use rounded-full. */
@@ -53,29 +54,35 @@
 }
 
 @layer components {
-  /* Metal underlines (PLAN 12.1). `.u-grow` draws in from the left on hover (nav); `.u-metal` is
-     always there and a highlight sweeps along it on hover (links in running text). */
+  /* Underlines (PLAN 13.1). `.u-grow` (nav, standalone links) and `.link-arrow` draw a light grey
+     line in from the left on hover only; `.u-metal` (links inside running text) keeps a faint line
+     at rest so a link never relies on colour alone, and darkens it on hover. */
   .u-grow,
-  .u-metal {
-    background-image: var(--metal);
+  .link-arrow {
+    /* prettier-ignore */
+    background-image: linear-gradient(var(--underline), var(--underline)); /* taste-skill-ignore: one flat colour, the underline that draws in */
     background-repeat: no-repeat;
     background-position: 0 100%;
-    background-size: 0% 0.1em;
-    padding-bottom: 0.08em;
-    transition:
-      background-size 300ms ease-in-out,
-      background-position 900ms ease-in-out,
-      color 200ms var(--ease-out);
+    background-size: 0% 1.5px;
+    padding-bottom: 0.1em;
+    transition: background-size 300ms ease-in-out;
   }
   .u-grow:hover,
-  .u-grow:focus-visible {
-    background-size: 100% 0.1em;
+  .u-grow:focus-visible,
+  .link-arrow:hover,
+  .link-arrow:focus-visible {
+    background-size: 100% 1.5px;
   }
   .u-metal {
-    background-size: 200% 0.08em;
+    text-decoration-line: underline;
+    text-decoration-color: var(--rule);
+    text-decoration-thickness: 1.5px;
+    text-underline-offset: 0.2em;
+    transition: text-decoration-color 200ms var(--ease-out);
   }
-  .u-metal:hover {
-    background-position: 100% 100%;
+  .u-metal:hover,
+  .u-metal:focus-visible {
+    text-decoration-color: var(--underline);
   }
   .sr-only-focusable:not(:focus-visible) {
     position: absolute;
@@ -87,18 +94,83 @@
   }
 }
 
-/* Arrow links: a metal underline, and the arrow nudges on hover. */
-.link-arrow {
-  background-image: var(--metal);
-  background-repeat: no-repeat;
-  background-position: 0 100%;
-  background-size: 200% 0.08em;
-  padding-bottom: 0.12em;
-  transition: background-position 900ms ease-in-out;
+/* The custom cursor (Cursor.tsx, PLAN 13.1). The native cursor hides only where ours runs. */
+.custom-cursor,
+.custom-cursor * {
+  cursor: none !important;
 }
-.link-arrow:hover {
-  background-position: 100% 100%;
+.cursor-outer {
+  display: none;
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 100;
+  pointer-events: none;
+  transition: opacity 200ms var(--ease-out);
 }
+.custom-cursor .cursor-outer {
+  display: block;
+}
+.cursor-outer[data-away] {
+  opacity: 0;
+}
+.cursor-ball {
+  --size: 12px;
+  position: absolute;
+  left: calc(var(--size) / -2);
+  top: calc(var(--size) / -2);
+  width: var(--size);
+  height: var(--size);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  /* prettier-ignore */
+  background: radial-gradient(circle at 34% 28%, #9a9995 0%, #55544f 30%, #2f2e2c 68%, #1d1d1b 100%); /* taste-skill-ignore: shading that draws a sphere */
+  transition:
+    width 450ms var(--ease-out),
+    height 450ms var(--ease-out),
+    left 450ms var(--ease-out),
+    top 450ms var(--ease-out),
+    opacity 300ms var(--ease-out),
+    transform 450ms var(--ease-out);
+}
+.cursor-ball[data-state="link"] {
+  transform: scale(3);
+  opacity: 0.22;
+}
+.cursor-ball[data-state="grab"] {
+  transform: scale(2);
+  opacity: 0.55;
+}
+.cursor-ball[data-state="hide"] {
+  transform: scale(0.2);
+  opacity: 0;
+}
+.cursor-ball[data-state="drop"] {
+  --size: 96px;
+}
+.cursor-ball[data-pressed] {
+  transform: scale(0.8);
+}
+.cursor-label {
+  color: var(--wall);
+  font-size: 15px;
+  line-height: 1;
+  white-space: nowrap;
+  opacity: 0;
+  transform: scale(0.6);
+  transition:
+    opacity 250ms var(--ease-out),
+    transform 450ms var(--ease-out);
+}
+.cursor-ball[data-state="drop"] .cursor-label {
+  opacity: 1;
+  transform: none;
+  transition-delay: 120ms;
+}
+
+/* Arrow links: the arrow nudges on hover. */
 .link-arrow span {
   display: inline-block;
   transition: transform 300ms var(--ease-out);
@@ -109,29 +181,74 @@
 
 /* Section entrances (`.reveal`) are driven by GSAP ScrollTrigger in ScrollMotion.tsx. */
 
-/* The home work stack (WorkStack.tsx): cards fill the small viewport less the inset and the peeks
-   of the three cards that can sit above the last one. */
-:root {
-  --card-inset: clamp(10px, 1.4vw, 20px);
-  --card-h: calc(100svh - 2 * var(--card-inset) - 3 * 14px);
-  /* Scroll each card stays whole before the next one starts to cover it. */
-  --card-hold: 45svh;
+/* Back links: the arrow nudges back on hover. */
+.back-link span {
+  display: inline-block;
+  transition: transform 300ms var(--ease-out);
+}
+.back-link:hover span {
+  transform: translateX(-4px);
 }
 
-/* Catalogue previews appear beside the row on hover (desktop); inline on tablets and phones. */
-@media (min-width: 1024px) {
-  .catalogue-preview {
-    opacity: 0;
-    transform: translateY(-50%) scale(0.97);
-    transition:
-      opacity 300ms var(--ease-out),
-      transform 500ms var(--ease-out);
-  }
-  .catalogue-row:hover .catalogue-preview,
-  .catalogue-row:focus-within .catalogue-preview {
-    opacity: 1;
-    transform: translateY(-50%) scale(1);
-  }
+/* A tiny dark-metal ball, like the cradle's: accolade bullets and the timeline's stops. */
+.metal-ball,
+.award-dot {
+  flex: none;
+  border-radius: 999px;
+  /* prettier-ignore */
+  background: radial-gradient(circle at 35% 30%, #d8d7d4 0%, #6d6c6a 28%, #1d1d1c 70%, #0b0b0a 100%); /* taste-skill-ignore: shading that draws a sphere */
+}
+.award-dot {
+  width: 0.55em;
+  height: 0.55em;
+  transform: translateY(-0.05em);
+}
+/* The pinned timeline's stage (Timeline.tsx): one role at a time rises into place. */
+.timeline-stop:not(.reveal) {
+  opacity: 0;
+  transform: translateY(24px);
+  pointer-events: none;
+  transition:
+    opacity 400ms var(--ease-out),
+    transform 700ms var(--ease-out);
+}
+.timeline-stop[data-on] {
+  opacity: 1;
+  transform: none;
+  pointer-events: auto;
+  transition-delay: 120ms;
+}
+
+/* The footer's name (Footer.tsx): Lucas's Framer close, set in General Sans, lowercase. */
+.footer-name {
+  font-size: clamp(56px, 12.2vw, 236px);
+  font-weight: 500;
+  letter-spacing: -0.05em;
+  line-height: 1;
+}
+
+/* The work catalogue's rows (PLAN Part 5 allows its rules) and the rows of real tables. */
+.catalogue {
+  border-bottom: 1px solid var(--rule); /* taste-skill-ignore: catalogue rules, PLAN Part 5 */
+}
+.catalogue-row {
+  border-top: 1px solid var(--rule); /* taste-skill-ignore: catalogue rules, PLAN Part 5 */
+}
+.table-rule {
+  border-top: 1px solid #d9d6cf; /* taste-skill-ignore: a real <table> */
+}
+
+/* The work list's floating preview (WorkList.tsx): centred on the pointer, it is the cursor. */
+.work-preview {
+  transform: translate(-50%, -50%) scale(0.85);
+  opacity: 0;
+  transition:
+    opacity 250ms var(--ease-out),
+    transform 500ms var(--ease-out);
+}
+.work-preview[data-on] {
+  transform: translate(-50%, -50%);
+  opacity: 1;
 }
 
 /* LUCAS VU along the bottom: General Sans ~350, capitals, tight (old Hero.jsx). --giant-size makes
@@ -145,19 +262,6 @@
   /* The line box is the cap height; this lifts the baseline off the bottom edge like the mock. */
   padding-bottom: 0.09em;
 }
-.hero-tagline {
-  top: calc(var(--corner-top) + 76px);
-}
-/* On phones the balls fill the right edge, so the tagline reads across, under them. */
-@media (max-width: 639px) {
-  .hero-tagline {
-    top: auto;
-    right: auto;
-    left: var(--gutter);
-    bottom: calc(20vw + 56px);
-  }
-}
-
 /* The giant name rises in letter by letter once (old Hero.jsx: y 100, 1.5 s, power4.out, 0.1 s
    stagger). CSS only, so it never waits for JavaScript and never hides the name without it. */
 @keyframes letter-rise {
@@ -172,41 +276,19 @@
   animation-delay: calc(0.15s + var(--i) * 0.1s);
 }
 
-/* The hero's scroll line: a short metal line sweeping into a clipped box on a loop (old site:
-   from x -40, 1.5 s power4.inOut, 0.5 s pause). */
-@keyframes scroll-line {
-  0% {
-    transform: translateY(-100%);
-    animation-timing-function: var(--ease-power4-in-out);
-  }
-  75%,
-  100% {
-    transform: none;
-  }
-}
-.scroll-line {
-  animation: scroll-line 2s infinite;
-}
-
-/* The nav slides down on load (old NavBar, 1.2 s instead of 3 s). */
-@keyframes nav-in {
-  from {
-    transform: translateY(-100%);
-  }
-}
-.nav-in {
-  animation: nav-in 1.2s var(--ease-power4-in-out) 0.5s both;
-}
-
-/* Case-study coded visuals (src/components/case/Visual.tsx): drawn once they are in view. Without
-   JavaScript `data-in` never turns true, so the resting state below is the finished drawing. */
+/* Case-study coded visuals (src/components/case): drawn once they are in view. Without
+   JavaScript `data-in` never turns false, so the resting state below is the finished drawing. */
 .statement span,
-.flow-box,
-.flow-line,
-.dot-lit {
+.dg-node,
+.dot-lit,
+.bar-fill,
+.bar-value,
+.fogg-point,
+.podium-step {
   transition:
     opacity 700ms var(--ease-out),
     transform 900ms var(--ease-out),
+    clip-path 1100ms var(--ease-out),
     background-color 500ms var(--ease-out);
 }
 .statement[data-in="false"] span {
@@ -215,32 +297,61 @@
 .statement span {
   transition-delay: calc(var(--i) * 45ms);
 }
-.flow[data-in="false"] .flow-box {
+.dg-node {
+  transition-delay: calc(var(--c) * 280ms);
+}
+.dg[data-in="false"] .dg-node {
   opacity: 0;
-  transform: translateY(12px);
+  transform: translateY(10px);
 }
-.flow-box {
-  transition-delay: calc(var(--c) * 260ms);
+.dg-wire {
+  stroke-dashoffset: 0;
+  transition: stroke-dashoffset 900ms var(--ease-out) calc(var(--c) * 280ms + 200ms);
 }
-.flow-line {
-  flex: 0 0 auto;
-  width: 2px;
-  height: 20px;
-  align-self: center;
-  background: var(--metal-v);
-  transform-origin: top;
-  transition-delay: calc(var(--c) * 260ms - 130ms);
+.dg-wire:not([stroke-dasharray]) {
+  stroke-dasharray: 1;
 }
-@media (min-width: 768px) {
-  .flow-line {
-    width: 40px;
-    height: 2px;
-    background: var(--metal);
-    transform-origin: left;
-  }
+.dg[data-in="false"] .dg-wire {
+  stroke-dashoffset: 1;
 }
-.flow[data-in="false"] .flow-line {
-  transform: scale(0);
+.bar-fill {
+  clip-path: inset(0 0 0 0 round 999px);
+  transition-delay: calc(var(--i) * 140ms);
+}
+.bars[data-in="false"] .bar-fill {
+  clip-path: inset(0 100% 0 0 round 999px);
+}
+.bar-value {
+  transition-delay: calc(var(--i) * 140ms + 500ms);
+}
+.bars[data-in="false"] .bar-value {
+  opacity: 0;
+}
+.fogg-curve,
+.fogg-move {
+  stroke-dashoffset: 0;
+  transition: stroke-dashoffset 1200ms var(--ease-out);
+}
+.fogg-move {
+  transition-delay: 1200ms;
+}
+.fogg[data-in="false"] .fogg-curve,
+.fogg[data-in="false"] .fogg-move {
+  stroke-dashoffset: 1;
+}
+.fogg-point {
+  transition-delay: calc(700ms + var(--i) * 400ms);
+}
+.fogg[data-in="false"] .fogg-point {
+  opacity: 0;
+}
+.podium-step {
+  transform-origin: bottom;
+  transition-delay: calc(var(--i) * 160ms);
+}
+.podium[data-in="false"] .podium-step {
+  transform: scaleY(0.2);
+  opacity: 0;
 }
 .dot {
   width: clamp(28px, 4vw, 44px);
@@ -346,9 +457,7 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .giant-letter,
-  .scroll-line,
-  .nav-in {
+  .giant-letter {
     animation: none;
   }
   *,

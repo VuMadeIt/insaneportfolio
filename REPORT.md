@@ -114,6 +114,30 @@ studies: only defended warnings and the 390 px headline-length rule, see DECISIO
 `scripts/sweep.mjs`: every route at 1440, 1024, 768 and 390, no console errors, no horizontal
 overflow. Screens: `.artifacts/screens/v1.5.0/`, sweep shots in `.artifacts/sweep/`.
 
+### Phase 14: home v3 (branch `phase/14-home-v3`, not merged yet)
+- Dark metal balls everywhere, slow motion on, quieter whoosh, no sound toggle.
+- Home: balls and name only, then the top four projects with accolades and hover videos, "View
+  more work", then the page fades to black for "Let's get things moving.", the about teaser, a
+  photo strip linking into /about, and the contact close.
+- /work: all 12 projects (Reboot added from the old Framer site), top three first, then newest
+  first; every row clickable and every row has a video. All videos re-encoded at up to 1920 px.
+- /about: horizontal-scroll timeline with company logos. Inner pages: "Back to Site" instead of
+  the nav. 404: the live cradle with 404 under it.
+- Accolades from Lucas: Ripple 3rd (UW/UX BLOOM), Shufflr 1st and Most Practical (Western PDS),
+  Japan Base44 ($1,000) and Pheobe ($400) at Hack the 6ix, Asper Best Use of AI on a Real
+  Inspection (AirPods 5) at SOON, SolarScore 1st (Incubator Hacks), Reboot 3rd (UofT UDesignathon).
+
+### Phase 15: revision 4 (branch `phase/15-revision-4`, not merged yet)
+- Light everywhere; nav on every page with a mute button; grey underlines on hover only.
+- Dark-ball cursor: hides over work rows (the row's video follows the pointer and no longer sticks
+  after a click), grows with "drop me" in the home footer.
+- Slow motion holds 1.5 s after you touch a swinging ball.
+- Home: hero, Ripple and Shufflr at poster size, the about line, and a footer where clicking empty
+  space drops balls that land on and roll off the words.
+- About: a timeline with the axis along the bottom, overlapping roles, a section per role.
+- Ripple and Shufflr rewritten in depth (brief, my role, research with sources, explorations,
+  solution, decisions, outcome, looking back) with new coded graphics.
+
 ## Where to look first
 1. `npm run build && npm run start`, open http://localhost:3000 . Watch `LUCAS VU` rise in, drag a
    ball, flick it, hover each ball, click one, press Escape. Scroll through the work stack.
@@ -148,18 +172,22 @@ overflow. Screens: `.artifacts/screens/v1.5.0/`, sweep shots in `.artifacts/swee
 - **Not built:** per-page OG images, pre-rendered per-identity fallback stills.
 
 ## Open questions for Lucas
-1. Slow motion is off in production until you approve it (`?slowmo=1` to try). Turn it on by
-   setting `slowmo.enabled` from the flag check in `src/scene/Interaction.tsx`.
+1. Slow motion is now on in production (approved in Phase 14).
 2. Fonts: the ITF Free Font License allows self-hosting but forbids making the font files
    available to third parties. A public GitHub repo exposes `app/fonts/*.woff2`. Options: make the
    repo private, or switch to Fontshare's CSS API (no files in the repo).
 3. Identity copy (`src/content/identities.ts`) is the PLAN 4.8 draft. Edit freely.
 4. The 13-1-2 record: PLAN said soccer, your old site said the TCDSB West-End chess division. The
    site follows the old site.
-5. The hero says "current product design lead of hack canada" (your words in PLAN 12.2); the
-   About chronology still says Hackathons North America (LinkedIn). Pick one.
+5. The About timeline shows the Hack Canada logo for "Hackathons North America". Confirm it is
+   the right mark.
+6. Devpost names the Japan prizes "Base44 Venture Builder Challenge" and "Pheobe: AI to Coordinate
+   the Real World"; the site uses your wording. Asper's prize says "AirPods 5" from your note.
 
 ## Draft or unconfirmed content to check
+- Revision 4: `src/content/caseStudies/{ripple,shufflr}.ts` `draft` lists (competitor table rows,
+  criteria ticks, the opportunity question, synthesis themes, the "one evening out" bar);
+  `src/content/about.ts` role lines for WES, Creators Collective and Hackathons North America.
 - `src/content/projects.ts`: every `draft` field (roles on Shufflr, Ripple, Asper, Japan,
   Frictionless, SolarScore; Ripple team; SolarScore year; the song-search description, year and
   GitHub link; Warframe medium). New: the one-line captions on the four home cards, cut from each

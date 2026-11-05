@@ -568,3 +568,82 @@ Microanimations found on calebwu.ca/RevisionDojo, and what we did with each:
   scroll line; from 640 px up it is the mock's vertical line down the right edge.
 - **Sweep** (`scripts/sweep.mjs`, now including every case study): every route at 1440, 1024, 768
   and 390, no console errors, no horizontal overflow.
+
+## 404 + footer reference (2026-11-03 evening)
+
+- Removed "← return to main site" from `app/not-found.tsx`; 404 is only the live cradle with "404"
+  as the name (PLAN 12.9 updated). E2E asserts the link is gone.
+- Added `reference/inspo/footer-reference.png` as the primary footer layout reference (three
+  columns: name/time, Work/About, CTA/email/socials). PLAN 13.4 and `SOURCES.md` point to it.
+
+## USE NOW inspo (2026-11-03 afternoon)
+
+Lucas dropped two screenshots marked **USE NOW** (not archive inspo):
+- `reference/inspo/USE-NOW-framer-dark-home.png` — his Framer dark homepage. Use for the dark half
+  / contact close: black + cream lowercase, top-left availability block, pages/socials columns,
+  giant "i am lucas vu.", wifi+good vibes tagline. Logged as PLAN 12.10.
+- `reference/inspo/USE-NOW-drop-me-drag-hint.png` — purple "drop me" chip with one sharp corner.
+  Use as the cradle first-visit drag affordance. Logged as PLAN 12.10.
+
+## Phase 14: home v3 (2026-11-03)
+
+- **Home is the hero, the list, then the dark half** (PLAN 12.9). The work list reuses the /work
+  catalogue row (`WorkList.tsx`), so home and /work cannot drift apart. Videos in the rows play
+  only while their row is hovered or focused on desktop (13 HD loops would otherwise all stream at
+  once); on touch screens they play when on screen.
+- **The fade to black** tweens `background-color`, `color` and the `--color-muted` /
+  `--color-rule` variables on both the work section and the dark half, so there is never a hard
+  edge between them and the muted text stays readable on black. Without JavaScript the dark half
+  is simply dark (`.home-dark` sets the dark values in CSS).
+- **Timeline**: GSAP `matchMedia` pins the section and slides the track by its overflow while a
+  metal line fills along it; each stop rises in through `containerAnimation`. Under 768 px or with
+  reduced motion it is a native sideways scroller with snap points. Oldest first so the line ends
+  on the current role. Stops are small dark-metal balls, echoing the cradle.
+- **Every project is clickable**: Parrot links to parrotapp.com, Warframe to an email ("Ask me
+  about it") as PLAN 6.4 first suggested, Reboot to its case study on the old Framer site.
+- **404 reuses `Hero`** (name and corner link are props), so the balls stay live and playable.
+- **Taste inspector**: fixed `eyebrow` on home ("Selected work" is now a screen-reader heading).
+  Allowed: `eyebrow` on inner pages (the "Back to Site" link Lucas asked for), `mixed-font-headline`
+  (the italic "moving" from Lucas's own mock), and on /about `off-centre`, `edge-text`,
+  `side-scroll`, `long-pin` and `empty-screens`, which all come from the pinned horizontal
+  timeline Lucas chose (the track bleeds off the right edge on purpose so it reads as scrollable).
+  `blank-gap` and `palette-cream` as before.
+
+## Phase 15: revision 4 (2026-11-03 evening)
+
+- **Light only, grey hover underlines, nav back everywhere** (PLAN 13.1). `.u-grow`/`.link-arrow`
+  draw a flat light-grey line in on hover only; `.u-metal` (links inside running text) keeps a
+  faint line at rest for WCAG 1.4.1. The mute button lives in the audio module as a tiny store
+  (`isMuted`/`setMuted`/`subscribeMuted`), read with `useSyncExternalStore`, persisted in
+  localStorage, applied through the master gain so the cradle, slow motion and the footer all obey.
+- **Cursor**: one fixed element, lerped, states set from `data-cursor` attributes (`hide` on work
+  rows, `drop` on the home footer) and the clickable elements under the pointer. Only on
+  `(hover: hover) and (pointer: fine)`; elsewhere the native cursor stays.
+- **Work rows**: the preview video follows the pointer in a fixed layer and plays only for the
+  hovered row. The "stuck video" bug was `:focus-within`: clicking an external link focused the
+  row, the tab changed, and the preview stayed. Now it shows on pointer hover only, clears on
+  window blur, and keyboard focus places it beside the row.
+- **Slow motion hold**: touching a moving ball sets a hold that lasts 1.5 s of real time after the
+  last contact; ease-out is 0.8 s. Still a time-scale change only (test in `slowmo.test.ts`).
+- **Ball-pit footer**: a 2D circle-vs-box solver (`src/footer-physics/pit.ts`, 240 Hz substeps,
+  restitution, Coulomb-ish friction, rolling resistance, sleeping) with six tests. Colliders are
+  measured from the DOM: each letter of the name from its glyph metrics (`measureText`), other
+  text as its line boxes. The canvas sits over the text with no pointer events; clicks within
+  28 px of text or a link never drop a ball (the same rule hides "drop me").
+- **Timeline**: Wallnut's overlapping staircase, Bryan Oh's playhead and Blackbook's per-role
+  panel combined: axis along the bottom, greedy lanes, a dark ball that rests on each role's start
+  then rolls to the next, one section per role with "At the same time". Sticky plus a scroll
+  listener (no GSAP pin), so it cannot fight Lenis. Phones and reduced motion get the list.
+- **Case studies**: graphics are components (`src/components/case/Diagram.tsx`, `Charts.tsx`);
+  diagram wires are computed from measured boxes (fan-in turns left of the target, fan-out right of
+  the source) and an e2e test checks every wire starts and ends on a box. Each study sets
+  `--accent` from its own UI (Ripple #2f6f9e, Shufflr #6a3df0). Outside research appears only as
+  context or in "Looking back", always with a source.
+- **Taste**: lint 0 FAIL on the UI (`src/components src/content app/(site)`; `src/scene` is
+  three.js shadow-map code, not CSS shadows). Ignored with reasons in place: the flat-colour
+  underline, the sphere shading of the cursor and accolade balls, catalogue rules, real table rows.
+  Inspector: home and About 0 FAIL. Allowed: `eyebrow` (Caleb's labels; case studies),
+  `few-pictures` (Lucas asked for no photos on home), `button-fx` (the hover underline on links),
+  `long-pin` (the pinned timeline). Defended on the case studies: `blank-gap` (the full-page
+  capture runs before the scroll entrances; viewport captures show every block) and
+  `headline-lines` at 390 px (claim headlines, the skim test).

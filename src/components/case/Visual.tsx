@@ -4,34 +4,9 @@ import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import type { Stat, Visual as VisualData } from "@/content/caseStudies/types";
 import { ExhibitMedia } from "../ExhibitMedia";
-
-const reducedMotion = () => window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-
-/**
- * Whether a drawn visual should show its finished state. `null` until mounted (server render, no
- * JavaScript, or already on screen at mount): the finished drawing. Below the fold it turns
- * `false`, then `true` once the visual comes well into view, which plays the drawing.
- */
-function useInView<T extends Element>() {
-  const ref = useRef<T>(null);
-  const [inView, setInView] = useState<boolean | null>(null);
-  useEffect(() => {
-    const el = ref.current;
-    if (!el || reducedMotion() || el.getBoundingClientRect().top < innerHeight) return;
-    setInView(false);
-    const io = new IntersectionObserver(
-      ([e]) => {
-        if (!e?.isIntersecting) return;
-        setInView(true);
-        io.disconnect();
-      },
-      { rootMargin: "0px 0px -20% 0px" },
-    );
-    io.observe(el);
-    return () => io.disconnect();
-  }, []);
-  return [ref, inView] as const;
-}
+import { Anatomy, Bars, Brief, Compare, Fogg, Podium, Table } from "./Charts";
+import { Diagram } from "./Diagram";
+import { reducedMotion, useInView } from "./useInView";
 
 /** A number that counts up from zero once on screen; the prefix and suffix ($, %, mL) stay put. */
 function Counter({ value }: { value: string }) {
@@ -113,36 +88,6 @@ function Dots({ total, lit }: { total: number; lit: number }) {
           className={i < lit ? "dot dot-lit" : "dot"}
           style={{ "--i": i < lit ? i : 0 } as React.CSSProperties}
         />
-      ))}
-    </div>
-  );
-}
-
-/** Boxes joined left to right that draw in column by column; a column of two or more is a branch. */
-function Flow({ columns }: { columns: string[][] }) {
-  const [ref, inView] = useInView<HTMLDivElement>();
-  return (
-    <div
-      ref={ref}
-      data-in={inView}
-      className="flow flex flex-col items-stretch gap-4 md:flex-row md:items-center"
-    >
-      {columns.map((col, c) => (
-        <div key={c} className="contents">
-          {c > 0 && <span aria-hidden className="flow-line" style={{ "--c": c } as React.CSSProperties} />}
-          <ul className="flex flex-1 flex-col gap-3" style={{ "--c": c } as React.CSSProperties}>
-            {col.map((box) => (
-              <li
-                key={box}
-                className={`flow-box rounded-md px-4 py-3 text-[16px] leading-[1.35] ${
-                  c === columns.length - 1 ? "bg-ink text-wall" : "bg-wall"
-                }`}
-              >
-                {box}
-              </li>
-            ))}
-          </ul>
-        </div>
       ))}
     </div>
   );
@@ -253,11 +198,14 @@ export function Visual({ visual }: { visual: VisualData }) {
       return <Stats stats={visual.stats} />;
     case "quotes":
       return (
-        <div className={`grid gap-4 ${visual.quotes.length > 2 ? "md:grid-cols-2" : ""}`}>
+        <div className={`gap-4 ${visual.quotes.length > 2 ? "columns-1 md:columns-2 lg:columns-3" : "grid"}`}>
           {visual.quotes.map((q) => (
-            <figure key={q.text} className="reveal rounded-md bg-wall p-6">
-              <blockquote className="font-display text-[clamp(20px,1.8vw,24px)] font-medium leading-[1.3] tracking-[-0.01em]">
-                &ldquo;{q.text}&rdquo;
+            <figure key={q.text} className="reveal mb-4 break-inside-avoid rounded-md bg-wall p-6">
+              <span aria-hidden className="block font-display text-[44px] leading-[0.6] text-[var(--accent)]">
+                &ldquo;
+              </span>
+              <blockquote className="mt-2 font-display text-[clamp(19px,1.6vw,23px)] font-medium leading-[1.3] tracking-[-0.01em]">
+                {q.text}
               </blockquote>
               <figcaption className="mt-3 text-[15px] text-muted">{q.who}</figcaption>
             </figure>
@@ -268,8 +216,22 @@ export function Visual({ visual }: { visual: VisualData }) {
       return <Statement text={visual.text} />;
     case "dots":
       return <Dots total={visual.total} lit={visual.lit} />;
-    case "flow":
-      return <Flow columns={visual.columns} />;
+    case "diagram":
+      return <Diagram data={visual} />;
+    case "bars":
+      return <Bars v={visual} />;
+    case "fogg":
+      return <Fogg v={visual} />;
+    case "podium":
+      return <Podium v={visual} />;
+    case "table":
+      return <Table v={visual} />;
+    case "brief":
+      return <Brief v={visual} />;
+    case "anatomy":
+      return <Anatomy v={visual} />;
+    case "compare":
+      return <Compare v={visual} />;
     case "cards":
       return (
         <dl className="grid gap-4 md:grid-cols-3">

@@ -17,8 +17,11 @@ import {
 
 /** One line on wide screens; on phones each of these is its own line. */
 const LINES = ["Let\u2019s get", "things moving."];
-/** The resting width (percent of the drawn letter): dense, with room to condense further. */
-const REST_WDTH = 80;
+/**
+ * The resting width (percent of the drawn letter). At 100 the letters at rest are exactly the
+ * case-study titles' General Sans 350, same strokes and tracking (PLAN 15.12).
+ */
+const REST_WDTH = 100;
 /** On wide screens the cap height stays within this share of the viewport height. */
 const CAP_LIMIT = 0.42;
 const CAP_RATIO = 0.712;

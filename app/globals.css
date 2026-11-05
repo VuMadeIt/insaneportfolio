@@ -220,8 +220,8 @@
    letters sit in normal flow at rest; live, each is placed and shaped every frame. */
 .flex-line {
   font-weight: 350;
-  /* Denser than the headings; each letter's measured advance includes it. */
-  letter-spacing: -0.02em;
+  /* The headings' tracking; each letter's measured advance includes it. */
+  letter-spacing: -0.03em;
   line-height: 1;
 }
 .flex-wm {

@@ -24,7 +24,7 @@ export function WorkList({
 }: {
   projects: Project[];
   level?: "h2" | "h3";
-  /** Home shows two projects, so they are set at poster size. */
+  /** Home shows three projects at poster size, without the prize objects (PLAN 15.5). */
   large?: boolean;
 }) {
   const [active, setActive] = useState<number | null>(null);
@@ -92,10 +92,10 @@ export function WorkList({
                 <div
                   className={`flex items-start gap-[0.2em] ${large ? "text-[clamp(44px,6.4vw,104px)] leading-[0.95]" : "text-[clamp(30px,3.6vw,52px)] leading-[1]"}`}
                 >
-                  {p.prize && (
+                  {p.prize && !large && (
                     <Image
                       src={`/media/objects/${p.prize.object}.webp`}
-                      alt={large ? p.prize.text : ""}
+                      alt=""
                       width={480}
                       height={480}
                       sizes="104px"

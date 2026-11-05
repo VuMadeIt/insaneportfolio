@@ -21,7 +21,7 @@ export function TorontoTime() {
   const h = Number(time.split(":")[0]) % 12;
   const night = time.endsWith("PM") ? h >= 6 : h < 6;
   return (
-    <p className="mt-2 flex h-[1.6em] items-center gap-1.5 text-[14px] text-muted">
+    <p className="mt-2 flex h-[1.6em] items-center gap-1.5">
       {time && (
         <>
           <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" aria-hidden>

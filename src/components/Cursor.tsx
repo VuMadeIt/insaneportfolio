@@ -16,10 +16,10 @@ function stateAt(target: Element | null): State {
 }
 
 /**
- * The site's cursor (PLAN 13.1): the old site's small ball, in the cradle's dark grey, trailing the
- * pointer a touch. Over links it swells and fades, over a work row it hides (the row's video
- * follows the pointer instead), and over a ball it swells to say "grab". Only on devices with a
- * fine pointer that can hover.
+ * The old site's small ball, in the cradle's dark grey, following the native cursor (PLAN 15.2).
+ * Over links it swells and fades, over a work row it hides (the row's video follows the pointer
+ * instead), and over a ball it swells to say "grab". Only on devices with a fine pointer that can
+ * hover.
  */
 export function Cursor() {
   const outer = useRef<HTMLDivElement>(null);
@@ -38,17 +38,19 @@ export function Cursor() {
     const set = (state: State) => {
       if (ball.current && ball.current.dataset.state !== state) ball.current.dataset.state = state;
     };
+    // Runs only while the ball is catching up; a still pointer costs nothing.
     const tick = () => {
-      const k = reduced ? 1 : 0.35;
+      const k = reduced ? 1 : 0.16;
       pos.x += (to.x - pos.x) * k;
       pos.y += (to.y - pos.y) * k;
       if (outer.current) outer.current.style.transform = `translate3d(${pos.x}px, ${pos.y}px, 0)`;
-      raf = requestAnimationFrame(tick);
+      raf = Math.abs(to.x - pos.x) + Math.abs(to.y - pos.y) > 0.1 ? requestAnimationFrame(tick) : 0;
     };
     const move = (e: PointerEvent) => {
       if (e.pointerType !== "mouse") return;
       to.x = e.clientX;
       to.y = e.clientY;
+      if (!raf) raf = requestAnimationFrame(tick);
       if (!visible) {
         pos.x = to.x;
         pos.y = to.y;
@@ -70,7 +72,6 @@ export function Cursor() {
         set(s.hovered !== null ? "grab" : "default");
     });
 
-    raf = requestAnimationFrame(tick);
     addEventListener("pointermove", move, { passive: true });
     document.addEventListener("mouseout", away);
     addEventListener("pointerdown", press);

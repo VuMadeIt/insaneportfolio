@@ -1,0 +1,213 @@
+/* The menu from havenconstructions.com.au (PLAN 15.7), measured from their stylesheet and a
+   frame-by-frame film of it (scripts/menu-film.mjs): a 420 px box clipped 12 px in on every side
+   while closed, 0 px sideways on hover, 0 px open; background and clip 1 s on their ease-out; the
+   menu height from a 0fr to 1fr grid row in 0.5 s; rows rising 30 px and links 50 px over 0.6 s,
+   40 ms apart; hairlines scaling in from the left; the current page's bullet and 22 px slide after
+   0.2 s. Only the colours are ours: the panel tone closed, ink open. */
+.bar {
+  --pad: 12px;
+  --ease-out: cubic-bezier(0.19, 1, 0.22, 1);
+  --ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-el: cubic-bezier(0.65, 0, 0, 1);
+  position: fixed;
+  inset: 0 0 auto;
+  z-index: 40;
+  display: flex;
+  justify-content: center;
+  padding: calc(28px - var(--pad)) 8px 0;
+  pointer-events: none;
+  transition: transform 350ms var(--ease-out);
+}
+/* Phones only; wider screens get the bar (SiteNav). */
+@media (min-width: 768px) {
+  .bar {
+    display: none;
+  }
+}
+/* A story is open. */
+.away {
+  transform: translateY(-120%);
+}
+.nav {
+  pointer-events: auto;
+  width: min(420px, 100%);
+  color: var(--ink);
+  background: var(--panel);
+  clip-path: inset(var(--pad) round 4px);
+  transition:
+    background-color 1s var(--ease-out),
+    clip-path 1s var(--ease-out),
+    width 1.4s var(--ease-out),
+    color 1s var(--ease-out);
+}
+.scrolled .nav:not(.open) {
+  width: min(320px, 100%);
+}
+@media (hover: hover) {
+  .nav:hover {
+    color: var(--wall);
+    background: var(--ink);
+    clip-path: inset(var(--pad) 0 round 8px);
+    width: min(420px, 100%);
+  }
+}
+.nav.open {
+  color: var(--wall);
+  background: var(--ink);
+  clip-path: inset(0 round 8px);
+  transition-delay: 0s;
+}
+.toggle {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: space-between;
+  padding: 21px 28px;
+  font-size: 16px;
+  line-height: 22px;
+}
+.burger {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+.burger span {
+  position: relative;
+  display: block;
+  width: 60px;
+  height: 1px;
+  transition: transform 0.1s ease-in 0.1s;
+}
+.burger span::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: currentColor;
+  transition: transform 0.1s ease-out;
+}
+.open .burger span {
+  transition: transform 0.1s ease-out;
+  transform: translateY(4px);
+}
+.open .burger span + span {
+  transform: translateY(-4px);
+}
+.open .burger span::before {
+  transition: transform 0.1s ease-in 0.1s;
+  transform: rotate(12deg);
+}
+.open .burger span + span::before {
+  transform: rotate(-12deg);
+}
+.menu {
+  display: grid;
+  grid-template-rows: 0fr;
+  overflow: hidden;
+  transition: grid-template-rows 0.5s var(--ease-in-out);
+}
+.open .menu {
+  grid-template-rows: 1fr;
+}
+.inner {
+  overflow: hidden;
+}
+.rows {
+  padding: 0 28px;
+}
+.row,
+.extra {
+  position: relative;
+  transform: translateY(30px);
+  transition: transform 0.6s var(--ease-el);
+  transition-delay: inherit;
+}
+.row + .row::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto;
+  height: 1px;
+  background: currentColor;
+  opacity: 0.12;
+  transform: scaleX(0);
+  transform-origin: 0;
+  transition: transform 0.6s var(--ease-el);
+  transition-delay: inherit;
+}
+.open .row,
+.open .extra {
+  transform: none;
+}
+.open .row + .row::before {
+  transform: scaleX(1);
+}
+.link {
+  position: relative;
+  display: block;
+  padding-block: 28px;
+  font-size: 18px;
+  line-height: 18px;
+  transform: translateY(50px);
+  transition: transform 0.6s var(--ease-el);
+  transition-delay: inherit;
+}
+.open .link {
+  transform: none;
+}
+.link span {
+  display: inline-block;
+  transition: transform 1s var(--ease-out);
+}
+.link::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: calc(50% - 1px);
+  width: 7px;
+  aspect-ratio: 1;
+  background: currentColor;
+  transform-origin: 0;
+  transform: translateY(-50%) rotate(-45deg) scale(0);
+  transition: transform 0.4s;
+}
+.link:hover span,
+.open .current span {
+  transform: translateX(22px);
+}
+.link:hover::before,
+.open .current::before {
+  transform: translateY(-50%) rotate(0) scale(1);
+  transition: transform 1s var(--ease-out);
+}
+.open .current span,
+.open .current::before {
+  transition-delay: 0.2s;
+}
+.extras {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 16px;
+  padding: 28px 28px 40px;
+  font-size: 15px;
+  line-height: 21px;
+}
+.extra > * {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  opacity: 0.85;
+  transition: opacity 0.3s;
+}
+.extra > *:hover {
+  opacity: 1;
+}
+@media (prefers-reduced-motion: reduce) {
+  .nav,
+  .menu,
+  .row,
+  .extra,
+  .link,
+  .link span {
+    transition: none;
+  }
+}

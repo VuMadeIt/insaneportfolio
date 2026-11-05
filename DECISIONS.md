@@ -698,3 +698,110 @@ Lucas's notes after revision 4, with his Q&A answers. PLAN.md Part 14 is the spe
   (the "2-4 year GPU lifecycle" figure had no source) and the stock photos. No "Looking back" or
   learnings were invented. The next-project chain is Ripple, Shufflr, Reboot, Maple Leaf.
 - **About.** The timeline's "At the same time" lists are gone; overlapping bars still light up.
+
+## Revision 6 (2026-11-05)
+
+- **Kern line, reverse-engineered.** Kern Society's hero is not a GSAP tween: it is a per-frame
+  solver (their `main.js`, `initHero`). Ported as a pure model (`src/components/flexFit.ts`, with
+  Vitest cases) plus a component on GSAP's ticker. Differences: their wordmark is 12 capitals
+  capped by viewport height; ours is 24 mixed-case characters, so resting at the narrowest width
+  (their sizing) left no room to condense. The line is sized to rest at wdth 50 instead, so far
+  letters can still give up width. Desktop: one line; phones: "Let's get" / "things moving.",
+  each fitted on its own, with the scroll-driven marker. The descenders need a 1em line box
+  (theirs is 0.74em for capitals). The ball in the "o" and its clack are gone with the old line.
+- **Font loading.** Roboto Flex via `next/font/google` (wdth + opsz axes), not preloaded (the
+  line is below the fold). The advance grid is measured after `document.fonts.load` resolves, or
+  after 3 s with whatever face is there. Without JavaScript the letters sit at rest in normal flow.
+- **Nav focus bug.** Reproduced the cause in CSS: `.site-nav[data-hidden]:not(:focus-within)`.
+  A mouse click focuses the link and the root-layout nav survives the client navigation, so the
+  bar never hid until something else took focus. `:has(:focus-visible)` keeps keyboard users'
+  guarantee without the stuck bar. e2e case added.
+- **Arrival drop.** `intro()` teleports every anchor to the off-screen height with the balls
+  hanging still, then runs `close()`. The timeline runs on simulation time, so it starts with the
+  scene's first step whatever the load time. The still is hidden whenever JavaScript runs
+  (`@media (scripting: enabled)`) until WebGL is known to be missing, which avoids a flash of
+  resting balls before they drop.
+- **Warm grade.** Sampled the graded reference: wall `#f8f0de`, ink `#14120d`; used `#f7f0df`
+  so it reads a touch less yellow. The neutral grey panels and chips became one `--panel` token.
+  Media get a light sepia/desaturate filter rather than a multiply overlay (an overlay can't warm
+  the wall's red channel and would tint the cursor and focus rings too).
+- **Haven menu.** Their CSS was read for timings: 1 s background/clip on cubic-bezier(.19,1,.22,1),
+  rows 0.6 s on cubic-bezier(.65,0,0,1) staggered 40 ms, the menu height via a 0fr to 1fr grid
+  row, hairlines scaling in from the left, the current page's square bullet sliding the label
+  22 px. Kept in `/lab/nav` with a CSS module so nothing ships to the live pages.
+- **Leftovers.** `public/media/about/hummingbird.*` and its line in `scripts/media.sh` are no
+  longer used; left in place for Lucas to decide.
+
+### Revision 6 follow-up: making sure every animation shows (2026-11-05 evening)
+
+- **Why Lucas saw nothing.** Reproduced: through the browser-preview proxy the dev server's HMR
+  websocket fails (502) and the Next dev client never hydrates. Straight to `localhost:3200` it
+  worked. Production builds have no socket, so previews now point at `next start`. Windows
+  animation effects are on (`ClientAreaAnimation` true), so reduced motion was not the cause.
+- **First-visit freeze.** Profiled a cold load: 8.7 s inside `WebGLProgram.getUniforms` (the
+  synchronous link check) on the first frame, mostly the reflection cubes' own shader variants
+  (render targets have no tone mapping). Fix, in order: `compileAsync` before the first frame
+  (KHR_parallel_shader_compile, page stays responsive) for the main and cube variants; then, since
+  that still took 10 s cold, the balls render with a plain finish first (identical to an identity
+  ball at rest) and the four identity shaders compile in the background and swap in. The cubes
+  always use the plain finish. Cold drop now starts at ~2.1 s and settles by ~3.4 s; before, the
+  page was frozen for 7-10 s.
+- **Back after a scroll.** A Lenis glide still running when the route changed carried on over the
+  new page (home came back scrolled 1400 px, the drop played off-screen). Lenis now adopts the
+  page's scroll position on every route change.
+- **Failsafes.** The still shows after 4 s if the scene has not drawn (and hides when it does);
+  the moving line shows its resting form after 3.5 s if it never went live.
+- **Menu exactness.** Filmed Haven and ours with `scripts/menu-film.mjs` and compared frame by
+  frame: same pill sizes (420 px box, 12 px clip, 40 px visible), hover area within 4%, open area
+  within 3%, the same three-frame open and close at 15 fps, the same row stagger and hairlines.
+  The label stays "menu" when open, as on Haven. Bullet is Haven's square, not a ball.
+
+### Revision 6, part 3 (2026-11-05 night)
+
+- **Faux width for General Sans.** The Kern model is unchanged; only the face changed. Width is a
+  `scaleX` per letter from its left edge, so the advance grid is measured at six weights and scaled
+  linearly (exact for a scale). Range 55-150% so the far letters still read; rest 80% for the
+  "denser" look Lucas asked for. Weight tops out at 700, General Sans's heaviest.
+- **Sway by nudges, not by moving the anchors.** Driving the anchors at the pendulum's period
+  would amplify by the (tiny) damping and be hard to bound; a nudge only when the group has lost
+  30% of its energy, only near the bottom, keeps the amplitude between about 84% and 100% of 3 mm.
+  Runs in simulation time (`cradle.beforeStep`), so it is frame-rate independent. Peak speed
+  (~0.013 m/s) stays below slow motion's 0.05 m/s trigger, and the balls never collide.
+- **Lag.** Profiled 14 s of the idle home page: `StringTube.update` alone took ~2 s (arc lengths
+  with 200 divisions and a bounding sphere for each of eight tubes, every frame); now ~0.1 s. Main
+  thread idle rose from 4.1 s to 7.5 s of 14. The sway keeps the canvas rendering, so slow scenes
+  refresh one reflection cube every third frame instead of every frame.
+- **Tests.** `scripts/user-test.mjs` now covers the sway, the phone menu, the one-ball bar, the
+  story's click-anywhere close and the Devpost link: 81/81 across desktop, proxy, throttled, tablet
+  and phone.
+
+### Revision 6, part 4 (2026-11-05 night)
+
+- **Tagline default: above VU, right-aligned.** From VU's left edge the line ran off the right
+  side at 1440 px (VU ends near the edge), so left and centred placements wrap within the word;
+  right-aligned is the one that reads as a single line on desktop. Phones hang it from VU's right
+  edge and wrap at 62vw. Five other spots stay in `/lab/tagline`.
+- **Selected objects.** The inspo's calm comes from one large photograph beside a narrow text
+  column, with the rest as small prints in a strip. The photos are low resolution, so the open one
+  is capped at ~38vw / 62vh and never upscaled. Built as an ARIA tab list rather than a lightbox:
+  no overlay, no scroll lock, keyboard arrows, deep links by hash.
+- **Link preview.** A close-up was needed: the hero framing made the ball ~85 px in a 1200x630
+  card. The lab renders the canvas at 2.4x the window and crops, so the ball is ~200 px at full
+  resolution, and swings at 32 degrees, which carries it fully out of frame at both ends. Capture
+  is deterministic (exact 1/30 s per frame, frames drawn only on request), and the loop is cut
+  between right-hand turning points two swings apart. Next's metadata resolves image URLs against
+  `metadataBase` but not `og:video`, so the video URL is built absolute.
+- **Tests.** `scripts/user-test.mjs` adds the tagline, the About strip and the preview tags:
+  95/95 across desktop, proxy, throttled, tablet and phone; 38/38 e2e.
+
+### About, part 2 (2026-11-05 night)
+
+- **Scroll-driven objects.** A sticky stage inside a runway of 100svh + 0.75 screens per object;
+  the object on stage is `floor(scrolled / step)`, with `step` measured from the runway and stage
+  heights so it matches the CSS whatever mobile toolbars do. Index links glide with Lenis (exposed
+  as `scrollToY` from ScrollMotion) to a quarter of the way into the object's stretch; plain
+  `#id` anchors still land without JavaScript.
+- **Index treatment.** Caleb Wu's case studies, Stripe's and Linear's docs all mark the current
+  section by weight and colour rather than a pill or bar; here muted 350 to ink 500, 300 ms.
+- **Testing note.** A programmatic scroll while Lenis is still gliding from a wheel is overridden
+  by the glide, so `scripts/user-test.mjs` waits for the glide before jumping to the section.

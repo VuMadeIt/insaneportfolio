@@ -18,14 +18,15 @@ test("clicking a ball opens its story at its own URL; Escape returns", async ({ 
   await expect(page.locator("#story-title")).toHaveCount(0);
 });
 
-test("the back arrow and the browser back button close the story", async ({ page }) => {
+test("no back arrow: the browser back button closes the story", async ({ page }) => {
   await ready(page);
   await page.getByRole("button", { name: /^People:/ }).focus();
   await page.keyboard.press("Enter");
   await expect(page).toHaveURL(/\/people$/);
-  await page.getByRole("link", { name: "Back to the cradle" }).click();
-  await expect(page).toHaveURL(/\/$/);
+  await expect(page.getByRole("link", { name: "Back to the cradle" })).toHaveCount(0);
   await page.goBack();
+  await expect(page).toHaveURL(/\/$/);
+  await page.goForward();
   await expect(page).toHaveURL(/\/people$/);
   await page.goBack();
   await expect(page).toHaveURL(/\/$/);

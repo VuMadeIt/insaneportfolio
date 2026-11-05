@@ -47,7 +47,7 @@ export function Bars({ v }: { v: Of<"bars"> }) {
                 )}
               </div>
               <div className="relative flex h-9 items-center">
-                <span className="absolute inset-x-0 top-1/2 h-2 -translate-y-1/2 rounded-full bg-[#dedad2]" />
+                <span className="absolute inset-x-0 top-1/2 h-2 -translate-y-1/2 rounded-full bg-rule" />
                 <span
                   className={`bar-fill absolute top-0 h-full rounded-full ${fill[b.tone ?? "accent"]}`}
                   style={

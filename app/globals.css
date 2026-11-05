@@ -6,7 +6,7 @@
   --color-ink: var(--ink);
   --color-muted: var(--muted);
   --color-rule: var(--rule);
-  --color-night: var(--night);
+  --color-panel: var(--panel);
   --font-display: var(--font-general), "Helvetica Neue", Arial, sans-serif;
   --font-sans: var(--font-cabinet), "Helvetica Neue", Arial, sans-serif;
   /* One radius scale (PLAN 12.1): small controls, media, cards. Pills use rounded-full. */
@@ -45,6 +45,12 @@
   }
   th {
     font-weight: inherit;
+  }
+  /* The same warm grade on photos, videos, the rendered objects and the cradle (PLAN 15.4). */
+  img,
+  video,
+  canvas {
+    filter: sepia(0.12) saturate(0.94);
   }
   ::selection {
     background: var(--ink);
@@ -101,11 +107,7 @@
   }
 }
 
-/* The custom cursor (Cursor.tsx, PLAN 13.1). The native cursor hides only where ours runs. */
-.custom-cursor,
-.custom-cursor * {
-  cursor: none !important;
-}
+/* The ball that trails the native cursor (Cursor.tsx, PLAN 15.2). */
 .cursor-outer {
   display: none;
   position: fixed;
@@ -169,27 +171,12 @@
 
 /* Section entrances (`.reveal`) are driven by GSAP ScrollTrigger in ScrollMotion.tsx. */
 
-/* Back links: the arrow nudges back on hover. */
-.back-link span {
-  display: inline-block;
-  transition: transform 300ms var(--ease-out);
-}
-.back-link:hover span {
-  transform: translateX(-4px);
-}
-
-/* A tiny dark-metal ball, like the cradle's: accolade bullets and the timeline's stops. */
-.metal-ball,
-.award-dot {
+/* A tiny dark-metal ball, like the cradle's: the timeline's stops. */
+.metal-ball {
   flex: none;
   border-radius: 999px;
   /* prettier-ignore */
   background: radial-gradient(circle at 35% 30%, #d8d7d4 0%, #6d6c6a 28%, #1d1d1c 70%, #0b0b0a 100%); /* taste-skill-ignore: shading that draws a sphere */
-}
-.award-dot {
-  width: 0.55em;
-  height: 0.55em;
-  transform: translateY(-0.05em);
 }
 /* The pinned timeline's stage (Timeline.tsx): one role at a time rises into place. */
 .timeline-stop:not(.reveal) {
@@ -223,71 +210,77 @@
   background: var(--wall);
   box-shadow: 0 1px 0 var(--rule); /* taste-skill-ignore: a hairline under the stuck nav */
 }
-.site-nav[data-hidden]:not(:focus-within) {
+/* Keyboard focus keeps it out; a clicked link keeps focus after a client navigation, which kept the
+   bar stuck on screen, so only :focus-visible counts. */
+.site-nav[data-hidden]:not(:has(:focus-visible)) {
   transform: translateY(calc(-100% - 2px));
 }
 
-/* "Let's get things moving." (MovingLine.tsx): words rise out of masks, a ball drops into the "o". */
-.moving-mask {
-  display: inline-block;
-  overflow: hidden;
-  vertical-align: bottom;
-  /* Room for descenders inside the mask. */
-  padding-bottom: 0.12em;
-  margin-bottom: -0.12em;
+/* "Let's get things moving." (MovingLine.tsx, after Kern Society's hero, in General Sans). Without JavaScript the
+   letters sit in normal flow at rest; live, each is placed and shaped every frame. */
+.flex-line {
+  font-weight: 350;
+  /* The headings' tracking; each letter's measured advance includes it. */
+  letter-spacing: -0.03em;
+  line-height: 1;
 }
-.moving-mask > span {
-  display: inline-block;
-  transition: transform 1.1s var(--ease-power4-out);
-  transition-delay: calc(var(--i) * 70ms);
-}
-.moving-line[data-armed]:not([data-in]) .moving-mask > span {
-  transform: translateY(110%);
-}
-.moving-line[data-armed]:not([data-in]) .moving-ball {
-  visibility: hidden;
-}
-.moving-o {
+.flex-wm {
   position: relative;
-  display: inline-block;
-  width: 0.56em;
-  height: 0.5em;
+  display: block;
+  white-space: pre;
+  font-size: 7.2vw;
+  font-variation-settings: "wght" 350;
+  transition: opacity 400ms var(--ease-out);
 }
-.moving-ball {
+.flex-l {
+  display: inline-block;
+}
+@media (max-width: 767px) {
+  .flex-wm {
+    font-size: 15vw;
+  }
+  .flex-wm-line {
+    display: block;
+  }
+  .flex-sp {
+    display: none;
+  }
+}
+/* Hidden only while the live line is being measured; a timer shows the resting line regardless
+   if that never happens (scripts blocked or failing). */
+@keyframes flex-failsafe {
+  to {
+    opacity: 1;
+  }
+}
+@media (scripting: enabled) {
+  .flex-wm:not([data-live]) {
+    opacity: 0;
+    animation: flex-failsafe 400ms 3.5s forwards;
+  }
+}
+.flex-wm[data-live] {
+  height: 1em;
+}
+.flex-wm[data-live] .flex-wm-line {
+  display: contents;
+}
+.flex-wm[data-live] .flex-l {
   position: absolute;
-  left: 0.03em;
-  bottom: -0.01em;
-  width: 0.5em;
-  height: 0.5em;
-  overflow: hidden;
-  border-radius: 999px;
+  left: 0;
+  top: 0;
+  /* Width is a horizontal scale from the letter's left edge (General Sans has no width axis). */
+  transform-origin: 0 0;
   will-change: transform;
 }
-.moving-ball img {
-  width: 100%;
-  height: 100%;
-  user-select: none;
-  pointer-events: none;
+.flex-wm[data-live][data-phone] {
+  height: auto;
 }
-/* A glint slides across the ball on hover, like light catching steel. */
-.moving-ball::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  border-radius: 999px;
-  /* prettier-ignore */
-  background: radial-gradient(circle at 50% 50%, rgb(255 255 255 / 0.75), rgb(255 255 255 / 0) 32%); /* taste-skill-ignore: a specular glint on the ball */
-  opacity: 0;
-  transform: translate(-45%, -40%);
-  transition:
-    opacity 300ms var(--ease-out),
-    transform 900ms var(--ease-out);
+.flex-wm[data-live][data-phone] .flex-wm-line {
+  position: relative;
+  display: block;
+  height: 1em;
 }
-.moving-o:hover .moving-ball::after {
-  opacity: 1;
-  transform: translate(25%, 18%);
-}
-
 /* The work catalogue's rows (PLAN Part 5 allows its rules) and the rows of real tables. */
 .catalogue {
   border-bottom: 1px solid var(--rule); /* taste-skill-ignore: catalogue rules, PLAN Part 5 */
@@ -296,7 +289,7 @@
   border-top: 1px solid var(--rule); /* taste-skill-ignore: catalogue rules, PLAN Part 5 */
 }
 .table-rule {
-  border-top: 1px solid #d9d6cf; /* taste-skill-ignore: a real <table> */
+  border-top: 1px solid var(--rule); /* taste-skill-ignore: a real <table> */
 }
 
 /* The work list's floating preview (WorkList.tsx): centred on the pointer, it is the cursor. */
@@ -335,6 +328,112 @@
   display: inline-block;
   animation: letter-rise 1.5s var(--ease-power4-out) both;
   animation-delay: calc(0.15s + var(--i) * 0.1s);
+}
+
+/* The tagline (Tagline.tsx, PLAN 15.12): small, lowercase in brackets, rising in once the name
+   has. On the name it hangs above one word; on phones it keeps to the screen and may wrap. */
+@keyframes tagline-rise {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+}
+.tagline,
+.giant-caption {
+  font-size: clamp(15px, 1.25vw, 19px);
+  font-weight: 350;
+  letter-spacing: 0;
+  line-height: 1.35;
+  text-transform: none;
+}
+.tagline-rise,
+.giant-caption {
+  animation: tagline-rise 1s var(--ease-power4-out) 1.1s both;
+}
+.giant-caption {
+  position: absolute;
+  bottom: 100%;
+  margin-bottom: 0.9em;
+  white-space: nowrap;
+}
+.giant-caption[data-align="left"] {
+  left: 0.04em;
+  text-align: left;
+}
+.giant-caption[data-align="center"] {
+  left: 50%;
+  translate: -50% 0;
+  text-align: center;
+}
+/* VU ends near the right edge: from its left or centre the line wraps within the word. */
+.giant-caption[data-word="1"]:not([data-align="right"]) {
+  width: max-content;
+  max-width: 100%;
+  white-space: normal;
+}
+.giant-caption[data-align="right"] {
+  right: 0.04em;
+  text-align: right;
+}
+@media (max-width: 767px) {
+  .giant-caption {
+    width: max-content;
+    max-width: 62vw;
+    white-space: normal;
+  }
+  /* VU sits near the right edge: hang from its right so the line stays on screen. */
+  .giant-caption[data-word="1"] {
+    left: auto;
+    right: 0.04em;
+    translate: none;
+    text-align: right;
+  }
+}
+
+/* Selected objects (SelectedObjects.tsx, PLAN 15.13, 15.15): turning the page. */
+@keyframes obj-rise {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+}
+@keyframes obj-wipe {
+  from {
+    clip-path: inset(100% 0 0 0);
+  }
+}
+@keyframes obj-settle {
+  from {
+    transform: scale(1.06);
+  }
+}
+.obj-rise {
+  animation: obj-rise 800ms var(--ease-out) both;
+}
+.obj-wipe {
+  animation: obj-wipe 900ms var(--ease-drawer) both;
+}
+.obj-wipe .obj-photo {
+  animation: obj-settle 1400ms var(--ease-out) both;
+}
+/* The section index (Caleb Wu's case studies): the object on stage a little heavier, in ink. */
+.obj-link {
+  color: var(--muted);
+  font-weight: 350;
+  transition:
+    color 300ms var(--ease-out),
+    font-weight 300ms var(--ease-out);
+}
+.obj-link:hover,
+.obj-link:focus-visible {
+  color: var(--ink);
+}
+.obj-link[data-on] {
+  color: var(--ink);
+  font-weight: 500;
+}
+.obj-index {
+  scrollbar-width: none;
 }
 
 /* Case-study coded visuals (src/components/case): drawn once they are in view. Without
@@ -432,9 +531,6 @@
     padding-left: var(--gutter);
     padding-bottom: 12vh;
   }
-  .story-hide-portrait {
-    display: none;
-  }
 }
 
 /* Invisible buttons over the balls; the focus ring is the only thing drawn. */
@@ -470,6 +566,25 @@
   /* Neighbouring captions are wider than the ball pitch on phones: stagger them. */
   .fallback-target:nth-child(even) {
     padding-top: calc(0.065 * var(--s) + 32px);
+  }
+}
+
+/* The still and its links are a fallback (HeroStage.tsx): with JavaScript they stay hidden, so the
+   balls can drop in, unless WebGL is missing, or the live scene has not drawn after 4 s (scripts
+   blocked or slow, a weak GPU still compiling): then the timer shows the still rather than an empty
+   hero, until the scene is live. */
+@keyframes still-failsafe {
+  to {
+    visibility: visible;
+  }
+}
+@media (scripting: enabled) {
+  .hero-still:not([data-state="fallback"]) {
+    visibility: hidden;
+    animation: still-failsafe 1ms 4s forwards;
+  }
+  .hero-still[data-state="live"] {
+    animation: none;
   }
 }
 

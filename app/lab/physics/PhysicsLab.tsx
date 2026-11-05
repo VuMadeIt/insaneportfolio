@@ -151,7 +151,7 @@ export function PhysicsLab({ recordingOnsets }: { recordingOnsets: number[] }) {
       while (samples.length && samples[0]!.t < cradle.time - HISTORY) samples.shift();
 
       // Side view.
-      ctx.fillStyle = "#f3f1ec";
+      ctx.fillStyle = "#f7f0df";
       ctx.fillRect(0, 0, canvas.width, canvas.height);
       cradle.balls.forEach((_, i) => {
         const p = cradle.renderPosition(i, alpha);

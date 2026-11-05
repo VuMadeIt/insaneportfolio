@@ -5,7 +5,9 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useSyncExternalStore } from "react";
 import { isMuted, setMuted, subscribeMuted, unlockAudio } from "@/audio/clack";
+import { CONTACT } from "@/content/contact";
 import { identityIndex } from "@/content/identities";
+import { HavenMenu } from "./HavenMenu";
 
 /** Speaker with sound waves, or with a cross when muted. */
 function SpeakerIcon({ on }: { on: boolean }) {
@@ -26,37 +28,34 @@ function SpeakerIcon({ on }: { on: boolean }) {
   );
 }
 
-/** Mutes every sound on the site (the cradle, slow motion, the ball in "moving"). */
-export function SoundButton() {
+/** Mutes every sound on the site (the cradle, slow motion). `labelled` writes the state beside the icon. */
+export function SoundButton({ labelled = false, className }: { labelled?: boolean; className?: string }) {
   const on = !useSyncExternalStore(subscribeMuted, isMuted, () => false);
+  const label = on ? "Sound on" : "Sound off";
   return (
     <button
       type="button"
       aria-pressed={on}
-      aria-label={on ? "Sound on" : "Sound off"}
-      title={on ? "Sound on" : "Sound off"}
-      className="-m-2 rounded-full p-2 text-muted transition-colors duration-200 hover:text-ink"
+      aria-label={labelled ? undefined : label}
+      title={labelled ? undefined : label}
+      className={className ?? "-m-2 rounded-full p-2 transition-opacity duration-200 hover:opacity-60"}
       onClick={() => {
         unlockAudio();
         setMuted(on);
       }}
     >
       <SpeakerIcon on={on} />
+      {labelled && label.toLowerCase()}
     </button>
   );
 }
 
-const LINKS = [
-  ["About", "/about"],
-  ["Work", "/work"],
-  ["Contact", "#contact"],
-] as const;
-
 /**
- * The same slim bar on every page (PLAN 14.3): the four balls home on the left; About, Work,
- * Contact and the sound button on the right. It hides while you scroll down and comes back on any
- * scroll up; at the top of the page it is always there. An open story hands the corner to its
- * back arrow.
+ * The nav on every page (PLAN 14.3, 15.3, 15.11). From 768 px: a slim bar with one ball home at
+ * the left edge; about, work, contact (an email) and the sound button on the right, set like the
+ * headings. It hides while you scroll down and comes back on any scroll up; at the top of the page
+ * it is always there. Phones get the Haven menu instead. Both step aside while a story is open
+ * (clicking anywhere or Escape closes it).
  */
 export function SiteNav() {
   const pathname = usePathname();
@@ -79,45 +78,42 @@ export function SiteNav() {
     return () => removeEventListener("scroll", onScroll);
   }, [pathname]);
 
-  if (pathname.startsWith("/lab")) return null;
+  // The labs bring their own, except the ones that compare the home page as it really is.
+  if (pathname.startsWith("/lab") && !["/lab/type", "/lab/tagline"].includes(pathname)) return null;
   return (
-    <header
-      ref={bar}
-      className="site-nav fixed inset-x-0 top-0 z-40"
-      style={story ? { transform: "translateY(calc(-100% - 2px))" } : undefined}
-      inert={story}
-    >
-      <nav
-        aria-label="Site"
-        className="flex h-[var(--nav-h)] items-center justify-between px-[var(--gutter)] text-[16px]"
+    <>
+      <header
+        ref={bar}
+        className="site-nav fixed inset-x-0 top-0 z-40 max-md:hidden"
+        style={story ? { transform: "translateY(calc(-100% - 2px))" } : undefined}
+        inert={story}
       >
-        <Link
-          href="/"
-          aria-label="Lucas Vu, home"
-          className="-m-2 p-2 transition-opacity duration-200 hover:opacity-75"
+        <nav
+          aria-label="Site"
+          className="font-display flex h-[var(--nav-h)] items-center justify-between px-[clamp(20px,2.5vw,36px)]"
         >
-          <Image
-            src="/media/objects/balls.webp"
-            alt=""
-            width={88}
-            height={22}
-            priority
-            className="h-[22px] w-auto"
-          />
-        </Link>
-        <div className="flex items-center gap-6 sm:gap-8">
-          {LINKS.map(([name, href]) => (
-            <Link
-              key={name}
-              href={href}
-              className="u-grow text-muted transition-colors duration-200 hover:text-ink"
-            >
-              {name}
+          <Link
+            href="/"
+            aria-label="Lucas Vu, home"
+            className="-m-2 p-2 transition-opacity duration-200 hover:opacity-75"
+          >
+            <Image src="/media/objects/ball.webp" alt="" width={24} height={24} priority className="size-6" />
+          </Link>
+          <div className="flex items-center gap-8">
+            <Link href="/about" className="u-grow">
+              about
             </Link>
-          ))}
-          <SoundButton />
-        </div>
-      </nav>
-    </header>
+            <Link href="/work" className="u-grow">
+              work
+            </Link>
+            <a href={`mailto:${CONTACT.email}`} className="u-grow">
+              contact
+            </a>
+            <SoundButton />
+          </div>
+        </nav>
+      </header>
+      <HavenMenu hidden={story} />
+    </>
   );
 }

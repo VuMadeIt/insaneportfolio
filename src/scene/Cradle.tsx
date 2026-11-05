@@ -1,7 +1,7 @@
 "use client";
 
 import { useFrame, useThree } from "@react-three/fiber";
-import { useEffect, useMemo, useRef } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import * as THREE from "three";
 import { playImpacts } from "@/audio/clack";
 import { identities } from "@/content/identities";
@@ -14,7 +14,7 @@ import { stringMaterial } from "./materials/string";
 import { StringTube } from "./stringGeometry";
 import { advanceClock, slowmo } from "./slowmo";
 import { REFLECTION_LAYER } from "./Wall";
-import { afterFrame, anchorOf, cradle, frame, requestRender, ropeOf, ropes, tick } from "./world";
+import { afterFrame, anchorOf, capture, cradle, frame, requestRender, ropeOf, ropes, tick } from "./world";
 
 const R = cradle.config.ball.radius;
 const EYE = cradle.config.eyeletHeight;
@@ -25,6 +25,8 @@ const CUBE_SIZE = 192;
 const STRING_KICK = 0.05;
 const SETTLE_TIME = 1.5;
 const MAX_FRAME = 0.05;
+/** Below this speed (m/s) for every ball, reflections refresh at a third of the frame rate. */
+const SLOW_REFLECTIONS = 0.08;
 
 /** Shared geometry: one sphere for all four balls and one screw eye. */
 function useHardware() {
@@ -63,6 +65,9 @@ export function CradleModel() {
     [],
   );
 
+  // Stage's precompile also builds the shader variants these cube renders use.
+  useEffect(() => void (scene.userData.cubes = cubes), [scene, cubes]);
+
   const ballMaterials = useMemo(
     () =>
       cubes.map((c, i) => {
@@ -72,12 +77,31 @@ export function CradleModel() {
       }),
     [cubes, material],
   );
+  // The same finish without an identity, which looks exactly like an identity ball at rest. The
+  // identity shaders take seconds to compile on some machines (Direct3D), so the balls render with
+  // this until they are ready (the drop never waits for them), and the reflection cubes always use
+  // it, since an identity never shows in a reflection.
+  const plainMaterials = useMemo(
+    () =>
+      cubes.map((c) => {
+        const m = materialFactories[material]();
+        m.envMap = c.target.texture;
+        return m;
+      }),
+    [cubes, material],
+  );
+  const [compiled, setCompiled] = useState<THREE.Material[] | null>(null);
+  const compiling = useRef<THREE.Material[] | null>(null);
+  const shown = compiled === ballMaterials ? ballMaterials : plainMaterials;
   const identityUniforms = useMemo(() => ballMaterials.map((m) => m.userData.identity), [ballMaterials]);
   const updateIdentities = useIdentities(identityUniforms);
-  useEffect(() => () => ballMaterials.forEach((m) => m.dispose()), [ballMaterials]);
+  useEffect(
+    () => () => [...ballMaterials, ...plainMaterials].forEach((m) => m.dispose()),
+    [ballMaterials, plainMaterials],
+  );
   useEffect(() => {
-    ballMaterials.forEach((m) => (m.envMapIntensity = look.envIntensity));
-  }, [ballMaterials, look.envIntensity]);
+    [...ballMaterials, ...plainMaterials].forEach((m) => (m.envMapIntensity = look.envIntensity));
+  }, [ballMaterials, plainMaterials, look.envIntensity]);
 
   const hardwareMaterial = useMemo(() => {
     const m = materialFactories.chrome();
@@ -105,6 +129,7 @@ export function CradleModel() {
   const projected = useMemo(() => new THREE.Vector3(), []);
   const kick = useMemo(() => ({ x: 0, y: 0, z: 0 }), []);
   const frameCount = useRef(0);
+  const cubeTurn = useRef(0);
   const lastActive = useRef(0);
   const onScreen = useRef(true);
 
@@ -119,7 +144,20 @@ export function CradleModel() {
   }, [gl]);
 
   useFrame((state, delta) => {
-    const dt = advanceClock(Math.min(delta, MAX_FRAME), cradle);
+    // The scene is on screen: compile the identity shaders in the background, then switch to them.
+    if (compiling.current !== ballMaterials) {
+      compiling.current = ballMaterials;
+      const target = ballMaterials;
+      const group = new THREE.Group();
+      target.forEach((m) => group.add(new THREE.Mesh(hardware.sphere, m)));
+      gl.compileAsync(group, state.camera, scene)
+        .catch(() => {})
+        .then(() => {
+          setCompiled(target);
+          requestRender();
+        });
+    }
+    const dt = advanceClock(capture.dt || Math.min(delta, MAX_FRAME), cradle);
     tick(dt);
     cradle.balls.forEach((_, i) => {
       const g = groups.current[i];
@@ -146,16 +184,21 @@ export function CradleModel() {
     });
 
     // Each ball sees its neighbours, the strings and the wall: one cube camera per frame, in turn.
+    // While everything moves slowly (the idle sway, a swing dying out) the reflections barely
+    // change, so a cube is redrawn every third frame instead: six scene renders and a PMREM pass
+    // saved on two frames out of three.
     const env = scene.userData.reflectionBackground as THREE.Texture | undefined;
-    if (env) {
-      const n = frameCount.current++;
+    const n = frameCount.current++;
+    const slow = cradle.balls.every((b) => Math.hypot(b.vel.x, b.vel.y, b.vel.z) < SLOW_REFLECTIONS);
+    if (env && (n < 2 || !slow || n % 3 === 0)) {
+      const turn = cubeTurn.current++;
       const batch = n < 2 ? cubes.length : 1;
       // The six cube faces must not each re-render the shadow map (it is redrawn for the main view).
       const autoShadows = gl.shadowMap.autoUpdate;
       gl.shadowMap.autoUpdate = false;
-      identityUniforms.forEach((u) => (u.uDetail.value = 0));
+      spheres.current.forEach((m, j) => m && (m.material = plainMaterials[j]!));
       for (let k = 0; k < batch; k++) {
-        const i = (n + k) % cubes.length;
+        const i = (turn + k) % cubes.length;
         const cube = cubes[i]!;
         const g = groups.current[i];
         if (!g) continue;
@@ -168,7 +211,7 @@ export function CradleModel() {
         cube.target.texture.needsPMREMUpdate = true;
       }
       gl.shadowMap.autoUpdate = autoShadows;
-      identityUniforms.forEach((u) => (u.uDetail.value = 1));
+      spheres.current.forEach((m, j) => m && (m.material = shown[j]!));
     }
 
     // Project the balls for the DOM layer (accessible buttons, captions).
@@ -190,7 +233,7 @@ export function CradleModel() {
     if (!cradle.asleep) lastActive.current = now;
     const busy =
       animating || !cradle.asleep || now - lastActive.current < SETTLE_TIME || frameCount.current < 8;
-    if (busy && onScreen.current) state.invalidate();
+    if (busy && onScreen.current && !capture.manual) state.invalidate();
   });
 
   return (
@@ -200,7 +243,7 @@ export function CradleModel() {
           <mesh
             ref={(m) => void (spheres.current[i] = m)}
             geometry={hardware.sphere}
-            material={ballMaterials[i]}
+            material={shown[i]}
             castShadow
           />
           <mesh geometry={hardware.shank} material={hardwareMaterial} castShadow />

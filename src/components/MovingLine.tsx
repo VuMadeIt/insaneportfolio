@@ -1,110 +1,303 @@
 "use client";
 
-import Image from "next/image";
-import { useEffect, useRef } from "react";
-import { playClack } from "@/audio/clack";
-import { defaultConfig } from "@/physics/config";
+import gsap from "gsap";
+import { Fragment, useEffect, useRef } from "react";
+import {
+  FILL,
+  WDTHS,
+  WGHTS,
+  type Axes,
+  bump,
+  clamp,
+  markerTargets,
+  restEm,
+  restWidthFor,
+  solve,
+} from "./flexFit";
 
-const LINE = "Let's get things moving.";
-const G = 9.81;
-/** A steel ball landing on a hard floor keeps about this much of its speed. */
-const RESTITUTION = 0.55;
-/** Below this impact speed (m/s) the ball has settled. */
-const REST = 0.12;
+/** One line on wide screens; on phones each of these is its own line. */
+const LINES = ["Let\u2019s get", "things moving."];
+/**
+ * The resting width (percent of the drawn letter). At 100 the letters at rest are exactly the
+ * case-study titles' General Sans 350, same strokes and tracking (PLAN 15.12).
+ */
+const REST_WDTH = 100;
+/** On wide screens the cap height stays within this share of the viewport height. */
+const CAP_LIMIT = 0.42;
+const CAP_RATIO = 0.712;
+/** The pulse that travels through the line once it scrolls into view, like a clack down the cradle. */
+const INTRO_MS = 1400;
 
-/** Each word rises out of its own mask; the "o" of "moving" is left for the ball. */
-const WORDS = ["Let's", "get", "things"];
+const fvs = (a: Axes) => `"wght" ${a.wght.toFixed(1)}`;
+const pulseEase = gsap.parseEase("power2.inOut");
+
+interface Line {
+  el: HTMLElement;
+  letters: HTMLElement[];
+  grids: Float64Array[];
+  W: number;
+  size: number;
+  restW: number;
+  es: number[];
+  restCx: number[];
+  cx: number[];
+  shown: string[];
+  targets?: number[];
+  markerFor?: number;
+}
 
 /**
- * "Let's get things moving." (PLAN 14.5): the words rise in from below, then one of the cradle's
- * balls drops from the top of the screen into the "o" of "moving" and bounces to rest with a clack
- * on every landing. Real gravity at the ball's real size (a 65 mm ball, scaled to the type). It
- * shines on hover and cannot be dragged. Reduced motion: everything is already in place.
+ * "Let's get things moving." (PLAN 15.1, 15.11), reverse-engineered from Kern Society's hero and
+ * set in General Sans: the line always fills the column; letters near the pointer swell heavy and
+ * wide while the rest condense to hairlines, solved every frame so the advances add up exactly.
+ * General Sans has no width axis, so width is a horizontal scale of each letter. Driven from
+ * GSAP's ticker and stopped once everything settles. Phones have no pointer: the scroll sweeps a
+ * point across the line and the letters there swell. Reduced motion: the line rests.
  */
 export function MovingLine({ id, className = "" }: { id?: string; className?: string }) {
-  const root = useRef<HTMLHeadingElement>(null);
-  const ball = useRef<HTMLSpanElement>(null);
+  const root = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const el = root.current!;
-    const b = ball.current!;
-    if (matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-    // Already on screen when the page opens: leave it in place.
-    if (el.getBoundingClientRect().top < innerHeight * 0.75) return;
-    el.dataset.armed = "";
-    let raf = 0;
-    let wait = 0;
-    const drop = () => {
-      el.dataset.in = "";
-      const rect = b.getBoundingClientRect();
-      const pxPerM = rect.width / (defaultConfig.ball.radius * 2);
-      const pan = ((rect.left + rect.width / 2) / innerWidth) * 2 - 1;
-      // Start just above the top of the screen, so it falls in from outside.
-      let y = -(rect.bottom + 8);
-      let v = 0;
-      let last = 0;
-      b.style.transform = `translateY(${y}px)`;
-      const step = (t: number) => {
-        const dt = last ? Math.min(0.034, (t - last) / 1000) : 0;
-        last = t;
-        for (let k = 0; k < 8; k++) {
-          const h = dt / 8;
-          v += G * pxPerM * h;
-          y += v * h;
-          if (y < 0) continue;
-          y = 0;
-          const speed = v / pxPerM;
-          if (speed < REST) {
-            b.style.transform = "";
-            return;
-          }
-          playClack(speed, pan, 0.8);
-          v = -RESTITUTION * v;
-        }
-        b.style.transform = `translateY(${y}px)`;
-        raf = requestAnimationFrame(step);
-      };
-      // The words rise first; the ball comes once they are nearly up.
-      wait = window.setTimeout(() => (raf = requestAnimationFrame(step)), 650);
+    const host = root.current!;
+    const title = host.querySelector<HTMLElement>(".flex-line")!;
+    const wm = host.querySelector<HTMLElement>(".flex-wm")!;
+    const mqPhone = matchMedia("(max-width: 767px)");
+    const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const pointer = { x: 0, y: 0, active: false };
+    const scroll = { p: 0, target: 0 };
+    let table: Record<string, Float64Array> | null = null;
+    let lines: Line[] = [];
+    let phone = false;
+    let width = 0;
+    let visible = false;
+    let running = false;
+    let scrolled = false;
+    let introPending = !reduced;
+    let introAt = 0;
+    let cancelled = false;
+
+    // Every glyph's advance (with the line's tracking) at each grid weight, measured once the font
+    // is in; the width column of the grid is that advance scaled.
+    const measure = () => {
+      const chars = [...new Set([...wm.querySelectorAll(".flex-l")].map((l) => l.textContent!))];
+      const box = document.createElement("div");
+      box.style.cssText =
+        "position:absolute;left:0;top:0;width:0;height:0;overflow:hidden;visibility:hidden;white-space:pre;font-size:200px;line-height:1";
+      const spans = chars.flatMap((ch) =>
+        WGHTS.map((wg) => {
+          const s = document.createElement("span");
+          s.textContent = ch;
+          s.style.cssText = `display:block;width:max-content;font-variation-settings:"wght" ${wg}`;
+          box.append(s);
+          return s;
+        }),
+      );
+      title.append(box);
+      const n = WGHTS.length;
+      table = Object.fromEntries(
+        chars.map((ch, c) => {
+          const base = spans.slice(c * n, (c + 1) * n).map((s) => s.getBoundingClientRect().width / 200);
+          return [ch, Float64Array.from(base.flatMap((a) => WDTHS.map((wd) => (a * wd) / 100)))];
+        }),
+      );
+      box.remove();
     };
+
+    const layout = (force = false) => {
+      for (const L of lines) {
+        const { axes, left, width: w } = solve(L.grids, L.es, L.restW, (L.W * FILL) / L.size);
+        L.letters.forEach((el, i) => {
+          const x = Math.round(left[i]! * L.size * 4) / 4;
+          const f = fvs(axes[i]!);
+          const sx = (axes[i]!.wdth / 100).toFixed(3);
+          const key = `${f}|${x}|${sx}`;
+          if (force || key !== L.shown[i]) {
+            el.style.fontVariationSettings = f;
+            el.style.transform = `translate3d(${x}px,0,0) scaleX(${sx})`;
+            L.shown[i] = key;
+          }
+          L.cx[i] = (left[i]! + w[i]! / 2) * L.size;
+        });
+      }
+    };
+
+    const build = () => {
+      if (!table) return;
+      phone = mqPhone.matches;
+      width = wm.getBoundingClientRect().width;
+      wm.style.fontSize = "";
+      wm.querySelectorAll<HTMLElement>(".flex-wm-line").forEach((l) => (l.style.fontSize = ""));
+      wm.dataset.live = "";
+      wm.toggleAttribute("data-phone", phone);
+      const hosts = phone ? [...wm.querySelectorAll<HTMLElement>(".flex-wm-line")] : [wm];
+      lines = hosts.map((el) => {
+        const letters = [...el.querySelectorAll<HTMLElement>(".flex-l")];
+        const grids = letters.map((l) => table![l.textContent!]!);
+        let size = (width * FILL) / restEm(grids, REST_WDTH);
+        if (!phone) size = Math.min(size, (CAP_LIMIT * innerHeight) / CAP_RATIO);
+        el.style.fontSize = `${size.toFixed(3)}px`;
+        const target = (width * FILL) / size;
+        const restW = restWidthFor(grids, target);
+        const rest = solve(
+          grids,
+          grids.map(() => 0),
+          restW,
+          target,
+        );
+        return {
+          el,
+          letters,
+          grids,
+          W: width,
+          size,
+          restW,
+          es: grids.map(() => 0),
+          restCx: rest.left.map((l, i) => l + rest.width[i]! / 2),
+          cx: [],
+          shown: [],
+        };
+      });
+      layout(true);
+      start();
+    };
+
+    const tick = (_time: number, deltaMs: number) => {
+      const dt = clamp(deltaMs / 1000, 0.001, 0.064);
+      const now = performance.now();
+      const intro = introAt ? (now - introAt) / INTRO_MS : 1;
+      let moving = intro < 1;
+      if (!moving) introAt = 0;
+      const ease = 1 - Math.exp(-dt * (phone ? 12 : 7.5));
+      const vh = innerHeight;
+      let markerX = 0;
+
+      if (phone) {
+        // 0 as the line comes up from the bottom of the screen, 1 once it nears the top.
+        const top = wm.getBoundingClientRect().top;
+        scroll.target = clamp((vh * 0.9 - top) / (vh * 0.65), 0, 1);
+        const dp = scroll.target - scroll.p;
+        if (Math.abs(dp) > 0.0004) {
+          scroll.p += dp * (1 - Math.exp(-dt * 10));
+          moving = true;
+        } else scroll.p = scroll.target;
+        markerX = scroll.p * width;
+      }
+
+      for (const L of lines) {
+        const box = L.el.getBoundingClientRect();
+        const radius = 2.4 * (L.W / L.letters.length);
+        if (phone && scrolled && L.markerFor !== markerX) {
+          const em = (px: number) => px / L.size;
+          L.targets = markerTargets(L.grids, L.restCx, L.restW, em(L.W * FILL), em(markerX), em(radius));
+          L.markerFor = markerX;
+        }
+        const py = pointer.y - box.top;
+        const near = clamp(1 - (py < 0 ? -py : Math.max(0, py - box.height)) / (vh * 0.5), 0, 1);
+        L.es.forEach((e, i) => {
+          let target = 0;
+          if (phone) target = scrolled && L.targets ? L.targets[i]! : 0;
+          else if (intro < 1)
+            target = bump(pulseEase(clamp(intro, 0, 1)) * (L.W + 2 * radius) - radius, L.cx[i]!, radius);
+          else if (pointer.active) target = near * bump(pointer.x - box.left, L.cx[i]!, radius);
+          const d = target - e;
+          if (Math.abs(d) > 0.001) {
+            L.es[i] = e + d * ease;
+            moving = true;
+          } else L.es[i] = target;
+        });
+      }
+      layout();
+      if (!moving) stop();
+    };
+
+    const start = () => {
+      if (running || reduced || !visible || !lines.length) return;
+      running = true;
+      gsap.ticker.add(tick);
+    };
+    const stop = () => {
+      running = false;
+      gsap.ticker.remove(tick);
+    };
+
+    const onMove = (e: PointerEvent) => {
+      if (e.pointerType !== "mouse") return;
+      pointer.x = e.clientX;
+      pointer.y = e.clientY;
+      pointer.active = true;
+      start();
+    };
+    const onLeave = () => {
+      pointer.active = false;
+      start();
+    };
+    // The line moves under a still pointer too.
+    const onScroll = () => {
+      scrolled ||= phone;
+      start();
+    };
+
     const io = new IntersectionObserver(
       ([entry]) => {
-        if (!entry?.isIntersecting) return;
-        io.disconnect();
-        drop();
+        visible = !!entry?.isIntersecting;
+        if (visible && introPending && !mqPhone.matches) {
+          introPending = false;
+          introAt = performance.now() + 150;
+        }
+        start();
       },
-      { rootMargin: "0px 0px -30% 0px" },
+      { rootMargin: "0px 0px -20% 0px" },
     );
-    io.observe(el);
+    const ro = new ResizeObserver(() => {
+      if (Math.abs(wm.getBoundingClientRect().width - width) > 0.5) build();
+    });
+
+    const family = getComputedStyle(wm).fontFamily;
+    Promise.race([
+      document.fonts.load(`600 100px ${family}`, LINES.join(" ")),
+      new Promise((done) => setTimeout(done, 3000)),
+    ])
+      .catch(() => {})
+      .then(() => {
+        if (cancelled) return;
+        measure();
+        build();
+        io.observe(host);
+        ro.observe(wm);
+      });
+    addEventListener("pointermove", onMove, { passive: true });
+    document.documentElement.addEventListener("mouseleave", onLeave);
+    addEventListener("scroll", onScroll, { passive: true });
     return () => {
+      cancelled = true;
+      stop();
       io.disconnect();
-      clearTimeout(wait);
-      cancelAnimationFrame(raf);
+      ro.disconnect();
+      removeEventListener("pointermove", onMove);
+      document.documentElement.removeEventListener("mouseleave", onLeave);
+      removeEventListener("scroll", onScroll);
     };
   }, []);
 
-  const mask = (text: string, i: number) => (
-    <span className="moving-mask" style={{ "--i": i } as React.CSSProperties}>
-      <span>{text}</span>
-    </span>
-  );
   return (
-    <h2 ref={root} id={id} className={`moving-line ${className}`}>
-      <span className="sr-only">{LINE}</span>
-      <span aria-hidden>
-        {WORDS.map((w, i) => (
-          <span key={w}>{mask(w, i)} </span>
-        ))}
-        <span className="whitespace-nowrap">
-          {mask("m", 3)}
-          <span className="moving-o">
-            <span ref={ball} className="moving-ball">
-              <Image src="/media/objects/ball.webp" alt="" width={480} height={480} draggable={false} />
-            </span>
-          </span>
-          {mask("ving.", 4)}
+    <div ref={root} className={className}>
+      <h2 id={id} className="flex-line font-display">
+        <span className="sr-only">{LINES.join(" ")}</span>
+        <span aria-hidden className="flex-wm">
+          {LINES.map((line, li) => (
+            <Fragment key={line}>
+              {li > 0 && <span className="flex-l flex-sp"> </span>}
+              <span className="flex-wm-line">
+                {[...line].map((ch, i) => (
+                  <span key={i} className="flex-l">
+                    {ch}
+                  </span>
+                ))}
+              </span>
+            </Fragment>
+          ))}
         </span>
-      </span>
-    </h2>
+      </h2>
+    </div>
   );
 }

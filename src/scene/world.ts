@@ -53,6 +53,12 @@ export const taps: { ball: (ball: number, pointerType: string) => void; wall: ()
   wall: () => {},
 };
 
+/**
+ * Frame-by-frame capture (scripts/og.mjs): every rendered frame advances the world by exactly
+ * `dt` seconds, and frames are only drawn when asked for. Off (0 / false) on the site.
+ */
+export const capture = { dt: 0, manual: false };
+
 /** The canvas renders on demand; anything that changes the world from outside calls this. */
 let invalidate: () => void = () => {};
 export const setInvalidate = (fn: () => void) => void (invalidate = fn);

@@ -49,7 +49,7 @@ export function ExhibitMedia({
 
   const box = cover
     ? "absolute inset-0 h-full w-full object-cover"
-    : "block h-auto w-full rounded-md bg-[#e9e6df]";
+    : "block h-auto w-full rounded-md bg-panel";
   if (media.video) {
     return (
       <video

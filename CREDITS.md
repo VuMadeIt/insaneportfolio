@@ -18,7 +18,8 @@ Every external asset used in the site or in the build pipeline, with source and 
 - Visual inspo stills + screen recording in `reference/inspo/` (see that folder's `SOURCES.md`).
   Includes Lucas's own hero mock, Screen Sketch recording `20261103-1427-09.8724131.mp4`, and
   **USE NOW** refs: Framer dark home + purple "drop me" drag chip, plus `footer-reference.png`
-  (Lucas-owned screenshots).
+  `hero-chrome-lucas-vu-grade.png`, and
+  `lets-get-moving-20261105-1530-27.5372907.mp4` (Lucas-owned screenshots / recordings).
   Third-party stills (Studio Wentape accordion frames; Xiaohongshu editorial spreads) are
   reference-only, not shipped.
 
@@ -59,3 +60,10 @@ commit). Licence verified on each page on 2026-11-02.
 - Reboot case study images (`public/media/reboot/`): my own screens from my Framer case study,
   lucasvu.framer.website/projects/reboot.
 - Sweaterify and Liam Vu's portfolio hover videos: filmed from my own live sites.
+
+## Revision 6
+- Roboto Flex (Google Fonts, SIL Open Font License 1.1), self-hosted by `next/font/google`, for
+  "Let's get things moving." and the type lab. Fraunces (OFL 1.1) in the type lab only.
+- Interaction references (not shipped, no code copied verbatim): Kern Society
+  (shockingmike.github.io/kern-society) hero model, ported and adapted; Haven Constructions
+  (havenconstructions.com.au) menu, timings read from its CSS and rebuilt.

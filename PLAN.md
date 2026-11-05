@@ -1096,3 +1096,134 @@ Branch `phase/16-revision-5`. Answers from the Q&A are recorded inline.
 ### 14.7 Case studies and About
 - No date above case-study titles (the timeline is in the metadata).
 - The About timeline drops the "At the same time" lists; the gantt already shows overlaps.
+
+---
+
+## Part 15. Revision 6 (Lucas, 2026-11-05). Overrides Parts 1-14 where they conflict
+
+Branch `phase/16-revision-5` (continues it). Answers from the Q&A are recorded inline.
+
+### 15.1 "Let's get things moving." (replaces 14.5's ball in the "o")
+- Reverse-engineered from Kern Society's hero (shockingmike.github.io/kern-society, recording
+  `reference/inspo/lets-get-moving-20261105-1530-27.5372907.mp4`): the line always fills the
+  column; letters near the pointer swell to black and extended, the rest condense to hairlines,
+  and one shared offset is solved every frame so the advances add up exactly. Their model, ported:
+  a measured wght x wdth advance grid per glyph, a two-segment axis path through rest, Gaussian
+  emphasis with a vertical falloff, a pulse through the line on entry, a ruler whose marker
+  (here a small ball) follows the scroll on phones and drives the letters there.
+- Typeface: **Roboto Flex** (OFL; Lucas chose it for its real width axis), this line only. It may
+  go up to wght 1000: this line is the one exception to 14.2's weight ceiling.
+- Driven from GSAP's ticker, stopped once settled. Reduced motion: the line rests.
+
+### 15.2 Cursor (amends 13.1)
+- The native cursor is always visible; the small dark ball follows it with a soft lag, everywhere,
+  keeping its link / grab / hide states.
+
+### 15.3 Nav and footer (amend 14.3, 14.4)
+- One ball (not four) as the home link. `contact` opens an email instead of scrolling.
+- Nav and footer set like the rest of the site: General Sans 350, body size, ink, lowercase.
+- Bug: after clicking a nav link the bar stayed on screen while scrolling down (the clicked link
+  kept focus across the client navigation, and `:focus-within` held the bar). Only
+  `:focus-visible` keeps it out now.
+
+### 15.4 Warm grade
+- From `reference/inspo/hero-chrome-lucas-vu-grade.png` (temperature up, saturation down): wall
+  `#f7f0df`, ink `#14120d`, warm muted/rule/panel tokens, and `sepia(0.12) saturate(0.94)` on
+  images, video and the cradle canvas.
+
+### 15.5 Home
+- Work rows: Ripple, Shufflr, Reboot; no prize objects on home (they stay on /work).
+
+### 15.6 Arrival
+- Every arrival on the home page (first visit, reload, coming back from another page) drops the
+  balls in from above, the same lowering as closing a story. The pre-rendered still is now only the
+  no-WebGL / no-JavaScript fallback.
+
+### 15.7 Nav lab (`/lab/nav`)
+- The havenconstructions.com.au menu, in the site's palette, over the home page: a quiet pill that
+  darkens on hover and opens into staggered rows with hairlines, a ball bullet for the current
+  page, and the email + LinkedIn underneath. For Lucas to compare; the current nav stays live.
+
+### 15.8 Type lab (`/lab/type`)
+- The home page with a switcher: General Sans + Cabinet Grotesk (now), Fraunces (revision 1),
+  General Sans only, Cabinet Grotesk only, Roboto Flex. `?font=<key>` for screenshots.
+
+### 15.9 About
+- The fishing object and the essay are removed. "Socratica's Create-a-thon / Socratica, UW/UX,
+  Blueprint" becomes "To Socratica Sundays! / Socratica".
+
+### 15.10 Follow-up (Lucas, 2026-11-05 evening)
+- Nothing showed for Lucas (no drop, no hover videos, an invisible moving line, a dead menu): the
+  preview proxy he used could not carry the dev server's hot-reload socket, so the page never
+  hydrated. Previews are now served from production builds (site on :3100; labs on :3400 from a
+  `LAB=1` build in `.artifacts/next-lab`).
+- Every crucial animation must show in any circumstance. Measured and fixed: a cold first visit
+  froze the page for 7-10 s compiling shaders (now compiled off the main thread, with plain balls
+  first and the identities swapped in when ready: the drop starts at about 2 s); a smooth scroll
+  still gliding across a page change buried the hero on Back; the still and the moving line have
+  CSS timers so they show even if scripts never run.
+- The live nav is the four balls again. `/lab/nav` compares three editions: four balls, one ball
+  close to the edges, and the Haven menu, which now holds everything (home, work, about, contact,
+  email, LinkedIn and a "sound on / sound off" switch) with no ball or links outside it.
+- `scripts/user-test.mjs` checks every animation on desktop, through the preview proxy, on a
+  throttled CPU and network, on a tablet and a phone, and the labs.
+- Next (not done yet, Lucas will give feedback first): smaller home project rows and "View more",
+  no ruler under the moving line, and the moving line in the site's own face, set denser.
+
+### 15.11 Revision 6, part 3 (Lucas, 2026-11-05 night). Overrides 15.1-15.10 where they conflict
+- **Nav:** from 768 px the bar with one ball at the left edge (padding clamp(20px, 2.5vw, 36px)
+  both sides); below 768 px the Haven menu (15.7) is the whole nav. `/lab/nav` is retired (choice
+  made). Both step aside while a story is open.
+- **No back arrow** in the story state: a click anywhere (or Escape, or the browser's Back) closes it.
+- **Moving line:** text only (no ruler, no marker). Set in General Sans: its weight axis (200-700,
+  resting at the headings' 350) plus a horizontal scale of each letter in place of the missing
+  width axis (55-150%, resting dense at 80%, tracking -0.02em). Phones still swell the letters
+  along the scroll, with no visible marker.
+- **Idle sway:** on the home page the balls swing together about 3 mm, kept going by a small
+  nudge at the bottom of the swing when they have lost a third of their energy (same velocity for
+  all four, so they never touch). Off in a story, after the first grab, and under reduced motion.
+- **Footer:** a Devpost icon beside LinkedIn, Instagram and GitHub.
+- **Performance, no effect removed:** string tubes no longer recompute a bounding sphere or a
+  200-step arc-length table every frame (64 steps; the samples move by well under a micrometre),
+  the cursor's loop stops when it has caught up, and while every ball is slow the reflection cubes
+  refresh every third frame.
+- **Cleanup:** removed the unused WallLabel component, dead CSS and tokens (award dots, back
+  links, the dark-half colour), and the assets of removed features (hummingbird video, essay cover,
+  four-ball nav render).
+
+### 15.12 Revision 6, part 4 (Lucas, 2026-11-05 night)
+- **Identity wall text** in Lucas's words (`src/content/identities.ts`, `paragraphs`), typos only
+  fixed (apostrophes; "[or wish they spent]" set in parentheses).
+- **Moving line** rests at exactly the case-study titles' General Sans 350, no horizontal squeeze,
+  the headings' -0.03em tracking. The swell still goes 200-700 and 55-150%.
+- **Tagline** "[a product design engineer who gets things moving]" on the home hero, above VU,
+  right-aligned to its edge (`HOME_PLACEMENT`). `/lab/tagline` compares six spots: above VU left,
+  centred or right; above LUCAS; the hero's top-left corner; under the name before the projects.
+  It rises in after the name and slides away with it when a story opens; the 404 has none.
+- **Selected objects** (About) as an editorial spread after the Tibetan-culture layouts: one
+  object open at a time (context label, title, text, the photo at no more than ~38vw / 62vh since
+  the photos are low resolution) over a strip of small prints; choosing a print wipes the photo up,
+  raises the text and draws a hairline under the print. A real tab list (arrows, Home, End);
+  `/about#<id>` opens that object. Patterns from Awwwards gallery/index elements: one image large
+  at a time, the rest as an index, motion only on change.
+
+### 15.14 Link preview
+- Sharing a link shows one of the cradle's balls on its own, in close-up, swinging in and out of
+  frame: `public/og/cover.mp4` (1200x630, H.264, 2.9 s seamless two-swing loop, ~50 KB) as
+  `og:video`, and `public/og/cover.jpg` as `og:image` / the large Twitter card. iMessage plays the
+  video muted and looping; Discord plays it on tap; X, Slack, LinkedIn and WhatsApp show the still.
+  Filmed from the real scene, one exact 1/30 s frame at a time (`scripts/og.mjs`, `/lab/og`,
+  `capture` in `src/scene/world.ts`). Case studies keep their own poster.
+- `metadataBase` falls back to Vercel's production domain, so the preview URLs are absolute there.
+
+### 15.15 About, part 2 (Lucas, 2026-11-05 night)
+- Selected objects pins and turns as you scroll: each object holds the stage for 0.75 of a screen
+  of scroll. The strip of prints is replaced by a section index on the left, after Caleb Wu's case
+  studies (and docs sites like Stripe's): Cadets, Chess, Volunteer work, Hackathons, Socratica; the
+  one on stage is in ink at weight 500, the rest muted at 350; clicking one glides there (Lenis).
+  Phones: the index is one row under the title and keeps the current object in view.
+- Copy: new cadet photo titled "Annual 2025 Ceremony"; chess ends "known as Chess Jesus"; the
+  volunteer object is "Life Changing Memories with the Elderly"; the hackathon line drops "This one
+  paid."
+- Digital Extremes' white logo sits on an ink tile again (the tile's colour went with the removed
+  dark-half token).

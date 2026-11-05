@@ -23,6 +23,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     title: project.title,
     description: study.claim,
     openGraph: {
+      siteName: "Lucas Vu",
       title: `${project.title} | Lucas Vu`,
       description: study.claim,
       images: project.media?.poster ? [project.media.poster] : undefined,
@@ -79,7 +80,7 @@ function Figure({ block }: { block: Block }) {
   const panel = PANELLED.has(block.visual.kind);
   return (
     <figure className={`mt-10 ${STAGGERED.has(block.visual.kind) ? "" : "reveal"}`}>
-      <div className={panel ? "rounded-lg bg-[#e9e6df] p-[clamp(16px,3vw,48px)]" : ""}>
+      <div className={panel ? "rounded-lg bg-panel p-[clamp(16px,3vw,48px)]" : ""}>
         <Visual visual={block.visual} />
       </div>
       {block.caption && (
@@ -163,7 +164,7 @@ export default async function CaseStudyPage({ params }: { params: Promise<{ slug
       </header>
       {study.hero && (
         <div className="px-[var(--gutter)]">
-          <div className="mx-auto max-w-[1400px] rounded-lg bg-[#e9e6df] p-[clamp(16px,3vw,48px)]">
+          <div className="mx-auto max-w-[1400px] rounded-lg bg-panel p-[clamp(16px,3vw,48px)]">
             <ExhibitMedia media={study.hero} sizes="(min-width: 1400px) 1400px, 100vw" priority />
           </div>
         </div>
@@ -173,7 +174,7 @@ export default async function CaseStudyPage({ params }: { params: Promise<{ slug
       ))}
       <ProgressBar sections={rail} />
       <div className="px-[var(--gutter)] pt-[clamp(40px,6vh,72px)]">
-        <div className="mx-auto flex max-w-[1400px] flex-col items-start gap-5 rounded-lg bg-[#e9e6df] p-6 sm:flex-row sm:items-center sm:justify-between sm:p-8">
+        <div className="mx-auto flex max-w-[1400px] flex-col items-start gap-5 rounded-lg bg-panel p-6 sm:flex-row sm:items-center sm:justify-between sm:p-8">
           <p className="max-w-[30em] leading-[1.5]">
             This is a snapshot of the process. Ask me for the full story.
           </p>

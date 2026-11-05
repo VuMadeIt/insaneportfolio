@@ -78,8 +78,8 @@ export function SiteNav() {
     return () => removeEventListener("scroll", onScroll);
   }, [pathname]);
 
-  // The labs bring their own (the type lab shows this one in each typeface).
-  if (pathname.startsWith("/lab") && pathname !== "/lab/type") return null;
+  // The labs bring their own, except the ones that compare the home page as it really is.
+  if (pathname.startsWith("/lab") && !["/lab/type", "/lab/tagline"].includes(pathname)) return null;
   return (
     <>
       <header

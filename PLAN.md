@@ -1190,3 +1190,13 @@ Branch `phase/16-revision-5` (continues it). Answers from the Q&A are recorded i
 - **Cleanup:** removed the unused WallLabel component, dead CSS and tokens (award dots, back
   links, the dark-half colour), and the assets of removed features (hummingbird video, essay cover,
   four-ball nav render).
+
+### 15.12 Revision 6, part 4 (Lucas, 2026-11-05 night)
+- **Identity wall text** in Lucas's words (`src/content/identities.ts`, `paragraphs`), typos only
+  fixed (apostrophes; "[or wish they spent]" set in parentheses).
+- **Moving line** rests at exactly the case-study titles' General Sans 350, no horizontal squeeze,
+  the headings' -0.03em tracking. The swell still goes 200-700 and 55-150%.
+- **Tagline** "[a product design engineer who gets things moving]" on the home hero, above VU,
+  right-aligned to its edge (`HOME_PLACEMENT`). `/lab/tagline` compares six spots: above VU left,
+  centred or right; above LUCAS; the hero's top-left corner; under the name before the projects.
+  It rises in after the name and slides away with it when a story opens; the 404 has none.

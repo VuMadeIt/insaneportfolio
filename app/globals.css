@@ -330,6 +330,66 @@
   animation-delay: calc(0.15s + var(--i) * 0.1s);
 }
 
+/* The tagline (Tagline.tsx, PLAN 15.12): small, lowercase in brackets, rising in once the name
+   has. On the name it hangs above one word; on phones it keeps to the screen and may wrap. */
+@keyframes tagline-rise {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+}
+.tagline,
+.giant-caption {
+  font-size: clamp(15px, 1.25vw, 19px);
+  font-weight: 350;
+  letter-spacing: 0;
+  line-height: 1.35;
+  text-transform: none;
+}
+.tagline-rise,
+.giant-caption {
+  animation: tagline-rise 1s var(--ease-power4-out) 1.1s both;
+}
+.giant-caption {
+  position: absolute;
+  bottom: 100%;
+  margin-bottom: 0.9em;
+  white-space: nowrap;
+}
+.giant-caption[data-align="left"] {
+  left: 0.04em;
+  text-align: left;
+}
+.giant-caption[data-align="center"] {
+  left: 50%;
+  translate: -50% 0;
+  text-align: center;
+}
+/* VU ends near the right edge: from its left or centre the line wraps within the word. */
+.giant-caption[data-word="1"]:not([data-align="right"]) {
+  width: max-content;
+  max-width: 100%;
+  white-space: normal;
+}
+.giant-caption[data-align="right"] {
+  right: 0.04em;
+  text-align: right;
+}
+@media (max-width: 767px) {
+  .giant-caption {
+    width: max-content;
+    max-width: 62vw;
+    white-space: normal;
+  }
+  /* VU sits near the right edge: hang from its right so the line stays on screen. */
+  .giant-caption[data-word="1"] {
+    left: auto;
+    right: 0.04em;
+    translate: none;
+    text-align: right;
+  }
+}
+
 /* Case-study coded visuals (src/components/case): drawn once they are in view. Without
    JavaScript `data-in` never turns false, so the resting state below is the finished drawing. */
 .statement span,

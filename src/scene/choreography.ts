@@ -29,8 +29,38 @@ const offsets: Vec3[] = cradle.balls.map(() => vec());
 let timeline: gsap.core.Timeline | null = null;
 let startedAt = 0;
 
+/** Idle sway amplitude at the ball centre (m): just enough to say "touch me". */
+const SWAY = 0.003;
+const OMEGA2 = cradle.config.gravity / L;
+let swaying = false;
+
+/**
+ * The idle sway (PLAN 15.11): on the home page the four balls swing together, a few millimetres,
+ * like a cradle in a draught. Kept going the way you keep a swing going: when the group has lost
+ * about a third of its energy, it gets a nudge as it passes the bottom. All four get the same
+ * velocity, so they never touch and never clack. A hand on a ball ends it until the next arrival.
+ */
+function sway() {
+  if (cradle.hand) {
+    swaying = false;
+    return;
+  }
+  let x = 0;
+  let v = 0;
+  cradle.balls.forEach((b, i) => {
+    x += b.pos.x - cradle.anchorMid(i).x;
+    v += b.vel.x;
+  });
+  x /= cradle.balls.length;
+  v /= cradle.balls.length;
+  const target = 0.5 * OMEGA2 * SWAY * SWAY;
+  if (0.5 * v * v + 0.5 * OMEGA2 * x * x > 0.7 * target || Math.abs(x) > 0.25 * SWAY) return;
+  const speed = (Math.sign(v) || 1) * Math.sqrt(2 * target - OMEGA2 * x * x);
+  cradle.balls.forEach((b, i) => cradle.push(i, speed - b.vel.x));
+}
+
 cradle.beforeStep = (time) => {
-  if (!timeline) return;
+  if (!timeline) return void (swaying && sway());
   timeline.time(time - startedAt);
   offsets.forEach((o, i) => cradle.setAnchorOffset(i, o));
   if (timeline.progress() >= 1) timeline = null;
@@ -69,6 +99,7 @@ function shapedGlide(tl: gsap.core.Timeline, o: Vec3, to: Vec3, at: number) {
 }
 
 export function open(selected: number): void {
+  swaying = false;
   if (reducedMotion()) return enter(selected);
   const tl = begin();
   const target = storyOffset(selected);
@@ -88,6 +119,8 @@ export function open(selected: number): void {
 export function close(): void {
   if (reducedMotion()) return enter(null);
   const tl = begin();
+  // Once everything has come down (the sway waits for the timeline to finish).
+  swaying = true;
   offsets.forEach((o, i) => {
     if (o.y >= EXIT * 0.5) tl.to(o, { y: 0, x: 0, duration: LOWER_TIME, ease: "power2.inOut" }, i * 0.06);
     else shapedGlide(tl, o, vec(), 0);
@@ -117,6 +150,7 @@ export function enter(selected: number | null): void {
   restoreTime();
   timeline?.kill();
   timeline = null;
+  swaying = selected === null && !reducedMotion();
   cradle.balls.forEach((_, i) => {
     const o = selected === null ? vec() : i === selected ? storyOffset(i) : vec(0, OUT, 0);
     offsets[i]!.x = o.x;

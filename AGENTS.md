@@ -46,13 +46,13 @@ vision, architecture, phases, git workflow and the autonomous execution protocol
   `public/media/objects` (needs a dev server). `node scripts/record-sites.mjs [sweaterify|liam-vu]`
   films the hover videos from the live sites.
 - Revision 6: `PORT=3200 node scripts/moving-shots.mjs` films "Let's get things moving." under a
-  moving pointer (desktop) and a scroll (phone) into `.artifacts/moving/`. Labs: `/lab/nav` (Haven
-  menu) and `/lab/type?font=current|fraunces|general|cabinet|flex` (dev server only).
+  moving pointer (desktop) and a scroll (phone) into `.artifacts/moving/`. Lab:
+  `/lab/type?font=current|fraunces|general|cabinet|flex` (dev server or the LAB=1 build).
 - Previews for Lucas must point at production servers: the preview proxy breaks the dev server's
   hot-reload socket and the page never hydrates. Site: `bash scripts/serve.sh` (:3100). Labs:
   `PORT=3400 LAB=1 NEXT_DIST_DIR=.artifacts/next-lab bash scripts/serve.sh`.
 - `node scripts/user-test.mjs http://localhost:3100 http://localhost:3400` checks every animation
-  (drop, hover video, cursor, moving line, nav, labs) on desktop, proxy (`PROXY=<preview url>`),
+  (drop, idle sway, hover video, cursor, moving line, nav, phone menu, story close, footer, type lab) on desktop, proxy (`PROXY=<preview url>`),
   throttled, tablet and phone; `ONLY=desktop` for one scenario. `scripts/menu-film.mjs <url> <tag>`
   films a burger menu for frame comparisons.
 - A stale `next dev` from an old session blocks a new one ("Another next dev server is already

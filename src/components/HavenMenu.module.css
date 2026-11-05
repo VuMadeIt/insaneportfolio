@@ -16,6 +16,17 @@
   justify-content: center;
   padding: calc(28px - var(--pad)) 8px 0;
   pointer-events: none;
+  transition: transform 350ms var(--ease-out);
+}
+/* Phones only; wider screens get the bar (SiteNav). */
+@media (min-width: 768px) {
+  .bar {
+    display: none;
+  }
+}
+/* A story is open. */
+.away {
+  transform: translateY(-120%);
 }
 .nav {
   pointer-events: auto;

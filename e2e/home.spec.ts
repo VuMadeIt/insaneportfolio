@@ -124,9 +124,9 @@ test("the moving line fills its column and swells under the pointer", async ({ p
   const weight = () =>
     first.evaluate((el) => Number(/"wght" ([\d.]+)/.exec(el.style.fontVariationSettings)![1]));
   await page.mouse.move(box.x + 10, box.y + box.height / 2, { steps: 8 });
-  await expect.poll(weight, { timeout: 30_000 }).toBeGreaterThan(850);
+  await expect.poll(weight, { timeout: 30_000 }).toBeGreaterThan(650);
   await page.mouse.move(box.x + box.width - 5, box.y + box.height / 2, { steps: 8 });
-  await expect.poll(weight, { timeout: 15_000 }).toBeLessThan(650);
+  await expect.poll(weight, { timeout: 15_000 }).toBeLessThan(450);
   // The letters still add up to the column: the last one ends at its right edge.
   const right = await page
     .locator(".flex-l")

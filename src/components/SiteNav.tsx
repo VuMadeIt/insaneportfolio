@@ -7,6 +7,7 @@ import { useEffect, useRef, useSyncExternalStore } from "react";
 import { isMuted, setMuted, subscribeMuted, unlockAudio } from "@/audio/clack";
 import { CONTACT } from "@/content/contact";
 import { identityIndex } from "@/content/identities";
+import { HavenMenu } from "./HavenMenu";
 
 /** Speaker with sound waves, or with a cross when muted. */
 function SpeakerIcon({ on }: { on: boolean }) {
@@ -50,14 +51,13 @@ export function SoundButton({ labelled = false, className }: { labelled?: boolea
 }
 
 /**
- * The same slim bar on every page (PLAN 14.3, 15.3): the four balls home on the left; about, work,
- * contact (an email) and the sound button on the right, set like the headings. It hides while you
- * scroll down and comes back on any scroll up; at the top of the page it is always there. An open
- * story hands the corner to its back arrow. `/lab/nav` also shows a one-ball edition, set close to
- * the edges.
+ * The nav on every page (PLAN 14.3, 15.3, 15.11). From 768 px: a slim bar with one ball home at
+ * the left edge; about, work, contact (an email) and the sound button on the right, set like the
+ * headings. It hides while you scroll down and comes back on any scroll up; at the top of the page
+ * it is always there. Phones get the Haven menu instead. Both step aside while a story is open
+ * (clicking anywhere or Escape closes it).
  */
-export function SiteNav({ edition }: { edition?: "four" | "one" }) {
-  const one = edition === "one";
+export function SiteNav() {
   const pathname = usePathname();
   const bar = useRef<HTMLElement>(null);
   const story = identityIndex(pathname.slice(1)) >= 0;
@@ -79,49 +79,41 @@ export function SiteNav({ edition }: { edition?: "four" | "one" }) {
   }, [pathname]);
 
   // The labs bring their own (the type lab shows this one in each typeface).
-  if (!edition && pathname.startsWith("/lab") && pathname !== "/lab/type") return null;
+  if (pathname.startsWith("/lab") && pathname !== "/lab/type") return null;
   return (
-    <header
-      ref={bar}
-      className="site-nav fixed inset-x-0 top-0 z-40"
-      style={story ? { transform: "translateY(calc(-100% - 2px))" } : undefined}
-      inert={story}
-    >
-      <nav
-        aria-label="Site"
-        className={`font-display flex h-[var(--nav-h)] items-center justify-between ${one ? "px-[clamp(20px,2.5vw,36px)]" : "px-[var(--gutter)]"}`}
+    <>
+      <header
+        ref={bar}
+        className="site-nav fixed inset-x-0 top-0 z-40 max-md:hidden"
+        style={story ? { transform: "translateY(calc(-100% - 2px))" } : undefined}
+        inert={story}
       >
-        <Link
-          href="/"
-          aria-label="Lucas Vu, home"
-          className="-m-2 p-2 transition-opacity duration-200 hover:opacity-75"
+        <nav
+          aria-label="Site"
+          className="font-display flex h-[var(--nav-h)] items-center justify-between px-[clamp(20px,2.5vw,36px)]"
         >
-          {one ? (
+          <Link
+            href="/"
+            aria-label="Lucas Vu, home"
+            className="-m-2 p-2 transition-opacity duration-200 hover:opacity-75"
+          >
             <Image src="/media/objects/ball.webp" alt="" width={24} height={24} priority className="size-6" />
-          ) : (
-            <Image
-              src="/media/objects/balls.webp"
-              alt=""
-              width={88}
-              height={22}
-              priority
-              className="h-[22px] w-auto"
-            />
-          )}
-        </Link>
-        <div className="flex items-center gap-6 sm:gap-8">
-          <Link href="/about" className="u-grow">
-            about
           </Link>
-          <Link href="/work" className="u-grow">
-            work
-          </Link>
-          <a href={`mailto:${CONTACT.email}`} className="u-grow">
-            contact
-          </a>
-          <SoundButton />
-        </div>
-      </nav>
-    </header>
+          <div className="flex items-center gap-8">
+            <Link href="/about" className="u-grow">
+              about
+            </Link>
+            <Link href="/work" className="u-grow">
+              work
+            </Link>
+            <a href={`mailto:${CONTACT.email}`} className="u-grow">
+              contact
+            </a>
+            <SoundButton />
+          </div>
+        </nav>
+      </header>
+      <HavenMenu hidden={story} />
+    </>
   );
 }

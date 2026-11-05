@@ -95,6 +95,80 @@ async function home(scenario) {
       JSON.stringify(hero),
     );
     record(scenario, "balls drop in from above", await drop);
+
+    // Idle sway: once down, the balls keep swinging a few millimetres, together.
+    const sway = await page.evaluate(
+      () =>
+        new Promise((done) => {
+          const xs = [];
+          const t0 = performance.now();
+          const f = () => {
+            const r = document.querySelector("button.cradle-target")?.getBoundingClientRect();
+            if (r) xs.push(r.left);
+            if (performance.now() - t0 < 4000) requestAnimationFrame(f);
+            else done(Math.max(...xs) - Math.min(...xs));
+          };
+          setTimeout(f, 1500);
+        }),
+    );
+    record(
+      scenario,
+      "balls sway slightly while idle",
+      sway > 0.8 && sway < 40,
+      `range ${sway.toFixed(1)} px`,
+    );
+
+    if (phone) {
+      // Phones: the whole nav is the menu pill.
+      const toggle = page.getByRole("button", { name: "menu" });
+      await toggle.click();
+      await page.waitForTimeout(1300);
+      const names = await page.locator("#haven-menu ul").first().locator("a").allInnerTexts();
+      record(
+        scenario,
+        "menu opens with home, work, about, contact",
+        names.join(",") === "home,work,about,contact",
+        names.join(","),
+      );
+      const sound = page.locator("#haven-menu button[aria-pressed]");
+      const before = await sound.innerText();
+      await sound.click();
+      const after = await sound.innerText();
+      record(scenario, "menu sound switch toggles", before !== after, `${before} -> ${after}`);
+      if (after.includes("off")) await sound.click();
+      await page.mouse.click(30, 700);
+      await page.waitForTimeout(900);
+      record(
+        scenario,
+        "tapping outside closes the menu",
+        (await toggle.getAttribute("aria-expanded")) === "false",
+      );
+    } else {
+      const home = page
+        .getByRole("navigation", { name: "Site" })
+        .getByRole("link", { name: "Lucas Vu, home" });
+      const src = await home.locator("img").getAttribute("src");
+      const left = (await home.boundingBox()).x;
+      record(scenario, "nav: one ball at the left edge", /ball\.webp/.test(src) && left < 48, `x ${left}`);
+    }
+
+    if ((page.viewportSize()?.width ?? 0) >= 1024) {
+      // A story opens on a click and closes on a click anywhere; there is no back arrow.
+      await page.getByRole("button", { name: /^People:/ }).click({ force: true });
+      await page.waitForURL(/\/people$/, { timeout: 15_000 });
+      await page.waitForTimeout(2500);
+      const arrow = await page.getByRole("link", { name: "Back to the cradle" }).count();
+      record(scenario, "story has no back arrow", arrow === 0);
+      await page.mouse.click(1300, 120);
+      const closed = await page
+        .waitForURL((u) => u.pathname === "/", { timeout: 10_000 })
+        .then(
+          () => true,
+          () => false,
+        );
+      record(scenario, "clicking anywhere closes the story", closed);
+      await page.waitForTimeout(2500);
+    }
     await page
       .waitForFunction(
         () => document.documentElement.classList.contains("lenis") || matchMedia("(pointer: coarse)").matches,
@@ -168,6 +242,16 @@ async function home(scenario) {
         }),
     );
     record(scenario, "moving line is live", live);
+    const lineFont = await page.evaluate(() => ({
+      ruler: document.querySelectorAll(".flex-ruler, .flex-marker").length,
+      family: getComputedStyle(document.querySelector(".flex-l")).fontFamily,
+    }));
+    record(
+      scenario,
+      "moving line: text only, in General Sans",
+      lineFont.ruler === 0 && /general/i.test(lineFont.family),
+      lineFont.family.slice(0, 40),
+    );
     const visible = await wm.evaluate((el) => Number(getComputedStyle(el).opacity));
     record(scenario, "moving line is visible", visible > 0.95, `opacity ${visible}`);
     const maxWeight = () =>
@@ -184,7 +268,7 @@ async function home(scenario) {
       await page.waitForTimeout(slow ? 3000 : 1200);
     }
     const w = await maxWeight();
-    record(scenario, "moving line swells", w > 750, `max wght ${w.toFixed(0)}`);
+    record(scenario, "moving line swells", w > 550, `max wght ${w.toFixed(0)}`);
 
     if (!phone) {
       // After clicking a nav link the bar still hides on scroll down.
@@ -214,6 +298,16 @@ async function home(scenario) {
       const result = await back;
       record(scenario, "balls drop again on coming back", result === true, String(result));
     }
+    const devpost = await page
+      .locator('footer a[aria-label="Devpost"]')
+      .getAttribute("href")
+      .catch(() => null);
+    record(
+      scenario,
+      "footer links to Devpost",
+      devpost === "https://devpost.com/LucasMadeIt",
+      String(devpost),
+    );
     record(scenario, "no page errors", errors.length === 0, errors.slice(0, 2).join(" | "));
   } finally {
     await ctx.close();
@@ -221,63 +315,8 @@ async function home(scenario) {
 }
 
 async function labs() {
-  const { ctx, page, errors } = await open("lab", `${lab}/lab/nav?v=menu`);
+  const { ctx, page, errors } = await open("lab", `${lab}/lab/type?font=fraunces`);
   try {
-    const toggle = page.getByRole("button", { name: "menu" });
-    await toggle.waitFor({ timeout: 60_000 });
-    await page.waitForTimeout(1500);
-    await toggle.hover();
-    await page.waitForTimeout(1200);
-    const hoverBg = await page
-      .locator("nav[aria-label='Site']")
-      .evaluate((n) => getComputedStyle(n).backgroundColor);
-    record("lab menu", "pill darkens on hover", hoverBg === "rgb(20, 18, 13)", hoverBg);
-    await toggle.click();
-    await page.waitForTimeout(1300);
-    const expanded = await toggle.getAttribute("aria-expanded");
-    const work = page.locator("#haven-menu ul").first().getByRole("link", { name: "work", exact: true });
-    const wb = await work.boundingBox();
-    record(
-      "lab menu",
-      "opens on click with its rows",
-      expanded === "true" && wb && wb.height > 20,
-      `expanded ${expanded}`,
-    );
-    const names = await page.locator("#haven-menu ul").first().locator("a").allInnerTexts();
-    record(
-      "lab menu",
-      "rows are home, work, about, contact",
-      names.join(",") === "home,work,about,contact",
-      names.join(","),
-    );
-    const sound = page.locator("#haven-menu button[aria-pressed]");
-    const before = await sound.innerText();
-    await sound.click();
-    const after = await sound.innerText();
-    record("lab menu", "sound switch toggles its label", before !== after, `${before} -> ${after}`);
-    if (after.includes("off")) await sound.click();
-    await page.keyboard.press("Escape");
-    await page.waitForTimeout(900);
-    record("lab menu", "Escape closes it", (await toggle.getAttribute("aria-expanded")) === "false");
-    const outside = await page.locator("header img, header a[aria-label]").count();
-    record("lab menu", "no ball or extra links outside the menu", outside === 0, `${outside} found`);
-
-    await page.goto(`${lab}/lab/nav?v=one`);
-    const one = page.getByRole("link", { name: "Lucas Vu, home" });
-    await one.waitFor({ timeout: 30_000 });
-    const src = await one.locator("img").getAttribute("src");
-    const left = (await one.boundingBox()).x;
-    record(
-      "lab one ball",
-      "one ball, close to the left edge",
-      /ball\.webp/.test(src) && !/balls/.test(src) && left < 48,
-      `x ${left}`,
-    );
-    await page.goto(`${lab}/lab/nav?v=four`);
-    const four = await page.getByRole("link", { name: "Lucas Vu, home" }).locator("img").getAttribute("src");
-    record("lab four balls", "four balls", /balls\.webp/.test(four));
-
-    await page.goto(`${lab}/lab/type?font=fraunces`);
     await page.waitForTimeout(1500);
     const family = await page
       .locator("h1")

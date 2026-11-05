@@ -25,6 +25,8 @@ const CUBE_SIZE = 192;
 const STRING_KICK = 0.05;
 const SETTLE_TIME = 1.5;
 const MAX_FRAME = 0.05;
+/** Below this speed (m/s) for every ball, reflections refresh at a third of the frame rate. */
+const SLOW_REFLECTIONS = 0.08;
 
 /** Shared geometry: one sphere for all four balls and one screw eye. */
 function useHardware() {
@@ -127,6 +129,7 @@ export function CradleModel() {
   const projected = useMemo(() => new THREE.Vector3(), []);
   const kick = useMemo(() => ({ x: 0, y: 0, z: 0 }), []);
   const frameCount = useRef(0);
+  const cubeTurn = useRef(0);
   const lastActive = useRef(0);
   const onScreen = useRef(true);
 
@@ -181,16 +184,21 @@ export function CradleModel() {
     });
 
     // Each ball sees its neighbours, the strings and the wall: one cube camera per frame, in turn.
+    // While everything moves slowly (the idle sway, a swing dying out) the reflections barely
+    // change, so a cube is redrawn every third frame instead: six scene renders and a PMREM pass
+    // saved on two frames out of three.
     const env = scene.userData.reflectionBackground as THREE.Texture | undefined;
-    if (env) {
-      const n = frameCount.current++;
+    const n = frameCount.current++;
+    const slow = cradle.balls.every((b) => Math.hypot(b.vel.x, b.vel.y, b.vel.z) < SLOW_REFLECTIONS);
+    if (env && (n < 2 || !slow || n % 3 === 0)) {
+      const turn = cubeTurn.current++;
       const batch = n < 2 ? cubes.length : 1;
       // The six cube faces must not each re-render the shadow map (it is redrawn for the main view).
       const autoShadows = gl.shadowMap.autoUpdate;
       gl.shadowMap.autoUpdate = false;
       spheres.current.forEach((m, j) => m && (m.material = plainMaterials[j]!));
       for (let k = 0; k < batch; k++) {
-        const i = (n + k) % cubes.length;
+        const i = (turn + k) % cubes.length;
         const cube = cubes[i]!;
         const g = groups.current[i];
         if (!g) continue;

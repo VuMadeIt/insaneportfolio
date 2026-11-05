@@ -7,7 +7,6 @@
   --color-muted: var(--muted);
   --color-rule: var(--rule);
   --color-panel: var(--panel);
-  --color-night: var(--night);
   --font-display: var(--font-general), "Helvetica Neue", Arial, sans-serif;
   --font-sans: var(--font-cabinet), "Helvetica Neue", Arial, sans-serif;
   /* One radius scale (PLAN 12.1): small controls, media, cards. Pills use rounded-full. */
@@ -172,27 +171,12 @@
 
 /* Section entrances (`.reveal`) are driven by GSAP ScrollTrigger in ScrollMotion.tsx. */
 
-/* Back links: the arrow nudges back on hover. */
-.back-link span {
-  display: inline-block;
-  transition: transform 300ms var(--ease-out);
-}
-.back-link:hover span {
-  transform: translateX(-4px);
-}
-
-/* A tiny dark-metal ball, like the cradle's: accolade bullets and the timeline's stops. */
-.metal-ball,
-.award-dot {
+/* A tiny dark-metal ball, like the cradle's: the timeline's stops. */
+.metal-ball {
   flex: none;
   border-radius: 999px;
   /* prettier-ignore */
   background: radial-gradient(circle at 35% 30%, #d8d7d4 0%, #6d6c6a 28%, #1d1d1c 70%, #0b0b0a 100%); /* taste-skill-ignore: shading that draws a sphere */
-}
-.award-dot {
-  width: 0.55em;
-  height: 0.55em;
-  transform: translateY(-0.05em);
 }
 /* The pinned timeline's stage (Timeline.tsx): one role at a time rises into place. */
 .timeline-stop:not(.reveal) {
@@ -232,11 +216,12 @@
   transform: translateY(calc(-100% - 2px));
 }
 
-/* "Let's get things moving." (MovingLine.tsx, after Kern Society's hero). Without JavaScript the
+/* "Let's get things moving." (MovingLine.tsx, after Kern Society's hero, in General Sans). Without JavaScript the
    letters sit in normal flow at rest; live, each is placed and shaped every frame. */
 .flex-line {
-  font-weight: 600;
-  letter-spacing: 0;
+  font-weight: 350;
+  /* Denser than the headings; each letter's measured advance includes it. */
+  letter-spacing: -0.02em;
   line-height: 1;
 }
 .flex-wm {
@@ -244,10 +229,7 @@
   display: block;
   white-space: pre;
   font-size: 7.2vw;
-  font-variation-settings:
-    "wght" 600,
-    "wdth" 50,
-    "opsz" 144;
+  font-variation-settings: "wght" 350;
   transition: opacity 400ms var(--ease-out);
 }
 .flex-l {
@@ -287,7 +269,9 @@
   position: absolute;
   left: 0;
   top: 0;
-  will-change: transform, font-variation-settings;
+  /* Width is a horizontal scale from the letter's left edge (General Sans has no width axis). */
+  transform-origin: 0 0;
+  will-change: transform;
 }
 .flex-wm[data-live][data-phone] {
   height: auto;
@@ -297,48 +281,6 @@
   display: block;
   height: 1em;
 }
-/* The ruler under the line (Kern's), with a small ball for the marker. */
-.flex-ruler {
-  position: relative;
-  display: grid;
-  grid-template-columns: repeat(12, 1fr);
-  height: 9px;
-  margin-top: clamp(14px, 2vh, 24px);
-}
-.flex-ruler::before {
-  content: "";
-  position: absolute;
-  inset: auto 0 0;
-  border-top: 1px solid var(--underline); /* taste-skill-ignore: the ruler's baseline */
-}
-.flex-ruler span {
-  position: relative;
-  border-left: 1px solid var(--underline); /* taste-skill-ignore: ruler ticks */
-}
-.flex-ruler span:last-of-type {
-  border-right: 1px solid var(--underline); /* taste-skill-ignore: ruler ticks */
-}
-.flex-ruler span::after {
-  content: "";
-  position: absolute;
-  left: 50%;
-  bottom: 0;
-  height: 4px;
-  border-left: 1px solid var(--underline); /* taste-skill-ignore: ruler ticks */
-}
-.flex-marker {
-  position: absolute;
-  left: -5px;
-  bottom: 1px;
-  width: 10px;
-  height: 10px;
-  opacity: 0;
-  transition: opacity 300ms var(--ease-out);
-}
-.flex-marker[data-on] {
-  opacity: 1;
-}
-
 /* The work catalogue's rows (PLAN Part 5 allows its rules) and the rows of real tables. */
 .catalogue {
   border-bottom: 1px solid var(--rule); /* taste-skill-ignore: catalogue rules, PLAN Part 5 */
@@ -482,9 +424,6 @@
     align-items: flex-end;
     padding-left: var(--gutter);
     padding-bottom: 12vh;
-  }
-  .story-hide-portrait {
-    display: none;
   }
 }
 

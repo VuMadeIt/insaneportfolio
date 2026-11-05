@@ -1,7 +1,6 @@
 "use client";
 
 import gsap from "gsap";
-import { Roboto_Flex } from "next/font/google";
 import { Fragment, useEffect, useRef } from "react";
 import {
   FILL,
@@ -16,20 +15,17 @@ import {
   solve,
 } from "./flexFit";
 
-// Only this line needs a real width axis; it sits below the fold, so the font is not preloaded.
-const flex = Roboto_Flex({ subsets: ["latin"], axes: ["wdth", "opsz"], display: "swap", preload: false });
-
 /** One line on wide screens; on phones each of these is its own line. */
 const LINES = ["Let\u2019s get", "things moving."];
-/** The resting width: condensed, with room to condense further as neighbours widen. */
-const REST_WDTH = 50;
+/** The resting width (percent of the drawn letter): dense, with room to condense further. */
+const REST_WDTH = 80;
 /** On wide screens the cap height stays within this share of the viewport height. */
 const CAP_LIMIT = 0.42;
 const CAP_RATIO = 0.712;
 /** The pulse that travels through the line once it scrolls into view, like a clack down the cradle. */
 const INTRO_MS = 1400;
 
-const fvs = (a: Axes) => `"wght" ${a.wght.toFixed(1)}, "wdth" ${a.wdth.toFixed(2)}, "opsz" 144`;
+const fvs = (a: Axes) => `"wght" ${a.wght.toFixed(1)}`;
 const pulseEase = gsap.parseEase("power2.inOut");
 
 interface Line {
@@ -48,11 +44,12 @@ interface Line {
 }
 
 /**
- * "Let's get things moving." (PLAN 15.1), reverse-engineered from Kern Society's hero: the line
- * always fills the column; letters near the pointer swell to black and extended while the rest
- * condense to hairlines, solved every frame so the advances add up exactly. Driven from GSAP's
- * ticker and stopped once everything settles. Phones have no pointer: a small ball on the ruler
- * follows the scroll and the letters above it swell. Reduced motion: the line rests.
+ * "Let's get things moving." (PLAN 15.1, 15.11), reverse-engineered from Kern Society's hero and
+ * set in General Sans: the line always fills the column; letters near the pointer swell heavy and
+ * wide while the rest condense to hairlines, solved every frame so the advances add up exactly.
+ * General Sans has no width axis, so width is a horizontal scale of each letter. Driven from
+ * GSAP's ticker and stopped once everything settles. Phones have no pointer: the scroll sweeps a
+ * point across the line and the letters there swell. Reduced motion: the line rests.
  */
 export function MovingLine({ id, className = "" }: { id?: string; className?: string }) {
   const root = useRef<HTMLDivElement>(null);
@@ -61,8 +58,6 @@ export function MovingLine({ id, className = "" }: { id?: string; className?: st
     const host = root.current!;
     const title = host.querySelector<HTMLElement>(".flex-line")!;
     const wm = host.querySelector<HTMLElement>(".flex-wm")!;
-    const ruler = host.querySelector<HTMLElement>(".flex-ruler")!;
-    const marker = host.querySelector<HTMLElement>(".flex-marker")!;
     const mqPhone = matchMedia("(max-width: 767px)");
     const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
     const pointer = { x: 0, y: 0, active: false };
@@ -78,30 +73,29 @@ export function MovingLine({ id, className = "" }: { id?: string; className?: st
     let introAt = 0;
     let cancelled = false;
 
-    // Every glyph's advance at each grid weight and width, measured once the font is in.
+    // Every glyph's advance (with the line's tracking) at each grid weight, measured once the font
+    // is in; the width column of the grid is that advance scaled.
     const measure = () => {
       const chars = [...new Set([...wm.querySelectorAll(".flex-l")].map((l) => l.textContent!))];
       const box = document.createElement("div");
       box.style.cssText =
-        "position:absolute;left:0;top:0;width:0;height:0;overflow:hidden;visibility:hidden;white-space:pre;font-size:200px;line-height:1;letter-spacing:0";
+        "position:absolute;left:0;top:0;width:0;height:0;overflow:hidden;visibility:hidden;white-space:pre;font-size:200px;line-height:1";
       const spans = chars.flatMap((ch) =>
-        WGHTS.flatMap((wg) =>
-          WDTHS.map((wd) => {
-            const s = document.createElement("span");
-            s.textContent = ch;
-            s.style.cssText = `display:block;width:max-content;font-variation-settings:"wght" ${wg}, "wdth" ${wd}, "opsz" 144`;
-            box.append(s);
-            return s;
-          }),
-        ),
+        WGHTS.map((wg) => {
+          const s = document.createElement("span");
+          s.textContent = ch;
+          s.style.cssText = `display:block;width:max-content;font-variation-settings:"wght" ${wg}`;
+          box.append(s);
+          return s;
+        }),
       );
       title.append(box);
-      const n = WGHTS.length * WDTHS.length;
+      const n = WGHTS.length;
       table = Object.fromEntries(
-        chars.map((ch, c) => [
-          ch,
-          Float64Array.from(spans.slice(c * n, (c + 1) * n), (s) => s.getBoundingClientRect().width / 200),
-        ]),
+        chars.map((ch, c) => {
+          const base = spans.slice(c * n, (c + 1) * n).map((s) => s.getBoundingClientRect().width / 200);
+          return [ch, Float64Array.from(base.flatMap((a) => WDTHS.map((wd) => (a * wd) / 100)))];
+        }),
       );
       box.remove();
     };
@@ -112,10 +106,11 @@ export function MovingLine({ id, className = "" }: { id?: string; className?: st
         L.letters.forEach((el, i) => {
           const x = Math.round(left[i]! * L.size * 4) / 4;
           const f = fvs(axes[i]!);
-          const key = `${f}|${x}`;
+          const sx = (axes[i]!.wdth / 100).toFixed(3);
+          const key = `${f}|${x}|${sx}`;
           if (force || key !== L.shown[i]) {
             el.style.fontVariationSettings = f;
-            el.style.transform = `translate3d(${x}px,0,0)`;
+            el.style.transform = `translate3d(${x}px,0,0) scaleX(${sx})`;
             L.shown[i] = key;
           }
           L.cx[i] = (left[i]! + w[i]! / 2) * L.size;
@@ -171,9 +166,7 @@ export function MovingLine({ id, className = "" }: { id?: string; className?: st
       if (!moving) introAt = 0;
       const ease = 1 - Math.exp(-dt * (phone ? 12 : 7.5));
       const vh = innerHeight;
-      const r = ruler.getBoundingClientRect();
-      let markerX = clamp(pointer.x - r.left, 0, width);
-      let markerOn = false;
+      let markerX = 0;
 
       if (phone) {
         // 0 as the line comes up from the bottom of the screen, 1 once it nears the top.
@@ -185,7 +178,6 @@ export function MovingLine({ id, className = "" }: { id?: string; className?: st
           moving = true;
         } else scroll.p = scroll.target;
         markerX = scroll.p * width;
-        markerOn = true;
       }
 
       for (const L of lines) {
@@ -198,7 +190,6 @@ export function MovingLine({ id, className = "" }: { id?: string; className?: st
         }
         const py = pointer.y - box.top;
         const near = clamp(1 - (py < 0 ? -py : Math.max(0, py - box.height)) / (vh * 0.5), 0, 1);
-        if (!phone && pointer.active && intro >= 1) markerOn = near > 0.4;
         L.es.forEach((e, i) => {
           let target = 0;
           if (phone) target = scrolled && L.targets ? L.targets[i]! : 0;
@@ -213,8 +204,6 @@ export function MovingLine({ id, className = "" }: { id?: string; className?: st
         });
       }
       layout();
-      marker.style.transform = `translate3d(${markerX.toFixed(1)}px,0,0)`;
-      marker.toggleAttribute("data-on", markerOn);
       if (!moving) stop();
     };
 
@@ -289,7 +278,7 @@ export function MovingLine({ id, className = "" }: { id?: string; className?: st
 
   return (
     <div ref={root} className={className}>
-      <h2 id={id} className={`flex-line ${flex.className}`}>
+      <h2 id={id} className="flex-line font-display">
         <span className="sr-only">{LINES.join(" ")}</span>
         <span aria-hidden className="flex-wm">
           {LINES.map((line, li) => (
@@ -306,12 +295,6 @@ export function MovingLine({ id, className = "" }: { id?: string; className?: st
           ))}
         </span>
       </h2>
-      <div aria-hidden className="flex-ruler">
-        {Array.from({ length: 12 }, (_, i) => (
-          <span key={i} />
-        ))}
-        <i className="flex-marker metal-ball" />
-      </div>
     </div>
   );
 }

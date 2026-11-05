@@ -1,23 +1,27 @@
 /**
  * The model behind "Let's get things moving." (MovingLine.tsx), after Kern Society's hero
- * (shockingmike.github.io/kern-society). Every letter has a state s in [0, 1] on a two-segment path
- * through Roboto Flex's design space: s = 0 hairline and fully condensed, s = 0.5 the line's rest,
- * s = 1 black and fully extended. Each letter gets an emphasis e in [-1, 1] (from the pointer, a
- * pulse or the phone marker), and one shared offset is solved so the advances always add up to the
- * column: near letters widen, far letters condense, and the line never overflows or opens a gap.
+ * (shockingmike.github.io/kern-society), set in the site's General Sans (PLAN 15.11). Every letter
+ * has a state s in [0, 1] on a two-segment path: s = 0 hairline and condensed, s = 0.5 the line's
+ * rest, s = 1 heaviest and extended. General Sans has a weight axis (200-700) but no width axis, so
+ * width is a horizontal scale in percent (`wdth` 100 = the drawn letter). Each letter gets an
+ * emphasis e in [-1, 1] (from the pointer, a pulse or the scroll on phones), and one shared offset
+ * is solved so the advances always add up to the column: near letters widen, far letters condense,
+ * and the line never overflows or opens a gap.
  */
 
 export interface Axes {
   wght: number;
+  /** Horizontal scale, percent. */
   wdth: number;
 }
 
-export const REST_WGHT = 600;
-export const LO: Axes = { wght: 150, wdth: 25 };
-export const HI: Axes = { wght: 1000, wdth: 151 };
-/** The measured grid of advances: every glyph at each of these weights and widths. */
-export const WGHTS = [100, 200, 400, 600, 800, 1000];
-export const WDTHS = [25, 40, 60, 80, 100, 125, 151];
+/** The site's heading weight. */
+export const REST_WGHT = 350;
+export const LO: Axes = { wght: 200, wdth: 55 };
+export const HI: Axes = { wght: 700, wdth: 150 };
+/** The grid of advances: every glyph measured at these weights; width scales them linearly. */
+export const WGHTS = [200, 300, 400, 500, 600, 700];
+export const WDTHS = [LO.wdth, HI.wdth];
 /** Guard against sub-pixel rounding. */
 export const FILL = 0.998;
 

@@ -3,9 +3,9 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
-import { SoundButton } from "@/components/SiteNav";
+import { SoundButton } from "./SiteNav";
 import { CONTACT } from "@/content/contact";
-import s from "./menu.module.css";
+import s from "./HavenMenu.module.css";
 
 const LINKS = [
   ["home", "/"],
@@ -15,17 +15,16 @@ const LINKS = [
 ] as const;
 
 /**
- * The Haven Constructions menu (PLAN 15.7): the whole nav is one pill in the middle that darkens
- * on hover and opens into rows that rise in one after another, with the email, LinkedIn and the
- * sound switch underneath. Escape, a click outside or picking a link closes it.
+ * The phone nav (PLAN 15.7, 15.11), after havenconstructions.com.au: the whole nav is one pill in
+ * the middle that opens into rows rising one after another, with the email, LinkedIn and the sound
+ * switch underneath. Escape, a tap outside or picking a link closes it. Shown below 768 px only
+ * (HavenMenu.module.css); `hidden` sends it away while a story is open.
  */
-export function HavenMenu() {
+export function HavenMenu({ hidden = false }: { hidden?: boolean }) {
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const nav = useRef<HTMLElement>(null);
-  // In the lab it stands in for the home page's nav.
-  const path = usePathname();
-  const pathname = path.startsWith("/lab") ? "/" : path;
+  const pathname = usePathname();
 
   useEffect(() => {
     const onScroll = () => setScrolled(scrollY > 40);
@@ -43,7 +42,10 @@ export function HavenMenu() {
   }, []);
 
   return (
-    <header className={`${s.bar} font-display ${scrolled ? s.scrolled : ""}`}>
+    <header
+      className={`${s.bar} font-display ${scrolled ? s.scrolled : ""} ${hidden ? s.away : ""}`}
+      inert={hidden}
+    >
       <nav ref={nav} aria-label="Site" className={`${s.nav} ${open ? s.open : ""}`}>
         <button
           type="button"

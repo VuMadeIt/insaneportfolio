@@ -755,3 +755,22 @@ Lucas's notes after revision 4, with his Q&A answers. PLAN.md Part 14 is the spe
   frame: same pill sizes (420 px box, 12 px clip, 40 px visible), hover area within 4%, open area
   within 3%, the same three-frame open and close at 15 fps, the same row stagger and hairlines.
   The label stays "menu" when open, as on Haven. Bullet is Haven's square, not a ball.
+
+### Revision 6, part 3 (2026-11-05 night)
+
+- **Faux width for General Sans.** The Kern model is unchanged; only the face changed. Width is a
+  `scaleX` per letter from its left edge, so the advance grid is measured at six weights and scaled
+  linearly (exact for a scale). Range 55-150% so the far letters still read; rest 80% for the
+  "denser" look Lucas asked for. Weight tops out at 700, General Sans's heaviest.
+- **Sway by nudges, not by moving the anchors.** Driving the anchors at the pendulum's period
+  would amplify by the (tiny) damping and be hard to bound; a nudge only when the group has lost
+  30% of its energy, only near the bottom, keeps the amplitude between about 84% and 100% of 3 mm.
+  Runs in simulation time (`cradle.beforeStep`), so it is frame-rate independent. Peak speed
+  (~0.013 m/s) stays below slow motion's 0.05 m/s trigger, and the balls never collide.
+- **Lag.** Profiled 14 s of the idle home page: `StringTube.update` alone took ~2 s (arc lengths
+  with 200 divisions and a bounding sphere for each of eight tubes, every frame); now ~0.1 s. Main
+  thread idle rose from 4.1 s to 7.5 s of 14. The sway keeps the canvas rendering, so slow scenes
+  refresh one reflection cube every third frame instead of every frame.
+- **Tests.** `scripts/user-test.mjs` now covers the sway, the phone menu, the one-ball bar, the
+  story's click-anywhere close and the Devpost link: 81/81 across desktop, proxy, throttled, tablet
+  and phone.

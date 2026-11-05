@@ -1,26 +1,10 @@
 "use client";
 
-import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { identityIndex } from "@/content/identities";
 import { GiantName } from "./GiantName";
 
 const useStoryOpen = () => identityIndex(usePathname().slice(1)) >= 0;
-
-/** While a story is open the fixed nav steps aside for this back arrow in the hero's corner. */
-export function HeroBack() {
-  if (!useStoryOpen()) return null;
-  return (
-    <Link
-      href="/"
-      scroll={false}
-      aria-label="Back to the cradle"
-      className="u-grow font-display absolute left-[var(--gutter)] top-[calc((var(--nav-h)_-_1.5em)_/_2)] z-10"
-    >
-      <span aria-hidden>&larr;</span> back
-    </Link>
-  );
-}
 
 /** The giant name slides down out of view while a story is open, to open up white space. */
 export function HeroName({ text, label }: { text?: string; label?: string }) {

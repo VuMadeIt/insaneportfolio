@@ -2,6 +2,11 @@ import * as THREE from "three";
 import type { Vec3 } from "@/physics/vec";
 
 const RADIAL = 6;
+/** The ring's directions, worked out once. */
+const RING = Array.from(
+  { length: RADIAL },
+  (_, r) => [Math.cos((r / RADIAL) * Math.PI * 2), Math.sin((r / RADIAL) * Math.PI * 2)] as const,
+);
 
 /**
  * A tube rebuilt in place every frame through a rope's particles (Catmull-Rom). Besides the ring
@@ -46,6 +51,11 @@ export class StringTube {
     }
     this.geometry.setIndex(index);
     this.curve.points = [];
+    // Arc length is only used to space the samples along an almost straight line: 64 steps place
+    // them within a fraction of a micrometre of the default 200, at a third of the cost per frame.
+    this.curve.arcLengthDivisions = 64;
+    // The tubes are never frustum-culled or raycast, so no bounding sphere is kept up to date.
+    this.geometry.boundingSphere = new THREE.Sphere(new THREE.Vector3(), Infinity);
   }
 
   update(points: Vec3[]): void {
@@ -61,9 +71,7 @@ export class StringTube {
       this.n.crossVectors(this.ref, this.t).normalize();
       this.b.crossVectors(this.t, this.n);
       for (let r = 0; r < RADIAL; r++) {
-        const angle = (r / RADIAL) * Math.PI * 2;
-        const c = Math.cos(angle);
-        const sn = Math.sin(angle);
+        const [c, sn] = RING[r]!;
         const nx = this.n.x * c + this.b.x * sn;
         const ny = this.n.y * c + this.b.y * sn;
         const nz = this.n.z * c + this.b.z * sn;
@@ -84,6 +92,5 @@ export class StringTube {
       this.centre.needsUpdate =
       this.tangent.needsUpdate =
         true;
-    this.geometry.computeBoundingSphere();
   }
 }

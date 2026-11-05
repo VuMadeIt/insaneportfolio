@@ -1169,3 +1169,24 @@ Branch `phase/16-revision-5` (continues it). Answers from the Q&A are recorded i
   throttled CPU and network, on a tablet and a phone, and the labs.
 - Next (not done yet, Lucas will give feedback first): smaller home project rows and "View more",
   no ruler under the moving line, and the moving line in the site's own face, set denser.
+
+### 15.11 Revision 6, part 3 (Lucas, 2026-11-05 night). Overrides 15.1-15.10 where they conflict
+- **Nav:** from 768 px the bar with one ball at the left edge (padding clamp(20px, 2.5vw, 36px)
+  both sides); below 768 px the Haven menu (15.7) is the whole nav. `/lab/nav` is retired (choice
+  made). Both step aside while a story is open.
+- **No back arrow** in the story state: a click anywhere (or Escape, or the browser's Back) closes it.
+- **Moving line:** text only (no ruler, no marker). Set in General Sans: its weight axis (200-700,
+  resting at the headings' 350) plus a horizontal scale of each letter in place of the missing
+  width axis (55-150%, resting dense at 80%, tracking -0.02em). Phones still swell the letters
+  along the scroll, with no visible marker.
+- **Idle sway:** on the home page the balls swing together about 3 mm, kept going by a small
+  nudge at the bottom of the swing when they have lost a third of their energy (same velocity for
+  all four, so they never touch). Off in a story, after the first grab, and under reduced motion.
+- **Footer:** a Devpost icon beside LinkedIn, Instagram and GitHub.
+- **Performance, no effect removed:** string tubes no longer recompute a bounding sphere or a
+  200-step arc-length table every frame (64 steps; the samples move by well under a micrometre),
+  the cursor's loop stops when it has caught up, and while every ball is slow the reflection cubes
+  refresh every third frame.
+- **Cleanup:** removed the unused WallLabel component, dead CSS and tokens (award dots, back
+  links, the dark-half colour), and the assets of removed features (hummingbird video, essay cover,
+  four-ball nav render).

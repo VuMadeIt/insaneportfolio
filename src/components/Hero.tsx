@@ -1,4 +1,4 @@
-import { HeroBack, HeroName } from "./HeroChrome";
+import { HeroName } from "./HeroChrome";
 import { HeroStage } from "./HeroStage";
 import { StoryController } from "./StoryController";
 
@@ -17,7 +17,6 @@ export function Hero({
       <div className="hero-frame absolute inset-0">
         <HeroStage />
       </div>
-      <HeroBack />
       <StoryController />
     </section>
   );

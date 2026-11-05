@@ -38,7 +38,6 @@ video videos/ripple/answer.mp4 ripple/answer
 video videos/maple-leaf.mp4 maple-leaf/hero 2
 video videos/parrot.mp4 work/parrot
 video videos/creators-collective.mp4 work/creators-collective
-video videos/design-philosophy/hummingbird.mp4 about/hummingbird
 
 cp "$SRC"/images/shufflr/{discover,profile-memories}.png "$OUT/shufflr/"
 cp "$SRC"/images/ripple/{ideation,research,comparison,system-diagram,discover,profile-history}.png "$OUT/ripple/"

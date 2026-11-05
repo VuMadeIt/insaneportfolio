@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { StoryPanel } from "@/components/StoryPanel";
 import { identities } from "@/content/identities";
+import { shareGraph } from "@/content/share";
 
 export const dynamicParams = false;
 
@@ -21,7 +22,7 @@ export async function generateMetadata({
   return {
     title: identity.title,
     description,
-    openGraph: { title: `${identity.title} | Lucas Vu`, description },
+    openGraph: { ...shareGraph, title: `${identity.title} | Lucas Vu`, description },
     alternates: { canonical: `/${identity.slug}` },
   };
 }

@@ -55,6 +55,8 @@ vision, architecture, phases, git workflow and the autonomous execution protocol
   (drop, idle sway, hover video, cursor, moving line, nav, phone menu, story close, footer, type lab) on desktop, proxy (`PROXY=<preview url>`),
   throttled, tablet and phone; `ONLY=desktop` for one scenario. `scripts/menu-film.mjs <url> <tag>`
   films a burger menu for frame comparisons.
+- `PORT=3200 node scripts/og.mjs [angle]` films the link preview (`public/og/cover.mp4` + `.jpg`)
+  from `/lab/og`, frame by frame.
 - A stale `next dev` from an old session blocks a new one ("Another next dev server is already
   running"); if it stops answering, kill the PID it prints.
 - Physics probes: `npx jiti scripts/physics/probe.ts`, `npx jiti scripts/physics/calibrate.ts`.

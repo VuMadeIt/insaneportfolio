@@ -1206,3 +1206,12 @@ Branch `phase/16-revision-5` (continues it). Answers from the Q&A are recorded i
   raises the text and draws a hairline under the print. A real tab list (arrows, Home, End);
   `/about#<id>` opens that object. Patterns from Awwwards gallery/index elements: one image large
   at a time, the rest as an index, motion only on change.
+
+### 15.14 Link preview
+- Sharing a link shows one of the cradle's balls on its own, in close-up, swinging in and out of
+  frame: `public/og/cover.mp4` (1200x630, H.264, 2.9 s seamless two-swing loop, ~50 KB) as
+  `og:video`, and `public/og/cover.jpg` as `og:image` / the large Twitter card. iMessage plays the
+  video muted and looping; Discord plays it on tap; X, Slack, LinkedIn and WhatsApp show the still.
+  Filmed from the real scene, one exact 1/30 s frame at a time (`scripts/og.mjs`, `/lab/og`,
+  `capture` in `src/scene/world.ts`). Case studies keep their own poster.
+- `metadataBase` falls back to Vercel's production domain, so the preview URLs are absolute there.

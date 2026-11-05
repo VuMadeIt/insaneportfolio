@@ -14,7 +14,7 @@ import { stringMaterial } from "./materials/string";
 import { StringTube } from "./stringGeometry";
 import { advanceClock, slowmo } from "./slowmo";
 import { REFLECTION_LAYER } from "./Wall";
-import { afterFrame, anchorOf, cradle, frame, requestRender, ropeOf, ropes, tick } from "./world";
+import { afterFrame, anchorOf, capture, cradle, frame, requestRender, ropeOf, ropes, tick } from "./world";
 
 const R = cradle.config.ball.radius;
 const EYE = cradle.config.eyeletHeight;
@@ -157,7 +157,7 @@ export function CradleModel() {
           requestRender();
         });
     }
-    const dt = advanceClock(Math.min(delta, MAX_FRAME), cradle);
+    const dt = advanceClock(capture.dt || Math.min(delta, MAX_FRAME), cradle);
     tick(dt);
     cradle.balls.forEach((_, i) => {
       const g = groups.current[i];
@@ -233,7 +233,7 @@ export function CradleModel() {
     if (!cradle.asleep) lastActive.current = now;
     const busy =
       animating || !cradle.asleep || now - lastActive.current < SETTLE_TIME || frameCount.current < 8;
-    if (busy && onScreen.current) state.invalidate();
+    if (busy && onScreen.current && !capture.manual) state.invalidate();
   });
 
   return (

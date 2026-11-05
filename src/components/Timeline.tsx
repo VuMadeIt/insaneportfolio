@@ -59,7 +59,7 @@ function lanes(roles: Role[], now: number) {
 function Logo({ role, size }: { role: Role; size: "lg" | "sm" }) {
   return (
     <span
-      className={`flex shrink-0 items-center justify-center overflow-hidden ${size === "lg" ? "size-[clamp(80px,8vw,128px)] rounded-lg p-3.5" : "size-7 rounded-[6px] p-1"} ${role.dark ? "bg-night" : "bg-white"}`}
+      className={`flex shrink-0 items-center justify-center overflow-hidden ${size === "lg" ? "size-[clamp(80px,8vw,128px)] rounded-lg p-3.5" : "size-7 rounded-[6px] p-1"} ${role.dark ? "bg-ink" : "bg-white"}`}
     >
       <Image
         src={`/media/logos/${role.logo}.png`}

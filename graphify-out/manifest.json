@@ -102,15 +102,15 @@
     "semantic_hash": ""
   },
   "DECISIONS.md": {
-    "mtime": 1793912343.01628,
-    "seen": 1793912346.1648414,
-    "ast_hash": "24bd6b95a1a62aef1db09862b86ef60d",
+    "mtime": 1793915674.4292762,
+    "seen": 1793915677.8482819,
+    "ast_hash": "1e96c06a77bc80ce067ab12894848797",
     "semantic_hash": ""
   },
   "PLAN.md": {
-    "mtime": 1793911797.5322287,
-    "seen": 1793911800.9236662,
-    "ast_hash": "bcba4d6c657994b538e417a22772d731",
+    "mtime": 1793914879.9106858,
+    "seen": 1793915036.5362458,
+    "ast_hash": "4343276e7a0ea4e5bbc1c6b54cc90ff9",
     "semantic_hash": ""
   },
   "reference/identities/experiment-atom.png": {
@@ -1278,15 +1278,15 @@
     "semantic_hash": ""
   },
   "e2e/pages.spec.ts": {
-    "mtime": 1793911155.4656138,
-    "seen": 1793911255.1605413,
-    "ast_hash": "aec197d2db4a1684d06faee9158a42ee",
+    "mtime": 1793915012.5320306,
+    "seen": 1793915036.5362458,
+    "ast_hash": "026ad308f3241dec66779a29206500de",
     "semantic_hash": ""
   },
   "src/content/about.ts": {
-    "mtime": 1793895150.1372552,
-    "seen": 1793897119.0144882,
-    "ast_hash": "daafbd083d4e4fefa00d2a7a0d807ecd",
+    "mtime": 1793914668.2828403,
+    "seen": 1793915036.5362458,
+    "ast_hash": "c1ef01883bcf1e0636864ef7a182f3a0",
     "semantic_hash": ""
   },
   "public/media/about/cadet-army-truck.png": {
@@ -1440,9 +1440,9 @@
     "semantic_hash": ""
   },
   "src/components/ScrollMotion.tsx": {
-    "mtime": 1793899937.6952236,
-    "seen": 1793900497.2557695,
-    "ast_hash": "bbc982c0f415c4b4dfac155c7add73ac",
+    "mtime": 1793914668.156391,
+    "seen": 1793915036.5362458,
+    "ast_hash": "e0c982acce7ad12de4bbb154b444f3a4",
     "semantic_hash": ""
   },
   "public/logo.png": {
@@ -1506,9 +1506,9 @@
     "semantic_hash": ""
   },
   "src/components/Timeline.tsx": {
-    "mtime": 1793895110.944713,
-    "seen": 1793897119.0144882,
-    "ast_hash": "accdfb9c071a9643f3e4a409b25c53fe",
+    "mtime": 1793914500.8655896,
+    "seen": 1793914502.6844969,
+    "ast_hash": "d8237d2eb961c8cd32e61c9031f27510",
     "semantic_hash": ""
   },
   "src/components/WorkList.tsx": {
@@ -1878,9 +1878,9 @@
     "semantic_hash": ""
   },
   "scripts/user-test.mjs": {
-    "mtime": 1793911855.415647,
-    "seen": 1793911919.0312524,
-    "ast_hash": "c52b9a8eae8c972afc3295871dded733",
+    "mtime": 1793915453.9406128,
+    "seen": 1793915677.8482819,
+    "ast_hash": "dc9b7fdc364d8f5e1b37ad044e21f917",
     "semantic_hash": ""
   },
   "src/components/HavenMenu.tsx": {
@@ -1908,9 +1908,9 @@
     "semantic_hash": ""
   },
   "src/components/SelectedObjects.tsx": {
-    "mtime": 1793911238.6846106,
-    "seen": 1793911255.1605413,
-    "ast_hash": "70dcce748a86fff9d0ec3fdc5a9385e9",
+    "mtime": 1793914851.9945583,
+    "seen": 1793915036.5362458,
+    "ast_hash": "205bbecfcafd222d6b2ffc4742a1eb82",
     "semantic_hash": ""
   },
   "app/lab/og/OgStage.tsx": {
@@ -1947,6 +1947,12 @@
     "mtime": 1793911778.4463902,
     "seen": 1793911800.92465,
     "ast_hash": "af0c881f7fafeb0476a113fff6d1a538",
+    "semantic_hash": ""
+  },
+  "public/media/about/cadet-dress-swords.webp": {
+    "mtime": 1793913701.547436,
+    "seen": 1793914502.6844969,
+    "ast_hash": "3e21e1a516748fe72138cfc7438dd293",
     "semantic_hash": ""
   },
   "package-lock.json": {

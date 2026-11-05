@@ -1,17 +1,17 @@
 # Graph Report - insaneportfolio  (2026-11-05)
 
 ## Corpus Check
-- 160 files · ~89,634 words
+- 160 files · ~90,279 words
 - Verdict: corpus is large enough that graph structure adds value.
 - Unclassified: 16 file(s) not represented in the graph (top: .hdr 8, (none) 3, .woff2 3)
 
 ## Summary
-- 918 nodes · 1898 edges · 60 communities (48 shown, 12 thin omitted)
-- Extraction: 97% EXTRACTED · 3% INFERRED · 0% AMBIGUOUS · INFERRED: 50 edges (avg confidence: 0.89)
+- 921 nodes · 1906 edges · 61 communities (49 shown, 12 thin omitted)
+- Extraction: 97% EXTRACTED · 3% INFERRED · 0% AMBIGUOUS · INFERRED: 51 edges (avg confidence: 0.89)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `958ca1bc`
+- Built from commit: `cbdd871c`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -33,7 +33,7 @@
 - serve.sh
 - ref_node_fs
 - analyse.py
-- package.json
+- devDependencies
 - Phases
 - Part 13. Revision 4 (Lucas, 2026-11-03 evening). Overrides Parts 1-12 where they conflict
 - Part 4. The hero object in detail (highest priority)
@@ -49,10 +49,10 @@
 - scripts
 - media.sh
 - Visual inspo (not shipped)
-- package.json
-- vitest
+- Timeline.tsx
+- projects.ts
 - Cradle.tsx
-- next
+- HeroStage.tsx
 - cradle.ts
 - eslint-config-next
 - cradle.test.ts
@@ -65,16 +65,17 @@
 - Part 14. Revision 5 (Lucas, 2026-11-04). Overrides Parts 1-13 where they conflict
 - menu-film.mjs
 - Part 15. Revision 6 (Lucas, 2026-11-05). Overrides Parts 1-14 where they conflict
-- @types/three@0.186.0
+- [slug]/page.tsx
 - probe.ts
 - scroll.mjs
 - timeline-shots.mjs
 - og.mjs
-- app/layout.tsx
 - types.ts
-- [slug]/page.tsx
+- package.json
+- prettier@3.9.10
 - StillStage.tsx
-- lab/layout.tsx
+- @types/react-dom@19.3.0
+- @types/three@0.186.0
 
 ## God Nodes (most connected - your core abstractions)
 1. `Cradle` - 42 edges
@@ -86,28 +87,28 @@
 7. `vec()` - 19 edges
 8. `Phases` - 18 edges
 9. `compilerOptions` - 17 edges
-10. `three` - 16 edges
+10. `CradleModel()` - 16 edges
 
 ## Surprising Connections (you probably didn't know these)
-- `Part 10. Phases` --references--> `build()`  [INFERRED]
-  PLAN.md → app/lab/physics/PhysicsLab.tsx
-- `Caleb Wu's RevisionDojo, filmed first (`.artifacts/caleb/sheet1.png`, `sheet2.png`, `text.txt`)` --references--> `ExhibitMedia()`  [INFERRED]
-  DECISIONS.md → src/components/ExhibitMedia.tsx
-- `Phase 05: story state (2026-11-03)` --references--> `StoryController()`  [INFERRED]
-  DECISIONS.md → src/components/StoryController.tsx
 - `Phase 03: interaction and sound (2026-11-03)` --references--> `requestRender()`  [INFERRED]
   DECISIONS.md → src/scene/world.ts
-- `Commands` --references--> `home()`  [INFERRED]
-  AGENTS.md → scripts/user-test.mjs
+- `Phase 05: story state (2026-11-03)` --references--> `StoryController()`  [INFERRED]
+  DECISIONS.md → src/components/StoryController.tsx
+- `Caleb Wu's RevisionDojo, filmed first (`.artifacts/caleb/sheet1.png`, `sheet2.png`, `text.txt`)` --references--> `ExhibitMedia()`  [INFERRED]
+  DECISIONS.md → src/components/ExhibitMedia.tsx
+- `About, part 2 (2026-11-05 night)` --references--> `scrollToY()`  [INFERRED]
+  DECISIONS.md → src/components/ScrollMotion.tsx
+- `Part 10. Phases` --references--> `build()`  [INFERRED]
+  PLAN.md → app/lab/physics/PhysicsLab.tsx
 
 ## Import Cycles
 - None detected.
 
-## Communities (60 total, 12 thin omitted)
+## Communities (61 total, 12 thin omitted)
 
 ### Community 0 - "choreography.ts"
-Cohesion: 0.15
-Nodes (24): Revision 6 (2026-11-05), Revision 6 follow-up: making sure every animation shows (2026-11-05 evening), Revision 6, part 3 (2026-11-05 night), Revision 6, part 4 (2026-11-05 night), playWhoosh(), StoryController(), begin(), close() (+16 more)
+Cohesion: 0.13
+Nodes (23): dynamicParams, IdentityPage(), About, part 2 (2026-11-05 night), Revision 6 (2026-11-05), Revision 6 follow-up: making sure every animation shows (2026-11-05 evening), Revision 6, part 3 (2026-11-05 night), Revision 6, part 4 (2026-11-05 night), app (+15 more)
 
 ### Community 1 - "compilerOptions"
 Cohesion: 0.10
@@ -118,12 +119,12 @@ Cohesion: 0.13
 Nodes (15): metadata, PhysicsLabPage(), COLORS, deg(), DESK, initial, Params, PhysicsLab() (+7 more)
 
 ### Community 3 - "next"
-Cohesion: 0.13
-Nodes (18): metadata, WorkPage(), nextConfig, next, ExhibitMedia(), previewMedia(), WorkList(), allText (+10 more)
+Cohesion: 0.22
+Nodes (4): metadata, nextConfig, next, HomeAbout()
 
 ### Community 4 - "material.ts"
-Cohesion: 0.12
-Nodes (23): ObjectStage(), Scene, metadata, ObjectPage(), AirPods(), Balls(), canvasTexture(), Cash() (+15 more)
+Cohesion: 0.11
+Nodes (26): ObjectStage(), Scene, metadata, ObjectPage(), AirPods(), Balls(), canvasTexture(), Cash() (+18 more)
 
 ### Community 5 - "@playwright/test"
 Cohesion: 0.17
@@ -150,8 +151,8 @@ Cohesion: 0.14
 Nodes (16): Analysis, chains, deg(), first, pairMean(), recIntervals, recLevels, recPairs (+8 more)
 
 ### Community 11 - "Decisions"
-Cohesion: 0.06
-Nodes (34): Commands, Conventions, Environment, Installed agent tools, This is NOT the Next.js you know, 404 + footer reference (2026-11-03 evening), Caleb Wu's RevisionDojo, filmed first (`.artifacts/caleb/sheet1.png`, `sheet2.png`, `text.txt`), Compare-and-fix rounds (`.artifacts/identity/r1..r4.png`, render above, reference below) (+26 more)
+Cohesion: 0.05
+Nodes (35): Commands, Conventions, Environment, Installed agent tools, This is NOT the Next.js you know, 404 + footer reference (2026-11-03 evening), Caleb Wu's RevisionDojo, filmed first (`.artifacts/caleb/sheet1.png`, `sheet2.png`, `text.txt`), Compare-and-fix rounds (`.artifacts/identity/r1..r4.png`, render above, reference below) (+27 more)
 
 ### Community 15 - "ref_node_fs"
 Cohesion: 0.13
@@ -161,9 +162,9 @@ Nodes (9): sizes, [name = "round", query = "t=3"], SIZES, RECIPES, rate, stamps,
 Cohesion: 0.16
 Nodes (4): analyse(), decode(), onsets(), cluster()
 
-### Community 17 - "package.json"
-Cohesion: 0.14
-Nodes (14): devDependencies, eslint@9.39.4, leva@0.10.1, @playwright/test@1.64.1, @tailwindcss/postcss@4.3.3, @types/node@22.19.0, @types/react-dom@19.3.0, typescript@6.0.3 (+6 more)
+### Community 17 - "devDependencies"
+Cohesion: 0.17
+Nodes (12): devDependencies, eslint@9.39.4, leva@0.10.1, @playwright/test@1.64.1, @tailwindcss/postcss@4.3.3, @types/react@19.3.0, typescript@6.0.3, eslint (+4 more)
 
 ### Community 18 - "Phases"
 Cohesion: 0.08
@@ -186,16 +187,16 @@ Cohesion: 0.29
 Nodes (7): 6.1 Home `/`, 6.2 Identity routes `/people` etc., 6.3 All work `/work` (the catalogue), 6.4 Case study `/work/[slug]`, 6.5 About `/about` (the museum room), 6.6 Shared, Part 6. Pages
 
 ### Community 24 - "clack.ts"
-Cohesion: 0.11
-Nodes (22): PagesLayout(), Phase 15: revision 4 (2026-11-03 evening), chainClacks(), clack(), isMuted(), listeners, playClack(), playImpacts() (+14 more)
+Cohesion: 0.07
+Nodes (32): PagesLayout(), Phase 15: revision 4 (2026-11-03 evening), vitest@4.1.12, vitest, [target, out, width = "1440", height = "900"], chainClacks(), clack(), isMuted() (+24 more)
 
 ### Community 27 - "story.mjs"
 Cohesion: 0.33
 Nodes (5): frames, [name = "People", port = "3100"], t0, [width, height], [x, y]
 
 ### Community 28 - "vec.ts"
-Cohesion: 0.22
-Nodes (7): Rope, anchor, ropeLength(), settle(), distance(), lerp(), vec()
+Cohesion: 0.23
+Nodes (6): Rope, anchor, ropeLength(), settle(), distance(), lerp()
 
 ### Community 29 - "Part 9. Execution protocol for the autonomous run"
 Cohesion: 0.50
@@ -213,37 +214,41 @@ Nodes (5): clip(), enc(), poster(), media.sh script, video()
 Cohesion: 0.33
 Nodes (5): Earlier inspo (still useful; lower priority than USE NOW), Footer reference (2026-11-03 evening) — USE for footer layout, Hero / grade (2026-11-05), USE NOW (2026-11-03 afternoon) — apply immediately, Visual inspo (not shipped)
 
-### Community 34 - "package.json"
-Cohesion: 0.18
-Nodes (10): prettier@3.9.10, tailwindcss@4.3.3, @types/react@19.3.0, name, private, type, version, prettier (+2 more)
+### Community 34 - "Timeline.tsx"
+Cohesion: 0.08
+Nodes (38): cabinetGrotesk, generalSans, metadata, RootLayout(), viewport, AboutPage(), metadata, lenis@1.3.27 (+30 more)
 
-### Community 35 - "vitest"
-Cohesion: 0.29
-Nodes (3): vitest@4.1.12, vitest, [target, out, width = "1440", height = "900"]
+### Community 35 - "projects.ts"
+Cohesion: 0.18
+Nodes (16): metadata, WorkPage(), ExhibitMedia(), previewMedia(), WorkList(), caseStudies, allText, homeProjects (+8 more)
 
 ### Community 36 - "Cradle.tsx"
 Cohesion: 0.05
-Nodes (83): Ball(), IdentityLab(), IdentityLabPage(), metadata, applyQuery(), deg(), ObjectLab(), BOX (+75 more)
+Nodes (82): Ball(), IdentityLab(), IdentityLabPage(), metadata, applyQuery(), deg(), ObjectLab(), BOX (+74 more)
 
-### Community 37 - "next"
+### Community 37 - "HeroStage.tsx"
 Cohesion: 0.08
 Nodes (35): metadata, ObjectLabPage(), metadata, TaglineLabPage(), TaglineEditions(), flex, fraunces, metadata (+27 more)
 
 ### Community 38 - "cradle.ts"
-Cohesion: 0.20
-Nodes (13): Body, solveContacts(), clampTarget(), createHand(), Hand, solveHand(), CollisionEvent, addScaled() (+5 more)
+Cohesion: 0.23
+Nodes (11): Body, solveContacts(), clampTarget(), createHand(), Hand, solveHand(), CollisionEvent, addScaled() (+3 more)
 
 ### Community 39 - "eslint-config-next"
 Cohesion: 0.50
 Nodes (3): config, eslint-config-next@16.4.3, eslint-config-next
 
 ### Community 40 - "cradle.test.ts"
-Cohesion: 0.19
-Nodes (7): Phase 10: slow motion lab (2026-11-03), maxPenetration(), lossless, measurePeriod(), runChain(), runFor(), untilImpact()
+Cohesion: 0.24
+Nodes (6): maxPenetration(), lossless, measurePeriod(), runChain(), runFor(), untilImpact()
 
 ### Community 41 - "slowmo.mjs"
 Cohesion: 0.67
 Nodes (3): balls, centre(), speed()
+
+### Community 43 - "Cradle"
+Cohesion: 0.19
+Nodes (5): build(), Cradle, copy(), Vec3, run()
 
 ### Community 44 - "Visual.tsx"
 Cohesion: 0.16
@@ -254,8 +259,8 @@ Cohesion: 0.33
 Nodes (6): 3.1 Stack (pin exact versions; prefer releases published at least 7 days ago), 3.2 Folder structure, 3.3 The three layers (strict separation), 4.1 Physics (the most important part of the whole project), Part 3. Technical architecture, BallSpec
 
 ### Community 46 - "MovingLine.tsx"
-Cohesion: 0.08
-Nodes (47): AboutPage(), metadata, advance(), Axes, axesAt(), bisect(), bump(), cell() (+39 more)
+Cohesion: 0.16
+Nodes (25): advance(), Axes, axesAt(), bisect(), bump(), cell(), clamp(), FILL (+17 more)
 
 ### Community 47 - "Part 14. Revision 5 (Lucas, 2026-11-04). Overrides Parts 1-13 where they conflict"
 Cohesion: 0.25
@@ -266,8 +271,12 @@ Cohesion: 0.40
 Nodes (4): row, toggle, [url, tag, toggleSel = "button[aria-expanded], .NavigationBurger-button"], video
 
 ### Community 49 - "Part 15. Revision 6 (Lucas, 2026-11-05). Overrides Parts 1-14 where they conflict"
-Cohesion: 0.14
-Nodes (14): 15.10 Follow-up (Lucas, 2026-11-05 evening), 15.11 Revision 6, part 3 (Lucas, 2026-11-05 night). Overrides 15.1-15.10 where they conflict, 15.12 Revision 6, part 4 (Lucas, 2026-11-05 night), 15.14 Link preview, 15.1 "Let's get things moving." (replaces 14.5's ball in the "o"), 15.2 Cursor (amends 13.1), 15.3 Nav and footer (amend 14.3, 14.4), 15.4 Warm grade (+6 more)
+Cohesion: 0.13
+Nodes (15): 15.10 Follow-up (Lucas, 2026-11-05 evening), 15.11 Revision 6, part 3 (Lucas, 2026-11-05 night). Overrides 15.1-15.10 where they conflict, 15.12 Revision 6, part 4 (Lucas, 2026-11-05 night), 15.14 Link preview, 15.15 About, part 2 (Lucas, 2026-11-05 night), 15.1 "Let's get things moving." (replaces 14.5's ball in the "o"), 15.2 Cursor (amends 13.1), 15.3 Nav and footer (amend 14.3, 14.4) (+7 more)
+
+### Community 50 - "[slug]/page.tsx"
+Cohesion: 0.23
+Nodes (13): BlockView(), CaseStudyPage(), dynamicParams, Figure(), generateMetadata(), group(), grouped(), PANELLED (+5 more)
 
 ### Community 51 - "probe.ts"
 Cohesion: 0.29
@@ -281,17 +290,13 @@ Nodes (3): files, [route = "home", name = "scroll", steps = "8"], [width, height
 Cohesion: 0.40
 Nodes (4): angle, loop, peaks, xs
 
-### Community 55 - "app/layout.tsx"
-Cohesion: 0.09
-Nodes (22): cabinetGrotesk, generalSans, metadata, RootLayout(), viewport, dynamicParams, IdentityPage(), lenis@1.3.27 (+14 more)
+### Community 55 - "types.ts"
+Cohesion: 0.25
+Nodes (10): mapleLeaf, reboot, ripple, shufflr, Bar, Block, CaseStudy, DiagramNode (+2 more)
 
-### Community 56 - "types.ts"
-Cohesion: 0.23
-Nodes (11): caseStudies, mapleLeaf, reboot, ripple, shufflr, Bar, Block, CaseStudy (+3 more)
-
-### Community 57 - "[slug]/page.tsx"
-Cohesion: 0.23
-Nodes (13): BlockView(), CaseStudyPage(), dynamicParams, Figure(), generateMetadata(), group(), grouped(), PANELLED (+5 more)
+### Community 56 - "package.json"
+Cohesion: 0.22
+Nodes (8): tailwindcss@4.3.3, @types/node@22.19.0, name, private, type, version, tailwindcss, @types/node
 
 ### Community 58 - "StillStage.tsx"
 Cohesion: 0.53
@@ -303,17 +308,17 @@ Nodes (4): metadata, StillPage(), Stage, StillStage()
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
-- **Why does `react` connect `Cradle.tsx` to `choreography.ts`, `package.json`, `PhysicsLab.tsx`, `material.ts`, `next`, `next`, `dependencies`, `Visual.tsx`, `MovingLine.tsx`, `app/layout.tsx`, `clack.ts`, `[slug]/page.tsx`, `StillStage.tsx`?**
+- **Why does `react` connect `Cradle.tsx` to `choreography.ts`, `PhysicsLab.tsx`, `Timeline.tsx`, `material.ts`, `HeroStage.tsx`, `projects.ts`, `dependencies`, `Visual.tsx`, `MovingLine.tsx`, `[slug]/page.tsx`, `package.json`, `clack.ts`, `StillStage.tsx`?**
   _High betweenness centrality (0.258) - this node is a cross-community bridge._
+- **Should `choreography.ts` be split into smaller, more focused modules?**
+  _Cohesion score 0.12834224598930483 - nodes in this community are weakly interconnected._
+- **Why does `Lucas Vu Portfolio: Master Plan` connect `Lucas Vu Portfolio: Master Plan` to `Part 12. Revision 2 (Lucas, 2026-11-03). Overrides Parts 1-11 where they conflict`, `Part 2. Research findings (do not redo; use)`, `Part 3. Technical architecture`, `Part 14. Revision 5 (Lucas, 2026-11-04). Overrides Parts 1-13 where they conflict`, `Part 15. Revision 6 (Lucas, 2026-11-05). Overrides Parts 1-14 where they conflict`, `Part 13. Revision 4 (Lucas, 2026-11-03 evening). Overrides Parts 1-12 where they conflict`, `Part 4. The hero object in detail (highest priority)`, `Part 6. Pages`, `Part 9. Execution protocol for the autonomous run`?**
+  _High betweenness centrality (0.141) - this node is a cross-community bridge._
 - **Should `compilerOptions` be split into smaller, more focused modules?**
   _Cohesion score 0.1 - nodes in this community are weakly interconnected._
-- **Why does `Lucas Vu Portfolio: Master Plan` connect `Lucas Vu Portfolio: Master Plan` to `Part 12. Revision 2 (Lucas, 2026-11-03). Overrides Parts 1-11 where they conflict`, `Part 2. Research findings (do not redo; use)`, `Part 3. Technical architecture`, `Part 14. Revision 5 (Lucas, 2026-11-04). Overrides Parts 1-13 where they conflict`, `Part 15. Revision 6 (Lucas, 2026-11-05). Overrides Parts 1-14 where they conflict`, `Part 13. Revision 4 (Lucas, 2026-11-03 evening). Overrides Parts 1-12 where they conflict`, `Part 4. The hero object in detail (highest priority)`, `Part 6. Pages`, `Part 9. Execution protocol for the autonomous run`?**
-  _High betweenness centrality (0.139) - this node is a cross-community bridge._
+- **Why does `build()` connect `Cradle` to `choreography.ts`, `PhysicsLab.tsx`, `calibrate.ts`, `Lucas Vu Portfolio: Master Plan`?**
+  _High betweenness centrality (0.137) - this node is a cross-community bridge._
 - **Should `PhysicsLab.tsx` be split into smaller, more focused modules?**
   _Cohesion score 0.13157894736842105 - nodes in this community are weakly interconnected._
-- **Why does `build()` connect `Cradle` to `PhysicsLab.tsx`, `calibrate.ts`, `vec.ts`, `Lucas Vu Portfolio: Master Plan`?**
-  _High betweenness centrality (0.136) - this node is a cross-community bridge._
-- **Should `next` be split into smaller, more focused modules?**
-  _Cohesion score 0.1310344827586207 - nodes in this community are weakly interconnected._
 - **Should `material.ts` be split into smaller, more focused modules?**
-  _Cohesion score 0.12315270935960591 - nodes in this community are weakly interconnected._
+  _Cohesion score 0.11174242424242424 - nodes in this community are weakly interconnected._

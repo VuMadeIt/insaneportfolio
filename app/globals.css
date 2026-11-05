@@ -390,6 +390,64 @@
   }
 }
 
+/* Selected objects (SelectedObjects.tsx, PLAN 15.13): turning the page. */
+@keyframes obj-rise {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+}
+@keyframes obj-wipe {
+  from {
+    clip-path: inset(100% 0 0 0);
+  }
+}
+@keyframes obj-settle {
+  from {
+    transform: scale(1.06);
+  }
+}
+.obj-rise {
+  animation: obj-rise 800ms var(--ease-out) both;
+}
+.obj-wipe {
+  animation: obj-wipe 900ms var(--ease-drawer) both;
+}
+.obj-wipe .obj-photo {
+  animation: obj-settle 1400ms var(--ease-out) both;
+}
+.obj-tab {
+  position: relative;
+  padding-bottom: 10px;
+}
+.obj-tab > span:first-child {
+  opacity: 0.55;
+  transition: opacity 400ms var(--ease-out);
+}
+.obj-tab:hover > span:first-child,
+.obj-tab:focus-visible > span:first-child,
+.obj-tab[data-on] > span:first-child {
+  opacity: 1;
+}
+.obj-tab::after {
+  content: "";
+  position: absolute;
+  inset: auto 0 0;
+  height: 1px;
+  background: var(--ink);
+  transform: scaleX(0);
+  transform-origin: 0;
+  transition: transform 600ms var(--ease-out);
+}
+.obj-tab[data-on]::after {
+  transform: scaleX(1);
+}
+@media (max-width: 767px) {
+  .obj-strip {
+    grid-auto-columns: 38vw;
+  }
+}
+
 /* Case-study coded visuals (src/components/case): drawn once they are in view. Without
    JavaScript `data-in` never turns false, so the resting state below is the finished drawing. */
 .statement span,

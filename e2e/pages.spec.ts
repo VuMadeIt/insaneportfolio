@@ -6,8 +6,16 @@ test("about: statement, timeline with logos, objects with labels, no essay", asy
   await expect(page.getByRole("heading", { name: "Chronology" })).toBeVisible();
   await expect(page.locator(".timeline-stop")).toHaveCount(8);
   await expect(page.locator(".timeline-stop").last()).toContainText("Digital Extremes");
-  await expect(page.locator("figure[id]")).toHaveCount(5);
-  await expect(page.getByRole("heading", { name: "To Socratica Sundays!" })).toBeVisible();
+  const tabs = page.getByRole("tablist", { name: "Objects" }).getByRole("tab");
+  await expect(tabs).toHaveCount(5);
+  await expect(tabs.first()).toHaveAttribute("aria-selected", "true");
+  await tabs.last().click();
+  await expect(tabs.last()).toHaveAttribute("aria-selected", "true");
+  await expect(
+    page.getByRole("tabpanel").getByRole("heading", { name: "To Socratica Sundays!" }),
+  ).toBeVisible();
+  await page.keyboard.press("ArrowRight");
+  await expect(tabs.first()).toBeFocused();
   await expect(page.getByText(/hummingbird|call myself a designer/i)).toHaveCount(0);
   const broken = await page.locator("main img").evaluateAll((imgs) =>
     Promise.all(

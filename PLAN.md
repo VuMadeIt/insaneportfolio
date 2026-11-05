@@ -1200,3 +1200,9 @@ Branch `phase/16-revision-5` (continues it). Answers from the Q&A are recorded i
   right-aligned to its edge (`HOME_PLACEMENT`). `/lab/tagline` compares six spots: above VU left,
   centred or right; above LUCAS; the hero's top-left corner; under the name before the projects.
   It rises in after the name and slides away with it when a story opens; the 404 has none.
+- **Selected objects** (About) as an editorial spread after the Tibetan-culture layouts: one
+  object open at a time (context label, title, text, the photo at no more than ~38vw / 62vh since
+  the photos are low resolution) over a strip of small prints; choosing a print wipes the photo up,
+  raises the text and draws a hairline under the print. A real tab list (arrows, Home, End);
+  `/about#<id>` opens that object. Patterns from Awwwards gallery/index elements: one image large
+  at a time, the rest as an index, motion only on change.

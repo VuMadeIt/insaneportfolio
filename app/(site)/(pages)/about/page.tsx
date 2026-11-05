@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { ExhibitMedia } from "@/components/ExhibitMedia";
+import { SelectedObjects } from "@/components/SelectedObjects";
 import { Timeline } from "@/components/Timeline";
 import { objects, portrait, statement } from "@/content/about";
 
@@ -47,31 +47,7 @@ export default function AboutPage() {
 
       <Timeline now={new Date().toISOString().slice(0, 7)} />
 
-      <section aria-labelledby="objects-title" className="px-[var(--gutter)] pb-[clamp(96px,14vh,180px)]">
-        <h2 id="objects-title" className="reveal text-[clamp(36px,4.5vw,64px)] leading-[1]">
-          Selected objects
-        </h2>
-        <div className="mt-12 grid gap-x-12 gap-y-20 md:grid-cols-2 lg:grid-cols-3">
-          {objects.map((o, k) => (
-            <figure key={o.id} id={o.id} className={`reveal scroll-mt-24 ${k % 3 === 1 ? "lg:mt-24" : ""}`}>
-              <ExhibitMedia
-                media={{
-                  image: o.image.src,
-                  alt: o.image.alt,
-                  width: o.image.width,
-                  height: o.image.height,
-                }}
-                sizes="(min-width: 1024px) 30vw, (min-width: 768px) 45vw, 100vw"
-              />
-              <figcaption className="mt-4 text-[15px] leading-[1.5]">
-                <h3 className="text-[18px] leading-[1.3]">{o.title}</h3>
-                <p className="text-muted">{o.context}</p>
-                <p className="mt-2 max-w-[30em] text-[16px]">{o.text}</p>
-              </figcaption>
-            </figure>
-          ))}
-        </div>
-      </section>
+      <SelectedObjects objects={objects} />
     </>
   );
 }

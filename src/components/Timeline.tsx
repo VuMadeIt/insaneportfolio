@@ -235,9 +235,8 @@ export function Timeline({ now: nowYm }: { now: string }) {
             </li>
           ))}
         </ol>
-        <div className="mt-16 overflow-x-auto pb-2">
-          <div className="min-w-[640px]">{chart}</div>
-        </div>
+        {/* Drawn in percent, so it fits any width: never a sideways scroll. */}
+        <div className="mt-16 pb-2">{chart}</div>
       </section>
     );
   }

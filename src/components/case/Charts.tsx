@@ -145,11 +145,30 @@ const Dash = () => (
   </svg>
 );
 
-/** A real table (allowed its lines): products down the side, what they do across the top. */
+/**
+ * A real table (allowed its lines): products down the side, what they do across the top. Narrow
+ * screens get the same facts as one short list per product, so nothing scrolls sideways.
+ */
 export function Table({ v }: { v: Of<"table"> }) {
+  const cell = (c: boolean | string) => (c === true ? <Check /> : c === false ? <Dash /> : c);
   return (
-    <div className="-mx-2 overflow-x-auto px-2">
-      <table className="w-full min-w-[620px] border-collapse text-left text-[15px]">
+    <>
+      <ul className="flex flex-col gap-3 text-[15px] lg:hidden">
+        {v.rows.map((r) => (
+          <li key={r.label} className={`rounded-sm p-4 ${r.ours ? "bg-white" : "bg-wall"}`}>
+            <p className="font-display text-[17px]">{r.label}</p>
+            <dl className="mt-2 grid grid-cols-[minmax(0,1fr)_auto] gap-x-4 gap-y-1.5">
+              {v.columns.map((c, i) => (
+                <div key={c} className="contents">
+                  <dt className="text-muted">{c}</dt>
+                  <dd className="justify-self-end">{cell(r.cells[i]!)}</dd>
+                </div>
+              ))}
+            </dl>
+          </li>
+        ))}
+      </ul>
+      <table className="hidden w-full border-collapse text-left text-[15px] lg:table">
         <thead>
           <tr>
             <th className="w-[22%] pb-4" />
@@ -171,14 +190,14 @@ export function Table({ v }: { v: Of<"table"> }) {
                   key={i}
                   className={`py-3.5 pr-4 ${i === r.cells.length - 1 ? "rounded-r-sm" : ""} ${r.ours ? "" : "table-rule"}`}
                 >
-                  {c === true ? <Check /> : c === false ? <Dash /> : c}
+                  {cell(c)}
                 </td>
               ))}
             </tr>
           ))}
         </tbody>
       </table>
-    </div>
+    </>
   );
 }
 

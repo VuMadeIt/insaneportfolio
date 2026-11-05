@@ -50,15 +50,6 @@ export function SelectedObjects({ objects }: { objects: ObjectItem[] }) {
     };
   }, [n, objects, step, yOf]);
 
-  // Phones: the index is one row; keep the object on stage in view along it.
-  const index = useRef<HTMLOListElement>(null);
-  useEffect(() => {
-    const ol = index.current;
-    const li = ol?.children[active] as HTMLElement | undefined;
-    if (ol && li && ol.scrollWidth > ol.clientWidth)
-      ol.scrollTo({ left: li.offsetLeft - ol.offsetLeft - 8, behavior: "smooth" });
-  }, [active]);
-
   const number = (i: number) => String(i + 1).padStart(2, "0");
 
   return (
@@ -78,10 +69,7 @@ export function SelectedObjects({ objects }: { objects: ObjectItem[] }) {
               Selected objects
             </h2>
             <nav aria-label="Objects" className="mt-5 md:mt-10">
-              <ol
-                ref={index}
-                className="obj-index flex gap-x-5 gap-y-2 overflow-x-auto font-display text-[15px] md:flex-col md:text-[17px]"
-              >
+              <ol className="obj-index flex flex-wrap gap-x-5 gap-y-2 font-display text-[15px] md:flex-col md:text-[17px]">
                 {objects.map((o, i) => (
                   <li key={o.id} className="shrink-0">
                     <a

@@ -1227,3 +1227,13 @@ Branch `phase/16-revision-5` (continues it). Answers from the Q&A are recorded i
   paid."
 - Digital Extremes' white logo sits on an ink tile again (the tile's colour went with the removed
   dark-half token).
+
+### 15.16 Case-study graphics and work order (Lucas, 2026-11-05 evening)
+- Diagram wires only bend when they must: when two boxes face each other over 14 px or more the
+  wire runs straight between them. Nothing scrolls sideways inside a component: below their width,
+  diagrams stack as an indented tree with tree lines; the comparison table becomes one short list
+  per product below 1024 px; the About timeline chart is drawn in percent and fits any width; the
+  phone index on Selected objects wraps.
+- Reboot's context cards carry their illustrations from the Framer case study.
+- /work order is curated: Warframe after Parrot, Asper after Reboot. Shufflr is April 2026, Reboot
+  February 2026.

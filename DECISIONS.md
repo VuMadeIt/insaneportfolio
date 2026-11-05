@@ -793,3 +793,15 @@ Lucas's notes after revision 4, with his Q&A answers. PLAN.md Part 14 is the spe
   `metadataBase` but not `og:video`, so the video URL is built absolute.
 - **Tests.** `scripts/user-test.mjs` adds the tagline, the About strip and the preview tags:
   95/95 across desktop, proxy, throttled, tablet and phone; 38/38 e2e.
+
+### About, part 2 (2026-11-05 night)
+
+- **Scroll-driven objects.** A sticky stage inside a runway of 100svh + 0.75 screens per object;
+  the object on stage is `floor(scrolled / step)`, with `step` measured from the runway and stage
+  heights so it matches the CSS whatever mobile toolbars do. Index links glide with Lenis (exposed
+  as `scrollToY` from ScrollMotion) to a quarter of the way into the object's stretch; plain
+  `#id` anchors still land without JavaScript.
+- **Index treatment.** Caleb Wu's case studies, Stripe's and Linear's docs all mark the current
+  section by weight and colour rather than a pill or bar; here muted 350 to ink 500, 300 ms.
+- **Testing note.** A programmatic scroll while Lenis is still gliding from a wheel is overridden
+  by the glide, so `scripts/user-test.mjs` waits for the glide before jumping to the section.

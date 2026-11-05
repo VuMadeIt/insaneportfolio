@@ -309,18 +309,25 @@ async function home(scenario) {
       record(scenario, "nav hides on scroll after a click", hidden);
       // About: scrolling moves through the objects; the index jumps straight to one.
       const index = page.getByRole("navigation", { name: "Objects" }).getByRole("link");
-      await page.locator("#objects-title").scrollIntoViewIfNeeded();
+      // Let the smooth scroll from the last wheel finish, then go to the section like a reader.
+      await page.waitForTimeout(1500);
+      await page.evaluate(() =>
+        window.scrollTo(
+          0,
+          document.querySelector("#objects-title").closest("section").getBoundingClientRect().top + scrollY,
+        ),
+      );
       await page.waitForTimeout(800);
       const first = await index.first().getAttribute("aria-current");
-      await page.mouse.wheel(0, 900);
+      // The title sits just below the top as the stage pins; a screen of wheel passes one object.
+      await page.mouse.wheel(0, 1300);
       await page.waitForTimeout(1500);
       const scrolled = await index.nth(1).getAttribute("aria-current");
       await index.nth(2).click();
-      await page.waitForTimeout(1800);
-      const jumped = await page
-        .getByRole("heading", { name: "Life Changing Memories with the Elderly" })
-        .isVisible()
-        .catch(() => false);
+      await page.waitForTimeout(2200);
+      const jumped =
+        (await index.nth(2).getAttribute("aria-current")) === "true" &&
+        (await page.getByRole("heading", { name: "Life Changing Memories with the Elderly" }).count()) === 1;
       record(
         scenario,
         "about: scroll moves to the next object, index jumps",

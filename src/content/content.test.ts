@@ -33,7 +33,7 @@ describe("site copy", () => {
       expect(hrefOf(p), p.slug).toBeTruthy();
       expect(p.media.video ?? p.media.hover, p.slug).toBeTruthy();
     }
-    expect(homeProjects.map((p) => p.slug)).toEqual(["ripple", "shufflr"]);
+    expect(homeProjects.map((p) => p.slug)).toEqual(["ripple", "shufflr", "reboot"]);
     expect(wins.slice(0, 3).map((p) => p.slug)).toEqual(["ripple", "shufflr", "we-should-go-to-japan"]);
     expect(wins.every((p) => p.prize)).toBe(true);
     expect(selected.some((p) => p.prize)).toBe(false);

@@ -10,7 +10,7 @@ const TONES = {
   accent: "rounded-sm bg-[var(--accent)] px-4 py-3 text-white",
   ink: "rounded-sm bg-ink px-4 py-3 text-wall",
   chip: "rounded-full bg-wall px-3.5 py-1.5 text-[15px] whitespace-nowrap",
-  ghost: "rounded-sm bg-[#e1ddd5] px-4 py-3 text-[#56534c]",
+  ghost: "rounded-sm bg-rule px-4 py-3 text-muted",
 } as const;
 
 interface Wire {

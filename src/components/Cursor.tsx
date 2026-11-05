@@ -16,10 +16,10 @@ function stateAt(target: Element | null): State {
 }
 
 /**
- * The site's cursor (PLAN 13.1): the old site's small ball, in the cradle's dark grey, trailing the
- * pointer a touch. Over links it swells and fades, over a work row it hides (the row's video
- * follows the pointer instead), and over a ball it swells to say "grab". Only on devices with a
- * fine pointer that can hover.
+ * The old site's small ball, in the cradle's dark grey, following the native cursor (PLAN 15.2).
+ * Over links it swells and fades, over a work row it hides (the row's video follows the pointer
+ * instead), and over a ball it swells to say "grab". Only on devices with a fine pointer that can
+ * hover.
  */
 export function Cursor() {
   const outer = useRef<HTMLDivElement>(null);
@@ -39,7 +39,7 @@ export function Cursor() {
       if (ball.current && ball.current.dataset.state !== state) ball.current.dataset.state = state;
     };
     const tick = () => {
-      const k = reduced ? 1 : 0.35;
+      const k = reduced ? 1 : 0.16;
       pos.x += (to.x - pos.x) * k;
       pos.y += (to.y - pos.y) * k;
       if (outer.current) outer.current.style.transform = `translate3d(${pos.x}px, ${pos.y}px, 0)`;

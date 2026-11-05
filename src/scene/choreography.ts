@@ -94,6 +94,24 @@ export function close(): void {
   });
 }
 
+/**
+ * The way in (PLAN 15.6): every ball waits above the frame, hanging still, then all are lowered as
+ * when a story closes. Runs on simulation time, so it starts when the scene first steps.
+ */
+export function intro(): void {
+  if (reducedMotion()) return enter(null);
+  timeline?.kill();
+  timeline = null;
+  cradle.release();
+  offsets.forEach((o, i) => {
+    o.x = 0;
+    o.y = OUT;
+    cradle.teleportAnchors(i, o);
+    cradle.lift(i, 0);
+  });
+  close();
+}
+
 /** Jump straight into a state with everything hanging still (deep links, reduced motion). */
 export function enter(selected: number | null): void {
   restoreTime();

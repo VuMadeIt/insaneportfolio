@@ -22,7 +22,7 @@ const browser = await chromium.launch({
 for (const route of paths.length ? paths : ["home"]) {
   for (const [width, height] of widths) {
     const page = await browser.newPage({ viewport: { width, height } });
-    await page.goto(`${base}/${route === "home" ? "" : route}`, { waitUntil: "networkidle" });
+    await page.goto(`${base}/${route === "home" ? "" : route}`, { waitUntil: "load" });
     await page.waitForTimeout(Number(process.env.SETTLE ?? 1500));
     const name = `${route.replace(/[/?=&]/g, "_")}-${width}.png`;
     await page.screenshot({ path: `${dir}/${name}`, fullPage: process.env.FULL === "1" });

@@ -186,7 +186,7 @@ export function Timeline({ now: nowYm }: { now: string }) {
             onClick={() => jump(i)}
             tabIndex={pinned ? 0 : -1}
             aria-label={`${r.role}, ${r.place}, ${span(r)}`}
-            className={`absolute flex h-8 items-center gap-2 overflow-hidden rounded-full pl-1 pr-3 text-left text-[14px] transition-colors duration-500 ${on ? "bg-ink text-wall" : near ? "bg-[#d9d6cf] text-ink" : "bg-[#e8e5de] text-[#55524b]"}`}
+            className={`absolute flex h-8 items-center gap-2 overflow-hidden rounded-full pl-1 pr-3 text-left text-[14px] transition-colors duration-500 ${on ? "bg-ink text-wall" : near ? "bg-rule text-ink" : "bg-panel text-muted"}`}
             style={{ left: `${x(m(r.start))}%`, width: `${x(end) - x(m(r.start))}%`, top: lane[i]! * ROW }}
           >
             <Logo role={r} size="sm" />

@@ -15,7 +15,7 @@ export function HeroBack() {
       href="/"
       scroll={false}
       aria-label="Back to the cradle"
-      className="u-grow absolute left-[var(--gutter)] top-[calc((var(--nav-h)_-_1.5em)_/_2)] z-10 text-[16px]"
+      className="u-grow font-display absolute left-[var(--gutter)] top-[calc((var(--nav-h)_-_1.5em)_/_2)] z-10"
     >
       <span aria-hidden>&larr;</span> back
     </Link>

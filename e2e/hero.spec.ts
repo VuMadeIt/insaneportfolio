@@ -1,6 +1,6 @@
 import { expect, test } from "@playwright/test";
 
-const WALL = [0xf3, 0xf1, 0xec];
+const WALL = [0xf7, 0xf0, 0xdf];
 
 test.describe("hero with WebGL", () => {
   test("the canvas edges blend invisibly into the page wall", async ({ page }) => {

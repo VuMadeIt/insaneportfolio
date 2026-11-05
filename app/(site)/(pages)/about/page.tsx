@@ -1,14 +1,14 @@
 import Image from "next/image";
 import { ExhibitMedia } from "@/components/ExhibitMedia";
 import { Timeline } from "@/components/Timeline";
-import { essay, objects, portrait, statement } from "@/content/about";
+import { objects, portrait, statement } from "@/content/about";
 
 export const metadata = {
   title: "About",
   description: "Product designer, Systems Design Engineering at Waterloo, cadet, chess player, fisherman.",
 };
 
-/** About: who I am with a portrait, the timeline, things from outside work, an essay. */
+/** About: who I am with a portrait, the timeline, things from outside work. */
 export default function AboutPage() {
   return (
     <>
@@ -54,29 +54,15 @@ export default function AboutPage() {
         <div className="mt-12 grid gap-x-12 gap-y-20 md:grid-cols-2 lg:grid-cols-3">
           {objects.map((o, k) => (
             <figure key={o.id} id={o.id} className={`reveal scroll-mt-24 ${k % 3 === 1 ? "lg:mt-24" : ""}`}>
-              {o.image && (
-                <ExhibitMedia
-                  media={{
-                    image: o.image.src,
-                    alt: o.image.alt,
-                    width: o.image.width,
-                    height: o.image.height,
-                  }}
-                  sizes="(min-width: 1024px) 30vw, (min-width: 768px) 45vw, 100vw"
-                />
-              )}
-              {o.video && (
-                <ExhibitMedia
-                  media={{
-                    video: o.video.src,
-                    poster: o.video.poster,
-                    alt: o.video.alt,
-                    width: o.video.width,
-                    height: o.video.height,
-                  }}
-                  sizes="30vw"
-                />
-              )}
+              <ExhibitMedia
+                media={{
+                  image: o.image.src,
+                  alt: o.image.alt,
+                  width: o.image.width,
+                  height: o.image.height,
+                }}
+                sizes="(min-width: 1024px) 30vw, (min-width: 768px) 45vw, 100vw"
+              />
               <figcaption className="mt-4 text-[15px] leading-[1.5]">
                 <h3 className="text-[18px] leading-[1.3]">{o.title}</h3>
                 <p className="text-muted">{o.context}</p>
@@ -86,23 +72,6 @@ export default function AboutPage() {
           ))}
         </div>
       </section>
-
-      <article
-        aria-labelledby="essay-title"
-        className="bg-[#e9e6df] px-[var(--gutter)] py-[clamp(96px,14vh,180px)]"
-      >
-        <div className="mx-auto max-w-[640px]">
-          <h2 id="essay-title" className="text-[clamp(28px,4vw,56px)] leading-[1.05]">
-            {essay.title}
-          </h2>
-          <p className="mt-4 text-[15px] text-muted">An essay, {essay.date}.</p>
-          <div className="mt-10 flex flex-col gap-6 text-[19px] leading-[1.65]">
-            {essay.paragraphs.map((p, k) => (
-              <p key={k}>{p}</p>
-            ))}
-          </div>
-        </div>
-      </article>
     </>
   );
 }

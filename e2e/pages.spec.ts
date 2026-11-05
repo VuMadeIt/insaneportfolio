@@ -1,15 +1,14 @@
 import { expect, test } from "@playwright/test";
 
-test("about: statement, timeline with logos, objects with labels, the essay", async ({ page }) => {
+test("about: statement, timeline with logos, objects with labels, no essay", async ({ page }) => {
   await page.goto("/about");
   await expect(page.getByRole("heading", { level: 1 })).toHaveText("About");
   await expect(page.getByRole("heading", { name: "Chronology" })).toBeVisible();
   await expect(page.locator(".timeline-stop")).toHaveCount(8);
   await expect(page.locator(".timeline-stop").last()).toContainText("Digital Extremes");
-  await expect(page.locator("figure[id]")).toHaveCount(6);
-  await expect(
-    page.getByRole("heading", { name: "Why I'm finally ready to call myself a designer" }),
-  ).toBeVisible();
+  await expect(page.locator("figure[id]")).toHaveCount(5);
+  await expect(page.getByRole("heading", { name: "To Socratica Sundays!" })).toBeVisible();
+  await expect(page.getByText(/hummingbird|call myself a designer/i)).toHaveCount(0);
   const broken = await page.locator("main img").evaluateAll((imgs) =>
     Promise.all(
       imgs.map(async (img) => {
@@ -39,11 +38,11 @@ test("the timeline: one section per role, the ball moves along the axis as the p
   await expect(page.getByText("At the same time")).toHaveCount(0);
 });
 
-test("inner pages carry the same nav: the four balls home, About, Work, Contact", async ({ page }) => {
+test("inner pages carry the same nav: the ball home, about, work, contact by email", async ({ page }) => {
   await page.goto("/work");
   const nav = page.getByRole("navigation", { name: "Site" });
   await expect(nav.getByRole("link", { name: "Lucas Vu, home" })).toHaveAttribute("href", "/");
-  await expect(nav.getByRole("link", { name: "Contact" })).toHaveAttribute("href", "#contact");
+  await expect(nav.getByRole("link", { name: "contact" })).toHaveAttribute("href", /^mailto:/);
   await expect(page.locator("footer#contact")).toContainText("lucasvu.work@gmail.com");
 });
 

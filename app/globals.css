@@ -6,6 +6,7 @@
   --color-ink: var(--ink);
   --color-muted: var(--muted);
   --color-rule: var(--rule);
+  --color-panel: var(--panel);
   --color-night: var(--night);
   --font-display: var(--font-general), "Helvetica Neue", Arial, sans-serif;
   --font-sans: var(--font-cabinet), "Helvetica Neue", Arial, sans-serif;
@@ -45,6 +46,12 @@
   }
   th {
     font-weight: inherit;
+  }
+  /* The same warm grade on photos, videos, the rendered objects and the cradle (PLAN 15.4). */
+  img,
+  video,
+  canvas {
+    filter: sepia(0.12) saturate(0.94);
   }
   ::selection {
     background: var(--ink);
@@ -101,11 +108,7 @@
   }
 }
 
-/* The custom cursor (Cursor.tsx, PLAN 13.1). The native cursor hides only where ours runs. */
-.custom-cursor,
-.custom-cursor * {
-  cursor: none !important;
-}
+/* The ball that trails the native cursor (Cursor.tsx, PLAN 15.2). */
 .cursor-outer {
   display: none;
   position: fixed;
@@ -223,69 +226,109 @@
   background: var(--wall);
   box-shadow: 0 1px 0 var(--rule); /* taste-skill-ignore: a hairline under the stuck nav */
 }
-.site-nav[data-hidden]:not(:focus-within) {
+/* Keyboard focus keeps it out; a clicked link keeps focus after a client navigation, which kept the
+   bar stuck on screen, so only :focus-visible counts. */
+.site-nav[data-hidden]:not(:has(:focus-visible)) {
   transform: translateY(calc(-100% - 2px));
 }
 
-/* "Let's get things moving." (MovingLine.tsx): words rise out of masks, a ball drops into the "o". */
-.moving-mask {
-  display: inline-block;
-  overflow: hidden;
-  vertical-align: bottom;
-  /* Room for descenders inside the mask. */
-  padding-bottom: 0.12em;
-  margin-bottom: -0.12em;
+/* "Let's get things moving." (MovingLine.tsx, after Kern Society's hero). Without JavaScript the
+   letters sit in normal flow at rest; live, each is placed and shaped every frame. */
+.flex-line {
+  font-weight: 600;
+  letter-spacing: 0;
+  line-height: 1;
 }
-.moving-mask > span {
-  display: inline-block;
-  transition: transform 1.1s var(--ease-power4-out);
-  transition-delay: calc(var(--i) * 70ms);
-}
-.moving-line[data-armed]:not([data-in]) .moving-mask > span {
-  transform: translateY(110%);
-}
-.moving-line[data-armed]:not([data-in]) .moving-ball {
-  visibility: hidden;
-}
-.moving-o {
+.flex-wm {
   position: relative;
+  display: block;
+  white-space: pre;
+  font-size: 7.2vw;
+  font-variation-settings:
+    "wght" 600,
+    "wdth" 50,
+    "opsz" 144;
+  transition: opacity 400ms var(--ease-out);
+}
+.flex-l {
   display: inline-block;
-  width: 0.56em;
-  height: 0.5em;
 }
-.moving-ball {
+@media (max-width: 767px) {
+  .flex-wm {
+    font-size: 15vw;
+  }
+  .flex-wm-line {
+    display: block;
+  }
+  .flex-sp {
+    display: none;
+  }
+}
+@media (scripting: enabled) {
+  .flex-wm:not([data-live]) {
+    opacity: 0;
+  }
+}
+.flex-wm[data-live] {
+  height: 1em;
+}
+.flex-wm[data-live] .flex-wm-line {
+  display: contents;
+}
+.flex-wm[data-live] .flex-l {
   position: absolute;
-  left: 0.03em;
-  bottom: -0.01em;
-  width: 0.5em;
-  height: 0.5em;
-  overflow: hidden;
-  border-radius: 999px;
-  will-change: transform;
+  left: 0;
+  top: 0;
+  will-change: transform, font-variation-settings;
 }
-.moving-ball img {
-  width: 100%;
-  height: 100%;
-  user-select: none;
-  pointer-events: none;
+.flex-wm[data-live][data-phone] {
+  height: auto;
 }
-/* A glint slides across the ball on hover, like light catching steel. */
-.moving-ball::after {
+.flex-wm[data-live][data-phone] .flex-wm-line {
+  position: relative;
+  display: block;
+  height: 1em;
+}
+/* The ruler under the line (Kern's), with a small ball for the marker. */
+.flex-ruler {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  height: 9px;
+  margin-top: clamp(14px, 2vh, 24px);
+}
+.flex-ruler::before {
   content: "";
   position: absolute;
-  inset: 0;
-  border-radius: 999px;
-  /* prettier-ignore */
-  background: radial-gradient(circle at 50% 50%, rgb(255 255 255 / 0.75), rgb(255 255 255 / 0) 32%); /* taste-skill-ignore: a specular glint on the ball */
-  opacity: 0;
-  transform: translate(-45%, -40%);
-  transition:
-    opacity 300ms var(--ease-out),
-    transform 900ms var(--ease-out);
+  inset: auto 0 0;
+  border-top: 1px solid var(--underline); /* taste-skill-ignore: the ruler's baseline */
 }
-.moving-o:hover .moving-ball::after {
+.flex-ruler span {
+  position: relative;
+  border-left: 1px solid var(--underline); /* taste-skill-ignore: ruler ticks */
+}
+.flex-ruler span:last-of-type {
+  border-right: 1px solid var(--underline); /* taste-skill-ignore: ruler ticks */
+}
+.flex-ruler span::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  height: 4px;
+  border-left: 1px solid var(--underline); /* taste-skill-ignore: ruler ticks */
+}
+.flex-marker {
+  position: absolute;
+  left: -5px;
+  bottom: 1px;
+  width: 10px;
+  height: 10px;
+  opacity: 0;
+  transition: opacity 300ms var(--ease-out);
+}
+.flex-marker[data-on] {
   opacity: 1;
-  transform: translate(25%, 18%);
 }
 
 /* The work catalogue's rows (PLAN Part 5 allows its rules) and the rows of real tables. */
@@ -296,7 +339,7 @@
   border-top: 1px solid var(--rule); /* taste-skill-ignore: catalogue rules, PLAN Part 5 */
 }
 .table-rule {
-  border-top: 1px solid #d9d6cf; /* taste-skill-ignore: a real <table> */
+  border-top: 1px solid var(--rule); /* taste-skill-ignore: a real <table> */
 }
 
 /* The work list's floating preview (WorkList.tsx): centred on the pointer, it is the cursor. */
@@ -470,6 +513,14 @@
   /* Neighbouring captions are wider than the ball pitch on phones: stagger them. */
   .fallback-target:nth-child(even) {
     padding-top: calc(0.065 * var(--s) + 32px);
+  }
+}
+
+/* The still and its links are the fallback only: with JavaScript they stay hidden until the page
+   knows WebGL is missing (HeroStage.tsx). */
+@media (scripting: enabled) {
+  .hero-still:not([data-fallback]) {
+    visibility: hidden;
   }
 }
 

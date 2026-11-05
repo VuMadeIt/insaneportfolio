@@ -1,0 +1,203 @@
+/* The menu from havenconstructions.com.au, in the site's palette (PLAN 15.7). Timings and curves
+   are Haven's: background and clip 1 s on their ease-out, rows 0.6 s staggered 40 ms. */
+.bar {
+  --pad: 12px;
+  --ease-out: cubic-bezier(0.19, 1, 0.22, 1);
+  --ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-el: cubic-bezier(0.65, 0, 0, 1);
+  position: fixed;
+  inset: 0 0 auto;
+  z-index: 40;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: start;
+  padding: calc(20px - var(--pad)) var(--gutter) 0;
+  pointer-events: none;
+}
+.bar > * {
+  pointer-events: auto;
+}
+.home,
+.right {
+  margin-top: calc(var(--pad) + 14px);
+}
+.right {
+  justify-self: end;
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+.nav {
+  width: min(420px, calc(100vw - 2 * var(--gutter) - 120px));
+  color: var(--ink);
+  background: var(--panel);
+  clip-path: inset(var(--pad) round 4px);
+  transition:
+    background-color 1s var(--ease-out),
+    clip-path 1s var(--ease-out),
+    width 1.4s var(--ease-out),
+    color 1s var(--ease-out);
+}
+.scrolled .nav:not(.open) {
+  width: min(320px, calc(100vw - 2 * var(--gutter) - 120px));
+}
+@media (hover: hover) {
+  .nav:hover {
+    color: var(--wall);
+    background: var(--ink);
+    clip-path: inset(var(--pad) 0 round 8px);
+    width: min(420px, calc(100vw - 2 * var(--gutter) - 120px));
+  }
+}
+.open {
+  color: var(--wall);
+  background: var(--ink);
+  clip-path: inset(0 round 8px);
+}
+.toggle {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: space-between;
+  padding: calc(var(--pad) + 14px) 28px;
+}
+.burger {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+.burger span {
+  position: relative;
+  display: block;
+  width: 52px;
+  height: 1px;
+  transition: transform 0.1s ease-in 0.1s;
+}
+.burger span::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: currentColor;
+  transition: transform 0.1s ease-out;
+}
+.open .burger span {
+  transition: transform 0.1s ease-out;
+  transform: translateY(4px);
+}
+.open .burger span + span {
+  transform: translateY(-4px);
+}
+.open .burger span::before {
+  transition: transform 0.1s ease-in 0.1s;
+  transform: rotate(12deg);
+}
+.open .burger span + span::before {
+  transform: rotate(-12deg);
+}
+.menu {
+  display: grid;
+  grid-template-rows: 0fr;
+  overflow: hidden;
+  transition: grid-template-rows 0.5s var(--ease-in-out);
+}
+.open .menu {
+  grid-template-rows: 1fr;
+}
+.inner {
+  overflow: hidden;
+}
+.rows {
+  padding: 0 28px;
+}
+.row,
+.contact {
+  position: relative;
+  transform: translateY(30px);
+  transition: transform 0.6s var(--ease-el);
+  transition-delay: inherit;
+}
+.row + .row::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto;
+  height: 1px;
+  background: currentColor;
+  opacity: 0.14;
+  transform: scaleX(0);
+  transform-origin: 0;
+  transition: transform 0.6s var(--ease-el);
+  transition-delay: inherit;
+}
+.open .row,
+.open .contact {
+  transform: none;
+}
+.open .row + .row::before {
+  transform: scaleX(1);
+}
+.link {
+  position: relative;
+  display: block;
+  padding-block: 22px;
+  font-size: clamp(22px, 1.8vw, 26px);
+  transform: translateY(50px);
+  transition: transform 0.6s var(--ease-el);
+  transition-delay: inherit;
+}
+.open .link {
+  transform: none;
+}
+.link span {
+  display: inline-block;
+  transition: transform 1s var(--ease-out);
+}
+/* Haven's square bullet, drawn as one of the cradle's balls. */
+.link::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: calc(50% - 4px);
+  width: 9px;
+  height: 9px;
+  border-radius: 999px;
+  /* prettier-ignore */
+  background: radial-gradient(circle at 35% 30%, #f3ecdc 0%, #9a958a 30%, #3a3833 72%); /* taste-skill-ignore: shading that draws a sphere */
+  transform: scale(0);
+  transition: transform 0.4s;
+}
+.link:hover span,
+.open .current span {
+  transform: translateX(22px);
+}
+.link:hover::before,
+.open .current::before {
+  transform: scale(1);
+  transition: transform 1s var(--ease-out);
+}
+.open .current span,
+.open .current::before {
+  transition-delay: 0.2s;
+}
+.contacts {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 28px 28px 36px;
+}
+.contact a {
+  opacity: 0.8;
+  transition: opacity 0.3s;
+}
+.contact a:hover {
+  opacity: 1;
+}
+@media (prefers-reduced-motion: reduce) {
+  .nav,
+  .menu,
+  .row,
+  .contact,
+  .link,
+  .link span {
+    transition: none;
+  }
+}

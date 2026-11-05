@@ -7,7 +7,8 @@ import { frameFor } from "./framing";
 import { useLook } from "./look";
 
 export const REFLECTION_LAYER = 1;
-const WALL = "#f3f1ec";
+/** The page's --wall (tokens.css). */
+const WALL = "#f7f0df";
 
 /**
  * The gallery wall. The canvas is transparent, so the page itself is the wall the visitor sees;

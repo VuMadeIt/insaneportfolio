@@ -23,7 +23,7 @@ export type Prize = "gold" | "bronze" | "cash" | "airpods";
 export interface Project {
   slug: string;
   title: string;
-  /** 1 to 4: the home page shows 1 and 2; ranked projects lead their group on /work. */
+  /** 1 to 4: ranked projects lead their group on /work. */
   rank?: number;
   /** YYYY-MM, for the chronological list (newest first). */
   date: string;
@@ -395,8 +395,8 @@ const ordered = (list: Project[]) => [
   ...list.filter((p) => !p.rank).sort((a, b) => b.date.localeCompare(a.date)),
 ];
 
-/** The home page: the two strongest (PLAN 13.3). */
-export const homeProjects = ordered(projects).slice(0, 2);
+/** The home page: the two strongest, then Reboot (PLAN 15.5). */
+export const homeProjects = ["ripple", "shufflr", "reboot"].map((slug) => projectBySlug(slug)!);
 
 /** /work (PLAN 14.6): hackathon wins, then selected projects. */
 export const wins = ordered(projects.filter((p) => p.prize));

@@ -1096,3 +1096,58 @@ Branch `phase/16-revision-5`. Answers from the Q&A are recorded inline.
 ### 14.7 Case studies and About
 - No date above case-study titles (the timeline is in the metadata).
 - The About timeline drops the "At the same time" lists; the gantt already shows overlaps.
+
+---
+
+## Part 15. Revision 6 (Lucas, 2026-11-05). Overrides Parts 1-14 where they conflict
+
+Branch `phase/16-revision-5` (continues it). Answers from the Q&A are recorded inline.
+
+### 15.1 "Let's get things moving." (replaces 14.5's ball in the "o")
+- Reverse-engineered from Kern Society's hero (shockingmike.github.io/kern-society, recording
+  `reference/inspo/lets-get-moving-20261105-1530-27.5372907.mp4`): the line always fills the
+  column; letters near the pointer swell to black and extended, the rest condense to hairlines,
+  and one shared offset is solved every frame so the advances add up exactly. Their model, ported:
+  a measured wght x wdth advance grid per glyph, a two-segment axis path through rest, Gaussian
+  emphasis with a vertical falloff, a pulse through the line on entry, a ruler whose marker
+  (here a small ball) follows the scroll on phones and drives the letters there.
+- Typeface: **Roboto Flex** (OFL; Lucas chose it for its real width axis), this line only. It may
+  go up to wght 1000: this line is the one exception to 14.2's weight ceiling.
+- Driven from GSAP's ticker, stopped once settled. Reduced motion: the line rests.
+
+### 15.2 Cursor (amends 13.1)
+- The native cursor is always visible; the small dark ball follows it with a soft lag, everywhere,
+  keeping its link / grab / hide states.
+
+### 15.3 Nav and footer (amend 14.3, 14.4)
+- One ball (not four) as the home link. `contact` opens an email instead of scrolling.
+- Nav and footer set like the rest of the site: General Sans 350, body size, ink, lowercase.
+- Bug: after clicking a nav link the bar stayed on screen while scrolling down (the clicked link
+  kept focus across the client navigation, and `:focus-within` held the bar). Only
+  `:focus-visible` keeps it out now.
+
+### 15.4 Warm grade
+- From `reference/inspo/hero-chrome-lucas-vu-grade.png` (temperature up, saturation down): wall
+  `#f7f0df`, ink `#14120d`, warm muted/rule/panel tokens, and `sepia(0.12) saturate(0.94)` on
+  images, video and the cradle canvas.
+
+### 15.5 Home
+- Work rows: Ripple, Shufflr, Reboot; no prize objects on home (they stay on /work).
+
+### 15.6 Arrival
+- Every arrival on the home page (first visit, reload, coming back from another page) drops the
+  balls in from above, the same lowering as closing a story. The pre-rendered still is now only the
+  no-WebGL / no-JavaScript fallback.
+
+### 15.7 Nav lab (`/lab/nav`)
+- The havenconstructions.com.au menu, in the site's palette, over the home page: a quiet pill that
+  darkens on hover and opens into staggered rows with hairlines, a ball bullet for the current
+  page, and the email + LinkedIn underneath. For Lucas to compare; the current nav stays live.
+
+### 15.8 Type lab (`/lab/type`)
+- The home page with a switcher: General Sans + Cabinet Grotesk (now), Fraunces (revision 1),
+  General Sans only, Cabinet Grotesk only, Roboto Flex. `?font=<key>` for screenshots.
+
+### 15.9 About
+- The fishing object and the essay are removed. "Socratica's Create-a-thon / Socratica, UW/UX,
+  Blueprint" becomes "To Socratica Sundays! / Socratica".

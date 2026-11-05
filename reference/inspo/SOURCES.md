@@ -1,5 +1,15 @@
 # Visual inspo (not shipped)
 
+## Hero / grade (2026-11-05)
+
+- `hero-chrome-lucas-vu-grade.png` — chrome cradle over **"Lucas Vu"** (oversized L/V), cream wall,
+  top-left "I like getting things moving" + `[work]`, top-right role lines, `[about me]` near the
+  name. Crop includes photo-grade sliders: saturation slightly down, **temperature warm**. Use for
+  hero composition + wall warmth / grade feel (not the slider UI itself).
+- `lets-get-moving-20261105-1530-27.5372907.mp4` — Lucas screen recording (Screen Sketch,
+  2026-11-05). Motion / timing reference for the **"Let's get things moving."** line (about teaser
+  / dark-half word-by-word light-up). Keep beside the hero grade still when judging that beat.
+
 ## Footer reference (2026-11-03 evening) — USE for footer layout
 
 - `footer-reference.png` — three-column light footer: left **lucas vu** + moon + local time

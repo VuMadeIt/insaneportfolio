@@ -23,35 +23,32 @@ const ICONS = [
 
 /**
  * The close on every page (PLAN 14.4, `reference/inspo/footer-reference.png`): a hairline, then the
- * name and Toronto's time, the pages, and the way to reach me. `#contact` is the nav's Contact.
+ * name and Toronto's time, the pages, and the way to reach me. Set like the nav (PLAN 15.3).
  */
 export function Footer() {
   return (
-    <footer id="contact" aria-label="Contact" className="px-[var(--gutter)]">
-      <div className="footer-rule grid gap-x-10 gap-y-10 pb-[clamp(48px,8vh,88px)] pt-[clamp(32px,5vh,48px)] text-[16px] leading-[1.6] sm:grid-cols-2 md:grid-cols-4">
-        <div className="md:col-span-2">
-          <Link
-            href="/"
-            className="font-display text-[clamp(24px,2vw,28px)] font-[350] leading-[1.1] tracking-[-0.02em]"
-          >
+    <footer id="contact" aria-label="Contact" className="font-display px-[var(--gutter)]">
+      <div className="footer-rule grid gap-x-10 gap-y-10 pb-[clamp(48px,8vh,88px)] pt-[clamp(32px,5vh,48px)] leading-[1.6] sm:grid-cols-2 lg:grid-cols-4">
+        <div className="lg:col-span-2">
+          <Link href="/" className="text-[clamp(24px,2vw,28px)] leading-[1.1] tracking-[-0.02em]">
             lucas vu
           </Link>
           <TorontoTime />
         </div>
-        <ul className="flex flex-col gap-1 text-muted">
+        <ul className="flex flex-col gap-1">
           <li>
-            <Link href="/work" className="u-grow transition-colors duration-200 hover:text-ink">
-              Work
+            <Link href="/work" className="u-grow">
+              work
             </Link>
           </li>
           <li>
-            <Link href="/about" className="u-grow transition-colors duration-200 hover:text-ink">
-              About
+            <Link href="/about" className="u-grow">
+              about
             </Link>
           </li>
         </ul>
         <div>
-          <p className="text-muted">Let&apos;s work together!</p>
+          <p>let&apos;s work together!</p>
           <a href={`mailto:${CONTACT.email}`} className="u-grow">
             {CONTACT.email}
           </a>
@@ -61,7 +58,7 @@ export function Footer() {
                 <a
                   href={href}
                   aria-label={name}
-                  className="block text-muted transition-colors duration-200 hover:text-ink"
+                  className="block transition-opacity duration-200 hover:opacity-60"
                 >
                   <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden>
                     <path d={d} />

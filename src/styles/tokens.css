@@ -1,8 +1,11 @@
 :root {
-  --wall: #f3f1ec;
-  --ink: #121212;
-  --muted: #68655e;
-  --rule: #d9d6cf;
+  /* A warm grade over everything (PLAN 15.4, reference/inspo/hero-chrome-lucas-vu-grade.png). */
+  --wall: #f7f0df;
+  --ink: #14120d;
+  --muted: #696354;
+  --rule: #ddd4c1;
+  /* One tone step below the wall: media placeholders, case-study panels. */
+  --panel: #eee6d3;
   /* The home page's dark half (the old site's ink). */
   --night: #0e0e0c;
   --gutter: clamp(32px, 8vw, 128px);
@@ -13,7 +16,7 @@
   --ease-power4-out: cubic-bezier(0.165, 0.84, 0.44, 1);
   --ease-power4-in-out: cubic-bezier(0.77, 0, 0.175, 1);
   /* Hover underlines (PLAN 13.1): light grey, never a gradient. */
-  --underline: #b8b5ad;
+  --underline: #bbb29e;
   /* Thin progress fills and lines: the dark grey of the cursor and the balls. */
   --metal: #3a3936;
   --metal-v: #3a3936;

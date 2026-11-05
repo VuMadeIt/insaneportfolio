@@ -1,9 +1,9 @@
 import { getImageProps } from "next/image";
 
 /**
- * The pre-rendered still of the real scene (scripts/still.mjs). It is the LCP image, stays until
- * the canvas has drawn, and is the whole cradle when WebGL is unavailable. Positioned by
- * `.cradle-still` in globals.css with the same framing maths as the camera.
+ * The pre-rendered still of the real scene (scripts/still.mjs): the whole cradle when WebGL or
+ * JavaScript is unavailable. Positioned by `.cradle-still` in globals.css with the same framing
+ * maths as the camera.
  */
 export function CradleStill() {
   const common = { alt: "", sizes: "100vw" };
@@ -12,7 +12,6 @@ export function CradleStill() {
     src: "/fallback/cradle-landscape.webp",
     width: 2000,
     height: 2000,
-    priority: true,
   }).props;
   const portrait = getImageProps({
     ...common,

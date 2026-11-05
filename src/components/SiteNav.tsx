@@ -5,6 +5,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useSyncExternalStore } from "react";
 import { isMuted, setMuted, subscribeMuted, unlockAudio } from "@/audio/clack";
+import { CONTACT } from "@/content/contact";
 import { identityIndex } from "@/content/identities";
 
 /** Speaker with sound waves, or with a cross when muted. */
@@ -35,7 +36,7 @@ export function SoundButton() {
       aria-pressed={on}
       aria-label={on ? "Sound on" : "Sound off"}
       title={on ? "Sound on" : "Sound off"}
-      className="-m-2 rounded-full p-2 text-muted transition-colors duration-200 hover:text-ink"
+      className="-m-2 rounded-full p-2 transition-opacity duration-200 hover:opacity-60"
       onClick={() => {
         unlockAudio();
         setMuted(on);
@@ -46,17 +47,11 @@ export function SoundButton() {
   );
 }
 
-const LINKS = [
-  ["About", "/about"],
-  ["Work", "/work"],
-  ["Contact", "#contact"],
-] as const;
-
 /**
- * The same slim bar on every page (PLAN 14.3): the four balls home on the left; About, Work,
- * Contact and the sound button on the right. It hides while you scroll down and comes back on any
- * scroll up; at the top of the page it is always there. An open story hands the corner to its
- * back arrow.
+ * The same slim bar on every page (PLAN 14.3, 15.3): one ball home on the left; about, work,
+ * contact (an email) and the sound button on the right, set like the headings. It hides while you
+ * scroll down and comes back on any scroll up; at the top of the page it is always there. An open
+ * story hands the corner to its back arrow.
  */
 export function SiteNav() {
   const pathname = usePathname();
@@ -79,7 +74,8 @@ export function SiteNav() {
     return () => removeEventListener("scroll", onScroll);
   }, [pathname]);
 
-  if (pathname.startsWith("/lab")) return null;
+  // The type lab shows the real nav in each typeface.
+  if (pathname.startsWith("/lab") && pathname !== "/lab/type") return null;
   return (
     <header
       ref={bar}
@@ -89,32 +85,25 @@ export function SiteNav() {
     >
       <nav
         aria-label="Site"
-        className="flex h-[var(--nav-h)] items-center justify-between px-[var(--gutter)] text-[16px]"
+        className="font-display flex h-[var(--nav-h)] items-center justify-between px-[var(--gutter)]"
       >
         <Link
           href="/"
           aria-label="Lucas Vu, home"
           className="-m-2 p-2 transition-opacity duration-200 hover:opacity-75"
         >
-          <Image
-            src="/media/objects/balls.webp"
-            alt=""
-            width={88}
-            height={22}
-            priority
-            className="h-[22px] w-auto"
-          />
+          <Image src="/media/objects/ball.webp" alt="" width={24} height={24} priority className="size-6" />
         </Link>
         <div className="flex items-center gap-6 sm:gap-8">
-          {LINKS.map(([name, href]) => (
-            <Link
-              key={name}
-              href={href}
-              className="u-grow text-muted transition-colors duration-200 hover:text-ink"
-            >
-              {name}
-            </Link>
-          ))}
+          <Link href="/about" className="u-grow">
+            about
+          </Link>
+          <Link href="/work" className="u-grow">
+            work
+          </Link>
+          <a href={`mailto:${CONTACT.email}`} className="u-grow">
+            contact
+          </a>
           <SoundButton />
         </div>
       </nav>

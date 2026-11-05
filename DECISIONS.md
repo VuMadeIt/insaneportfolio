@@ -698,3 +698,36 @@ Lucas's notes after revision 4, with his Q&A answers. PLAN.md Part 14 is the spe
   (the "2-4 year GPU lifecycle" figure had no source) and the stock photos. No "Looking back" or
   learnings were invented. The next-project chain is Ripple, Shufflr, Reboot, Maple Leaf.
 - **About.** The timeline's "At the same time" lists are gone; overlapping bars still light up.
+
+## Revision 6 (2026-11-05)
+
+- **Kern line, reverse-engineered.** Kern Society's hero is not a GSAP tween: it is a per-frame
+  solver (their `main.js`, `initHero`). Ported as a pure model (`src/components/flexFit.ts`, with
+  Vitest cases) plus a component on GSAP's ticker. Differences: their wordmark is 12 capitals
+  capped by viewport height; ours is 24 mixed-case characters, so resting at the narrowest width
+  (their sizing) left no room to condense. The line is sized to rest at wdth 50 instead, so far
+  letters can still give up width. Desktop: one line; phones: "Let's get" / "things moving.",
+  each fitted on its own, with the scroll-driven marker. The descenders need a 1em line box
+  (theirs is 0.74em for capitals). The ball in the "o" and its clack are gone with the old line.
+- **Font loading.** Roboto Flex via `next/font/google` (wdth + opsz axes), not preloaded (the
+  line is below the fold). The advance grid is measured after `document.fonts.load` resolves, or
+  after 3 s with whatever face is there. Without JavaScript the letters sit at rest in normal flow.
+- **Nav focus bug.** Reproduced the cause in CSS: `.site-nav[data-hidden]:not(:focus-within)`.
+  A mouse click focuses the link and the root-layout nav survives the client navigation, so the
+  bar never hid until something else took focus. `:has(:focus-visible)` keeps keyboard users'
+  guarantee without the stuck bar. e2e case added.
+- **Arrival drop.** `intro()` teleports every anchor to the off-screen height with the balls
+  hanging still, then runs `close()`. The timeline runs on simulation time, so it starts with the
+  scene's first step whatever the load time. The still is hidden whenever JavaScript runs
+  (`@media (scripting: enabled)`) until WebGL is known to be missing, which avoids a flash of
+  resting balls before they drop.
+- **Warm grade.** Sampled the graded reference: wall `#f8f0de`, ink `#14120d`; used `#f7f0df`
+  so it reads a touch less yellow. The neutral grey panels and chips became one `--panel` token.
+  Media get a light sepia/desaturate filter rather than a multiply overlay (an overlay can't warm
+  the wall's red channel and would tint the cursor and focus rings too).
+- **Haven menu.** Their CSS was read for timings: 1 s background/clip on cubic-bezier(.19,1,.22,1),
+  rows 0.6 s on cubic-bezier(.65,0,0,1) staggered 40 ms, the menu height via a 0fr to 1fr grid
+  row, hairlines scaling in from the left, the current page's square bullet sliding the label
+  22 px. Kept in `/lab/nav` with a CSS module so nothing ships to the live pages.
+- **Leftovers.** `public/media/about/hummingbird.*` and its line in `scripts/media.sh` are no
+  longer used; left in place for Lucas to decide.

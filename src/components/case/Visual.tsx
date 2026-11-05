@@ -234,9 +234,21 @@ export function Visual({ visual }: { visual: VisualData }) {
       return (
         <dl className="grid gap-4 md:grid-cols-3">
           {visual.cards.map((c) => (
-            <div key={c.title} className="reveal rounded-md bg-wall p-6">
-              <dt className="font-display text-[22px] font-[350] tracking-[-0.02em]">{c.title}</dt>
-              <dd className="mt-2 text-[16px] leading-[1.5]">{c.body}</dd>
+            <div key={c.title} className="reveal overflow-hidden rounded-md bg-wall">
+              {c.image && (
+                <Image
+                  src={c.image.src}
+                  alt={c.image.alt}
+                  width={269}
+                  height={269}
+                  unoptimized
+                  className="aspect-[8/5] w-full object-cover object-top"
+                />
+              )}
+              <div className="p-6">
+                <dt className="font-display text-[22px] font-[350] tracking-[-0.02em]">{c.title}</dt>
+                <dd className="mt-2 text-[16px] leading-[1.5]">{c.body}</dd>
+              </div>
             </div>
           ))}
         </dl>

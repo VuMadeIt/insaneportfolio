@@ -55,17 +55,31 @@ export const reboot: CaseStudy = {
       label: "The problem",
       headline: "We traced it to AI moving faster than the hardware it runs on.",
       body: [
-        "Companies upgrade often to stay competitive, so functional hardware gets labelled outdated and leaves the data centre.",
+        "AI infrastructure evolves fast. Companies upgrade often to stay competitive, so functional hardware gets labelled outdated and leaves the data centre.",
       ],
       visual: {
         kind: "cards",
         cards: [
-          { title: "Rising adoption", body: "AI use is growing fast, at work and at home." },
-          { title: "Environmental strain", body: "That use puts real strain on the environment." },
-          { title: "Easy access", body: "Free tiers lower the barrier to entry and speed it up." },
           {
-            title: "Rapid obsolescence",
-            body: "Infrastructure turns over quickly, leaving working hardware behind.",
+            title: "Rising adoption",
+            body: "AI use is growing fast, at work and at home.",
+            image: { src: "/media/reboot/rising-adoption.svg", alt: "The logos of four AI assistants" },
+          },
+          {
+            title: "Environmental strain",
+            body: "That use puts real strain on the environment.",
+            image: {
+              src: "/media/reboot/environmental-strain.svg",
+              alt: "A polar bear on a melting iceberg",
+            },
+          },
+          {
+            title: "Easy access",
+            body: "Free tiers lower the barrier to entry and speed it up.",
+            image: {
+              src: "/media/reboot/easy-accessibility.svg",
+              alt: "An AI assistant's free plan at $0 a month",
+            },
           },
         ],
       },

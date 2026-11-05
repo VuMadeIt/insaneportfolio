@@ -52,7 +52,8 @@ export type Visual =
   | { kind: "statement"; text: string }
   /** `lit` of `total` dots light up: a ratio from a quote, drawn. */
   | { kind: "dots"; total: number; lit: number }
-  | { kind: "cards"; cards: { title: string; body: string }[] }
+  /** Short cards; with `image`, each opens on an illustration (my Framer case-study art). */
+  | { kind: "cards"; cards: { title: string; body: string; image?: { src: string; alt: string } }[] }
   | { kind: "options"; options: { title: string; pros: string[]; cons: string[]; chosen?: boolean }[] }
   /** A video played by the scroll position instead of the clock. */
   | { kind: "scrub"; video: string; poster: string; width: number; height: number; alt: string }

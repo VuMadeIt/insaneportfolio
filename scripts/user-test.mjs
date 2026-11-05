@@ -118,6 +118,23 @@ async function home(scenario) {
       `range ${sway.toFixed(1)} px`,
     );
 
+    const tagline = await page.evaluate(() => {
+      const c = document.querySelector(".giant-caption");
+      if (!c) return null;
+      const r = c.getBoundingClientRect();
+      return {
+        text: c.textContent,
+        inView: r.left >= 0 && r.right <= innerWidth + 1,
+        op: getComputedStyle(c).opacity,
+      };
+    });
+    record(
+      scenario,
+      "tagline above VU, fully on screen",
+      !!tagline && tagline.text.includes("product design engineer") && tagline.inView && tagline.op === "1",
+      JSON.stringify(tagline),
+    );
+
     if (phone) {
       // Phones: the whole nav is the menu pill.
       const toggle = page.getByRole("button", { name: "menu" });
@@ -290,6 +307,23 @@ async function home(scenario) {
           () => false,
         );
       record(scenario, "nav hides on scroll after a click", hidden);
+      // About: choosing a print opens its object.
+      const tabs = page.getByRole("tablist", { name: "Objects" }).getByRole("tab");
+      await tabs.nth(2).scrollIntoViewIfNeeded();
+      await tabs.nth(2).click();
+      await page.waitForTimeout(400);
+      const opened = await page
+        .getByRole("tabpanel")
+        .getByRole("heading", { name: "After a 15-minute speech" })
+        .isVisible()
+        .catch(() => false);
+      record(
+        scenario,
+        "about: a print opens its object",
+        opened && (await tabs.nth(2).getAttribute("aria-selected")) === "true",
+      );
+      await page.evaluate(() => scrollTo(0, 0));
+      await page.waitForTimeout(400);
       // Coming back home drops the balls again.
       const back = watchDrop(page, slow ? 60_000 : 25_000).catch(
         (e) => `watch lost: ${e.message.slice(0, 80)}`,
@@ -298,6 +332,13 @@ async function home(scenario) {
       const result = await back;
       record(scenario, "balls drop again on coming back", result === true, String(result));
     }
+    const html = await (await fetch(url)).text();
+    record(
+      scenario,
+      "link preview: og:video and og:image",
+      /property="og:video" content="[^"]*\/og\/cover\.mp4"/.test(html) &&
+        /property="og:image" content="[^"]*\/og\/cover\.jpg"/.test(html),
+    );
     const devpost = await page
       .locator('footer a[aria-label="Devpost"]')
       .getAttribute("href")

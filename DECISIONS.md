@@ -774,3 +774,22 @@ Lucas's notes after revision 4, with his Q&A answers. PLAN.md Part 14 is the spe
 - **Tests.** `scripts/user-test.mjs` now covers the sway, the phone menu, the one-ball bar, the
   story's click-anywhere close and the Devpost link: 81/81 across desktop, proxy, throttled, tablet
   and phone.
+
+### Revision 6, part 4 (2026-11-05 night)
+
+- **Tagline default: above VU, right-aligned.** From VU's left edge the line ran off the right
+  side at 1440 px (VU ends near the edge), so left and centred placements wrap within the word;
+  right-aligned is the one that reads as a single line on desktop. Phones hang it from VU's right
+  edge and wrap at 62vw. Five other spots stay in `/lab/tagline`.
+- **Selected objects.** The inspo's calm comes from one large photograph beside a narrow text
+  column, with the rest as small prints in a strip. The photos are low resolution, so the open one
+  is capped at ~38vw / 62vh and never upscaled. Built as an ARIA tab list rather than a lightbox:
+  no overlay, no scroll lock, keyboard arrows, deep links by hash.
+- **Link preview.** A close-up was needed: the hero framing made the ball ~85 px in a 1200x630
+  card. The lab renders the canvas at 2.4x the window and crops, so the ball is ~200 px at full
+  resolution, and swings at 32 degrees, which carries it fully out of frame at both ends. Capture
+  is deterministic (exact 1/30 s per frame, frames drawn only on request), and the loop is cut
+  between right-hand turning points two swings apart. Next's metadata resolves image URLs against
+  `metadataBase` but not `og:video`, so the video URL is built absolute.
+- **Tests.** `scripts/user-test.mjs` adds the tagline, the About strip and the preview tags:
+  95/95 across desktop, proxy, throttled, tablet and phone; 38/38 e2e.

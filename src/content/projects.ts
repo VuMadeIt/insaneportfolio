@@ -17,10 +17,13 @@ export interface Media {
   height: number;
 }
 
+/** Rendered objects in public/media/objects (scripts/objects.mjs). */
+export type Prize = "gold" | "bronze" | "cash" | "airpods";
+
 export interface Project {
   slug: string;
   title: string;
-  /** 1 to 4: the home page shows 1 and 2; 1 to 3 lead the /work list. */
+  /** 1 to 4: the home page shows 1 and 2; ranked projects lead their group on /work. */
   rank?: number;
   /** YYYY-MM, for the chronological list (newest first). */
   date: string;
@@ -30,8 +33,8 @@ export interface Project {
   team?: string;
   /** Where it happened (the hackathon or company). */
   event?: string;
-  /** Prizes and results, each shown as its own line. */
-  accolades?: string[];
+  /** A hackathon prize: the object drawn beside the title, and the line that opens the description on /work. */
+  prize?: { object: Prize; text: string };
   credit?: string;
   /** Two-line description for the lists. */
   description: string;
@@ -55,7 +58,7 @@ export const projects: Project[] = [
     medium: "LLM product concept",
     role: "Product designer",
     event: "UW/UX BLOOM Designathon 2026",
-    accolades: ["3rd place"],
+    prize: { object: "bronze", text: "3rd place at the UW/UX BLOOM Designathon." },
     description:
       "An LLM that reuses before it regenerates: past answers resurface first, so everyday questions stop costing water and energy.",
     caption: "An LLM that reuses before it regenerates, so everyday questions stop costing water.",
@@ -83,7 +86,7 @@ export const projects: Project[] = [
     role: "Product designer",
     team: "Emma Phuntsok, Jasmine Kumar, Kelly M, Lucas Vu",
     event: "Western University Product Design Sprint 2026",
-    accolades: ["1st place", "Most Practical"],
+    prize: { object: "gold", text: "1st place and Most Practical at the Western Product Design Sprint." },
     description:
       "Lowering the activation energy of fun, low-stakes hangouts: a shuffle that turns a few loose preferences into a plan in under a minute.",
     caption: "A shuffle that turns a few loose preferences into a plan in under a minute.",
@@ -108,7 +111,10 @@ export const projects: Project[] = [
     role: "Designer and builder",
     team: "Alexander Gu, Kaamil Mirza, Lucas Vu, Ryan Chang",
     event: "Hack the 6ix 2026",
-    accolades: ["Winner, Base44 Venture Creation Track ($1,000)", "Winner, Best Use of AI by Pheobe ($400)"],
+    prize: {
+      object: "cash",
+      text: "Winner of two tracks at Hack the 6ix, $1,400 USD: Base44 Venture Creation and Best Use of AI by Pheobe.",
+    },
     description:
       "Get your Japan trip out of the group chat and into an actual plan: an agent books it with the group, one pet at a time.",
     caption: "Get your Japan trip out of the group chat and into an actual plan.",
@@ -132,9 +138,8 @@ export const projects: Project[] = [
     medium: "Internal tools, three projects",
     role: "Digital product manager (intern)",
     event: "Maple Leaf Foods",
-    accolades: ["A Power App processing $14M+ in penalties a year"],
     description:
-      "Digitising decades-old workflows: a service penalty app, an employee store and a project tracker that replaced email chains and DMs.",
+      "Digitising decades-old workflows: a service penalty app that now processes $14M+ a year, an employee store and a project tracker that replaced email chains and DMs.",
     caption: "Three internal apps that took decades-old workflows out of email chains and DMs.",
     media: {
       video: "/media/maple-leaf/hero.mp4",
@@ -178,7 +183,10 @@ export const projects: Project[] = [
     role: "Designer and builder",
     team: "Lucas Vu, Shrey Shingala",
     event: "SOON Hackathon Fall 2026",
-    accolades: ["Winner, Best Use of AI on a Real Inspection (AirPods 5)"],
+    prize: {
+      object: "airpods",
+      text: "Won AirPods at the SOON Hackathon for Best Use of AI on a Real Inspection.",
+    },
     description:
       "Answers customers instantly, books the inspection, writes the report and follows up until the job is done.",
     media: {
@@ -191,6 +199,44 @@ export const projects: Project[] = [
     caseStudy: false,
     link: { label: "Devpost", href: "https://devpost.com/software/asper" },
     draft: ["role"],
+  },
+  {
+    slug: "sweaterify",
+    title: "Sweaterify",
+    date: "2026-10",
+    year: "2026",
+    medium: "Image tool",
+    role: "Designer and builder",
+    description:
+      "Turn any image into a Christmas sweater: every square of the grid becomes a knit stitch, ready to download.",
+    media: {
+      video: "/media/work/sweaterify.mp4",
+      poster: "/media/work/sweaterify.webp",
+      alt: "Sweaterify knitting the word Noel, the stitches getting finer",
+      width: 916,
+      height: 460,
+    },
+    caseStudy: false,
+    link: { label: "Live site", href: "https://sweaterify.vercel.app" },
+  },
+  {
+    slug: "liam-vu",
+    title: "Liam Vu's portfolio",
+    date: "2026-10",
+    year: "2026",
+    medium: "Portfolio site",
+    role: "Designer and builder",
+    description:
+      "A portfolio for my brother Liam, The Urban Planning Influencer: you ride a TTC line, station to station, through his social media, case studies, projects and art.",
+    media: {
+      video: "/media/work/liam-vu.mp4",
+      poster: "/media/work/liam-vu.webp",
+      alt: "Liam Vu's portfolio: a subway platform, and the train pulling in",
+      width: 1600,
+      height: 1000,
+    },
+    caseStudy: false,
+    link: { label: "Live site", href: "https://liamvu.vercel.app" },
   },
   {
     slug: "frictionless",
@@ -260,7 +306,7 @@ export const projects: Project[] = [
     role: "Product manager and designer",
     team: "Jenny Yang, Kelly M, Lucas Vu",
     event: "UofT UDesignathon 2026",
-    accolades: ["3rd place"],
+    prize: { object: "bronze", text: "3rd place at the UofT UDesignathon." },
     description:
       "A marketplace that gives retired data-centre hardware a second life, with guided builds so students can turn it into real projects.",
     media: {
@@ -270,8 +316,7 @@ export const projects: Project[] = [
       width: 1474,
       height: 1060,
     },
-    caseStudy: false,
-    link: { label: "Case study", href: "https://lucasvu.framer.website/projects/reboot" },
+    caseStudy: true,
   },
   {
     slug: "google-song-search",
@@ -302,7 +347,7 @@ export const projects: Project[] = [
     role: "Designer and builder",
     team: "Gabe Lynch, Jaskirat Mann, Lucas Vu",
     event: "Incubator Hacks 2",
-    accolades: ["1st place"],
+    prize: { object: "gold", text: "1st place at Incubator Hacks 2." },
     description:
       "A neutral, third-party read on bringing renewable energy home, personalised from a single address.",
     media: {
@@ -338,20 +383,21 @@ const MONTHS = [
   "December",
 ];
 
-/** "2026-03" as "March", with the year only when it is not this year ("June 2025"). */
-export function monthOf(date: string, now = new Date()): string {
+/** "2026-03" as "March 2026". */
+export function monthOf(date: string): string {
   const [year, month] = date.split("-").map(Number);
-  const name = MONTHS[month! - 1]!;
-  return year === now.getFullYear() ? name : `${name} ${year}`;
+  return `${MONTHS[month! - 1]} ${year}`;
 }
 
-const ranked = (n: number) => projects.filter((p) => p.rank && p.rank <= n).sort((a, b) => a.rank! - b.rank!);
+/** The ranked ones first, then the rest newest first. */
+const ordered = (list: Project[]) => [
+  ...list.filter((p) => p.rank).sort((a, b) => a.rank! - b.rank!),
+  ...list.filter((p) => !p.rank).sort((a, b) => b.date.localeCompare(a.date)),
+];
 
 /** The home page: the two strongest (PLAN 13.3). */
-export const homeProjects = ranked(2);
+export const homeProjects = ordered(projects).slice(0, 2);
 
-/** /work: the top three, then everything else, newest first. */
-export const allProjects = [
-  ...ranked(3),
-  ...projects.filter((p) => !p.rank || p.rank > 3).sort((a, b) => b.date.localeCompare(a.date)),
-];
+/** /work (PLAN 14.6): hackathon wins, then selected projects. */
+export const wins = ordered(projects.filter((p) => p.prize));
+export const selected = ordered(projects.filter((p) => !p.prize));

@@ -1045,3 +1045,54 @@ label lives in the footer cursor (13.1, 13.4), not as a chip on the cradle.
 5. Case studies (research, copy deck, graphics), Ripple then Shufflr.
 6. Gates (Taste lint + inspect + critique rounds, Vitest, Playwright, sweep), docs, merge and tag
    `v1.6.0-revision-4` only after Lucas has looked.
+
+---
+
+## Part 14. Revision 5 (Lucas, 2026-11-04). Overrides Parts 1-13 where they conflict
+
+Branch `phase/16-revision-5`. Answers from the Q&A are recorded inline.
+
+### 14.1 Voice
+- Everything on the site reads as if Lucas wrote it himself. No third person, no notes that
+  explain the writing ("Added reading for this case study", "I read the finding through..."),
+  no claims that outside research is his own finding. Outside numbers keep their source, plainly.
+
+### 14.2 Type
+- The heaviest weight anywhere is the hero name's (General Sans 350). Headings, project titles,
+  the nav and the footer never go above it.
+
+### 14.3 Nav (replaces 13.1's nav)
+- Slim, sticky, page gutter on both sides. Left: a small static render of the four dark metal
+  balls (home link, not interactive). Right: `about`, `work`, `contact` (scrolls to the footer)
+  and the sound button.
+- Hides while scrolling down, slides back in on any scroll up (~300 ms), always shown at the top
+  of the page (NN/g "partially persistent header"; Lucas chose it over always visible).
+
+### 14.4 Footer (replaces 13.4's physics footer and 12.10's layout)
+- `reference/inspo/footer-reference.png`: a hairline rule, then three columns: `lucas vu` with
+  the live Toronto time; Work / About; "Let's work together!", the email and LinkedIn /
+  Instagram / GitHub icons. Same gutter as the rest of the site. Same on every page.
+- The ball pit, its physics (`src/footer-physics`), its cursor state and "drop me" are removed.
+
+### 14.5 Home
+- Work rows: no accolade text, less height. Dates are month and year everywhere.
+- "Let's get things moving." rises in from below; the "o" in "moving" is a small dark metal ball
+  that drops from above into its place when the line scrolls in, with a clack. It shines on
+  hover. It cannot be dragged.
+- The about teaser: paragraph one in the left column, paragraph two in the right column with
+  "More about me" under it.
+
+### 14.6 Work
+- No intro sentence. Two groups: hackathon wins, then selected projects.
+- Accolades leave their own row. A realistic prize object (gold medal, bronze medal, a stack of
+  cash, AirPods), rendered from our own 3D scene with a transparent background and all the same
+  size, sits left of the project name, and the prize is written into the start of the
+  description ("Winner of Hack the 6ix, $1,400 USD."). Home rows show the same object.
+- New rows: Sweaterify (`VuMadeIt/sweatertexture`, sweaterify.vercel.app) and Liam Vu's urban
+  planning portfolio (`VuMadeIt/urbanplanningportfolio`, liamvu.vercel.app).
+- Reboot becomes a case study at `/work/reboot`, adapted from lucasvu.framer.website/projects/
+  reboot into the house case-study style (13.6).
+
+### 14.7 Case studies and About
+- No date above case-study titles (the timeline is in the metadata).
+- The About timeline drops the "At the same time" lists; the gantt already shows overlaps.

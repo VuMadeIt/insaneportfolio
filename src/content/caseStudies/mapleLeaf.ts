@@ -8,7 +8,6 @@ export const mapleLeaf: CaseStudy = {
   slug: "maple-leaf-foods",
   accent: "#c8102e",
   accentSoft: "#f6d9dd",
-  year: "2026",
   summary:
     "Over my internship at Maple Leaf Foods I worked on three separate, fast-paced design projects. The goal across all three was digitising workflows for internal staff, as either an associate product manager or a design engineer.",
   claim:
@@ -106,6 +105,6 @@ export const mapleLeaf: CaseStudy = {
       caption: "The Service Penalty App dashboard.",
     },
   ],
-  next: "shufflr",
+  next: "ripple",
   draft: ["headlines rewritten as first-person claims", "a reflection, if Lucas wants one (none ships)"],
 };

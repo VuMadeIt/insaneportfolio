@@ -69,12 +69,6 @@ export type Visual =
       unit: string;
       bars: Bar[];
     }
-  /** The Fogg Behavior Model: motivation against ability, the action line, points and a move. */
-  | {
-      kind: "fogg";
-      points: { id: string; label: string; ability: number; motivation: number; tone: "accent" | "ink" }[];
-      move?: [string, string];
-    }
   /** The placement, drawn as a podium; extra awards as tags. */
   | { kind: "podium"; place: 1 | 2 | 3; name: string; extra?: string[] }
   /** A real comparison table: true is a check, false a dash, a string is written out. */
@@ -111,7 +105,6 @@ export interface Block {
 
 export interface CaseStudy {
   slug: string;
-  year: string;
   /** The one-paragraph summary under the title. */
   summary: string;
   /** One-sentence claim, for metadata and the skim test. */

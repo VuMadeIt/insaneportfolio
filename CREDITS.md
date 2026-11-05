@@ -48,3 +48,14 @@ commit). Licence verified on each page on 2026-11-02.
 - `public/textures/imperfections.jpg`: channels from ambientCG "Fingerprints002" and
   "SurfaceImperfections017" roughness maps (CC0), https://ambientcg.com .
 - Realism reference photos (not shipped): see `reference/realism/SOURCES.md`.
+
+## Revision 5
+- `app/lab/object/bill-100.jpg`: "Obverse of the series 2009 $100 Federal Reserve Note", Wikimedia
+  Commons, public domain (US government work),
+  https://commons.wikimedia.org/wiki/File:Obverse_of_the_series_2009_$100_Federal_Reserve_Note.jpg .
+  Used only as the top note's texture in the offline cash render (`public/media/objects/cash.webp`),
+  shown far below 75% of real size.
+- Footer icons (LinkedIn, Instagram, GitHub): Simple Icons 11.0.0 paths, CC0, https://simpleicons.org .
+- Reboot case study images (`public/media/reboot/`): my own screens from my Framer case study,
+  lucasvu.framer.website/projects/reboot.
+- Sweaterify and Liam Vu's portfolio hover videos: filmed from my own live sites.

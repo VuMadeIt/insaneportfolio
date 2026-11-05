@@ -1,4 +1,4 @@
-import { HeroCorners, HeroName } from "./HeroChrome";
+import { HeroBack, HeroName } from "./HeroChrome";
 import { HeroStage } from "./HeroStage";
 import { StoryController } from "./StoryController";
 
@@ -6,12 +6,10 @@ import { StoryController } from "./StoryController";
 export function Hero({
   name,
   label,
-  corner,
 }: {
   /** The 404 swaps the name for "404". */
   name?: string;
   label?: string;
-  corner?: React.ReactNode;
 }) {
   return (
     <section aria-label="Lucas Vu" className="relative h-dvh min-h-[560px] w-full overflow-hidden bg-wall">
@@ -19,7 +17,7 @@ export function Hero({
       <div className="hero-frame absolute inset-0">
         <HeroStage />
       </div>
-      <HeroCorners>{corner}</HeroCorners>
+      <HeroBack />
       <StoryController />
     </section>
   );

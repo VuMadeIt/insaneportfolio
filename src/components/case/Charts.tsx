@@ -31,7 +31,7 @@ export function Bars({ v }: { v: Of<"bars"> }) {
               className="grid gap-2 md:grid-cols-[minmax(0,15em)_minmax(0,1fr)] md:items-center md:gap-8"
             >
               <div>
-                <p className="text-[16px] font-medium leading-[1.3]">{b.label}</p>
+                <p className="text-[16px] leading-[1.3]">{b.label}</p>
                 {(b.sub || b.source) && (
                   <p className="mt-0.5 text-[14px] leading-[1.35] text-muted">
                     {b.sub}
@@ -55,7 +55,7 @@ export function Bars({ v }: { v: Of<"bars"> }) {
                   }
                 />
                 <span
-                  className={`bar-value absolute whitespace-nowrap font-display text-[18px] font-medium tracking-[-0.02em] tabular-nums ${
+                  className={`bar-value absolute whitespace-nowrap font-display text-[18px] font-[350] tracking-[-0.02em] tabular-nums ${
                     pos(hi) > 0.7
                       ? `-translate-x-full pr-4 ${b.tone === "soft" ? "text-ink" : "text-white"}`
                       : "pl-3"
@@ -85,116 +85,6 @@ export function Bars({ v }: { v: Of<"bars"> }) {
   );
 }
 
-/**
- * BJ Fogg's Behavior Model: behaviour happens above the action line, where motivation and ability
- * are high enough together for a prompt to work. Points are placed in 0..1 on both axes.
- */
-export function Fogg({ v }: { v: Of<"fogg"> }) {
-  const [ref, inView] = useInView<HTMLDivElement>();
-  const W = 640;
-  const H = 400;
-  const pad = { l: 56, r: 24, t: 20, b: 52 };
-  const X = (a: number) => pad.l + a * (W - pad.l - pad.r);
-  const Y = (m: number) => H - pad.b - m * (H - pad.t - pad.b);
-  // The action line: motivation x ability = k, so easier things need less motivation.
-  const k = 0.16;
-  const curve = Array.from({ length: 60 }, (_, i) => {
-    const a = 0.16 + (i / 59) * 0.84;
-    return `${i ? "L" : "M"}${X(a).toFixed(1)},${Y(Math.min(1, k / a)).toFixed(1)}`;
-  }).join(" ");
-  const at = (id: string) => v.points.find((p) => p.id === id)!;
-  const move = v.move ? ([at(v.move[0]), at(v.move[1])] as const) : null;
-  return (
-    <div ref={ref} data-in={inView} className="fogg mx-auto max-w-[760px]">
-      <svg
-        viewBox={`0 0 ${W} ${H}`}
-        className="block h-auto w-full overflow-visible"
-        role="img"
-        aria-label="Fogg Behavior Model chart"
-      >
-        <defs>
-          <marker
-            id="fogg-arrow"
-            viewBox="0 0 10 10"
-            refX="8"
-            refY="5"
-            markerWidth="8"
-            markerHeight="8"
-            orient="auto"
-          >
-            <path d="M0,0 L10,5 L0,10 z" fill="var(--accent)" />
-          </marker>
-        </defs>
-        <path d={`M${X(0)},${Y(1)} V${Y(0)} H${X(1)}`} fill="none" stroke="#3a3936" strokeWidth="1.5" />
-        <text x={X(0)} y={H - 18} className="fill-ink text-[14px]">
-          Hard to do
-        </text>
-        <text x={X(1)} y={H - 18} textAnchor="end" className="fill-ink text-[14px]">
-          Easy to do
-        </text>
-        <text x={X(0.5)} y={H - 18} textAnchor="middle" className="fill-[#68655e] text-[14px]">
-          Ability
-        </text>
-        <text
-          transform={`translate(${pad.l - 22} ${Y(0.5)}) rotate(-90)`}
-          textAnchor="middle"
-          className="fill-[#68655e] text-[14px]"
-        >
-          Motivation
-        </text>
-        <path
-          className="fogg-curve"
-          d={curve}
-          pathLength={1}
-          fill="none"
-          stroke="#3a3936"
-          strokeWidth="2"
-          strokeDasharray="1"
-        />
-        <text x={X(0.98)} y={Y(k / 0.98) - 12} textAnchor="end" className="fill-[#68655e] text-[13px]">
-          Action line
-        </text>
-        <text x={X(0.98)} y={Y(0.97)} textAnchor="end" className="fill-[#68655e] text-[13px]">
-          Prompts work here
-        </text>
-        <text x={X(0.04)} y={Y(0.06)} className="fill-[#68655e] text-[13px]">
-          Prompts fail here
-        </text>
-        {move && (
-          <path
-            className="fogg-move"
-            d={`M${X(move[0].ability) + 14},${Y(move[0].motivation)} L${X(move[1].ability) - 16},${Y(move[1].motivation)}`}
-            pathLength={1}
-            fill="none"
-            stroke="var(--accent)"
-            strokeWidth="2"
-            strokeDasharray="1"
-            markerEnd="url(#fogg-arrow)"
-          />
-        )}
-        {v.points.map((p, i) => (
-          <g key={p.id} className="fogg-point" style={{ "--i": i } as React.CSSProperties}>
-            <circle
-              cx={X(p.ability)}
-              cy={Y(p.motivation)}
-              r="9"
-              fill={p.tone === "accent" ? "var(--accent)" : "#3a3936"}
-            />
-            <text
-              x={X(p.ability)}
-              y={Y(p.motivation) - 18}
-              textAnchor="middle"
-              className="fill-ink text-[14px] font-medium"
-            >
-              {p.label}
-            </text>
-          </g>
-        ))}
-      </svg>
-    </div>
-  );
-}
-
 /** The placement on a podium (second, first, third), ours in the product's colour. */
 export function Podium({ v }: { v: Of<"podium"> }) {
   const [ref, inView] = useInView<HTMLDivElement>();
@@ -210,12 +100,12 @@ export function Podium({ v }: { v: Of<"podium"> }) {
         {steps.map((s, i) => (
           <div key={s.place} className="flex flex-1 flex-col items-center gap-3">
             {s.place === v.place && (
-              <p className="font-display text-[clamp(20px,2vw,28px)] font-medium tracking-[-0.02em]">
+              <p className="font-display text-[clamp(20px,2vw,28px)] font-[350] tracking-[-0.02em]">
                 {v.name}
               </p>
             )}
             <div
-              className={`podium-step flex w-full items-start justify-center rounded-t-md pt-4 font-display text-[clamp(22px,2.4vw,34px)] font-medium ${s.place === v.place ? "bg-[var(--accent)] text-white" : "bg-white text-muted"}`}
+              className={`podium-step flex w-full items-start justify-center rounded-t-md pt-4 font-display text-[clamp(22px,2.4vw,34px)] font-[350] ${s.place === v.place ? "bg-[var(--accent)] text-white" : "bg-white text-muted"}`}
               style={{ height: `${s.h * 2}px`, "--i": i } as React.CSSProperties}
             >
               {ord[s.place]}
@@ -273,10 +163,7 @@ export function Table({ v }: { v: Of<"table"> }) {
         <tbody>
           {v.rows.map((r) => (
             <tr key={r.label} className={r.ours ? "bg-white" : ""}>
-              <th
-                scope="row"
-                className={`rounded-l-sm py-3.5 pl-4 pr-4 font-medium ${r.ours ? "" : "table-rule"}`}
-              >
+              <th scope="row" className={`rounded-l-sm py-3.5 pl-4 pr-4 ${r.ours ? "" : "table-rule"}`}>
                 {r.label}
               </th>
               {r.cells.map((c, i) => (
@@ -299,7 +186,7 @@ export function Table({ v }: { v: Of<"table"> }) {
 export function Brief({ v }: { v: Of<"brief"> }) {
   return (
     <figure>
-      <blockquote className="max-w-[26em] font-display text-[clamp(22px,2.4vw,34px)] font-medium leading-[1.22] tracking-[-0.02em]">
+      <blockquote className="max-w-[26em] font-display text-[clamp(22px,2.4vw,34px)] font-[350] leading-[1.22] tracking-[-0.02em]">
         &ldquo;{v.prompt}&rdquo;
       </blockquote>
       {v.source && <figcaption className="mt-3 text-[15px] text-muted">{v.source}</figcaption>}
@@ -336,7 +223,7 @@ export function Anatomy({ v }: { v: Of<"anatomy"> }) {
           <span
             key={p.title}
             aria-hidden
-            className={`absolute flex size-8 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full bg-[var(--accent)] text-[14px] font-medium text-white ring-4 transition-transform duration-300 ${on === i ? "scale-125 ring-[var(--accent-soft)]" : "ring-white/70"}`}
+            className={`absolute flex size-8 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full bg-[var(--accent)] text-[14px] text-white ring-4 transition-transform duration-300 ${on === i ? "scale-125 ring-[var(--accent-soft)]" : "ring-white/70"}`}
             style={{ left: `${p.x}%`, top: `${p.y}%` }}
           >
             {i + 1}
@@ -353,7 +240,7 @@ export function Anatomy({ v }: { v: Of<"anatomy"> }) {
           >
             <span
               aria-hidden
-              className="flex size-8 shrink-0 items-center justify-center rounded-full bg-[var(--accent)] text-[14px] font-medium text-white"
+              className="flex size-8 shrink-0 items-center justify-center rounded-full bg-[var(--accent)] text-[14px] text-white"
             >
               {i + 1}
             </span>

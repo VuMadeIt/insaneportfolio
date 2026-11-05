@@ -1,8 +1,6 @@
 import { expect, test } from "@playwright/test";
 
-test("about is a museum room: statement, timeline with logos, objects with labels, the essay", async ({
-  page,
-}) => {
+test("about: statement, timeline with logos, objects with labels, the essay", async ({ page }) => {
   await page.goto("/about");
   await expect(page.getByRole("heading", { level: 1 })).toHaveText("About");
   await expect(page.getByRole("heading", { name: "Chronology" })).toBeVisible();
@@ -37,36 +35,35 @@ test("the timeline: one section per role, the ball moves along the axis as the p
     window.scrollTo(0, s.getBoundingClientRect().top + scrollY + s.offsetHeight - innerHeight);
   });
   await expect(stage).toContainText("Digital Extremes", { timeout: 5000 });
-  // Overlaps are shown: Digital Extremes runs alongside Waterloo and Hackathons North America.
-  await expect(stage).toContainText("At the same time");
+  // Overlaps are drawn in the chart, not listed again in words.
+  await expect(page.getByText("At the same time")).toHaveCount(0);
 });
 
-test("inner pages carry the site nav and no logo image", async ({ page }) => {
+test("inner pages carry the same nav: the four balls home, About, Work, Contact", async ({ page }) => {
   await page.goto("/work");
-  await expect(
-    page.getByRole("navigation", { name: "Site" }).getByRole("link", { name: "lucas vu" }),
-  ).toHaveAttribute("href", "/");
-  await expect(page.getByAltText("i am vu")).toHaveCount(0);
+  const nav = page.getByRole("navigation", { name: "Site" });
+  await expect(nav.getByRole("link", { name: "Lucas Vu, home" })).toHaveAttribute("href", "/");
+  await expect(nav.getByRole("link", { name: "Contact" })).toHaveAttribute("href", "#contact");
+  await expect(page.locator("footer#contact")).toContainText("lucasvu.work@gmail.com");
 });
 
-test("the catalogue: top three first, every project listed and clickable", async ({ page }) => {
+test("the catalogue: hackathon wins, then selected projects, every row clickable", async ({ page }) => {
   await page.goto("/work");
   await expect(page.getByRole("heading", { level: 1 })).toHaveText("All work");
+  await expect(page.getByRole("heading", { level: 2 })).toHaveText(["Hackathon wins", "Selected projects"]);
   const rows = page.locator("li.catalogue-row");
-  await expect(rows).toHaveCount(12);
-  await expect(rows.locator("h2").first()).toHaveText("Ripple");
-  await expect(rows.locator("h2").nth(2)).toHaveText("We should go to Japan");
+  await expect(rows).toHaveCount(14);
+  await expect(rows.locator("h3").first()).toHaveText("Ripple");
+  await expect(rows.locator("h3").nth(2)).toHaveText("We should go to Japan");
   for (const row of await rows.all()) await expect(row.getByRole("link")).toHaveCount(1);
   await expect(page.getByRole("link", { name: "Shufflr" })).toHaveAttribute("href", "/work/shufflr");
   await expect(page.getByRole("link", { name: "Asper" })).toHaveAttribute(
     "href",
     "https://devpost.com/software/asper",
   );
-  await expect(page.getByRole("link", { name: "Reboot" })).toHaveAttribute(
-    "href",
-    "https://lucasvu.framer.website/projects/reboot",
-  );
-  await expect(rows.filter({ hasText: "Reboot" })).toContainText("3rd place");
-  // Title, accolades, description and month only: no meta line.
-  await expect(rows.filter({ hasText: "Case study" })).toHaveCount(0);
+  await expect(page.getByRole("link", { name: "Reboot" })).toHaveAttribute("href", "/work/reboot");
+  // The prize opens the description and its object sits beside the title.
+  await expect(rows.filter({ hasText: "Reboot" })).toContainText("3rd place at the UofT UDesignathon.");
+  await expect(rows.filter({ hasText: "Reboot" }).locator('img[src*="bronze"]')).toHaveCount(1);
+  await expect(page.getByText(/My three favourites/)).toHaveCount(0);
 });

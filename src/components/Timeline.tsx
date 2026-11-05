@@ -72,9 +72,9 @@ function Logo({ role, size }: { role: Role; size: "lg" | "sm" }) {
   );
 }
 
-function Section({ role, also }: { role: Role; also: Role[] }) {
+function Section({ role }: { role: Role }) {
   return (
-    <div className="grid w-full gap-x-[clamp(24px,3vw,56px)] gap-y-6 md:grid-cols-[auto_minmax(0,1fr)_minmax(0,0.5fr)] md:items-start">
+    <div className="grid w-full gap-x-[clamp(24px,3vw,56px)] gap-y-6 md:grid-cols-[auto_minmax(0,1fr)] md:items-start">
       <Logo role={role} size="lg" />
       <div>
         <h3 className="max-w-[18em] text-[clamp(32px,4.2vw,72px)] leading-[0.98]">{role.role}</h3>
@@ -92,21 +92,6 @@ function Section({ role, also }: { role: Role; also: Role[] }) {
           </a>
         )}
       </div>
-      {also.length > 0 && (
-        <div className="text-[15px]">
-          <p className="text-muted">At the same time</p>
-          <ul className="mt-3 flex flex-col gap-2.5">
-            {also.map((a) => (
-              <li key={a.place} className="flex items-center gap-3">
-                <Logo role={a} size="sm" />
-                <span>
-                  {a.role}, {a.place}
-                </span>
-              </li>
-            ))}
-          </ul>
-        </div>
-      )}
     </div>
   );
 }
@@ -115,7 +100,7 @@ function Section({ role, also }: { role: Role; also: Role[] }) {
  * The chronology (PLAN 13.5). A pinned stage: the time axis runs across the bottom with every
  * role as a bar in its own lane, so roles that overlap are seen overlapping. Scrolling moves a
  * small dark-metal ball along the axis from one role's start to the next, and the role it reaches
- * gets the stage above: logo, title, place, dates, a line, and what else was going on then.
+ * gets the stage above: logo, title, place, dates and a line; the bars it overlaps light up.
  * Without the pin (phones, reduced motion) every section is listed above the same chart.
  */
 const roles = chronology;
@@ -217,7 +202,7 @@ export function Timeline({ now: nowYm }: { now: string }) {
           style={{ left: `${x(n)}%`, top: laneCount * ROW + 18 }}
         >
           {n % 12 === 0 || n === first ? (
-            <b className="font-medium text-ink">{Math.floor(n / 12)}</b>
+            <b className="font-normal text-ink">{Math.floor(n / 12)}</b>
           ) : (
             MONTHS[n % 12]![0]
           )}
@@ -244,9 +229,9 @@ export function Timeline({ now: nowYm }: { now: string }) {
           Chronology
         </h2>
         <ol className="mt-12 flex flex-col gap-16">
-          {roles.map((r, i) => (
+          {roles.map((r) => (
             <li key={r.place + r.role} className="timeline-stop reveal">
-              <Section role={r} also={also(i)} />
+              <Section role={r} />
             </li>
           ))}
         </ol>
@@ -268,7 +253,7 @@ export function Timeline({ now: nowYm }: { now: string }) {
             <p
               ref={readout}
               aria-hidden
-              className="font-display text-[clamp(20px,2vw,30px)] font-medium tabular-nums"
+              className="font-display text-[clamp(20px,2vw,30px)] font-[350] tabular-nums"
             >
               {label(first)}
             </p>
@@ -281,7 +266,7 @@ export function Timeline({ now: nowYm }: { now: string }) {
                 aria-current={i === active ? "step" : undefined}
                 data-on={i === active ? "" : undefined}
               >
-                <Section role={r} also={also(i)} />
+                <Section role={r} />
               </li>
             ))}
           </ol>

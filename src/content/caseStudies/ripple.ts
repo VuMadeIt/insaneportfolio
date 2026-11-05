@@ -9,7 +9,6 @@ import type { CaseStudy } from "./types";
  */
 export const ripple: CaseStudy = {
   slug: "ripple",
-  year: "2026",
   accent: "#2f6f9e",
   accentSoft: "#d6e8f4",
   summary:

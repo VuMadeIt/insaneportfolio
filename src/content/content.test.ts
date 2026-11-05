@@ -1,13 +1,17 @@
 import { describe, expect, it } from "vitest";
 import { caseStudies } from "./caseStudies";
 import { identities } from "./identities";
-import { allProjects, homeProjects, hrefOf, monthOf, projects } from "./projects";
+import { homeProjects, hrefOf, monthOf, projects, selected, wins } from "./projects";
 
 const allText = JSON.stringify({ identities, projects, caseStudies });
 
 describe("site copy", () => {
   it("never uses an em dash", () => {
     expect(allText).not.toMatch(/\u2014/);
+  });
+
+  it("reads as mine: no notes about how it was written (PLAN 14.1)", () => {
+    expect(allText).not.toMatch(/for this case study|Added (reading|context)|I read the finding/i);
   });
 
   it("every case-study headline is a first-person claim (the skim test)", () => {
@@ -30,18 +34,15 @@ describe("site copy", () => {
       expect(p.media.video ?? p.media.hover, p.slug).toBeTruthy();
     }
     expect(homeProjects.map((p) => p.slug)).toEqual(["ripple", "shufflr"]);
-    expect(allProjects.slice(0, 3).map((p) => p.slug)).toEqual([
-      "ripple",
-      "shufflr",
-      "we-should-go-to-japan",
-    ]);
-    expect(new Set(allProjects).size).toBe(projects.length);
+    expect(wins.slice(0, 3).map((p) => p.slug)).toEqual(["ripple", "shufflr", "we-should-go-to-japan"]);
+    expect(wins.every((p) => p.prize)).toBe(true);
+    expect(selected.some((p) => p.prize)).toBe(false);
+    expect(new Set([...wins, ...selected]).size).toBe(projects.length);
   });
 
-  it("dates show as a month, with the year only when it is not this year", () => {
-    const now = new Date(2026, 10, 3);
-    expect(monthOf("2026-03", now)).toBe("March");
-    expect(monthOf("2025-06", now)).toBe("June 2025");
+  it("dates show as the month and the year", () => {
+    expect(monthOf("2026-03")).toBe("March 2026");
+    expect(monthOf("2025-06")).toBe("June 2025");
   });
 
   it("third-party stats keep their sources", () => {

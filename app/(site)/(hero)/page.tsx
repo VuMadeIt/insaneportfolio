@@ -4,7 +4,7 @@ import { HomeAbout } from "@/components/HomeAbout";
 import { WorkList } from "@/components/WorkList";
 import { homeProjects } from "@/content/projects";
 
-/** Under the hero: the two strongest projects, a way to the rest, the about teaser, the ball-pit footer. */
+/** Under the hero: the two strongest projects, a way to the rest, the about teaser, the footer. */
 export default function HomePage() {
   return (
     <>
@@ -22,7 +22,7 @@ export default function HomePage() {
         </Link>
       </section>
       <HomeAbout />
-      <Footer physics />
+      <Footer />
     </>
   );
 }

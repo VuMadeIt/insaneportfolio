@@ -13,6 +13,7 @@ const routes = [
   "/work/shufflr",
   "/work/ripple",
   "/work/maple-leaf-foods",
+  "/work/reboot",
   "/nope",
 ];
 const widths = [

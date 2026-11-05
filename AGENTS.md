@@ -39,9 +39,12 @@ vision, architecture, phases, git workflow and the autonomous execution protocol
   `scripts/align.mjs` (still vs live canvas), `scripts/still.mjs` (re-render fallback stills; needs a
   dev server because /lab 404s in production). `scripts/sheet.py` resizes tiles to a fixed size:
   check raw files before judging proportions.
-- Revision 4 checks: `PORT=3300 node scripts/check-footer.mjs` (cursor states, row video, ball
-  drops), `PORT=3300 node scripts/timeline-shots.mjs` (timeline frames). Footer physics tests in
-  `src/footer-physics/pit.test.ts`. How case studies are written and drawn: PLAN.md Part 13.6.
+- Revision 4 checks: `PORT=3300 node scripts/timeline-shots.mjs` (timeline frames). How case
+  studies are written and drawn: PLAN.md Part 13.6.
+- Revision 5 assets: `PORT=3200 node scripts/objects.mjs [kind ...]` renders the nav's four balls,
+  the ball in "moving" and the prize objects (gold, bronze, cash, airpods) from `/lab/object` into
+  `public/media/objects` (needs a dev server). `node scripts/record-sites.mjs [sweaterify|liam-vu]`
+  films the hover videos from the live sites.
 - Physics probes: `npx jiti scripts/physics/probe.ts`, `npx jiti scripts/physics/calibrate.ts`.
 - Taste gate: `node <taste>/scripts/inspect.mjs http://localhost:3100/<route> --allow shadow,rules,hairline,covered-text,late-title,button-fx,numbering,gradient`
   (allow-list reasons in DECISIONS.md, Phases 06, 09, 11 and 12).

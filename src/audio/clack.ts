@@ -110,7 +110,7 @@ export function playWhoosh(kind: "down" | "up"): void {
   source.start(0, clip.start, clip.duration);
 }
 
-/** One clack from outside the cradle (the footer's balls); `pan` -1..1, `gain` scales the level. */
+/** One clack from outside the cradle (the ball in "moving"); `pan` -1..1, `gain` scales the level. */
 export function playClack(speed: number, pan = 0, gain = 1): void {
   if (!ctx || !buffer || !master || isMuted() || ctx.state !== "running") return;
   clack(speed, pan * 0.3 * 2, 1, gain);

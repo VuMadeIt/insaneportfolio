@@ -1,12 +1,12 @@
 import { WorkList } from "@/components/WorkList";
-import { allProjects } from "@/content/projects";
+import { selected, wins } from "@/content/projects";
 
 export const metadata = {
   title: "Work",
-  description: "Everything Lucas Vu has designed and built: case studies, hackathon wins, experiments.",
+  description: "Everything I've designed and built: case studies, hackathon wins and experiments.",
 };
 
-/** The catalogue: the three strongest first, then everything else, newest first. */
+/** The catalogue (PLAN 14.6): hackathon wins, then selected projects. */
 export default function WorkPage() {
   return (
     <section
@@ -16,13 +16,17 @@ export default function WorkPage() {
       <h1 id="work-title" className="text-[clamp(56px,9vw,148px)] leading-[0.9]">
         All work
       </h1>
-      <p className="mt-8 max-w-[32em] text-[clamp(19px,1.6vw,23px)] leading-[1.5]">
-        Case studies, hackathon wins and things I made to find out. My three favourites first, then everything
-        else, newest first.
-      </p>
-      <div className="mt-16">
-        <WorkList projects={allProjects} />
-      </div>
+      {(
+        [
+          ["Hackathon wins", wins],
+          ["Selected projects", selected],
+        ] as const
+      ).map(([heading, list]) => (
+        <div key={heading} className="mt-[clamp(64px,10vh,120px)]">
+          <h2 className="reveal mb-6 text-[clamp(22px,2vw,28px)] leading-[1.2] text-muted">{heading}</h2>
+          <WorkList projects={list} level="h3" />
+        </div>
+      ))}
     </section>
   );
 }

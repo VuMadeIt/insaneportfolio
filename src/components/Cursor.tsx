@@ -2,16 +2,15 @@
 
 import { useEffect, useRef } from "react";
 import { useUi } from "@/state/ui";
-import { CLICKABLE, nearSolid } from "./near";
 
-type State = "default" | "link" | "grab" | "hide" | "drop";
+type State = "default" | "link" | "grab" | "hide";
 
-function stateAt(x: number, y: number, target: Element | null): State {
+const CLICKABLE = "a, button, [role='button'], summary, label, input, select, textarea";
+
+function stateAt(target: Element | null): State {
   if (!target) return "default";
   if (target.closest("[data-cursor='hide']")) return "hide";
   if (target.closest(CLICKABLE)) return "link";
-  const zone = target.closest("[data-cursor='drop']");
-  if (zone) return nearSolid(zone, x, y) ? "default" : "drop";
   if (useUi.getState().hovered !== null && target.tagName === "CANVAS") return "grab";
   return "default";
 }
@@ -19,8 +18,8 @@ function stateAt(x: number, y: number, target: Element | null): State {
 /**
  * The site's cursor (PLAN 13.1): the old site's small ball, in the cradle's dark grey, trailing the
  * pointer a touch. Over links it swells and fades, over a work row it hides (the row's video
- * follows the pointer instead), over a ball it swells to say "grab", and in the home footer it
- * grows to hold "drop me". Only on devices with a fine pointer that can hover.
+ * follows the pointer instead), and over a ball it swells to say "grab". Only on devices with a
+ * fine pointer that can hover.
  */
 export function Cursor() {
   const outer = useRef<HTMLDivElement>(null);
@@ -56,7 +55,7 @@ export function Cursor() {
         visible = true;
         outer.current?.removeAttribute("data-away");
       }
-      set(stateAt(e.clientX, e.clientY, e.target as Element));
+      set(stateAt(e.target as Element));
     };
     const away = (e: MouseEvent) => {
       if (e.relatedTarget) return;
@@ -89,9 +88,7 @@ export function Cursor() {
 
   return (
     <div ref={outer} aria-hidden className="cursor-outer" data-away="">
-      <div ref={ball} className="cursor-ball" data-state="default">
-        <span className="cursor-label">drop me</span>
-      </div>
+      <div ref={ball} className="cursor-ball" data-state="default" />
     </div>
   );
 }

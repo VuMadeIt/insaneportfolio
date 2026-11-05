@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { type Project, hrefOf, monthOf } from "@/content/projects";
@@ -9,7 +10,8 @@ const previewMedia = (p: Project) =>
   p.media.hover ? { ...p.media, video: p.media.hover, poster: p.media.image } : p.media;
 
 /**
- * The project list (PLAN 13.3): title and accolades, the description, the month, nothing else.
+ * The project list (PLAN 13.3, 14.6): the prize object and title, the description (opened by the
+ * prize on /work), the month and year, nothing else.
  * Every row opens something: the case study, else its Devpost, live site or an email. On desktop
  * the row's video follows the pointer and is the cursor while over the row; it shows on pointer
  * hover only (never on focus after a click, which left it stuck). Keyboard focus shows it beside
@@ -62,13 +64,7 @@ export function WorkList({
           const href = hrefOf(p)!;
           const external = href.startsWith("http");
           const H = level;
-          const title = (
-            <H
-              className={`${large ? "text-[clamp(48px,7.6vw,128px)] leading-[0.92]" : "text-[clamp(30px,3.6vw,52px)] leading-[1]"}`}
-            >
-              {p.title}
-            </H>
-          );
+          const title = <H>{p.title}</H>;
           const linkProps = {
             className: "after:absolute after:inset-0",
             onFocus: (e: React.FocusEvent<HTMLAnchorElement>) => {
@@ -83,7 +79,7 @@ export function WorkList({
             <li
               key={p.slug}
               data-cursor="hide"
-              className={`catalogue-row reveal group relative ${large ? "py-[clamp(40px,7vh,80px)]" : "py-8 md:py-10"}`}
+              className={`catalogue-row reveal group relative ${large ? "py-[clamp(28px,4.5vh,48px)]" : "py-7 md:py-8"}`}
               onPointerEnter={(e) => {
                 if (e.pointerType !== "mouse") return;
                 to.current = { x: e.clientX, y: e.clientY };
@@ -92,8 +88,20 @@ export function WorkList({
               onPointerMove={follow}
               onPointerLeave={() => setActive(null)}
             >
-              <div className="grid gap-3 md:grid-cols-[minmax(0,1.1fr)_minmax(0,1fr)_7em] md:gap-10">
-                <div>
+              <div className="grid gap-3 md:grid-cols-[minmax(0,1.1fr)_minmax(0,1fr)_9em] md:gap-10">
+                <div
+                  className={`flex items-start gap-[0.2em] ${large ? "text-[clamp(44px,6.4vw,104px)] leading-[0.95]" : "text-[clamp(30px,3.6vw,52px)] leading-[1]"}`}
+                >
+                  {p.prize && (
+                    <Image
+                      src={`/media/objects/${p.prize.object}.webp`}
+                      alt={large ? p.prize.text : ""}
+                      width={480}
+                      height={480}
+                      sizes="104px"
+                      className="size-[1em] shrink-0 object-contain"
+                    />
+                  )}
                   {p.caseStudy ? (
                     <Link href={href} {...linkProps}>
                       {title}
@@ -107,22 +115,11 @@ export function WorkList({
                       {title}
                     </a>
                   )}
-                  {p.accolades && (
-                    <ul
-                      className={`mt-4 flex flex-col gap-1.5 leading-[1.35] ${large ? "text-[17px]" : "text-[15px]"}`}
-                    >
-                      {p.accolades.map((a) => (
-                        <li key={a} className="flex items-baseline gap-2.5">
-                          <span aria-hidden className="award-dot" />
-                          {a}
-                        </li>
-                      ))}
-                    </ul>
-                  )}
                 </div>
                 <p
                   className={`max-w-[34em] leading-[1.5] ${large ? "self-end text-[clamp(18px,1.5vw,22px)]" : "text-[17px]"}`}
                 >
+                  {!large && p.prize && `${p.prize.text} `}
                   {p.description}
                 </p>
                 <p className={`text-[15px] text-muted md:text-right ${large ? "md:self-end" : ""}`}>

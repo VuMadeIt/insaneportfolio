@@ -38,7 +38,9 @@ test("the timeline: one section per role, the ball moves along the axis as the p
   await expect(page.getByText("At the same time")).toHaveCount(0);
 });
 
-test("inner pages carry the same nav: the ball home, about, work, contact by email", async ({ page }) => {
+test("inner pages carry the same nav: the four balls home, about, work, contact by email", async ({
+  page,
+}) => {
   await page.goto("/work");
   const nav = page.getByRole("navigation", { name: "Site" });
   await expect(nav.getByRole("link", { name: "Lucas Vu, home" })).toHaveAttribute("href", "/");

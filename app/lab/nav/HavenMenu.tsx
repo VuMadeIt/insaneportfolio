@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
@@ -16,14 +15,14 @@ const LINKS = [
 ] as const;
 
 /**
- * The Haven Constructions menu, for comparison with the current nav (PLAN 15.7): a quiet pill in
- * the middle that darkens on hover and opens into a panel of rows that rise in one after another.
- * Escape, a click outside or picking a link closes it.
+ * The Haven Constructions menu (PLAN 15.7): the whole nav is one pill in the middle that darkens
+ * on hover and opens into rows that rise in one after another, with the email, LinkedIn and the
+ * sound switch underneath. Escape, a click outside or picking a link closes it.
  */
 export function HavenMenu() {
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-  const nav = useRef<HTMLDivElement>(null);
+  const nav = useRef<HTMLElement>(null);
   // In the lab it stands in for the home page's nav.
   const path = usePathname();
   const pathname = path.startsWith("/lab") ? "/" : path;
@@ -45,9 +44,6 @@ export function HavenMenu() {
 
   return (
     <header className={`${s.bar} font-display ${scrolled ? s.scrolled : ""}`}>
-      <Link href="/" aria-label="Lucas Vu, home" className={s.home}>
-        <Image src="/media/objects/ball.webp" alt="" width={24} height={24} className="size-6" />
-      </Link>
       <nav ref={nav} aria-label="Site" className={`${s.nav} ${open ? s.open : ""}`}>
         <button
           type="button"
@@ -56,7 +52,7 @@ export function HavenMenu() {
           aria-controls="haven-menu"
           onClick={() => setOpen((o) => !o)}
         >
-          {open ? "close" : "menu"}
+          menu
           <span className={s.burger} aria-hidden>
             <span />
             <span />
@@ -81,23 +77,20 @@ export function HavenMenu() {
                 );
               })}
             </ul>
-            <ul className={s.contacts}>
-              <li className={s.contact} style={{ transitionDelay: "0.16s" }}>
+            <ul className={s.extras}>
+              <li className={s.extra} style={{ transitionDelay: "0.16s" }}>
                 <a href={`mailto:${CONTACT.email}`}>{CONTACT.email} &#8599;</a>
               </li>
-              <li className={s.contact} style={{ transitionDelay: "0.2s" }}>
+              <li className={s.extra} style={{ transitionDelay: "0.2s" }}>
                 <a href={CONTACT.linkedin}>linkedin &#8599;</a>
+              </li>
+              <li className={s.extra} style={{ transitionDelay: "0.24s" }}>
+                <SoundButton labelled className="" />
               </li>
             </ul>
           </div>
         </div>
       </nav>
-      <div className={s.right}>
-        <a href={`mailto:${CONTACT.email}`} className="u-grow max-sm:hidden">
-          say hi
-        </a>
-        <SoundButton />
-      </div>
     </header>
   );
 }

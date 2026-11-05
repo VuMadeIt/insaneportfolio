@@ -264,9 +264,17 @@
     display: none;
   }
 }
+/* Hidden only while the live line is being measured; a timer shows the resting line regardless
+   if that never happens (scripts blocked or failing). */
+@keyframes flex-failsafe {
+  to {
+    opacity: 1;
+  }
+}
 @media (scripting: enabled) {
   .flex-wm:not([data-live]) {
     opacity: 0;
+    animation: flex-failsafe 400ms 3.5s forwards;
   }
 }
 .flex-wm[data-live] {
@@ -516,11 +524,22 @@
   }
 }
 
-/* The still and its links are the fallback only: with JavaScript they stay hidden until the page
-   knows WebGL is missing (HeroStage.tsx). */
+/* The still and its links are a fallback (HeroStage.tsx): with JavaScript they stay hidden, so the
+   balls can drop in, unless WebGL is missing, or the live scene has not drawn after 4 s (scripts
+   blocked or slow, a weak GPU still compiling): then the timer shows the still rather than an empty
+   hero, until the scene is live. */
+@keyframes still-failsafe {
+  to {
+    visibility: visible;
+  }
+}
 @media (scripting: enabled) {
-  .hero-still:not([data-fallback]) {
+  .hero-still:not([data-state="fallback"]) {
     visibility: hidden;
+    animation: still-failsafe 1ms 4s forwards;
+  }
+  .hero-still[data-state="live"] {
+    animation: none;
   }
 }
 

@@ -731,3 +731,27 @@ Lucas's notes after revision 4, with his Q&A answers. PLAN.md Part 14 is the spe
   22 px. Kept in `/lab/nav` with a CSS module so nothing ships to the live pages.
 - **Leftovers.** `public/media/about/hummingbird.*` and its line in `scripts/media.sh` are no
   longer used; left in place for Lucas to decide.
+
+### Revision 6 follow-up: making sure every animation shows (2026-11-05 evening)
+
+- **Why Lucas saw nothing.** Reproduced: through the browser-preview proxy the dev server's HMR
+  websocket fails (502) and the Next dev client never hydrates. Straight to `localhost:3200` it
+  worked. Production builds have no socket, so previews now point at `next start`. Windows
+  animation effects are on (`ClientAreaAnimation` true), so reduced motion was not the cause.
+- **First-visit freeze.** Profiled a cold load: 8.7 s inside `WebGLProgram.getUniforms` (the
+  synchronous link check) on the first frame, mostly the reflection cubes' own shader variants
+  (render targets have no tone mapping). Fix, in order: `compileAsync` before the first frame
+  (KHR_parallel_shader_compile, page stays responsive) for the main and cube variants; then, since
+  that still took 10 s cold, the balls render with a plain finish first (identical to an identity
+  ball at rest) and the four identity shaders compile in the background and swap in. The cubes
+  always use the plain finish. Cold drop now starts at ~2.1 s and settles by ~3.4 s; before, the
+  page was frozen for 7-10 s.
+- **Back after a scroll.** A Lenis glide still running when the route changed carried on over the
+  new page (home came back scrolled 1400 px, the drop played off-screen). Lenis now adopts the
+  page's scroll position on every route change.
+- **Failsafes.** The still shows after 4 s if the scene has not drawn (and hides when it does);
+  the moving line shows its resting form after 3.5 s if it never went live.
+- **Menu exactness.** Filmed Haven and ours with `scripts/menu-film.mjs` and compared frame by
+  frame: same pill sizes (420 px box, 12 px clip, 40 px visible), hover area within 4%, open area
+  within 3%, the same three-frame open and close at 15 fps, the same row stagger and hairlines.
+  The label stays "menu" when open, as on Haven. Bullet is Haven's square, not a ball.

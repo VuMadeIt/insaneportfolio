@@ -4,7 +4,7 @@ import dynamic from "next/dynamic";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 import { identities, identityIndex } from "@/content/identities";
-import { useSyncExternalStore } from "react";
+import { useState, useSyncExternalStore } from "react";
 import { AccessibleTargets } from "./AccessibleTargets";
 import { CradleStill } from "./CradleStill";
 
@@ -21,15 +21,18 @@ const no = () => false;
 
 /**
  * The live cradle. The balls drop in from above on every arrival (PLAN 15.6), so the pre-rendered
- * still is only the fallback: without WebGL, or without JavaScript (`.hero-still` in globals.css).
+ * still is only a fallback: without WebGL, and (by a CSS timer, `.hero-still` in globals.css)
+ * whenever the live scene has not drawn within a few seconds, so the hero is never left empty.
  */
 export function HeroStage() {
+  const [live, setLive] = useState(false);
   const hydrated = useSyncExternalStore(noop, yes, no);
   const canRender = useSyncExternalStore(noop, hasWebGL2, no);
   const story = identityIndex(usePathname().slice(1)) >= 0;
+  const state = hydrated && !canRender ? "fallback" : live ? "live" : undefined;
   return (
     <>
-      <div className="hero-still absolute inset-0" data-fallback={hydrated && !canRender ? "" : undefined}>
+      <div className="hero-still absolute inset-0" data-state={state}>
         <CradleStill />
         {!canRender && !story && (
           <nav aria-label="Identities" className="absolute inset-0">
@@ -47,7 +50,7 @@ export function HeroStage() {
           </nav>
         )}
       </div>
-      {canRender && <Stage />}
+      {canRender && <Stage onFirstFrame={() => setLive(true)} />}
       {canRender && <AccessibleTargets />}
     </>
   );

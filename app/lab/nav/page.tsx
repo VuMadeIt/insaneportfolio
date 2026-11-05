@@ -1,14 +1,15 @@
 import HomePage from "../../(site)/(hero)/page";
 import { Hero } from "@/components/Hero";
-import { HavenMenu } from "./HavenMenu";
+import { NavEditions } from "./NavEditions";
 
 export const metadata = { title: "Nav lab" };
 
-/** The home page with the Haven-style menu in place of the site nav, to compare (PLAN 15.7). */
-export default function NavLabPage() {
+/** The home page under each nav edition, to compare (PLAN 15.7). */
+export default async function NavLabPage({ searchParams }: { searchParams: Promise<{ v?: string }> }) {
+  const { v } = await searchParams;
   return (
     <main className="relative">
-      <HavenMenu />
+      <NavEditions initial={v} />
       <Hero />
       <HomePage />
     </main>

@@ -1,7 +1,7 @@
 "use client";
 
 import { useFrame, useThree } from "@react-three/fiber";
-import { useEffect, useMemo, useRef } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import * as THREE from "three";
 import { playImpacts } from "@/audio/clack";
 import { identities } from "@/content/identities";
@@ -63,6 +63,9 @@ export function CradleModel() {
     [],
   );
 
+  // Stage's precompile also builds the shader variants these cube renders use.
+  useEffect(() => void (scene.userData.cubes = cubes), [scene, cubes]);
+
   const ballMaterials = useMemo(
     () =>
       cubes.map((c, i) => {
@@ -72,12 +75,31 @@ export function CradleModel() {
       }),
     [cubes, material],
   );
+  // The same finish without an identity, which looks exactly like an identity ball at rest. The
+  // identity shaders take seconds to compile on some machines (Direct3D), so the balls render with
+  // this until they are ready (the drop never waits for them), and the reflection cubes always use
+  // it, since an identity never shows in a reflection.
+  const plainMaterials = useMemo(
+    () =>
+      cubes.map((c) => {
+        const m = materialFactories[material]();
+        m.envMap = c.target.texture;
+        return m;
+      }),
+    [cubes, material],
+  );
+  const [compiled, setCompiled] = useState<THREE.Material[] | null>(null);
+  const compiling = useRef<THREE.Material[] | null>(null);
+  const shown = compiled === ballMaterials ? ballMaterials : plainMaterials;
   const identityUniforms = useMemo(() => ballMaterials.map((m) => m.userData.identity), [ballMaterials]);
   const updateIdentities = useIdentities(identityUniforms);
-  useEffect(() => () => ballMaterials.forEach((m) => m.dispose()), [ballMaterials]);
+  useEffect(
+    () => () => [...ballMaterials, ...plainMaterials].forEach((m) => m.dispose()),
+    [ballMaterials, plainMaterials],
+  );
   useEffect(() => {
-    ballMaterials.forEach((m) => (m.envMapIntensity = look.envIntensity));
-  }, [ballMaterials, look.envIntensity]);
+    [...ballMaterials, ...plainMaterials].forEach((m) => (m.envMapIntensity = look.envIntensity));
+  }, [ballMaterials, plainMaterials, look.envIntensity]);
 
   const hardwareMaterial = useMemo(() => {
     const m = materialFactories.chrome();
@@ -119,6 +141,19 @@ export function CradleModel() {
   }, [gl]);
 
   useFrame((state, delta) => {
+    // The scene is on screen: compile the identity shaders in the background, then switch to them.
+    if (compiling.current !== ballMaterials) {
+      compiling.current = ballMaterials;
+      const target = ballMaterials;
+      const group = new THREE.Group();
+      target.forEach((m) => group.add(new THREE.Mesh(hardware.sphere, m)));
+      gl.compileAsync(group, state.camera, scene)
+        .catch(() => {})
+        .then(() => {
+          setCompiled(target);
+          requestRender();
+        });
+    }
     const dt = advanceClock(Math.min(delta, MAX_FRAME), cradle);
     tick(dt);
     cradle.balls.forEach((_, i) => {
@@ -153,7 +188,7 @@ export function CradleModel() {
       // The six cube faces must not each re-render the shadow map (it is redrawn for the main view).
       const autoShadows = gl.shadowMap.autoUpdate;
       gl.shadowMap.autoUpdate = false;
-      identityUniforms.forEach((u) => (u.uDetail.value = 0));
+      spheres.current.forEach((m, j) => m && (m.material = plainMaterials[j]!));
       for (let k = 0; k < batch; k++) {
         const i = (n + k) % cubes.length;
         const cube = cubes[i]!;
@@ -168,7 +203,7 @@ export function CradleModel() {
         cube.target.texture.needsPMREMUpdate = true;
       }
       gl.shadowMap.autoUpdate = autoShadows;
-      identityUniforms.forEach((u) => (u.uDetail.value = 1));
+      spheres.current.forEach((m, j) => m && (m.material = shown[j]!));
     }
 
     // Project the balls for the DOM layer (accessible buttons, captions).
@@ -200,7 +235,7 @@ export function CradleModel() {
           <mesh
             ref={(m) => void (spheres.current[i] = m)}
             geometry={hardware.sphere}
-            material={ballMaterials[i]}
+            material={shown[i]}
             castShadow
           />
           <mesh geometry={hardware.shank} material={hardwareMaterial} castShadow />

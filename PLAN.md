@@ -1151,3 +1151,21 @@ Branch `phase/16-revision-5` (continues it). Answers from the Q&A are recorded i
 ### 15.9 About
 - The fishing object and the essay are removed. "Socratica's Create-a-thon / Socratica, UW/UX,
   Blueprint" becomes "To Socratica Sundays! / Socratica".
+
+### 15.10 Follow-up (Lucas, 2026-11-05 evening)
+- Nothing showed for Lucas (no drop, no hover videos, an invisible moving line, a dead menu): the
+  preview proxy he used could not carry the dev server's hot-reload socket, so the page never
+  hydrated. Previews are now served from production builds (site on :3100; labs on :3400 from a
+  `LAB=1` build in `.artifacts/next-lab`).
+- Every crucial animation must show in any circumstance. Measured and fixed: a cold first visit
+  froze the page for 7-10 s compiling shaders (now compiled off the main thread, with plain balls
+  first and the identities swapped in when ready: the drop starts at about 2 s); a smooth scroll
+  still gliding across a page change buried the hero on Back; the still and the moving line have
+  CSS timers so they show even if scripts never run.
+- The live nav is the four balls again. `/lab/nav` compares three editions: four balls, one ball
+  close to the edges, and the Haven menu, which now holds everything (home, work, about, contact,
+  email, LinkedIn and a "sound on / sound off" switch) with no ball or links outside it.
+- `scripts/user-test.mjs` checks every animation on desktop, through the preview proxy, on a
+  throttled CPU and network, on a tablet and a phone, and the labs.
+- Next (not done yet, Lucas will give feedback first): smaller home project rows and "View more",
+  no ruler under the moving line, and the moving line in the site's own face, set denser.

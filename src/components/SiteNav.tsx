@@ -27,33 +27,37 @@ function SpeakerIcon({ on }: { on: boolean }) {
   );
 }
 
-/** Mutes every sound on the site (the cradle, slow motion, the ball in "moving"). */
-export function SoundButton() {
+/** Mutes every sound on the site (the cradle, slow motion). `labelled` writes the state beside the icon. */
+export function SoundButton({ labelled = false, className }: { labelled?: boolean; className?: string }) {
   const on = !useSyncExternalStore(subscribeMuted, isMuted, () => false);
+  const label = on ? "Sound on" : "Sound off";
   return (
     <button
       type="button"
       aria-pressed={on}
-      aria-label={on ? "Sound on" : "Sound off"}
-      title={on ? "Sound on" : "Sound off"}
-      className="-m-2 rounded-full p-2 transition-opacity duration-200 hover:opacity-60"
+      aria-label={labelled ? undefined : label}
+      title={labelled ? undefined : label}
+      className={className ?? "-m-2 rounded-full p-2 transition-opacity duration-200 hover:opacity-60"}
       onClick={() => {
         unlockAudio();
         setMuted(on);
       }}
     >
       <SpeakerIcon on={on} />
+      {labelled && label.toLowerCase()}
     </button>
   );
 }
 
 /**
- * The same slim bar on every page (PLAN 14.3, 15.3): one ball home on the left; about, work,
+ * The same slim bar on every page (PLAN 14.3, 15.3): the four balls home on the left; about, work,
  * contact (an email) and the sound button on the right, set like the headings. It hides while you
  * scroll down and comes back on any scroll up; at the top of the page it is always there. An open
- * story hands the corner to its back arrow.
+ * story hands the corner to its back arrow. `/lab/nav` also shows a one-ball edition, set close to
+ * the edges.
  */
-export function SiteNav() {
+export function SiteNav({ edition }: { edition?: "four" | "one" }) {
+  const one = edition === "one";
   const pathname = usePathname();
   const bar = useRef<HTMLElement>(null);
   const story = identityIndex(pathname.slice(1)) >= 0;
@@ -74,8 +78,8 @@ export function SiteNav() {
     return () => removeEventListener("scroll", onScroll);
   }, [pathname]);
 
-  // The type lab shows the real nav in each typeface.
-  if (pathname.startsWith("/lab") && pathname !== "/lab/type") return null;
+  // The labs bring their own (the type lab shows this one in each typeface).
+  if (!edition && pathname.startsWith("/lab") && pathname !== "/lab/type") return null;
   return (
     <header
       ref={bar}
@@ -85,14 +89,25 @@ export function SiteNav() {
     >
       <nav
         aria-label="Site"
-        className="font-display flex h-[var(--nav-h)] items-center justify-between px-[var(--gutter)]"
+        className={`font-display flex h-[var(--nav-h)] items-center justify-between ${one ? "px-[clamp(20px,2.5vw,36px)]" : "px-[var(--gutter)]"}`}
       >
         <Link
           href="/"
           aria-label="Lucas Vu, home"
           className="-m-2 p-2 transition-opacity duration-200 hover:opacity-75"
         >
-          <Image src="/media/objects/ball.webp" alt="" width={24} height={24} priority className="size-6" />
+          {one ? (
+            <Image src="/media/objects/ball.webp" alt="" width={24} height={24} priority className="size-6" />
+          ) : (
+            <Image
+              src="/media/objects/balls.webp"
+              alt=""
+              width={88}
+              height={22}
+              priority
+              className="h-[22px] w-auto"
+            />
+          )}
         </Link>
         <div className="flex items-center gap-6 sm:gap-8">
           <Link href="/about" className="u-grow">

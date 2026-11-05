@@ -6,7 +6,7 @@ import type { Identity } from "@/content/identities";
 import { app } from "./StoryController";
 
 /**
- * The wall text beside the chosen sphere: title, one line, three sentences. Server-rendered, so
+ * The wall text beside the chosen sphere: title, one line, then the text. Server-rendered, so
  * the story reads without JavaScript or WebGL. It rises in, staggered, after the glide starts;
  * a direct load shows it at once.
  */
@@ -31,8 +31,8 @@ export function StoryPanel({ identity }: { identity: Identity }) {
         <p className={`${cls} mt-4 text-[clamp(19px,1.6vw,24px)] font-light`} style={rise(760)}>
           {identity.line}
         </p>
-        <div className="mt-8 flex flex-col gap-3 text-[17px] leading-[1.55]">
-          {identity.sentences.map((s, k) => (
+        <div className="mt-8 flex flex-col gap-4 text-[17px] leading-[1.55]">
+          {identity.paragraphs.map((s, k) => (
             <p key={k} className={cls} style={rise(880 + k * 90)}>
               {s}
             </p>

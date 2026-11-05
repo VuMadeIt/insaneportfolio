@@ -17,7 +17,7 @@ export async function generateMetadata({
   const { identity: slug } = await params;
   const identity = identities.find((i) => i.slug === slug);
   if (!identity) return {};
-  const description = `${identity.line} ${identity.sentences[0]}`;
+  const description = `${identity.line} ${identity.paragraphs[0]}`;
   return {
     title: identity.title,
     description,

@@ -108,6 +108,8 @@ export interface ObjectItem {
   /** Anchor on /about, linked from the home page's photo strip. */
   id: string;
   title: string;
+  /** Its name in the section index (Selected objects). */
+  section: string;
   /** Where or when, under the title. */
   context: string;
   text: string;
@@ -117,21 +119,23 @@ export interface ObjectItem {
 export const objects: ObjectItem[] = [
   {
     id: "cadets",
-    title: "Remembrance Day parade in the snow",
+    title: "Annual 2025 Ceremony",
+    section: "Cadets",
     context: "Cadets",
     text: "I joined cadets to get past my anxiety. Week-long camping trips, instructing classes of 70+, parading in the snow and fundraising for veterans shaped me more than anything else in my childhood.",
     image: {
-      src: "/media/about/cadet-remembrance-day-parade.png",
-      alt: "Cadets parading in the snow on Remembrance Day",
+      src: "/media/about/cadet-dress-swords.webp",
+      alt: "Three cadets in dress uniform holding ceremonial swords",
       width: 1024,
-      height: 731,
+      height: 768,
     },
   },
   {
     id: "chess",
     title: "My last game in the TCDSB West-End division",
+    section: "Chess",
     context: "High school chess",
-    text: "Chess was how I made friends before I got over my anxiety. I left the division with a record of 13-1-2, and later founded a program pairing high schoolers with elderly residents at The Village of Humber Heights.",
+    text: "Chess was how I made friends before I got over my anxiety. I left the division with a record of 13-1-2, and left the program being known as Chess Jesus.",
     image: {
       src: "/media/about/chess-tcdsb-west-end.png",
       alt: "Me at a chess board in the TCDSB West-End division",
@@ -141,9 +145,10 @@ export const objects: ObjectItem[] = [
   },
   {
     id: "speech",
-    title: "After a 15-minute speech",
+    title: "Life Changing Memories with the Elderly",
+    section: "Volunteer work",
     context: "Volunteer Appreciation Ceremony",
-    text: "Fifteen minutes on a stage, about the chess program and the people in it. I like being on stages more than I expected to.",
+    text: "I started a chess program at the Village of Humber Heights after sending a cold email to the program director, and from there we built the chess program from the ground up, partnering with a bunch of different high school students and promoting and fostering friendships between both generations.",
     image: {
       src: "/media/about/chess-volunteer-ceremony.png",
       alt: "Me after my speech at the Volunteer Appreciation Ceremony",
@@ -154,8 +159,9 @@ export const objects: ObjectItem[] = [
   {
     id: "hack-the-6ix",
     title: "Winning $1,400 USD",
+    section: "Hackathons",
     context: "Hack the 6ix 2026",
-    text: "If there's a design event at Waterloo or Toronto, I'm probably there. This one paid.",
+    text: "If there's a design event at Waterloo or Toronto, I'm probably there.",
     image: {
       src: "/media/about/hack-the-6ix-2026.png",
       alt: "The team at Hack the 6ix 2026",
@@ -166,6 +172,7 @@ export const objects: ObjectItem[] = [
   {
     id: "socratica",
     title: "To Socratica Sundays!",
+    section: "Socratica",
     context: "Socratica",
     text: "I'm proud to be part of a community of makers, artists and builders who simply work on what they love.",
     image: {

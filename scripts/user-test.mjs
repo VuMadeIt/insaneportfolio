@@ -314,7 +314,7 @@ async function home(scenario) {
       await page.waitForTimeout(400);
       const opened = await page
         .getByRole("tabpanel")
-        .getByRole("heading", { name: "After a 15-minute speech" })
+        .getByRole("heading", { name: "Life Changing Memories with the Elderly" })
         .isVisible()
         .catch(() => false);
       record(

@@ -3,6 +3,15 @@
  * from the real scene by scripts/og.mjs. iMessage plays the video looping and muted; Discord shows
  * it with a play button; everywhere else (X, Slack, LinkedIn, WhatsApp) shows the still.
  */
+/** Link previews need absolute URLs: the site's own, else Vercel's production domain. */
+export const SITE =
+  process.env.NEXT_PUBLIC_SITE_URL ??
+  (process.env.VERCEL_PROJECT_PRODUCTION_URL
+    ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
+    : "http://localhost:3000");
+// Next resolves image URLs against metadataBase but not video ones.
+const video = new URL("/og/cover.mp4", SITE).href;
+
 export const SHARE_IMAGE = {
   url: "/og/cover.jpg",
   width: 1200,
@@ -11,8 +20,8 @@ export const SHARE_IMAGE = {
 };
 
 export const SHARE_VIDEO = {
-  url: "/og/cover.mp4",
-  secureUrl: "/og/cover.mp4",
+  url: video,
+  secureUrl: video,
   type: "video/mp4",
   width: 1200,
   height: 630,

@@ -836,3 +836,27 @@ Lucas's notes after revision 4, with his Q&A answers. PLAN.md Part 14 is the spe
 - **Also fixed on the sweep:** on identity routes the tagline stayed visible at the bottom edge
   after the name slid away (it hangs above the name), and the case-study metadata squeezed into
   five columns at 1024 px (now three, five from 1280).
+
+### Revision 7 (2026-11-06)
+
+- **Mobile lag.** Measured on a 390 px, DPR 3, 4x CPU emulation (`scripts/perf.mjs`): idle
+  frames were fine on a desktop GPU, so the cost on a real phone is the GPU: a VSM shadow map at
+  2048 px with a 24-sample blur, the canvas at 2x, four 192 px reflection cubes and 128x96
+  spheres, every frame, forever, because the idle sway never let the scene sleep. Lucas chose
+  "lighter 3D" and "no idle sway" on phones; he declined dropping the warm filter and simpler
+  reveals. Touch is detected with `(pointer: coarse)`, so tablets get the same.
+- **Audio on phones.** The context was created and resumed only on pointerdown, which is not a
+  user activation for touch (only pointerup/touchend are), so it never left "suspended". Now any
+  pointerup, touchend, click or key unlocks it, and an iOS "interrupted" context resumes too.
+  Alternative offered: claim iOS's "playback" audio session to play through the silent switch;
+  Lucas chose to respect the switch (playback would also pause the visitor's music).
+- **Home row videos.** In a fixed third column (clamp 200-340 px), absolutely placed so the row
+  never grows, with the video's own aspect ratio so it is never stretched; it reaches 14 px short
+  of the row's rules, using the padding, which made it ~200 px tall at 1440 instead of ~150.
+- **Link preview.** Lucas sees only a still on Discord; Discord does not reliably play a plain
+  `og:video` mp4 for arbitrary sites, so the still is what matters there: now balls.png, cropped
+  to 1.91:1 around the balls and resized to 1200x630, under a new file name so caches refetch.
+  The video stays for iMessage.
+- **SolarScore clip.** The demo is 2:13 of the team talking with product shots between; the 29 s
+  of full-screen product (landing, address, emailed report, satellite outline) at double speed
+  makes a 14 s, 1.9 MB loop.

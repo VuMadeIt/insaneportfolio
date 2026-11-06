@@ -1252,3 +1252,19 @@ Branch `phase/16-revision-5` (continues it). Answers from the Q&A are recorded i
 - **Copy:** no notes about how a graphic was made ("Redrawn from our whiteboard map" is gone).
 - **Arrival:** the balls wait just above the frame and come down in 1 s, so they land with the
   tagline (in view at ~1.4 s, settled at ~2.0 s on a warm load).
+
+### 15.18 Revision 7 (Lucas, 2026-11-06)
+- **Phones and tablets (touch):** the cradle renders at 1.5x (not 2x), with a 1024 px shadow map,
+  128 px reflection cubes and 64x48 spheres, and has no idle sway, so the scene stops rendering
+  once the balls hang still. Sound unlocks on any finger lift, click or key (phones do not count
+  pointerdown as a gesture); a silent iPhone stays silent (Lucas's choice).
+- **Phone menu:** slides away while scrolling down and comes back on any scroll up, like the bar.
+  Its outside links carry a sharp, square-cut up-right arrow instead of the ↗ glyph.
+- **About:** on phones the chronology is the list alone; the chart stays on desktop.
+- **Work rows:** the month and year sit under the title. Home rows play their video in the row
+  (where the date was), as high as the row less 14 px at each rule, in its own proportions, while
+  on screen; no cursor preview on home. /work keeps the cursor preview.
+- **SolarScore:** its row video is the product shots of the Devpost demo (37 s to 66 s, double
+  speed, 16:9).
+- **Link preview:** `public/og/balls.jpg` (Lucas's render of the four balls) is the image; the
+  swinging video stays as `og:video` for the apps that play it.

@@ -30,7 +30,8 @@ export function HeroName({ text, label, tagline }: { text?: string; label?: stri
       )}
       <div
         className="absolute inset-x-0 bottom-0 transition-transform duration-[900ms] ease-[var(--ease-drawer)]"
-        style={{ transform: story ? "translateY(115%)" : "none" }}
+        // The tagline hangs above the name (up to two lines on phones): take it out of view too.
+        style={{ transform: story ? "translateY(calc(115% + 4.5rem))" : "none" }}
       >
         <GiantName
           as="h1"

@@ -24,6 +24,13 @@ const RISE_TIME = 0.85;
 const BRAKE_TIME = (2 * (OUT - EXIT) * RISE_TIME) / (3 * EXIT);
 const GLIDE_TIME = 0.45;
 const LOWER_TIME = 1.4;
+/**
+ * The way in waits just above the frame rather than where a story parks the balls, and comes down
+ * quicker, so the balls arrive with the tagline. Peak acceleration 4 * 0.5 / 1.0^2 = 2 m/s^2, well
+ * under gravity: the strings stay taut.
+ */
+const ENTER = EXIT + 0.05;
+const ARRIVE_TIME = 1;
 
 const offsets: Vec3[] = cradle.balls.map(() => vec());
 let timeline: gsap.core.Timeline | null = null;
@@ -116,13 +123,13 @@ export function open(selected: number): void {
   shapedGlide(tl, offsets[selected]!, target, DIP_TIME + RISE_TIME * 0.7);
 }
 
-export function close(): void {
+export function close(duration = LOWER_TIME): void {
   if (reducedMotion()) return enter(null);
   const tl = begin();
   // Once everything has come down (the sway waits for the timeline to finish).
   swaying = true;
   offsets.forEach((o, i) => {
-    if (o.y >= EXIT * 0.5) tl.to(o, { y: 0, x: 0, duration: LOWER_TIME, ease: "power2.inOut" }, i * 0.06);
+    if (o.y >= EXIT * 0.5) tl.to(o, { y: 0, x: 0, duration, ease: "power2.inOut" }, i * 0.06);
     else shapedGlide(tl, o, vec(), 0);
   });
 }
@@ -138,11 +145,11 @@ export function intro(): void {
   cradle.release();
   offsets.forEach((o, i) => {
     o.x = 0;
-    o.y = OUT;
+    o.y = ENTER;
     cradle.teleportAnchors(i, o);
     cradle.lift(i, 0);
   });
-  close();
+  close(ARRIVE_TIME);
 }
 
 /** Jump straight into a state with everything hanging still (deep links, reduced motion). */

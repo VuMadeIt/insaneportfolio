@@ -24,8 +24,9 @@
     display: none;
   }
 }
-/* A story is open. */
-.away {
+/* A story is open, or scrolling down (kept while a key has focus inside). */
+.away,
+.tucked:not(:has(:focus-visible)) {
   transform: translateY(-120%);
 }
 .nav {

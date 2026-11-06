@@ -14,20 +14,37 @@ const LINKS = [
   ["contact", `mailto:${CONTACT.email}`],
 ] as const;
 
+/** The sharp up-right arrow beside the outside links (Lucas's reference: a square-cut stroke). */
+const Out = () => (
+  <svg width="0.7em" height="0.7em" viewBox="0 0 12 12" fill="none" aria-hidden>
+    <path d="M2 10 10 2M3.5 2H10v6.5" stroke="currentColor" strokeWidth="1.6" strokeLinecap="square" />
+  </svg>
+);
+
 /**
  * The phone nav (PLAN 15.7, 15.11), after havenconstructions.com.au: the whole nav is one pill in
  * the middle that opens into rows rising one after another, with the email, LinkedIn and the sound
  * switch underneath. Escape, a tap outside or picking a link closes it. Shown below 768 px only
- * (HavenMenu.module.css); `hidden` sends it away while a story is open.
+ * (HavenMenu.module.css); `hidden` sends it away while a story is open. It slides away while you
+ * scroll down and comes back on any scroll up (PLAN 15.18).
  */
 export function HavenMenu({ hidden = false }: { hidden?: boolean }) {
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [tucked, setTucked] = useState(false);
   const nav = useRef<HTMLElement>(null);
   const pathname = usePathname();
 
   useEffect(() => {
-    const onScroll = () => setScrolled(scrollY > 40);
+    // Like the desktop bar: away while scrolling down, back on any scroll up, always at the top.
+    let last = scrollY;
+    const onScroll = () => {
+      const y = scrollY;
+      setScrolled(y > 40);
+      if (y < 80 || y < last - 4) setTucked(false);
+      else if (y > last + 4) setTucked(true);
+      if (Math.abs(y - last) > 4) last = y;
+    };
     const onKey = (e: KeyboardEvent) => e.key === "Escape" && setOpen(false);
     const onDown = (e: PointerEvent) => !nav.current?.contains(e.target as Node) && setOpen(false);
     onScroll();
@@ -43,7 +60,7 @@ export function HavenMenu({ hidden = false }: { hidden?: boolean }) {
 
   return (
     <header
-      className={`${s.bar} font-display ${scrolled ? s.scrolled : ""} ${hidden ? s.away : ""}`}
+      className={`${s.bar} font-display ${scrolled ? s.scrolled : ""} ${hidden ? s.away : tucked && !open ? s.tucked : ""}`}
       inert={hidden}
     >
       <nav ref={nav} aria-label="Site" className={`${s.nav} ${open ? s.open : ""}`}>
@@ -81,10 +98,14 @@ export function HavenMenu({ hidden = false }: { hidden?: boolean }) {
             </ul>
             <ul className={s.extras}>
               <li className={s.extra} style={{ transitionDelay: "0.16s" }}>
-                <a href={`mailto:${CONTACT.email}`}>{CONTACT.email} &#8599;</a>
+                <a href={`mailto:${CONTACT.email}`}>
+                  {CONTACT.email} <Out />
+                </a>
               </li>
               <li className={s.extra} style={{ transitionDelay: "0.2s" }}>
-                <a href={CONTACT.linkedin}>linkedin &#8599;</a>
+                <a href={CONTACT.linkedin}>
+                  linkedin <Out />
+                </a>
               </li>
               <li className={s.extra} style={{ transitionDelay: "0.24s" }}>
                 <SoundButton labelled className="" />

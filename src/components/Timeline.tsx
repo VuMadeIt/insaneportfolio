@@ -101,7 +101,8 @@ function Section({ role }: { role: Role }) {
  * role as a bar in its own lane, so roles that overlap are seen overlapping. Scrolling moves a
  * small dark-metal ball along the axis from one role's start to the next, and the role it reaches
  * gets the stage above: logo, title, place, dates and a line; the bars it overlaps light up.
- * Without the pin (phones, reduced motion) every section is listed above the same chart.
+ * Without the pin every section is listed, above the same chart on desktop (reduced motion) and
+ * on its own on phones.
  */
 const roles = chronology;
 const ROW = 40;
@@ -235,8 +236,8 @@ export function Timeline({ now: nowYm }: { now: string }) {
             </li>
           ))}
         </ol>
-        {/* Drawn in percent, so it fits any width: never a sideways scroll. */}
-        <div className="mt-16 pb-2">{chart}</div>
+        {/* Phones get the list alone: the chart is only interactive when pinned (PLAN 15.18). */}
+        <div className="mt-16 pb-2 max-md:hidden">{chart}</div>
       </section>
     );
   }

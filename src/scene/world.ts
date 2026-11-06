@@ -11,6 +11,12 @@ const ROPE_SEGMENTS = 20;
  */
 export const cradle = new Cradle();
 
+/**
+ * Touch devices (phones, tablets): a lighter scene (1.5x pixels, smaller shadow and reflection
+ * maps, coarser spheres) and no idle sway, so the GPU rests once the balls hang still (PLAN 15.18).
+ */
+export const lite = typeof window !== "undefined" && matchMedia("(pointer: coarse)").matches;
+
 /** Render-time state shared by the scene and the DOM layer each frame. */
 export const frame = {
   alpha: 0,

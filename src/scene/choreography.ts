@@ -2,7 +2,7 @@ import gsap from "gsap";
 import { type Vec3, vec } from "@/physics/vec";
 import { frameFor } from "./framing";
 import { restoreTime } from "./slowmo";
-import { cradle, requestRender } from "./world";
+import { cradle, lite, requestRender } from "./world";
 
 /**
  * The click choreography (PLAN 1.3, 4.7). One paused GSAP timeline moves the kinematic anchors
@@ -46,6 +46,7 @@ let swaying = false;
  * like a cradle in a draught. Kept going the way you keep a swing going: when the group has lost
  * about a third of its energy, it gets a nudge as it passes the bottom. All four get the same
  * velocity, so they never touch and never clack. A hand on a ball ends it until the next arrival.
+ * Not on touch devices (PLAN 15.18): there the scene stops rendering once the balls hang still.
  */
 function sway() {
   if (cradle.hand) {
@@ -127,7 +128,7 @@ export function close(duration = LOWER_TIME): void {
   if (reducedMotion()) return enter(null);
   const tl = begin();
   // Once everything has come down (the sway waits for the timeline to finish).
-  swaying = true;
+  swaying = !lite;
   offsets.forEach((o, i) => {
     if (o.y >= EXIT * 0.5) tl.to(o, { y: 0, x: 0, duration, ease: "power2.inOut" }, i * 0.06);
     else shapedGlide(tl, o, vec(), 0);
@@ -157,7 +158,7 @@ export function enter(selected: number | null): void {
   restoreTime();
   timeline?.kill();
   timeline = null;
-  swaying = selected === null && !reducedMotion();
+  swaying = selected === null && !reducedMotion() && !lite;
   cradle.balls.forEach((_, i) => {
     const o = selected === null ? vec() : i === selected ? storyOffset(i) : vec(0, OUT, 0);
     offsets[i]!.x = o.x;

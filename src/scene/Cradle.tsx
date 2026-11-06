@@ -14,13 +14,24 @@ import { stringMaterial } from "./materials/string";
 import { StringTube } from "./stringGeometry";
 import { advanceClock, slowmo } from "./slowmo";
 import { REFLECTION_LAYER } from "./Wall";
-import { afterFrame, anchorOf, capture, cradle, frame, requestRender, ropeOf, ropes, tick } from "./world";
+import {
+  afterFrame,
+  anchorOf,
+  capture,
+  cradle,
+  frame,
+  lite,
+  requestRender,
+  ropeOf,
+  ropes,
+  tick,
+} from "./world";
 
 const R = cradle.config.ball.radius;
 const EYE = cradle.config.eyeletHeight;
 const UP = new THREE.Vector3(0, 1, 0);
 const STRING_RADIUS = 0.0002;
-const CUBE_SIZE = 192;
+const CUBE_SIZE = lite ? 128 : 192;
 /** Transverse string kick per m/s of impact speed (m/s). */
 const STRING_KICK = 0.05;
 const SETTLE_TIME = 1.5;
@@ -31,7 +42,7 @@ const SLOW_REFLECTIONS = 0.08;
 /** Shared geometry: one sphere for all four balls and one screw eye. */
 function useHardware() {
   return useMemo(() => {
-    const sphere = new THREE.SphereGeometry(R, 128, 96);
+    const sphere = new THREE.SphereGeometry(R, lite ? 64 : 128, lite ? 48 : 96);
     const ringRadius = 0.0026;
     const wire = 0.00065;
     const ring = new THREE.TorusGeometry(ringRadius, wire, 12, 40);

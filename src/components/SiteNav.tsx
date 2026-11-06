@@ -62,6 +62,14 @@ export function SiteNav() {
   const bar = useRef<HTMLElement>(null);
   const story = identityIndex(pathname.slice(1)) >= 0;
 
+  // Phones only count a tap as a gesture when the finger lifts, not on pointerdown (where the
+  // canvas unlocks it on desktop), so sound is unlocked on any lift, click or key, site-wide.
+  useEffect(() => {
+    const gestures = ["pointerup", "touchend", "click", "keydown"] as const;
+    gestures.forEach((g) => addEventListener(g, unlockAudio, { passive: true }));
+    return () => gestures.forEach((g) => removeEventListener(g, unlockAudio));
+  }, []);
+
   useEffect(() => {
     const el = bar.current;
     if (!el) return;

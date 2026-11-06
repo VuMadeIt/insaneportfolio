@@ -5,7 +5,7 @@ import { useThree } from "@react-three/fiber";
 import { useEffect, useMemo } from "react";
 import * as THREE from "three";
 import { useLook } from "./look";
-import { cradle } from "./world";
+import { cradle, lite } from "./world";
 
 /** The HDRI the balls reflect and the key light that throws their shadows on the wall. */
 export function Lighting() {
@@ -36,7 +36,7 @@ export function Lighting() {
   const spot = useMemo(() => {
     const light = new THREE.SpotLight("#fff6ea", look.keyIntensity, 0, 0.22, 0.65, 2);
     light.castShadow = true;
-    light.shadow.mapSize.set(2048, 2048);
+    light.shadow.mapSize.setScalar(lite ? 1024 : 2048);
     light.shadow.bias = -0.00005;
     light.shadow.normalBias = 0.0015;
     light.shadow.camera.near = 1;

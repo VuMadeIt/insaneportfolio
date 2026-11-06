@@ -10,7 +10,7 @@ import { Lighting } from "./Lighting";
 import { useLook } from "./look";
 import { StringShadows } from "./StringShadows";
 import { Wall } from "./Wall";
-import { setInvalidate } from "./world";
+import { lite, setInvalidate } from "./world";
 
 const TONE_MAPS = {
   neutral: THREE.NeutralToneMapping,
@@ -108,7 +108,7 @@ export default function Stage({ onFirstFrame }: { onFirstFrame?: () => void }) {
     <Canvas
       className="!absolute inset-0"
       gl={{ antialias: true, alpha: true, powerPreference: "high-performance" }}
-      dpr={[1, 2]}
+      dpr={[1, lite ? 1.5 : 2]}
       frameloop={ready ? "demand" : "never"}
       shadows
       camera={{ fov: FOV, near: 0.05, far: 20 }}

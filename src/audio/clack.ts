@@ -42,7 +42,8 @@ export function subscribeMuted(listener: () => void): () => void {
 /** Create the audio context on the first user gesture and load the sample sprite. */
 export function unlockAudio(): void {
   if (ctx) {
-    if (ctx.state === "suspended" && !document.hidden) void ctx.resume();
+    // Suspended, or "interrupted" on iOS after a call or another app's audio.
+    if (ctx.state !== "running" && !document.hidden) void ctx.resume();
     return;
   }
   ctx = new AudioContext();

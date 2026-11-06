@@ -96,7 +96,8 @@ async function home(scenario) {
     );
     record(scenario, "balls drop in from above", await drop);
 
-    // Idle sway: once down, the balls keep swinging a few millimetres, together.
+    // Idle sway: once down, the balls keep swinging a few millimetres, together. Not on touch
+    // devices (PLAN 15.18), where they hang still so the scene stops rendering.
     const sway = await page.evaluate(
       () =>
         new Promise((done) => {
@@ -113,8 +114,8 @@ async function home(scenario) {
     );
     record(
       scenario,
-      "balls sway slightly while idle",
-      sway > 0.8 && sway < 40,
+      phone ? "balls hang still on a phone" : "balls sway slightly while idle",
+      phone ? sway < 0.8 : sway > 0.8 && sway < 40,
       `range ${sway.toFixed(1)} px`,
     );
 
@@ -215,13 +216,11 @@ async function home(scenario) {
           () => true,
           () => false,
         );
+    // Every home row plays its video as it comes on screen: in the row on desktop, under it on phones.
+    await page.locator("#work li.catalogue-row video:visible").first().scrollIntoViewIfNeeded();
+    record(scenario, "row video plays as it scrolls in", await playing("#work li.catalogue-row video"));
     if (wide) {
-      // The row's video follows the pointer and plays; the cursor ball trails the pointer.
-      const row = page.locator("#work li.catalogue-row").first();
-      const box = await row.boundingBox();
-      await page.mouse.move(box.x + 200, box.y + box.height / 2, { steps: 4 });
-      await page.mouse.move(box.x + 420, box.y + box.height / 2, { steps: 8 });
-      record(scenario, "hover video appears and plays", await playing(".work-preview[data-on] video"));
+      // The cursor ball trails the pointer.
       await page.mouse.move(40, 450, { steps: 6 });
       await page.waitForTimeout(600);
       const cursor = await page.evaluate(() => {
@@ -236,10 +235,6 @@ async function home(scenario) {
         near && cursor.shown === "1",
         JSON.stringify(cursor),
       );
-    } else {
-      // Tablets and phones: each row's video plays inline as it comes on screen.
-      await page.locator("#work li.catalogue-row video").first().scrollIntoViewIfNeeded();
-      record(scenario, "row video plays inline", await playing("#work li.catalogue-row video"));
     }
 
     // The moving line goes live and swells (pointer on desktop, scroll on phones).
@@ -349,7 +344,7 @@ async function home(scenario) {
       scenario,
       "link preview: og:video and og:image",
       /property="og:video" content="[^"]*\/og\/cover\.mp4"/.test(html) &&
-        /property="og:image" content="[^"]*\/og\/cover\.jpg"/.test(html),
+        /property="og:image" content="[^"]*\/og\/balls\.jpg"/.test(html),
     );
     const devpost = await page
       .locator('footer a[aria-label="Devpost"]')

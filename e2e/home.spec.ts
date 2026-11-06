@@ -88,10 +88,31 @@ test("home lists Ripple, Shufflr and Reboot without prize objects, then View mor
   await expect(page.getByRole("link", { name: /View more work/ })).toHaveAttribute("href", "/work");
 });
 
-test("a row's video follows the pointer and goes when the pointer leaves", async ({ page }) => {
+test("home rows play their video inside the row, date under the title", async ({ page }) => {
   await page.setViewportSize({ width: 1440, height: 900 });
   await page.goto("/");
   const row = page.locator("#work li.catalogue-row").first();
+  const video = row.locator("video:visible");
+  await video.scrollIntoViewIfNeeded();
+  await expect
+    .poll(() => video.evaluate((v) => !(v as HTMLVideoElement).paused), { timeout: 8000 })
+    .toBe(true);
+  const [v, title, date] = await Promise.all(
+    [video, row.locator("h3"), row.getByText("March 2026")].map((l) => l.boundingBox()),
+  );
+  // Inside the row (into its padding, short of the rules), so the row never grows for it.
+  const li = (await row.boundingBox())!;
+  expect(v!.y).toBeGreaterThan(li.y);
+  expect(v!.y + v!.height).toBeLessThan(li.y + li.height);
+  expect(date!.y).toBeGreaterThan(title!.y + title!.height - 1);
+  await page.mouse.move(v!.x - 300, v!.y + 20, { steps: 4 });
+  await expect(page.locator(".work-preview")).toHaveCount(0);
+});
+
+test("on /work a row's video follows the pointer and goes when the pointer leaves", async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await page.goto("/work");
+  const row = page.locator("li.catalogue-row").first();
   await row.scrollIntoViewIfNeeded();
   const box = (await row.boundingBox())!;
   await page.mouse.move(box.x + 200, box.y + box.height / 2, { steps: 4 });
@@ -152,4 +173,18 @@ test("smooth scrolling reaches the footer", async ({ page }) => {
   }
   expect(await inView()).toBe(true);
   expect(await page.evaluate(() => scrollY)).toBeGreaterThan(1000);
+});
+
+test("on a phone the menu slides away on scroll down and comes back on scroll up", async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.emulateMedia({ reducedMotion: "reduce" });
+  await page.goto("/work");
+  const bar = page.locator("header", { has: page.getByRole("button", { name: "menu" }) });
+  const shift = () => bar.evaluate((el) => new DOMMatrix(getComputedStyle(el).transform).m42);
+  await page.evaluate(() => scrollBy(0, 600));
+  await page.evaluate(() => new Promise((r) => setTimeout(r, 100)));
+  await page.evaluate(() => scrollBy(0, 300));
+  await expect.poll(shift).toBeLessThan(-40);
+  await page.evaluate(() => scrollBy(0, -60));
+  await expect.poll(shift).toBe(0);
 });

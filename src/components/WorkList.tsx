@@ -6,16 +6,20 @@ import { useEffect, useRef, useState } from "react";
 import { type Project, hrefOf, monthOf } from "@/content/projects";
 import { ExhibitMedia } from "./ExhibitMedia";
 
+/** The home rows' padding (py below) less 14 px: how far their video reaches past the text. */
+const INTO_PADDING = "calc(14px - clamp(28px, 4.5vh, 48px))";
+
 const previewMedia = (p: Project) =>
   p.media.hover ? { ...p.media, video: p.media.hover, poster: p.media.image } : p.media;
 
 /**
- * The project list (PLAN 13.3, 14.6): the prize object and title, the description (opened by the
- * prize on /work), the month and year, nothing else.
- * Every row opens something: the case study, else its Devpost, live site or an email. On desktop
- * the row's video follows the pointer and is the cursor while over the row; it shows on pointer
- * hover only (never on focus after a click, which left it stuck). Keyboard focus shows it beside
- * the row. Phones and tablets get the video inline.
+ * The project list (PLAN 13.3, 14.6, 15.18): the prize object and title with the month and year
+ * under it, the description (opened by the prize on /work), nothing else.
+ * Every row opens something: the case study, else its Devpost, live site or an email. On /work's
+ * desktop the row's video follows the pointer and is the cursor while over the row; it shows on
+ * pointer hover only (never on focus after a click, which left it stuck). Keyboard focus shows it
+ * beside the row. The home rows instead play their video in the row itself, as high as the row's
+ * text, while on screen. Phones and tablets get the video inline under the row.
  */
 export function WorkList({
   projects,
@@ -24,7 +28,7 @@ export function WorkList({
 }: {
   projects: Project[];
   level?: "h2" | "h3";
-  /** Home shows three projects at poster size, without the prize objects (PLAN 15.5). */
+  /** Home shows three projects at poster size, without the prize objects, videos in the row (PLAN 15.5, 15.18). */
   large?: boolean;
 }) {
   const [active, setActive] = useState<number | null>(null);
@@ -68,7 +72,7 @@ export function WorkList({
           const linkProps = {
             className: "after:absolute after:inset-0",
             onFocus: (e: React.FocusEvent<HTMLAnchorElement>) => {
-              if (!e.currentTarget.matches(":focus-visible")) return;
+              if (large || !e.currentTarget.matches(":focus-visible")) return;
               const r = e.currentTarget.closest("li")!.getBoundingClientRect();
               to.current = { x: r.right - 260, y: r.top + r.height / 2 };
               setActive(i);
@@ -78,17 +82,23 @@ export function WorkList({
           return (
             <li
               key={p.slug}
-              data-cursor="hide"
               className={`catalogue-row reveal group relative ${large ? "py-[clamp(28px,4.5vh,48px)]" : "py-7 md:py-8"}`}
-              onPointerEnter={(e) => {
-                if (e.pointerType !== "mouse") return;
-                to.current = { x: e.clientX, y: e.clientY };
-                setActive(i);
-              }}
-              onPointerMove={follow}
-              onPointerLeave={() => setActive(null)}
+              {...(large
+                ? {}
+                : {
+                    "data-cursor": "hide",
+                    onPointerEnter: (e: React.PointerEvent) => {
+                      if (e.pointerType !== "mouse") return;
+                      to.current = { x: e.clientX, y: e.clientY };
+                      setActive(i);
+                    },
+                    onPointerMove: follow,
+                    onPointerLeave: () => setActive(null),
+                  })}
             >
-              <div className="grid gap-3 md:grid-cols-[minmax(0,1.1fr)_minmax(0,1fr)_9em] md:gap-10">
+              <div
+                className={`grid gap-3 md:gap-10 ${large ? "md:grid-cols-[minmax(0,1.1fr)_minmax(0,1fr)_clamp(200px,22vw,340px)]" : "md:grid-cols-[minmax(0,1.1fr)_minmax(0,1fr)]"}`}
+              >
                 <div
                   className={`flex items-start gap-[0.2em] ${large ? "text-[clamp(44px,6.4vw,104px)] leading-[0.95]" : "text-[clamp(30px,3.6vw,52px)] leading-[1]"}`}
                 >
@@ -102,19 +112,22 @@ export function WorkList({
                       className="size-[1em] shrink-0 object-contain"
                     />
                   )}
-                  {p.caseStudy ? (
-                    <Link href={href} {...linkProps}>
-                      {title}
-                    </Link>
-                  ) : (
-                    <a
-                      href={href}
-                      {...(external ? { target: "_blank", rel: "noreferrer" } : {})}
-                      {...linkProps}
-                    >
-                      {title}
-                    </a>
-                  )}
+                  <div>
+                    {p.caseStudy ? (
+                      <Link href={href} {...linkProps}>
+                        {title}
+                      </Link>
+                    ) : (
+                      <a
+                        href={href}
+                        {...(external ? { target: "_blank", rel: "noreferrer" } : {})}
+                        {...linkProps}
+                      >
+                        {title}
+                      </a>
+                    )}
+                    <p className="mt-3 text-[15px] leading-[1.4] text-muted">{monthOf(p.date)}</p>
+                  </div>
                 </div>
                 <p
                   className={`max-w-[34em] leading-[1.5] ${large ? "self-end text-[clamp(18px,1.5vw,22px)]" : "text-[17px]"}`}
@@ -122,28 +135,42 @@ export function WorkList({
                   {!large && p.prize && `${p.prize.text} `}
                   {p.description}
                 </p>
-                <p className={`text-[15px] text-muted md:text-right ${large ? "md:self-end" : ""}`}>
-                  {monthOf(p.date)}
-                </p>
+                {large && (
+                  // The row's height, into its padding but 14 px short of the rules: the row never
+                  // grows for it, and the video keeps its own proportions.
+                  <div className="relative max-md:hidden">
+                    <div
+                      className="absolute right-0 max-w-full overflow-hidden rounded-md"
+                      style={{
+                        aspectRatio: `${p.media.width} / ${p.media.height}`,
+                        inset: `${INTO_PADDING} 0 ${INTO_PADDING} auto`,
+                      }}
+                    >
+                      <ExhibitMedia media={previewMedia(p)} sizes="340px" cover />
+                    </div>
+                  </div>
+                )}
               </div>
-              <div className="mt-6 lg:hidden">
+              <div className={`mt-6 ${large ? "md:hidden" : "lg:hidden"}`}>
                 <ExhibitMedia media={previewMedia(p)} sizes="100vw" />
               </div>
             </li>
           );
         })}
       </ul>
-      <div ref={layer} aria-hidden className="pointer-events-none fixed left-0 top-0 z-50 hidden lg:block">
-        {projects.map((p, i) => (
-          <div
-            key={p.slug}
-            className="work-preview absolute w-[clamp(300px,24vw,380px)]"
-            data-on={active === i ? "" : undefined}
-          >
-            <ExhibitMedia media={previewMedia(p)} sizes="380px" play={active === i} />
-          </div>
-        ))}
-      </div>
+      {!large && (
+        <div ref={layer} aria-hidden className="pointer-events-none fixed left-0 top-0 z-50 hidden lg:block">
+          {projects.map((p, i) => (
+            <div
+              key={p.slug}
+              className="work-preview absolute w-[clamp(300px,24vw,380px)]"
+              data-on={active === i ? "" : undefined}
+            >
+              <ExhibitMedia media={previewMedia(p)} sizes="380px" play={active === i} />
+            </div>
+          ))}
+        </div>
+      )}
     </>
   );
 }

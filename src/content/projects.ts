@@ -347,9 +347,9 @@ export const projects: Project[] = [
     media: {
       video: "/media/work/solarscore.mp4",
       poster: "/media/work/solarscore.webp",
-      alt: "Solar panels on a roof, from SolarScore's landing page",
-      width: 1920,
-      height: 1080,
+      alt: "SolarScore checking a home from its address, then the emailed roof report and its satellite outline",
+      width: 1280,
+      height: 720,
     },
     caseStudy: false,
     link: { label: "Devpost", href: "https://devpost.com/software/solarscore" },

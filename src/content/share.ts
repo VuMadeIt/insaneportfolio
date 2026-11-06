@@ -12,11 +12,12 @@ export const SITE =
 // Next resolves image URLs against metadataBase but not video ones.
 const video = new URL("/og/cover.mp4", SITE).href;
 
+/** The still, everywhere a video does not play: the four balls hanging (Lucas's render, PLAN 15.18). */
 export const SHARE_IMAGE = {
-  url: "/og/cover.jpg",
+  url: "/og/balls.jpg",
   width: 1200,
   height: 630,
-  alt: "A dark metal ball from a Newton's cradle swinging on a fine string",
+  alt: "The four dark metal balls of a Newton's cradle hanging on fine strings",
 };
 
 export const SHARE_VIDEO = {

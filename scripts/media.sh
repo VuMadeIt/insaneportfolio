@@ -56,7 +56,10 @@ ffmpeg -v error -y -i "$SRC/images/apple-hover.gif" -an -vf "fps=30,format=yuv42
 # Devpost projects: a short clip of each demo video where one exists.
 clip "$DP/t1_Amtt9RSQ.mp4" work/japan 72 9   # We should go to Japan demo: the web app, picking a hotel
 clip "$DP/b3DicOvtApQ.mp4" work/asper 366 9  # Asper demo: the map of every customer
-clip "$DP/solar-b-roll-1.mp4" work/solarscore 0 8  # SolarScore's own landing-page video
+# SolarScore: the product shots of the Devpost demo (youtu.be/AfFMEegehZM, 37 s to 66 s), letterbox
+# cropped to 16:9 and played at double speed, 1280 px wide.
+ffmpeg -v error -y -ss 37 -t 28.8 -i "$DP/solarscore-demo.mp4" -an   -vf "crop=1440:810:0:135,setpts=PTS/2,scale=1280:-2:flags=lanczos,fps=30" -c:v libx264 -preset slow   -crf 23 -profile:v high -pix_fmt yuv420p -movflags +faststart "$OUT/work/solarscore.mp4"
+poster "$OUT/work/solarscore.mp4" 0.3
 clip "$DP/reboot-home.mp4" work/reboot 0 10.8  # Reboot: the home page, from lucasvu.framer.website/projects/reboot
 # Frictionless has no public video: its four Devpost screenshots, each held about 2.2 s with a slow push in.
 ffmpeg -v error -y \

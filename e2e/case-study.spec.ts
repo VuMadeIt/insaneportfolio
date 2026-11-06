@@ -20,32 +20,45 @@ for (const [slug, title, next] of [
   });
 }
 
-test("every diagram arrow ends on a box (the arrows are computed, never drawn by hand)", async ({ page }) => {
-  for (const slug of ["ripple", "shufflr"]) {
-    await page.goto(`/work/${slug}`);
-    const misses = await page.locator(".dg").evaluateAll((dgs) =>
-      dgs.flatMap((dg) => {
-        const nodes = [...dg.querySelectorAll(":scope > .dg-node:not(span)")].map((n) =>
-          n.getBoundingClientRect(),
-        );
-        return [...dg.querySelectorAll("path.dg-wire")].flatMap((p) => {
-          const path = p as SVGPathElement;
-          const svg = path.ownerSVGElement!.getBoundingClientRect();
-          const end = path.getPointAtLength(path.getTotalLength());
-          const start = path.getPointAtLength(0);
-          const near = (pt: DOMPoint, pad: number) =>
-            nodes.some(
-              (r) =>
-                svg.left + pt.x >= r.left - pad &&
-                svg.left + pt.x <= r.right + pad &&
-                svg.top + pt.y >= r.top - pad &&
-                svg.top + pt.y <= r.bottom + pad,
-            );
-          return near(start, 2) && near(end, 10) ? [] : [path.getAttribute("d")];
-        });
-      }),
-    );
-    expect(misses, slug).toEqual([]);
+test("every diagram arrow runs from a box into a box, pointing at it, on desktop and phone", async ({
+  page,
+}) => {
+  // Reduced motion: every diagram rests finished, so boxes are not mid-rise when measured.
+  await page.emulateMedia({ reducedMotion: "reduce" });
+  for (const width of [1440, 390]) {
+    await page.setViewportSize({ width, height: 900 });
+    for (const slug of ["ripple", "shufflr"]) {
+      await page.goto(`/work/${slug}`);
+      // Wires are measured after hydration.
+      await expect(page.locator("path.dg-wire").first()).toBeAttached();
+      const misses = await page.locator(".dg").evaluateAll((dgs) =>
+        dgs.flatMap((dg) => {
+          // Boxes, and the stacked groups that arrows may also join (a path, a merge's sources).
+          const boxes = [...dg.querySelectorAll(".dg-node:not(span)")].map((n) => n.getBoundingClientRect());
+          return [...dg.querySelectorAll("path.dg-wire")].flatMap((p) => {
+            const path = p as SVGPathElement;
+            const svg = path.ownerSVGElement!.getBoundingClientRect();
+            const len = path.getTotalLength();
+            const at = (l: number) => {
+              const pt = path.getPointAtLength(l);
+              return { x: svg.left + pt.x, y: svg.top + pt.y };
+            };
+            const gap = (pt: { x: number; y: number }, r: DOMRect) =>
+              Math.hypot(
+                Math.max(r.left - pt.x, 0, pt.x - r.right),
+                Math.max(r.top - pt.y, 0, pt.y - r.bottom),
+              );
+            const [start, end, before] = [at(0), at(len), at(Math.max(0, len - 4))];
+            // Tips stop just short of their box; a group the arrow runs inside is not its target.
+            const target = boxes.find((r) => gap(end, r) > 0 && gap(end, r) <= 10);
+            const ok =
+              boxes.some((r) => gap(start, r) <= 2) && target && gap(before, target) > gap(end, target);
+            return ok ? [] : [path.getAttribute("d")];
+          });
+        }),
+      );
+      expect(misses, `${slug} @${width}`).toEqual([]);
+    }
   }
 });
 

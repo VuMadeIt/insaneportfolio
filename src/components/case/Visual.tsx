@@ -40,7 +40,7 @@ function Counter({ value }: { value: string }) {
 
 function Stats({ stats }: { stats: Stat[] }) {
   return (
-    <dl className="grid gap-10 md:grid-cols-3">
+    <dl className="grid gap-10 @xl:grid-cols-3">
       {stats.map((s) => (
         <div key={s.value + s.text} className="reveal">
           <dt className="font-display text-[clamp(56px,6vw,88px)] font-[350] leading-none tracking-[-0.03em]">
@@ -198,7 +198,9 @@ export function Visual({ visual }: { visual: VisualData }) {
       return <Stats stats={visual.stats} />;
     case "quotes":
       return (
-        <div className={`gap-4 ${visual.quotes.length > 2 ? "columns-1 md:columns-2 lg:columns-3" : "grid"}`}>
+        <div
+          className={`gap-4 ${visual.quotes.length > 2 ? "columns-1 @lg:columns-2 @4xl:columns-3" : "grid"}`}
+        >
           {visual.quotes.map((q) => (
             <figure key={q.text} className="reveal mb-4 break-inside-avoid rounded-md bg-wall p-6">
               <span aria-hidden className="block font-display text-[44px] leading-[0.6] text-[var(--accent)]">
@@ -232,7 +234,7 @@ export function Visual({ visual }: { visual: VisualData }) {
       return <Compare v={visual} />;
     case "cards":
       return (
-        <dl className="grid gap-4 md:grid-cols-3">
+        <dl className="grid gap-4 @xl:grid-cols-3">
           {visual.cards.map((c) => (
             <div key={c.title} className="reveal overflow-hidden rounded-md bg-wall">
               {c.image && (
@@ -255,7 +257,7 @@ export function Visual({ visual }: { visual: VisualData }) {
       );
     case "options":
       return (
-        <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        <ul className="grid gap-4 @sm:grid-cols-2 @4xl:grid-cols-4">
           {visual.options.map((o) => (
             <li
               key={o.title}

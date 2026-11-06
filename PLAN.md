@@ -1237,3 +1237,18 @@ Branch `phase/16-revision-5` (continues it). Answers from the Q&A are recorded i
 - Reboot's context cards carry their illustrations from the Framer case study.
 - /work order is curated: Warframe after Parrot, Asper after Reboot. Shufflr is April 2026, Reboot
   February 2026.
+
+### 15.17 Case-study graphics on phones and tablets, copy, arrival (Lucas, 2026-11-05 night)
+- **Stacked diagrams read as paths.** Below their column width a diagram stacks top to bottom:
+  boxes that follow each other get a straight arrow down (32 px apart); the sources of one merge
+  sit in one tinted group with one arrow out (chips flow like words); when a box splits into
+  paths of their own, each path is its own tinted group headed by its label ("a close match",
+  "nothing fits"), side by side when each gets 240 px, else indented under a trunk with straight
+  stubs into each path. A two-box path sits in a row when both boxes fit (tablet). On desktop a
+  split or merge meets the boxes' middles (a fork), one box to one box runs straight, and wire
+  labels sit centred over their own segment.
+- **Visuals size to their container, not the screen** (container queries), so a visual in a pair
+  of insights never squeezes into columns of one word per line.
+- **Copy:** no notes about how a graphic was made ("Redrawn from our whiteboard map" is gone).
+- **Arrival:** the balls wait just above the frame and come down in 1 s, so they land with the
+  tagline (in view at ~1.4 s, settled at ~2.0 s on a warm load).

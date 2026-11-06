@@ -1,10 +1,12 @@
 // Every case-study diagram, table and chart at desktop and phone widths: screenshots into
 // .artifacts/diagrams/, and a check that nothing scrolls sideways inside itself or overflows.
-// Usage: PORT=3100 node scripts/diagram-shots.mjs
+// Usage: PORT=3100 node scripts/diagram-shots.mjs [slug ...]   (FIGURES=1: every figure, not only diagrams)
 import { chromium } from "@playwright/test";
 import { mkdirSync } from "node:fs";
 
 const base = `http://localhost:${process.env.PORT ?? 3100}`;
+const slugs = process.argv.slice(2);
+const target = process.env.FIGURES ? "main figure" : ".dg";
 const dir = ".artifacts/diagrams";
 mkdirSync(dir, { recursive: true });
 const browser = await chromium.launch({ channel: "msedge", args: ["--enable-gpu"] });
@@ -19,7 +21,7 @@ for (const [w, h] of [
     isMobile: w < 600,
     hasTouch: w < 600,
   });
-  for (const slug of ["ripple", "shufflr", "reboot", "maple-leaf-foods", "about"]) {
+  for (const slug of slugs.length ? slugs : ["ripple", "shufflr", "reboot", "maple-leaf-foods", "about"]) {
     await page.goto(`${base}/${slug === "about" ? "about" : `work/${slug}`}`, { waitUntil: "load" });
     await page.waitForTimeout(1200);
     // Scroll through so every chart draws in.
@@ -44,7 +46,12 @@ for (const [w, h] of [
       problems++;
       console.log(`PROBLEM ${slug} @${w}`, JSON.stringify(found));
     }
-    const dgs = await page.locator(".dg").all();
+    // The nav and the progress bar are fixed: keep them out of the element shots.
+    await page.evaluate(() => {
+      for (const el of document.body.querySelectorAll("*"))
+        if (getComputedStyle(el).position === "fixed") el.style.visibility = "hidden";
+    });
+    const dgs = await page.locator(target).all();
     for (const [i, dg] of dgs.entries()) {
       await dg.scrollIntoViewIfNeeded();
       await page.waitForTimeout(1500);

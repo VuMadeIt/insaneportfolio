@@ -80,7 +80,7 @@ function Figure({ block }: { block: Block }) {
   const panel = PANELLED.has(block.visual.kind);
   return (
     <figure className={`mt-10 ${STAGGERED.has(block.visual.kind) ? "" : "reveal"}`}>
-      <div className={panel ? "rounded-lg bg-panel p-[clamp(16px,3vw,48px)]" : ""}>
+      <div className={`@container ${panel ? "rounded-lg bg-panel p-[clamp(16px,3vw,48px)]" : ""}`}>
         <Visual visual={block.visual} />
       </div>
       {block.caption && (
@@ -147,7 +147,7 @@ export default async function CaseStudyPage({ params }: { params: Promise<{ slug
         <div className="mx-auto max-w-[1400px]">
           <h1 className="text-[clamp(56px,9vw,148px)] leading-[0.9]">{project.title}</h1>
           <p className="mt-8 max-w-[36em] text-[clamp(18px,1.5vw,22px)] leading-[1.5]">{study.summary}</p>
-          <dl className="mt-10 grid gap-6 text-[15px] leading-[1.5] sm:grid-cols-2 lg:grid-cols-5">
+          <dl className="mt-10 grid gap-6 text-[15px] leading-[1.5] sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
             {meta.map(([k, v]) => (
               <div key={k}>
                 <dt className="text-muted">{k}</dt>

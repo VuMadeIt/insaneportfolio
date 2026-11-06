@@ -28,7 +28,7 @@ export function Bars({ v }: { v: Of<"bars"> }) {
           return (
             <li
               key={b.label}
-              className="grid gap-2 md:grid-cols-[minmax(0,15em)_minmax(0,1fr)] md:items-center md:gap-8"
+              className="grid gap-2 @xl:grid-cols-[minmax(0,15em)_minmax(0,1fr)] @xl:items-center @xl:gap-8"
             >
               <div>
                 <p className="text-[16px] leading-[1.3]">{b.label}</p>
@@ -69,11 +69,11 @@ export function Bars({ v }: { v: Of<"bars"> }) {
           );
         })}
       </ul>
-      <div className="relative mt-4 h-5 md:ml-[calc(15em+2rem)]">
+      <div className="relative mt-4 h-5 @xl:ml-[calc(15em+2rem)]">
         {v.ticks.map((t) => (
           <span
             key={t}
-            className="absolute -translate-x-1/2 text-[13px] text-muted tabular-nums"
+            className="absolute -translate-x-1/2 whitespace-nowrap text-[13px] text-muted tabular-nums"
             style={{ left: pct(t) }}
           >
             {t}
@@ -153,7 +153,7 @@ export function Table({ v }: { v: Of<"table"> }) {
   const cell = (c: boolean | string) => (c === true ? <Check /> : c === false ? <Dash /> : c);
   return (
     <>
-      <ul className="flex flex-col gap-3 text-[15px] lg:hidden">
+      <ul className="flex flex-col gap-3 text-[15px] @3xl:hidden">
         {v.rows.map((r) => (
           <li key={r.label} className={`rounded-sm p-4 ${r.ours ? "bg-white" : "bg-wall"}`}>
             <p className="font-display text-[17px]">{r.label}</p>
@@ -168,7 +168,7 @@ export function Table({ v }: { v: Of<"table"> }) {
           </li>
         ))}
       </ul>
-      <table className="hidden w-full border-collapse text-left text-[15px] lg:table">
+      <table className="hidden w-full border-collapse text-left text-[15px] @3xl:table">
         <thead>
           <tr>
             <th className="w-[22%] pb-4" />
@@ -209,7 +209,7 @@ export function Brief({ v }: { v: Of<"brief"> }) {
         &ldquo;{v.prompt}&rdquo;
       </blockquote>
       {v.source && <figcaption className="mt-3 text-[15px] text-muted">{v.source}</figcaption>}
-      <dl className="mt-10 grid gap-x-8 gap-y-5 sm:grid-cols-2 lg:grid-cols-4">
+      <dl className="mt-10 grid gap-x-8 gap-y-5 @sm:grid-cols-2 @3xl:grid-cols-4">
         {v.facts.map((f) => (
           <div key={f.label} className="rounded-sm bg-wall px-5 py-4">
             <dt className="text-[14px] text-muted">{f.label}</dt>
@@ -225,7 +225,7 @@ export function Brief({ v }: { v: Of<"brief"> }) {
 export function Anatomy({ v }: { v: Of<"anatomy"> }) {
   const [on, setOn] = useState<number | null>(null);
   return (
-    <div className="grid items-center gap-10 md:grid-cols-[minmax(0,0.9fr)_minmax(0,1fr)]">
+    <div className="grid items-center gap-10 @xl:grid-cols-[minmax(0,0.9fr)_minmax(0,1fr)]">
       <div
         className="relative mx-auto w-full"
         style={{ maxWidth: `min(${v.image.width}px, calc(70vh * ${v.image.width / v.image.height}))` }}
@@ -278,7 +278,7 @@ export function Anatomy({ v }: { v: Of<"anatomy"> }) {
 export function Compare({ v }: { v: Of<"compare"> }) {
   const tone = { accent: "bg-[var(--accent)] text-white", ink: "bg-ink text-wall", plain: "bg-wall" };
   return (
-    <div className={`grid gap-4 ${v.columns.length === 3 ? "md:grid-cols-3" : "md:grid-cols-2"}`}>
+    <div className={`grid gap-4 ${v.columns.length === 3 ? "@3xl:grid-cols-3" : "@lg:grid-cols-2"}`}>
       {v.columns.map((c) => (
         <div key={c.title} className={`reveal rounded-sm p-6 ${tone[c.tone ?? "plain"]}`}>
           <h3 className="text-[20px] leading-[1.2]">{c.title}</h3>

@@ -55,6 +55,10 @@ vision, architecture, phases, git workflow and the autonomous execution protocol
   (drop, idle sway, hover video, cursor, moving line, nav, phone menu, story close, footer, type lab) on desktop, proxy (`PROXY=<preview url>`),
   throttled, tablet and phone; `ONLY=desktop` for one scenario. `scripts/menu-film.mjs <url> <tag>`
   films a burger menu for frame comparisons.
+- `PORT=3100 node scripts/diagram-shots.mjs [slug ...]` shoots every case-study diagram at
+  1440/768/390 into `.artifacts/diagrams/` and fails on sideways scrolling; `FIGURES=1` shoots
+  every figure. `PORT=3100 node scripts/drop-timing.mjs [runs]` times the arrival drop against
+  the tagline.
 - `PORT=3200 node scripts/og.mjs [angle]` films the link preview (`public/og/cover.mp4` + `.jpg`)
   from `/lab/og`, frame by frame.
 - A stale `next dev` from an old session blocks a new one ("Another next dev server is already

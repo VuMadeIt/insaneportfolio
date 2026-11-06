@@ -111,7 +111,7 @@ export const ripple: CaseStudy = {
           { from: "ai", to: "ai2", tone: "accent" },
         ],
       },
-      caption: "Redrawn from our whiteboard map. The branch nobody else was talking about was AI.",
+      caption: "The branch nobody else was talking about was AI.",
     },
     {
       id: "criteria",
@@ -246,7 +246,7 @@ export const ripple: CaseStudy = {
       id: "opportunity",
       label: "The opportunity",
       headline: "So we asked a different question: why not redefine what it means to use an LLM?",
-      body: ["In a world where AI is unavoidable, the answer is not to avoid it but to adapt it."],
+      body: ["AI isn't going anywhere, so instead of fighting it, we wanted to change how it works."],
       visual: {
         kind: "statement",
         text: "How might we make an everyday AI question cost less, without asking anyone to change how they ask it?",
@@ -263,6 +263,7 @@ export const ripple: CaseStudy = {
         kind: "diagram",
         cols: 4,
         minWidth: 960,
+        rowGap: 40,
         gap: "clamp(96px, 9vw, 150px)",
         nodes: [
           { id: "q", text: "Your question", col: 0, row: 0, rowSpan: 2, tone: "ink" },

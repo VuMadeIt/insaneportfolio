@@ -805,3 +805,34 @@ Lucas's notes after revision 4, with his Q&A answers. PLAN.md Part 14 is the spe
   section by weight and colour rather than a pill or bar; here muted 350 to ink 500, 300 ms.
 - **Testing note.** A programmatic scroll while Lenis is still gliding from a wheel is overridden
   by the glide, so `scripts/user-test.mjs` waits for the glide before jumping to the section.
+
+### Case-study graphics on phones and tablets (2026-11-05 night)
+
+- **Why the phone diagrams were broken.** The stacked tree's stub was shorter than its corner
+  plus the arrowhead gap (12 px against 10 + 6), so the last segment ran backwards and every head
+  pointed away from its box; boxes were 10 px apart, so arrows had no room; labels were placed at
+  a corner and overlapped boxes; and wires were measured with `getBoundingClientRect` while boxes
+  were still rising in (10 px transform). Now wires use layout offsets, and the stacked layout
+  is rebuilt around what each diagram means (PLAN 15.17).
+- **Paths as groups rather than more spacing alone.** Lucas offered either; tinted groups (one
+  tone step, no border, matching the panels) say "this is one path" even when a path is two
+  boxes, and the trunk still shows where they split. Side by side when there is room (Ripple's
+  solution on tablets), stacked on phones.
+- **Forks on desktop.** 15.16's "straight wherever boxes face each other" made Ripple's split
+  leave the search box at two heights with labels on the boxes. A split or a merge now always
+  meets the middles; one-to-one wires stay straight.
+- **Container queries.** Pairs of insights are 330 px wide on a 768 px tablet, but their visuals
+  switched layout on the viewport, so compare cards and stats broke one word per line. Every
+  case-study visual now switches on its own width.
+- **Test.** The e2e arrow test now runs at 1440 and 390 with reduced motion and also checks that
+  each arrow's last 4 px move towards its box; it fails on the old code and passes on the new.
+- **Arrival timing** (`scripts/drop-timing.mjs`): before, the ball came into view at ~1.75 s and
+  settled at ~2.4 s, after the tagline (1.2 to 2.2 s). Starting just above the frame (EXIT + 0.05)
+  and lowering in 1 s: in view ~1.4 s, settled ~2.0 s. Peak anchor acceleration 2 m/s^2, under
+  gravity, so the strings stay taut. A cold first visit is still bound by shader compiling.
+- **Copy scan.** Removed "Redrawn from our whiteboard map." and reworded Ripple's "In a world
+  where AI is unavoidable, the answer is not to avoid it but to adapt it." Nothing else read as a
+  note about the writing; "Pheobe" is Devpost's spelling of the sponsor.
+- **Also fixed on the sweep:** on identity routes the tagline stayed visible at the bottom edge
+  after the name slid away (it hangs above the name), and the case-study metadata squeezed into
+  five columns at 1024 px (now three, five from 1280).

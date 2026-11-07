@@ -24,9 +24,9 @@
     "semantic_hash": ""
   },
   "next.config.ts": {
-    "mtime": 1794085032.8980417,
-    "seen": 1794085169.993883,
-    "ast_hash": "56200eee07ba05c7dbd27e4152135106",
+    "mtime": 1794087483.2802508,
+    "seen": 1794087491.5539606,
+    "ast_hash": "673c90e86831a774c22805b0365e9c2b",
     "semantic_hash": ""
   },
   "package.json": {
@@ -108,8 +108,8 @@
     "semantic_hash": ""
   },
   "PLAN.md": {
-    "mtime": 1794085237.2862198,
-    "seen": 1794085247.1200538,
+    "mtime": 1794085894.7465284,
+    "seen": 1794085918.1379945,
     "ast_hash": "21ff578bc20cc61dc263944a116cb126",
     "semantic_hash": ""
   },
@@ -1926,14 +1926,14 @@
     "semantic_hash": ""
   },
   "scripts/og.mjs": {
-    "mtime": 1794084836.8178523,
-    "seen": 1794084843.6514876,
-    "ast_hash": "0d29a2ae6b334f4b9102267ec6b5bc4c",
+    "mtime": 1794087485.9278746,
+    "seen": 1794087491.5539606,
+    "ast_hash": "20f9fa7830c99d2a02ea1ffbef2bec17",
     "semantic_hash": ""
   },
   "src/content/share.ts": {
-    "mtime": 1794085232.0773633,
-    "seen": 1794085247.1200538,
+    "mtime": 1794085894.772939,
+    "seen": 1794085918.1379945,
     "ast_hash": "7224b31d3fd92d28b58b68d1eae2f17e",
     "semantic_hash": ""
   },
@@ -2021,21 +2021,9 @@
     "ast_hash": "aab7ce7a7b2231cf634df3515d4182a9",
     "semantic_hash": ""
   },
-  "public/og/cover.gif": {
-    "mtime": 1794084815.5774868,
-    "seen": 1794084843.652915,
-    "ast_hash": "254737d83b9416a6e1054b17a9c78593",
-    "semantic_hash": ""
-  },
-  "app/discord-card/[[...path]]/route.ts": {
-    "mtime": 1794085098.6379,
-    "seen": 1794085169.993883,
-    "ast_hash": "525102d28cbffe8e6101d69d9355124b",
-    "semantic_hash": ""
-  },
   "e2e/share.spec.ts": {
-    "mtime": 1794085182.2411528,
-    "seen": 1794085247.1200538,
+    "mtime": 1794085894.7505748,
+    "seen": 1794085918.1379945,
     "ast_hash": "276d75ebdfe8cc63243a6d09581d091a",
     "semantic_hash": ""
   },

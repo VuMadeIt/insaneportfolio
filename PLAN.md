@@ -1281,3 +1281,8 @@ Branch `phase/16-revision-5` (continues it). Answers from the Q&A are recorded i
   previews for about 30 minutes.
 - **X, LinkedIn, Instagram, WhatsApp:** never animate a link preview (a GIF shows its first frame,
   or nothing on LinkedIn), so they keep `balls.jpg`.
+
+### 15.21 One still link preview (Lucas, 2026-11-07; branch `fix/og-still-only`). Replaces 15.20
+- Every app shows `balls.jpg`: no `og:video` (iMessage) and no Discord GIF. Case studies keep
+  their own image. `cover.mp4` and `scripts/og.mjs` stay in the repo, unused, should a moving
+  preview come back.

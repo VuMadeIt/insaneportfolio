@@ -342,9 +342,8 @@ async function home(scenario) {
     const html = await (await fetch(url)).text();
     record(
       scenario,
-      "link preview: og:video and og:image",
-      /property="og:video" content="[^"]*\/og\/cover\.mp4"/.test(html) &&
-        /property="og:image" content="[^"]*\/og\/balls\.jpg"/.test(html),
+      "link preview: balls.jpg, no video",
+      !/property="og:video"/.test(html) && /property="og:image" content="[^"]*\/og\/balls\.jpg"/.test(html),
     );
     const devpost = await page
       .locator('footer a[aria-label="Devpost"]')

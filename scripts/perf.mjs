@@ -1,24 +1,25 @@
 // Phone frame rate: an iPhone-sized viewport at DPR 3 with a 4x slower CPU, on the real GPU.
-// Measures frames and long tasks while the page sits idle and while it scrolls.
+// Measures frames and long tasks from load (the arrival, ARRIVAL ms), then idle and scrolling.
 // Usage: PORT=3100 node scripts/perf.mjs [route ...]   (routes without a leading slash; "home" for /)
+// DESKTOP=1 measures a 1440 x 900 laptop at DPR 2 without CPU throttling instead.
 import { chromium } from "@playwright/test";
 
 const base = `http://localhost:${process.env.PORT ?? 3100}`;
 const routes = process.argv.slice(2).length ? process.argv.slice(2) : ["home", "about", "work/ripple"];
+const desktop = !!process.env.DESKTOP;
 const browser = await chromium.launch({
   channel: "msedge",
   args: ["--enable-gpu", "--ignore-gpu-blocklist"],
 });
 for (const route of routes) {
-  const ctx = await browser.newContext({
-    viewport: { width: 390, height: 844 },
-    deviceScaleFactor: 3,
-    isMobile: true,
-    hasTouch: true,
-  });
+  const ctx = await browser.newContext(
+    desktop
+      ? { viewport: { width: 1440, height: 900 }, deviceScaleFactor: 2 }
+      : { viewport: { width: 390, height: 844 }, deviceScaleFactor: 3, isMobile: true, hasTouch: true },
+  );
   const page = await ctx.newPage();
   const cdp = await ctx.newCDPSession(page);
-  await cdp.send("Emulation.setCPUThrottlingRate", { rate: 4 });
+  if (!desktop) await cdp.send("Emulation.setCPUThrottlingRate", { rate: 4 });
   if (process.env.CSS)
     await page.addInitScript(
       (css) =>
@@ -28,7 +29,6 @@ for (const route of routes) {
       process.env.CSS,
     );
   await page.goto(`${base}/${route === "home" ? "" : route}`, { waitUntil: "load" });
-  await page.waitForTimeout(5000);
   const sample = (ms, scroll) =>
     page.evaluate(
       ([ms, scroll]) =>
@@ -59,9 +59,18 @@ for (const route of routes) {
         }),
       [ms, scroll],
     );
+  const arrival = await sample(Number(process.env.ARRIVAL ?? 5000), false);
   const idle = await sample(4000, false);
   const scrolling = await sample(4000, true);
-  console.log(route, "idle", JSON.stringify(idle), "scroll", JSON.stringify(scrolling));
+  console.log(
+    route,
+    "arrival",
+    JSON.stringify(arrival),
+    "idle",
+    JSON.stringify(idle),
+    "scroll",
+    JSON.stringify(scrolling),
+  );
   await ctx.close();
 }
 await browser.close();

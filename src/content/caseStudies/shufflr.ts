@@ -24,7 +24,7 @@ export const shufflr: CaseStudy = {
   hero: {
     image: "/media/shufflr/hero.webp",
     alt: "Shufflr on two phones: the shuffle and an activity card",
-    width: 1920,
+    width: 1916,
     height: 1046,
   },
   blocks: [
@@ -431,7 +431,7 @@ export const shufflr: CaseStudy = {
             video: "/media/shufflr/hero.mp4",
             poster: "/media/shufflr/hero.webp",
             alt: "Shufflr from shuffle to activity",
-            width: 1920,
+            width: 1916,
             height: 1046,
           },
         ],

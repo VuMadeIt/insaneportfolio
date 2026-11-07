@@ -67,4 +67,13 @@ ffmpeg -v error -y \
   -filter_complex "$(for k in 0 1 2 3; do printf '[%d]scale=1920:1080:force_original_aspect_ratio=decrease,pad=1920:1080:-1:-1:color=0x0b0b0f,zoompan=z=%s:d=78:s=1920x1080:fps=30,format=yuv420p[v%d];' $k "'min(zoom+0.0008,1.06)'" $k; done)[v0][v1]xfade=fade:duration=0.4:offset=2.2[a];[a][v2]xfade=fade:duration=0.4:offset=4.4[b];[b][v3]xfade=fade:duration=0.4:offset=6.6[v]" \
   -map "[v]" -c:v libx264 -preset slow -crf 20 -pix_fmt yuv420p -movflags +faststart "$OUT/work/frictionless.mp4"
 poster "$OUT/work/frictionless.mp4" 0.5
+# Shufflr's export has a dark line in its 4 left columns. The list rows (home, /work) share Ripple's
+# 1630x912 frame: Shufflr trimmed at the sides, Reboot padded with its own background (#C2CEF5).
+X=(-an -c:v libx264 -preset slow -crf 20 -profile:v high -pix_fmt yuv420p -movflags +faststart)
+cp "$OUT/shufflr/hero.mp4" /tmp/shufflr-hero.mp4
+ffmpeg -v error -y -i /tmp/shufflr-hero.mp4 -vf "crop=iw-4:ih:4:0" "${X[@]}" "$OUT/shufflr/hero.mp4"
+ffmpeg -v error -y -i /tmp/shufflr-hero.mp4 -vf "crop=1870:1046:27:0,scale=1630:912:flags=lanczos" "${X[@]}" "$OUT/work/shufflr.mp4"
+ffmpeg -v error -y -i "$OUT/work/reboot.mp4" -vf "format=rgb24,pad=1894:1060:210:0:color=0xC2CEF5,scale=1630:912:flags=lanczos" \
+  "${X[@]}" "$OUT/work/reboot-wide.mp4"
+for v in shufflr/hero work/shufflr work/reboot-wide; do poster "$OUT/$v.mp4"; done
 du -sh "$OUT"/*

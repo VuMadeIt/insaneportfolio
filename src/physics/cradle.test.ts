@@ -251,6 +251,14 @@ describe("9. long run", () => {
     expect(middlePeak).toBeGreaterThan(1);
     expect(spread).toBeLessThan(0.5);
   });
+
+  it("extra damping brings the same swing to rest within 25 s", () => {
+    const c = new Cradle();
+    c.damping = 0.6;
+    c.lift(0, deg(-30));
+    runFor(c, 25);
+    expect(c.asleep).toBe(true);
+  });
 });
 
 describe("10. kinematic anchor glide", () => {

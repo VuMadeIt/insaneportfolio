@@ -32,6 +32,8 @@ export class Cradle {
    * at any frame rate.
    */
   beforeStep: ((time: number) => void) | null = null;
+  /** Extra damping of every swing (1/s) on top of the suspension's, for a scene that must come to rest sooner. */
+  damping = 0;
   private accumulator = 0;
   private quietTime = 0;
   private readonly scratch = vec();
@@ -111,14 +113,15 @@ export class Cradle {
   private substep(h: number, time: number): void {
     const { gravity, hysteresis, ball } = this.config;
     const { dragFactor, suspensionLength } = this.derived;
+    const loss = (hysteresis + this.damping) * h;
     for (const b of this.balls) {
       const v = b.vel;
       v.y -= gravity * h;
       const speed = Math.hypot(v.x, v.y, v.z);
       addScaled(v, v, -dragFactor * speed * h);
-      v.x -= hysteresis * (v.x - b.anchorVel.x) * h;
-      v.y -= hysteresis * (v.y - b.anchorVel.y) * h;
-      v.z -= hysteresis * (v.z - b.anchorVel.z) * h;
+      v.x -= loss * (v.x - b.anchorVel.x);
+      v.y -= loss * (v.y - b.anchorVel.y);
+      v.z -= loss * (v.z - b.anchorVel.z);
       copy(b.prev, b.pos);
       addScaled(b.pos, v, h);
     }

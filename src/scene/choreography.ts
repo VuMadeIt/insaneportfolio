@@ -2,7 +2,8 @@ import gsap from "gsap";
 import { type Vec3, vec } from "@/physics/vec";
 import { frameFor } from "./framing";
 import { restoreTime } from "./slowmo";
-import { cradle, lite, requestRender } from "./world";
+import { type SwingIn, glideAt, planSwingIn } from "./swingIn";
+import { anchorOf, cradle, lite, requestRender, ropeOf } from "./world";
 
 /**
  * The click choreography (PLAN 1.3, 4.7). One paused GSAP timeline moves the kinematic anchors
@@ -31,6 +32,13 @@ const LOWER_TIME = 1.4;
  */
 const ENTER = EXIT + 0.05;
 const ARRIVE_TIME = 1;
+const STAGGER = 0.06;
+/** People swings in this long after the others have come down (s)... */
+const PEOPLE_DELAY = 0.4;
+/** ...and meets Ideas as if let go from 30 degrees, on every screen (m/s). */
+const PEOPLE_HIT = Math.sqrt(2 * cradle.config.gravity * L * (1 - Math.cos(Math.PI / 6)));
+/** Until then it waits out of the frame and its light, up and to the left (m). */
+const PARK_X = -1.5;
 
 const offsets: Vec3[] = cradle.balls.map(() => vec());
 let timeline: gsap.core.Timeline | null = null;
@@ -67,8 +75,49 @@ function sway() {
   cradle.balls.forEach((b, i) => cradle.push(i, speed - b.vel.x));
 }
 
+/** People's way in: let go at simulation time `at`, then glides per `plan`. */
+let entrance: { at: number; plan: SwingIn; going: boolean } | null = null;
+
+function swingIn(time: number) {
+  const e = entrance!;
+  if (time < e.at) return;
+  const o = offsets[0]!;
+  if (!e.going) {
+    // Let go at the start of this step, behind its anchor and moving with it.
+    e.going = true;
+    e.at = time - cradle.config.dt;
+    o.x = glideAt(e.plan, 0);
+    o.y = 0;
+    cradle.teleportAnchors(0, o);
+    cradle.lift(0, -e.plan.angle);
+    cradle.push(0, e.plan.speed);
+    straightenStrings(0);
+  }
+  o.x = glideAt(e.plan, time - e.at);
+  cradle.setAnchorOffset(0, o);
+  if (time - e.at >= e.plan.duration) entrance = null;
+}
+
+/** A story opened (or a deep link) before People arrived: it hangs at rest in its place. */
+function skipEntrance() {
+  if (!entrance) return;
+  entrance = null;
+  const o = offsets[0]!;
+  o.x = 0;
+  o.y = 0;
+  cradle.teleportAnchors(0, o);
+  cradle.lift(0, 0);
+  straightenStrings(0);
+}
+
+/** After a ball jumps, its strings are laid straight instead of whipping across the frame. */
+function straightenStrings(i: number) {
+  for (const side of [0, 1] as const) ropeOf(i, side).reset(anchorOf(i, side), cradle.eyelet(i));
+}
+
 cradle.beforeStep = (time) => {
-  if (!timeline) return void (swaying && sway());
+  if (entrance) swingIn(time);
+  if (!timeline) return void (swaying && !entrance && sway());
   timeline.time(time - startedAt);
   offsets.forEach((o, i) => cradle.setAnchorOffset(i, o));
   if (timeline.progress() >= 1) timeline = null;
@@ -86,6 +135,7 @@ function storyOffset(i: number): Vec3 {
 
 function begin(): gsap.core.Timeline {
   restoreTime();
+  skipEntrance();
   timeline?.kill();
   startedAt = cradle.time;
   cradle.wake();
@@ -130,32 +180,47 @@ export function close(duration = LOWER_TIME): void {
   // Once everything has come down (the sway waits for the timeline to finish).
   swaying = !lite;
   offsets.forEach((o, i) => {
-    if (o.y >= EXIT * 0.5) tl.to(o, { y: 0, x: 0, duration, ease: "power2.inOut" }, i * 0.06);
+    if (o.y >= EXIT * 0.5) tl.to(o, { y: 0, x: 0, duration, ease: "power2.inOut" }, i * STAGGER);
     else shapedGlide(tl, o, vec(), 0);
   });
 }
 
 /**
- * The way in (PLAN 15.6): every ball waits above the frame, hanging still, then all are lowered as
- * when a story closes. Runs on simulation time, so it starts when the scene first steps.
+ * The way in (PLAN 15.6, 15.19): every ball waits above the frame, hanging still, then Ideas,
+ * Experiments and Products are lowered as when a story closes. A moment after they land, People
+ * swings in from beyond the left edge and sets the cradle going; from the hit on it is all physics.
+ * Runs on simulation time, so it starts when the scene first steps.
  */
 export function intro(): void {
   if (reducedMotion()) return enter(null);
+  skipEntrance();
   timeline?.kill();
   timeline = null;
   cradle.release();
   offsets.forEach((o, i) => {
-    o.x = 0;
+    o.x = i === 0 ? PARK_X : 0;
     o.y = ENTER;
     cradle.teleportAnchors(i, o);
     cradle.lift(i, 0);
   });
   close(ARRIVE_TIME);
+  timeline!.killTweensOf(offsets[0]!);
+  const landed = ARRIVE_TIME + (cradle.balls.length - 1) * STAGGER;
+  entrance = { at: cradle.time + landed + PEOPLE_DELAY, plan: entrancePlan(), going: false };
+}
+
+/** Starts People just beyond the left edge of this screen. */
+function entrancePlan(): SwingIn {
+  const { innerWidth: w, innerHeight: h } = window;
+  const halfWidth = (frameFor(w, h).visibleHeight * w) / h / 2;
+  const fromRest = cradle.balls[0]!.restAnchors[0].x + halfWidth + 1.5 * cradle.config.ball.radius;
+  return planSwingIn(fromRest, PEOPLE_HIT, L, cradle.config.gravity);
 }
 
 /** Jump straight into a state with everything hanging still (deep links, reduced motion). */
 export function enter(selected: number | null): void {
   restoreTime();
+  skipEntrance();
   timeline?.kill();
   timeline = null;
   swaying = selected === null && !reducedMotion() && !lite;

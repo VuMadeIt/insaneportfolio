@@ -1,7 +1,8 @@
 /**
  * The link preview (PLAN 15.14): one of the cradle's balls swinging in and out of frame, filmed
- * from the real scene by scripts/og.mjs. iMessage plays the video looping and muted; Discord shows
- * it with a play button; everywhere else (X, Slack, LinkedIn, WhatsApp) shows the still.
+ * from the real scene by scripts/og.mjs. iMessage plays the video looping and muted; Discord gets
+ * the same loop as a GIF (app/discord-card); everywhere else (X, LinkedIn, Instagram, WhatsApp)
+ * shows the still.
  */
 /** Link previews need absolute URLs: the site's own, else Vercel's production domain. */
 export const SITE =

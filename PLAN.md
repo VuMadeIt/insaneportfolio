@@ -1268,3 +1268,16 @@ Branch `phase/16-revision-5` (continues it). Answers from the Q&A are recorded i
   speed, 16:9).
 - **Link preview:** `public/og/balls.jpg` (Lucas's render of the four balls) is the image; the
   swinging video stays as `og:video` for the apps that play it.
+
+### 15.20 Moving link previews (Lucas, 2026-11-07; branch `feat/og-discord-gif`). Amends 15.14
+- Where an app can animate a preview it shows the swinging ball; where it cannot, `balls.jpg`.
+- **iMessage:** autoplays `og:video` (`cover.mp4`, muted, looping) unless the phone has Reduce
+  Motion, Auto-Play Video Previews off or Low Power Mode on; previews are cached per link on the
+  sender's phone, so test with a fresh query (`?v=3`).
+- **Discord:** plays a video only after a click, and only on a video-type page (which drops the
+  description), but animates a GIF image. Its fetcher (`Discordbot`) is rewritten to
+  `app/discord-card`, which serves the real page with `og/cover.gif` (800 px, made by
+  `scripts/og.mjs`) in place of `balls.jpg`. Case studies keep their own image. Discord caches
+  previews for about 30 minutes.
+- **X, LinkedIn, Instagram, WhatsApp:** never animate a link preview (a GIF shows its first frame,
+  or nothing on LinkedIn), so they keep `balls.jpg`.

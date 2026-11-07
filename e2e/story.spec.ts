@@ -1,4 +1,5 @@
 import { expect, test } from "@playwright/test";
+import { calmHome } from "./calm";
 
 const ready = async (page: import("@playwright/test").Page, path = "/") => {
   await page.goto(path);
@@ -65,7 +66,7 @@ test("the story text is server-rendered for every identity", async ({ request })
 test("interrupting the choreography mid-flight is safe", async ({ page }) => {
   const errors: string[] = [];
   page.on("pageerror", (e) => errors.push(e.message));
-  await ready(page);
+  await calmHome(page);
   const people = page.getByRole("button", { name: /^People:/ });
   for (let k = 0; k < 3; k++) {
     await people.focus();

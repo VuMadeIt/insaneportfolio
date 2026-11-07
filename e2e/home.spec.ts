@@ -33,7 +33,7 @@ test("the balls drop in from above when the page opens", async ({ page }) => {
   // the main thread for seconds headless, and a poll from outside could miss the balls in the air.
   const dropped = await page
     .locator("button.cradle-target")
-    .first()
+    .nth(1)
     .evaluate(
       (b) =>
         new Promise<boolean>((done) => {
@@ -50,6 +50,32 @@ test("the balls drop in from above when the page opens", async ({ page }) => {
         }),
     );
   expect(dropped).toBe(true);
+});
+
+test("People swings in from the left after the others have landed", async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await page.goto("/");
+  const seen = await page.evaluate(
+    () =>
+      new Promise<string>((done) => {
+        let beyondLeft = false;
+        const t0 = performance.now();
+        const f = () => {
+          const [people, ideas] = [...document.querySelectorAll("button.cradle-target")].map((b) =>
+            b.getBoundingClientRect(),
+          );
+          if (people && ideas) {
+            beyondLeft ||= people.right < 0 && people.top > 150;
+            if (people.left > 0 && people.top > 0)
+              return done(beyondLeft && ideas.top > 150 ? "ok" : `came from (${people.left}, ${people.top})`);
+          }
+          if (performance.now() - t0 > 40_000) return done("never came in");
+          requestAnimationFrame(f);
+        };
+        f();
+      }),
+  );
+  expect(seen).toBe("ok");
 });
 
 test("the nav hides while scrolling down and comes back on scroll up", async ({ page }) => {

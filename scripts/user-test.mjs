@@ -44,8 +44,8 @@ async function open(scenario, url) {
   return { ctx, page, errors, phone };
 }
 
-// Watches the first ball's button in the page every frame: it must be seen above the screen, then
-// hanging in view (the drop), within `ms`.
+// Watches Ideas' button in the page every frame: it must be seen above the screen, then hanging
+// in view (the drop), within `ms`.
 const watchDrop = (page, ms) =>
   page.evaluate(
     (ms) =>
@@ -55,7 +55,7 @@ const watchDrop = (page, ms) =>
         const t0 = performance.now();
         // Looked up every frame: a client navigation mounts new buttons.
         const f = () => {
-          const top = document.querySelector("button.cradle-target")?.getBoundingClientRect().top;
+          const top = document.querySelectorAll("button.cradle-target")[1]?.getBoundingClientRect().top;
           if (top !== undefined) {
             minTop = Math.min(minTop, top);
             above ||= top < -40;
@@ -96,28 +96,24 @@ async function home(scenario) {
     );
     record(scenario, "balls drop in from above", await drop);
 
-    // Idle sway: once down, the balls keep swinging a few millimetres, together. Not on touch
-    // devices (PLAN 15.18), where they hang still so the scene stops rendering.
-    const sway = await page.evaluate(
-      () =>
+    // People swings in from the left and sets the cradle going (PLAN 15.19): Products swings out.
+    const swing = await page.evaluate(
+      (ms) =>
         new Promise((done) => {
           const xs = [];
           const t0 = performance.now();
           const f = () => {
-            const r = document.querySelector("button.cradle-target")?.getBoundingClientRect();
+            const r = document.querySelectorAll("button.cradle-target")[3]?.getBoundingClientRect();
             if (r) xs.push(r.left);
-            if (performance.now() - t0 < 4000) requestAnimationFrame(f);
-            else done(Math.max(...xs) - Math.min(...xs));
+            const range = xs.length ? Math.max(...xs) - Math.min(...xs) : 0;
+            if (range > 20 || performance.now() - t0 > ms) done(range);
+            else requestAnimationFrame(f);
           };
-          setTimeout(f, 1500);
+          f();
         }),
+      slow ? 60_000 : 20_000,
     );
-    record(
-      scenario,
-      phone ? "balls hang still on a phone" : "balls sway slightly while idle",
-      phone ? sway < 0.8 : sway > 0.8 && sway < 40,
-      `range ${sway.toFixed(1)} px`,
-    );
+    record(scenario, "People swings in and Products swings out", swing > 20, `range ${swing.toFixed(1)} px`);
 
     const tagline = await page.evaluate(() => {
       const c = document.querySelector(".giant-caption");

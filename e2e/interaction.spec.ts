@@ -1,4 +1,5 @@
 import { expect, test } from "@playwright/test";
+import { calmHome } from "./calm";
 
 const ready = async (page: import("@playwright/test").Page) => {
   await page.goto("/");
@@ -24,7 +25,7 @@ test("tab order runs People to Products with descriptive names", async ({ page }
 });
 
 test("arrow keys push the focused ball", async ({ page }) => {
-  await ready(page);
+  await calmHome(page);
   const products = page.getByRole("button", { name: /^Products:/ });
   await products.focus();
   const before = (await products.boundingBox())!.x;

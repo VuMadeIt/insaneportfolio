@@ -23,7 +23,7 @@ for (const [w, h, mobile] of [
       const t = (window.__t = {});
       const f = () => {
         const now = performance.now();
-        const ball = document.querySelector("button.cradle-target")?.getBoundingClientRect();
+        const ball = document.querySelectorAll("button.cradle-target")[1]?.getBoundingClientRect();
         if (ball) {
           t.ballsMounted ??= now;
           if (ball.bottom > 0) t.ballInView ??= now;

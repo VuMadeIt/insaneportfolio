@@ -1268,3 +1268,19 @@ Branch `phase/16-revision-5` (continues it). Answers from the Q&A are recorded i
   speed, 16:9).
 - **Link preview:** `public/og/balls.jpg` (Lucas's render of the four balls) is the image; the
   swinging video stays as `og:video` for the apps that play it.
+
+### 15.19 People swings in (Lucas, 2026-11-07; branch `feat/people-swing-intro`). Amends 15.6, 15.17
+- **Arrival:** Ideas, Experiments and Products come down from above as before (1 s, landing with
+  the tagline). 0.4 s after they land, People swings in from beyond the left edge, hits Ideas and
+  sets the cradle going; from the hit on it is the ordinary physics, clacking until it dies down
+  (then the idle sway on desktop). Only on a home arrival (load, reload, coming back from another
+  page), not when a story closes, and on every device. Reduced motion: unchanged (no arrival).
+- **Same hit on every screen:** People meets Ideas as if let go from 30 degrees (1.14 m/s). A swing
+  that big starts off screen only on narrow frames, so on wider ones its anchor glides in at a
+  constant speed, unseen above the frame, and stops as the ball passes the bottom: phones get a
+  pure 30 degree swing, a 1440 px laptop about 13 degrees plus a 0.64 m/s glide, ultrawides a
+  glide alone (`src/scene/swingIn.ts`, checked against the real cradle in `swingIn.test.ts`).
+- **Phones and tablets:** the swing would take minutes to die out and keep the scene rendering, so
+  touch devices add 0.6/s of swing damping (`cradle.damping`) from the swing in until the balls
+  sleep or a finger takes one: visible for about 8 s, rendering stops about 20 s after the hit.
+- Opening a story before People has arrived skips the rest of its way in: it hangs at rest.

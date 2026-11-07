@@ -59,8 +59,13 @@ vision, architecture, phases, git workflow and the autonomous execution protocol
   1440/768/390 into `.artifacts/diagrams/` and fails on sideways scrolling; `FIGURES=1` shoots
   every figure. `PORT=3100 node scripts/drop-timing.mjs [runs]` times the arrival drop against
   the tagline.
-- `PORT=3100 node scripts/perf.mjs [route ...]` measures frame rate and long tasks idle and while
-  scrolling, on a 390 px DPR 3 phone with a 4x slower CPU (`CSS='...'` injects a stylesheet).
+- `PORT=3100 node scripts/perf.mjs [route ...]` measures frame rate and long tasks from load
+ (`ARRIVAL=ms`, default 5000), then idle and while scrolling, on a 390 px DPR 3 phone with a 4x
+ slower CPU (`DESKTOP=1`: 1440 x 900 at DPR 2, unthrottled; `CSS='...'` injects a stylesheet).
+- `PORT=3100 node scripts/arrival.mjs [WxH ...]` films the arrival (People swinging in) into
+ `.artifacts/arrival/<W>/` and prints when People enters and hits, and how far Products swings.
+ The arrival leaves the cradle clacking for minutes; e2e tests that need it still use
+ `calmHome` (`e2e/calm.ts`).
 - `PORT=3200 node scripts/og.mjs [angle]` films the link preview (`public/og/cover.mp4` + `.jpg`)
   from `/lab/og`, frame by frame.
 - A stale `next dev` from an old session blocks a new one ("Another next dev server is already

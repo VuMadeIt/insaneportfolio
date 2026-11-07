@@ -42,6 +42,16 @@ describe("visual rope", () => {
     expect(rope.deviation()).toBeLessThan(1e-4);
   });
 
+  it("a reset after a jump leaves it straight and still, without a whip", () => {
+    const rope = new Rope(L, 20, anchor, taut);
+    settle(rope, taut);
+    const far = vec(-1, taut.y, 0);
+    const farAnchor = vec(-1, L, 0.1);
+    rope.reset(farAnchor, far);
+    rope.step(frame, farAnchor, far);
+    expect(rope.deviation()).toBeLessThan(1e-6);
+  });
+
   it("survives violent end motion without NaN", () => {
     const rope = new Rope(L, 20, anchor, taut);
     let seed = 3;

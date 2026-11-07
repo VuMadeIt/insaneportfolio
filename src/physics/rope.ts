@@ -68,6 +68,14 @@ export class Rope {
     }
   }
 
+  /** Lay the line straight and still between `anchor` and `end`, after its ends jumped. */
+  reset(anchor: Vec3, end: Vec3): void {
+    this.points.forEach((p, i) => {
+      lerp(p, anchor, end, i / this.segments);
+      copy(this.prev[i]!, p);
+    });
+  }
+
   /** A transverse kick (m/s) to the middle of the line, strongest at the centre, zero at the pins. */
   kick(velocity: Vec3, dt = MAX_SUBSTEP): void {
     for (let i = 1; i < this.segments; i++) {

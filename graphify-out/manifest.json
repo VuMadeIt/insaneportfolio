@@ -12,9 +12,9 @@
     "semantic_hash": ""
   },
   "e2e/home.spec.ts": {
-    "mtime": 1793977807.8204293,
-    "seen": 1793978460.7146828,
-    "ast_hash": "25184981013b7c2d41c950286b785a17",
+    "mtime": 1794082138.7607424,
+    "seen": 1794082435.714608,
+    "ast_hash": "121dc8fe3b2b4e49324291360d819afb",
     "semantic_hash": ""
   },
   "eslint.config.mjs": {
@@ -90,9 +90,9 @@
     "semantic_hash": ""
   },
   "AGENTS.md": {
-    "mtime": 1793978409.1936576,
-    "seen": 1793978460.7156842,
-    "ast_hash": "d035a9170a9a7bb91a8b6fc15c1c2b65",
+    "mtime": 1794082464.9481971,
+    "seen": 1794082476.1343803,
+    "ast_hash": "ad3d92be9bbcbe6e7d6e9b5975a5234f",
     "semantic_hash": ""
   },
   "CREDITS.md": {
@@ -108,9 +108,9 @@
     "semantic_hash": ""
   },
   "PLAN.md": {
-    "mtime": 1793978409.1144233,
-    "seen": 1793978460.7156842,
-    "ast_hash": "af48a456fd75e8c4b12c1ce9317da480",
+    "mtime": 1794082467.9998698,
+    "seen": 1794082476.1343803,
+    "ast_hash": "14591f840edafb0e92fc9f54fd017eb1",
     "semantic_hash": ""
   },
   "reference/identities/experiment-atom.png": {
@@ -198,15 +198,15 @@
     "semantic_hash": ""
   },
   "src/physics/cradle.test.ts": {
-    "mtime": 1793687810.0691042,
-    "seen": 1793688034.7171125,
-    "ast_hash": "0aebb8edc06165ef5bfa07b9126c3a71",
+    "mtime": 1794081773.3453882,
+    "seen": 1794081811.2846184,
+    "ast_hash": "e21d923bc0327d9325df250ae8ac8020",
     "semantic_hash": ""
   },
   "src/physics/cradle.ts": {
-    "mtime": 1793687810.0941043,
-    "seen": 1793688034.7171125,
-    "ast_hash": "96b38cb3ceef9cbee567e69c46936aca",
+    "mtime": 1794081760.024609,
+    "seen": 1794081811.2846184,
+    "ast_hash": "247f3ca14aeeb25fd5ea45a30e6a3b68",
     "semantic_hash": ""
   },
   "src/physics/drag.ts": {
@@ -222,15 +222,15 @@
     "semantic_hash": ""
   },
   "src/physics/rope.test.ts": {
-    "mtime": 1793682934.2153566,
-    "seen": 1793683404.6671157,
-    "ast_hash": "32de732e1d4a46348795375389554ebb",
+    "mtime": 1794081202.5544763,
+    "seen": 1794081218.0669308,
+    "ast_hash": "dd3f1a5d5bffeb7804484722652cd303",
     "semantic_hash": ""
   },
   "src/physics/rope.ts": {
-    "mtime": 1793682934.2263546,
-    "seen": 1793683404.6671157,
-    "ast_hash": "4490c2b16351ef00a54646a3faa446cb",
+    "mtime": 1794081192.161198,
+    "seen": 1794081218.0669308,
+    "ast_hash": "5fde4b9a56d90d53b78147d910ebd66c",
     "semantic_hash": ""
   },
   "src/physics/vec.ts": {
@@ -492,9 +492,9 @@
     "semantic_hash": ""
   },
   "e2e/interaction.spec.ts": {
-    "mtime": 1793746822.361444,
-    "seen": 1793748321.8076673,
-    "ast_hash": "907d59ea8d6d6b56c509efec6e560acd",
+    "mtime": 1794082305.2316506,
+    "seen": 1794082435.714608,
+    "ast_hash": "f60b3b3f2a788927a476c03058c7dbff",
     "semantic_hash": ""
   },
   "scripts/audio/slice.py": {
@@ -570,9 +570,9 @@
     "semantic_hash": ""
   },
   "e2e/reveal.spec.ts": {
-    "mtime": 1793746822.4318824,
-    "seen": 1793748321.8076673,
-    "ast_hash": "1d77aeb926cb056d401d5ca33c3a522e",
+    "mtime": 1794082310.8663368,
+    "seen": 1794082435.714608,
+    "ast_hash": "e107c7f9a92f83ba10e3191920a00f0d",
     "semantic_hash": ""
   },
   "scripts/identity-shots.mjs": {
@@ -930,9 +930,9 @@
     "semantic_hash": ""
   },
   "e2e/story.spec.ts": {
-    "mtime": 1793917209.0363898,
-    "seen": 1793917215.420519,
-    "ast_hash": "02856a17bb139380778fc053bc39aa58",
+    "mtime": 1794082307.9424334,
+    "seen": 1794082435.714608,
+    "ast_hash": "13634cf76c1a4e7fc9eef930e1e93942",
     "semantic_hash": ""
   },
   "scripts/story.mjs": {
@@ -960,9 +960,9 @@
     "semantic_hash": ""
   },
   "src/scene/choreography.ts": {
-    "mtime": 1793977191.8065183,
-    "seen": 1793978460.7156842,
-    "ast_hash": "391305db1462111b66af2048f8c79bfd",
+    "mtime": 1794081820.3485985,
+    "seen": 1794082090.7873309,
+    "ast_hash": "ccc40871448afd1d69d9c13e3d506a57",
     "semantic_hash": ""
   },
   "app/(site)/(pages)/layout.tsx": {
@@ -990,9 +990,9 @@
     "semantic_hash": ""
   },
   "scripts/media.sh": {
-    "mtime": 1793977417.562884,
-    "seen": 1793978460.7146828,
-    "ast_hash": "c97819eaa0394289c9fbe8025791ce0b",
+    "mtime": 1794061386.2421381,
+    "seen": 1794061624.9321914,
+    "ast_hash": "697d509de4ce96ec2a4df5417649befe",
     "semantic_hash": ""
   },
   "scripts/scroll.mjs": {
@@ -1014,9 +1014,9 @@
     "semantic_hash": ""
   },
   "src/content/projects.ts": {
-    "mtime": 1793978436.2158267,
-    "seen": 1793978460.7156842,
-    "ast_hash": "06574a48d824c9212bb3e8c714a026c8",
+    "mtime": 1794061376.9660764,
+    "seen": 1794061624.9321914,
+    "ast_hash": "466d04e3f5c8df6101dbb8eb813a10e5",
     "semantic_hash": ""
   },
   "app/apple-icon.png": {
@@ -1122,9 +1122,9 @@
     "semantic_hash": ""
   },
   "public/media/shufflr/hero.webp": {
-    "mtime": 1793732945.0819418,
-    "seen": 1793737129.23679,
-    "ast_hash": "b13f925a031d383d2f72d08129e56d97",
+    "mtime": 1794061356.6710143,
+    "seen": 1794061624.9321914,
+    "ast_hash": "16718458b26d9b5b2f9273488c96966b",
     "semantic_hash": ""
   },
   "public/media/shufflr/profile-memories.png": {
@@ -1188,9 +1188,9 @@
     "semantic_hash": ""
   },
   "public/media/shufflr/hero.mp4": {
-    "mtime": 1793732944.820975,
-    "seen": 1793737129.2383003,
-    "ast_hash": "525506fd231303cca47a209cd4723032",
+    "mtime": 1794061349.036131,
+    "seen": 1794061624.9321914,
+    "ast_hash": "795cf4995a520a75507558db16255108",
     "semantic_hash": ""
   },
   "public/media/shufflr/shuffle.mp4": {
@@ -1248,9 +1248,9 @@
     "semantic_hash": ""
   },
   "src/content/caseStudies/shufflr.ts": {
-    "mtime": 1793918775.9729972,
-    "seen": 1793918823.003797,
-    "ast_hash": "deb82c76e66a92179d894cd0ee1d108b",
+    "mtime": 1794061382.2923899,
+    "seen": 1794061624.9321914,
+    "ast_hash": "6107550e6042753149424648c94a7e92",
     "semantic_hash": ""
   },
   "src/content/caseStudies/types.ts": {
@@ -1878,9 +1878,9 @@
     "semantic_hash": ""
   },
   "scripts/user-test.mjs": {
-    "mtime": 1793978411.1457121,
-    "seen": 1793978460.7146828,
-    "ast_hash": "b65b3884ce04adf6ef03e7ea665cb0e5",
+    "mtime": 1794082127.4946325,
+    "seen": 1794082435.715592,
+    "ast_hash": "5f1f3e88dceb1fe28491816be4d1dc5f",
     "semantic_hash": ""
   },
   "src/components/HavenMenu.tsx": {
@@ -1980,21 +1980,69 @@
     "semantic_hash": ""
   },
   "scripts/drop-timing.mjs": {
-    "mtime": 1793927206.792268,
-    "seen": 1793928251.4480798,
-    "ast_hash": "a60bbe5a2a73a65ee6eaefd3483697ad",
+    "mtime": 1794082143.3000908,
+    "seen": 1794082435.714608,
+    "ast_hash": "809a15c3d90129fb9c22213c2a4918c8",
     "semantic_hash": ""
   },
   "scripts/perf.mjs": {
-    "mtime": 1793977607.5198376,
-    "seen": 1793978460.7146828,
-    "ast_hash": "d760237a57660c6b3a5f2683126054f7",
+    "mtime": 1794080767.9293222,
+    "seen": 1794080775.9167125,
+    "ast_hash": "6a765a5ac08c22a15a04cdaac925bc16",
     "semantic_hash": ""
   },
   "public/og/balls.jpg": {
     "mtime": 1793977575.187946,
     "seen": 1793978460.7156842,
     "ast_hash": "9312455d98eb1416797ad4df3ad6b654",
+    "semantic_hash": ""
+  },
+  "public/media/work/reboot-wide.webp": {
+    "mtime": 1794061357.02623,
+    "seen": 1794061624.9321914,
+    "ast_hash": "e4fb6d2247ed9ce71d66afad454b28e2",
+    "semantic_hash": ""
+  },
+  "public/media/work/shufflr.webp": {
+    "mtime": 1794061356.8550987,
+    "seen": 1794061624.9321914,
+    "ast_hash": "9d0be265ee77fd9bb35589c24cbe023e",
+    "semantic_hash": ""
+  },
+  "public/media/work/reboot-wide.mp4": {
+    "mtime": 1794061356.4751828,
+    "seen": 1794061624.9321914,
+    "ast_hash": "c7ba5bdbff5df78573d04b9359fccac4",
+    "semantic_hash": ""
+  },
+  "public/media/work/shufflr.mp4": {
+    "mtime": 1794061354.4089098,
+    "seen": 1794061624.9321914,
+    "ast_hash": "aab7ce7a7b2231cf634df3515d4182a9",
+    "semantic_hash": ""
+  },
+  "src/scene/swingIn.test.ts": {
+    "mtime": 1794081260.482551,
+    "seen": 1794081295.161092,
+    "ast_hash": "aec28997e6d538673463ca023ca390d5",
+    "semantic_hash": ""
+  },
+  "src/scene/swingIn.ts": {
+    "mtime": 1794081248.7376883,
+    "seen": 1794081295.161092,
+    "ast_hash": "dd87cf437a12e0ef99a037641e38917e",
+    "semantic_hash": ""
+  },
+  "scripts/arrival.mjs": {
+    "mtime": 1794081525.497957,
+    "seen": 1794081811.2846184,
+    "ast_hash": "a1edb9d1ae8dee026bb1ee09c9339faf",
+    "semantic_hash": ""
+  },
+  "e2e/calm.ts": {
+    "mtime": 1794082302.1787279,
+    "seen": 1794082435.714608,
+    "ast_hash": "12328267a92308b582afbf39bb497ce1",
     "semantic_hash": ""
   },
   "package-lock.json": {

@@ -39,6 +39,12 @@ const PEOPLE_DELAY = 0.4;
 const PEOPLE_HIT = Math.sqrt(2 * cradle.config.gravity * L * (1 - Math.cos(Math.PI / 6)));
 /** Until then it waits out of the frame and its light, up and to the left (m). */
 const PARK_X = -1.5;
+/**
+ * On touch devices the scene stops rendering once the balls sleep (PLAN 15.18), and this swing
+ * would take minutes to die out: extra damping (1/s) brings it to rest in about 20 s, until a
+ * finger takes a ball.
+ */
+const TOUCH_SETTLE = 0.6;
 
 const offsets: Vec3[] = cradle.balls.map(() => vec());
 let timeline: gsap.core.Timeline | null = null;
@@ -92,14 +98,19 @@ function swingIn(time: number) {
     cradle.lift(0, -e.plan.angle);
     cradle.push(0, e.plan.speed);
     straightenStrings(0);
+    if (lite) cradle.damping = TOUCH_SETTLE;
   }
   o.x = glideAt(e.plan, time - e.at);
   cradle.setAnchorOffset(0, o);
   if (time - e.at >= e.plan.duration) entrance = null;
 }
 
-/** A story opened (or a deep link) before People arrived: it hangs at rest in its place. */
+/**
+ * Any other motion ends the way in: the touch settling stops, and if People had not arrived yet
+ * (a story opened first) it hangs at rest in its place.
+ */
 function skipEntrance() {
+  cradle.damping = 0;
   if (!entrance) return;
   entrance = null;
   const o = offsets[0]!;
@@ -116,6 +127,7 @@ function straightenStrings(i: number) {
 }
 
 cradle.beforeStep = (time) => {
+  if (cradle.damping && (cradle.hand || cradle.asleep)) cradle.damping = 0;
   if (entrance) swingIn(time);
   if (!timeline) return void (swaying && !entrance && sway());
   timeline.time(time - startedAt);

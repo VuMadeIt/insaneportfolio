@@ -88,17 +88,4 @@ execFileSync("ffmpeg", [
   "3",
   "public/og/cover.jpg",
 ]);
-// The same loop as a GIF, for Discord, which animates a GIF image but only plays a video on a click.
-execFileSync("ffmpeg", [
-  "-v",
-  "error",
-  "-y",
-  "-i",
-  "public/og/cover.mp4",
-  "-vf",
-  "fps=20,scale=800:-1:flags=lanczos,split[a][b];[a]palettegen=max_colors=128:stats_mode=diff[p];[b][p]paletteuse=dither=bayer:bayer_scale=4:diff_mode=rectangle",
-  "-loop",
-  "0",
-  "public/og/cover.gif",
-]);
-console.log("public/og/cover.mp4, cover.gif, cover.jpg (still frame", still, ")");
+console.log("public/og/cover.mp4, public/og/cover.jpg (still frame", still, ")");

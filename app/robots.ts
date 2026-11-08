@@ -1,6 +1,6 @@
 import type { MetadataRoute } from "next";
+import { SITE } from "@/content/share";
 
 export default function robots(): MetadataRoute.Robots {
-  const base = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
-  return { rules: { userAgent: "*", allow: "/", disallow: "/lab" }, sitemap: `${base}/sitemap.xml` };
+  return { rules: { userAgent: "*", allow: "/", disallow: "/lab" }, sitemap: `${SITE}/sitemap.xml` };
 }

@@ -87,7 +87,17 @@ export type Visual =
       points: { x: number; y: number; title: string; text: string }[];
     }
   /** Two to three columns, each a heading and a short paragraph or a list. */
-  | { kind: "compare"; columns: { title: string; tone?: "accent" | "ink" | "plain"; items: string[] }[] };
+  | { kind: "compare"; columns: { title: string; tone?: "accent" | "ink" | "plain"; items: string[] }[] }
+  /** The same screens in two or three states (before and after, two languages), cross-faded by a switch. */
+  | {
+      kind: "switch";
+      label: string;
+      options: {
+        label: string;
+        note: string;
+        images: { src: string; alt: string; width: number; height: number }[];
+      }[];
+    };
 
 export interface Block {
   id: string;

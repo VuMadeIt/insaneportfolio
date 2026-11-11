@@ -59,6 +59,9 @@ vision, architecture, phases, git workflow and the autonomous execution protocol
   1440/768/390 into `.artifacts/diagrams/` and fails on sideways scrolling; `FIGURES=1` shoots
   every figure. `PORT=3100 node scripts/drop-timing.mjs [runs]` times the arrival drop against
   the tagline.
+- `NIGHT=.. AUDIT=.. NOW=.. PASSWORD=.. node scripts/passion-nails-shots.mjs` shoots the Passion Nails
+  case-study media from three local `wrangler dev` builds of the salon app on fake bookings (never the
+  live staff app); `STEPS=shots,films,media` runs only some steps.
 - `PORT=3100 node scripts/perf.mjs [route ...]` measures frame rate and long tasks idle and while
   scrolling, on a 390 px DPR 3 phone with a 4x slower CPU (`CSS='...'` injects a stylesheet).
 - `PORT=3200 node scripts/og.mjs [angle]` films the link preview (`public/og/cover.mp4` + `.jpg`)

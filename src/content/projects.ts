@@ -125,6 +125,27 @@ export const projects: Project[] = [
     draft: ["role", "description"],
   },
   {
+    slug: "passion-nails",
+    title: "Passion Nails",
+    date: "2026-11",
+    year: "2026",
+    medium: "Booking site and staff app",
+    role: "Designer and builder",
+    event: "My family's nail salon",
+    description:
+      "My mom's salon ran on one phone and no front desk. Now customers book online, and four techs run the day from a staff app in Vietnamese.",
+    caption: "Taking my mom's salon off the phone, with a staff app in Vietnamese.",
+    media: {
+      video: "/media/passion-nails/loop.mp4",
+      poster: "/media/passion-nails/loop.webp",
+      alt: "A customer books a pedicure online while a tech adds a walk-in in Vietnamese",
+      width: 1600,
+      height: 1000,
+    },
+    caseStudy: true,
+    link: { label: "Live site", href: "https://passionnailstoronto.ca" },
+  },
+  {
     slug: "maple-leaf-foods",
     title: "Maple Leaf Foods",
     date: "2026-04",
@@ -390,6 +411,7 @@ export const homeProjects = ["ripple", "shufflr", "reboot"].map((slug) => projec
 const pick = (slugs: string[]) => slugs.map((slug) => projectBySlug(slug)!);
 export const wins = pick(["ripple", "shufflr", "we-should-go-to-japan", "reboot", "asper", "solarscore"]);
 export const selected = pick([
+  "passion-nails",
   "maple-leaf-foods",
   "sweaterify",
   "liam-vu",

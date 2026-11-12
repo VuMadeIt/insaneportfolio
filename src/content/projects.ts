@@ -4,6 +4,13 @@
  * DRAFT are drafted for the layout and must be confirmed by Lucas (listed in REPORT.md).
  */
 
+/** A phone screen's frame: the app's colours behind the status bar and home indicator (Phone.tsx). */
+export interface Frame {
+  top: string;
+  bottom: string;
+  dark?: boolean;
+}
+
 export interface Media {
   /** Video loop (muted) with its poster, or a still image. */
   video?: string;
@@ -12,6 +19,10 @@ export interface Media {
   /** A muted loop that plays only while the card is hovered (the still stays otherwise). */
   hover?: string;
   alt: string;
+  /** Shown in an iPhone frame. */
+  frame?: Frame;
+  /** A small tag above a framed phone: which version this is. */
+  label?: string;
   /** Intrinsic size of the poster or image. */
   width: number;
   height: number;
@@ -130,8 +141,8 @@ export const projects: Project[] = [
     date: "2026-11",
     year: "2026",
     medium: "Booking site and staff app",
-    role: "Designer and builder",
-    event: "My family's nail salon",
+    role: "Design engineer",
+    event: "My family's boutique nail salon",
     description:
       "My mom's salon ran on one phone and no front desk. Now customers book online, and four techs run the day from a staff app in Vietnamese.",
     caption: "Taking my mom's salon off the phone, with a staff app in Vietnamese.",

@@ -1,9 +1,10 @@
 "use client";
 
 import Image from "next/image";
-import { useEffect, useRef, useState } from "react";
-import type { Visual } from "@/content/caseStudies/types";
-import { reducedMotion, useInView } from "./useInView";
+import { useState } from "react";
+import type { Shot, Visual } from "@/content/caseStudies/types";
+import { Phone, PHONE_RATIO, PhoneTag } from "./Phone";
+import { useInView } from "./useInView";
 
 type Of<K extends Visual["kind"]> = Extract<Visual, { kind: K }>;
 
@@ -224,30 +225,68 @@ export function Brief({ v }: { v: Of<"brief"> }) {
 /** A screen with numbered callouts; hovering a line of the legend lights its marker. */
 export function Anatomy({ v }: { v: Of<"anatomy"> }) {
   const [on, setOn] = useState<number | null>(null);
+  const ratio = v.image.frame ? PHONE_RATIO : v.image.width / v.image.height;
+  const img = (
+    <div className="relative">
+      <Image
+        src={v.image.src}
+        alt={v.image.alt}
+        width={v.image.width}
+        height={v.image.height}
+        sizes="(min-width: 768px) 40vw, 100vw"
+        className={`block h-auto w-full ${v.image.frame ? "" : "rounded-md"}`}
+      />
+      {/* Numbers sit outside the picture, a leader line runs to a dot on the spot: nothing covers it. */}
+      <div aria-hidden className="pointer-events-none absolute inset-0">
+        {v.points.map((p, i) => {
+          const left = p.x < 50;
+          const hot = on === i;
+          const tone = hot ? "bg-ink" : "bg-[var(--accent)]";
+          return (
+            <span key={p.title} className="absolute inset-x-0 h-0" style={{ top: `${p.y}%` }}>
+              <span
+                className={`absolute h-[1.5px] -translate-y-1/2 transition-colors duration-300 ${hot ? "bg-[var(--accent)]" : "bg-ink/60"}`}
+                // The line stops at the ring, so nothing crosses the thing it points at.
+                style={
+                  left
+                    ? { left: "var(--lead)", right: `calc(${100 - p.x}% + 12px)` }
+                    : { left: `calc(${p.x}% + 12px)`, right: "var(--lead)" }
+                }
+              />
+              <span
+                className="absolute size-5 -translate-x-1/2 -translate-y-1/2 rounded-full border-2 border-[var(--accent)] shadow-[0_0_0_2px_rgb(255_255_255/0.9)]"
+                style={{ left: `${p.x}%` }}
+              />
+              <span
+                className={`absolute flex size-7 -translate-y-1/2 items-center justify-center rounded-full text-[13px] text-white transition-[background-color,transform] duration-300 ${tone} ${hot ? "scale-110" : ""}`}
+                style={left ? { left: "calc(var(--lead) - 28px)" } : { right: "calc(var(--lead) - 28px)" }}
+              >
+                {i + 1}
+              </span>
+            </span>
+          );
+        })}
+      </div>
+    </div>
+  );
   return (
     <div className="grid items-center gap-10 @xl:grid-cols-[minmax(0,0.9fr)_minmax(0,1fr)]">
       <div
-        className="relative mx-auto w-full"
-        style={{ maxWidth: `min(${v.image.width}px, calc(70vh * ${v.image.width / v.image.height}))` }}
+        className="mx-auto w-full px-[60px] [--lead:-48px]"
+        style={{ maxWidth: `calc(min(${v.image.frame ? 340 : v.image.width}px, 70vh * ${ratio}) + 120px)` }}
       >
-        <Image
-          src={v.image.src}
-          alt={v.image.alt}
-          width={v.image.width}
-          height={v.image.height}
-          sizes="(min-width: 768px) 40vw, 100vw"
-          className="h-auto w-full"
-        />
-        {v.points.map((p, i) => (
-          <span
-            key={p.title}
-            aria-hidden
-            className={`absolute flex size-8 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full bg-[var(--accent)] text-[14px] text-white ring-4 transition-transform duration-300 ${on === i ? "scale-125 ring-[var(--accent-soft)]" : "ring-white/70"}`}
-            style={{ left: `${p.x}%`, top: `${p.y}%` }}
-          >
-            {i + 1}
-          </span>
-        ))}
+        {v.image.label && (
+          <div className="mb-4 flex justify-center">
+            <PhoneTag label={v.image.label} />
+          </div>
+        )}
+        {v.image.frame ? (
+          <Phone {...v.image.frame} className="w-full">
+            {img}
+          </Phone>
+        ) : (
+          img
+        )}
       </div>
       <ol className="flex flex-col gap-6">
         {v.points.map((p, i) => (
@@ -275,24 +314,35 @@ export function Anatomy({ v }: { v: Of<"anatomy"> }) {
 }
 
 /**
- * Phone screens in two to five states; the switch cross-fades them in place, so nothing jumps. The
- * screens are sized to the window so the tabs, screens and note fit in one view. While on screen,
- * the active tab fills and steps to the next state, until a tab is picked (never with reduced motion).
+ * Phone screens in two to five states; the switch cross-fades them in place, so nothing jumps.
+ * Screens are sized to the window so the tabs, screens and note fit in one view. Arrows either side
+ * step through the states (and say so by being there); the tabs jump to one.
  */
 export function Switch({ v }: { v: Of<"switch"> }) {
   const [on, setOn] = useState(0);
-  const [touched, setTouched] = useState(false);
-  const [visible, setVisible] = useState<boolean | null>(null);
-  const box = useRef<HTMLDivElement>(null);
-  useEffect(() => {
-    if (reducedMotion()) return;
-    const io = new IntersectionObserver(([e]) => setVisible(!!e?.isIntersecting), { threshold: 0.6 });
-    io.observe(box.current!);
-    return () => io.disconnect();
-  }, []);
-  const cycling = visible !== null && !touched;
+  const n = v.options.length;
+  const step = (d: number) => setOn((on + d + n) % n);
+  const arrow = (d: number) => (
+    <button
+      type="button"
+      onClick={() => step(d)}
+      aria-label={`${d < 0 ? "Previous" : "Next"}: ${v.options[(on + d + n) % n]!.label}`}
+      className="flex size-11 shrink-0 items-center justify-center rounded-full bg-white text-ink shadow-[inset_0_0_0_1px_rgb(0_0_0/0.14),0_2px_8px_rgb(0_0_0/0.08)] transition-transform duration-300 hover:scale-105 active:scale-95"
+    >
+      <svg aria-hidden viewBox="0 0 16 16" className={`size-4 ${d < 0 ? "rotate-180" : ""}`}>
+        <path
+          d="M6 3l5 5-5 5"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="1.8"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+      </svg>
+    </button>
+  );
   return (
-    <div ref={box}>
+    <div>
       <div
         role="group"
         aria-label={v.label}
@@ -303,56 +353,67 @@ export function Switch({ v }: { v: Of<"switch"> }) {
             key={o.label}
             type="button"
             aria-pressed={on === i}
-            onClick={() => {
-              setTouched(true);
-              setOn(i);
-            }}
-            className={`relative overflow-hidden rounded-full px-5 py-2.5 text-[15px] transition-colors duration-300 ${on === i ? "bg-ink text-wall" : "hover:bg-white"}`}
+            onClick={() => setOn(i)}
+            className={`rounded-full px-5 py-2.5 text-[15px] transition-colors duration-300 ${on === i ? "bg-ink text-wall" : "hover:bg-white"}`}
           >
             {o.label}
-            {cycling && on === i && (
-              <span
-                key={on}
-                aria-hidden
-                onAnimationEnd={() => setOn((on + 1) % v.options.length)}
-                className="absolute inset-x-4 bottom-1.5 h-[2px] origin-left rounded-full bg-wall/60 [animation:switch-fill_5s_linear_forwards]"
-                style={{ animationPlayState: visible ? "running" : "paused" }}
-              />
-            )}
           </button>
         ))}
       </div>
-      <div className="mt-6 grid">
-        {v.options.map((o, i) => (
-          <div
-            key={o.label}
-            aria-hidden={on !== i}
-            className={`flex justify-center gap-[clamp(12px,3cqi,40px)] transition-[opacity,transform] duration-500 ease-[var(--ease-out)] [grid-area:1/1] ${on === i ? "" : "pointer-events-none translate-y-2 opacity-0"}`}
-          >
-            {o.images.map((m) => (
-              <Image
-                key={m.src}
-                src={m.src}
-                alt={m.alt}
-                width={m.width}
-                height={m.height}
-                sizes="(min-width: 768px) 340px, 45vw"
-                className="h-auto min-w-0 rounded-[clamp(12px,2.4cqi,28px)]"
-                style={{
-                  // 360px: the tabs, the note, the panel's padding and the fixed progress bar.
-                  width: `min(340px, calc((100cqi - ${o.images.length - 1} * clamp(12px, 3cqi, 40px)) / ${o.images.length}), calc(max(240px, 100svh - 360px) * ${m.width / m.height}))`,
-                }}
-              />
-            ))}
-          </div>
-        ))}
+      <div className="mt-6 flex items-center justify-center gap-[clamp(8px,2cqi,24px)]">
+        {arrow(-1)}
+        <div className="grid min-w-0 flex-1">
+          {v.options.map((o, i) => (
+            <div
+              key={o.label}
+              aria-hidden={on !== i}
+              className={`flex items-end justify-center gap-[clamp(12px,3cqi,40px)] transition-[opacity,transform] duration-500 ease-[var(--ease-out)] [grid-area:1/1] ${on === i ? "" : "pointer-events-none translate-y-2 opacity-0"}`}
+            >
+              {o.images.map((m) => (
+                <Screen
+                  key={m.src}
+                  m={m}
+                  // 300px: the tabs, the note and the panel's padding.
+                  width={`min(320px, calc((100cqi - 120px - ${o.images.length - 1} * clamp(12px, 3cqi, 40px)) / ${o.images.length}), calc(max(260px, 100svh - 300px) * ${m.frame ? PHONE_RATIO : m.width / m.height}))`}
+                />
+              ))}
+            </div>
+          ))}
+        </div>
+        {arrow(1)}
       </div>
       <p
-        aria-live={touched ? "polite" : "off"}
+        aria-live="polite"
         className="mx-auto mt-6 max-w-[34em] text-center text-[15px] leading-[1.5] text-muted"
       >
         {v.options[on]!.note}
       </p>
+    </div>
+  );
+}
+
+/** One screen: in an iPhone frame (with its version tag) when it has one, else a rounded shot. */
+function Screen({ m, width }: { m: Shot; width: string }) {
+  const img = (
+    <Image
+      src={m.src}
+      alt={m.alt}
+      width={m.width}
+      height={m.height}
+      sizes="(min-width: 768px) 320px, 45vw"
+      className={`block h-auto w-full ${m.frame ? "" : "rounded-[clamp(12px,2.4cqi,28px)]"}`}
+    />
+  );
+  return (
+    <div className="flex min-w-0 flex-col items-center gap-4" style={{ width }}>
+      {m.label && <PhoneTag label={m.label} />}
+      {m.frame ? (
+        <Phone {...m.frame} className="w-full">
+          {img}
+        </Phone>
+      ) : (
+        img
+      )}
     </div>
   );
 }

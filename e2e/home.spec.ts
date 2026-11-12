@@ -75,16 +75,18 @@ test("the sound button mutes and remembers it", async ({ page }) => {
   await expect(page.getByRole("button", { name: "Sound off" })).toBeVisible();
 });
 
-test("home lists Ripple, Shufflr and Reboot without prize objects, then View more", async ({ page }) => {
+test("home lists Reboot, Passion Nails and Shufflr without prize objects, then View more", async ({
+  page,
+}) => {
   await page.goto("/");
-  await expect(page.locator("#work h3")).toHaveText(["Ripple", "Shufflr", "Reboot"]);
-  await expect(page.locator("#work").getByRole("link", { name: "Ripple", exact: true })).toHaveAttribute(
+  await expect(page.locator("#work h3")).toHaveText(["Reboot", "Passion Nails", "Shufflr"]);
+  await expect(page.locator("#work").getByRole("link", { name: "Reboot", exact: true })).toHaveAttribute(
     "href",
-    "/work/ripple",
+    "/work/reboot",
   );
   await expect(page.locator("#work")).not.toContainText("Most Practical");
   await expect(page.locator('#work img[src*="objects"]')).toHaveCount(0);
-  await expect(page.locator("#work")).toContainText("March 2026");
+  await expect(page.locator("#work")).toContainText("February 2026");
   await expect(page.getByRole("link", { name: /View more work/ })).toHaveAttribute("href", "/work");
 });
 
@@ -98,7 +100,7 @@ test("home rows play their video inside the row, date under the title", async ({
     .poll(() => video.evaluate((v) => !(v as HTMLVideoElement).paused), { timeout: 8000 })
     .toBe(true);
   const [v, title, date] = await Promise.all(
-    [video, row.locator("h3"), row.getByText("March 2026")].map((l) => l.boundingBox()),
+    [video, row.locator("h3"), row.getByText("February 2026")].map((l) => l.boundingBox()),
   );
   // Inside the row (into its padding, short of the rules), so the row never grows for it.
   const li = (await row.boundingBox())!;

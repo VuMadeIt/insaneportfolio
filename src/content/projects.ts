@@ -136,11 +136,11 @@ export const projects: Project[] = [
       "My mom's salon ran on one phone and no front desk. Now customers book online, and four techs run the day from a staff app in Vietnamese.",
     caption: "Taking my mom's salon off the phone, with a staff app in Vietnamese.",
     media: {
-      video: "/media/passion-nails/loop.mp4",
-      poster: "/media/passion-nails/loop.webp",
-      alt: "A customer books a pedicure online while a tech adds a walk-in in Vietnamese",
-      width: 1600,
-      height: 1000,
+      video: "/media/work/passion-nails.mp4",
+      poster: "/media/work/passion-nails.webp",
+      alt: "The live Passion Nails site: the home page, services and reviews, then a booking from services to 'You're booked'",
+      width: 1630,
+      height: 912,
     },
     caseStudy: true,
     link: { label: "Live site", href: "https://passionnailstoronto.ca" },
@@ -404,8 +404,8 @@ export function monthOf(date: string): string {
   return `${MONTHS[month! - 1]} ${year}`;
 }
 
-/** The home page: the two strongest, then Reboot (PLAN 15.5). */
-export const homeProjects = ["ripple", "shufflr", "reboot"].map((slug) => projectBySlug(slug)!);
+/** The home page (revision 8): Reboot, then Passion Nails (a live product), then Shufflr. Ripple stays on /work. */
+export const homeProjects = ["reboot", "passion-nails", "shufflr"].map((slug) => projectBySlug(slug)!);
 
 /** /work (PLAN 14.6, 15.16): hackathon wins, then selected projects, in my own order. */
 const pick = (slugs: string[]) => slugs.map((slug) => projectBySlug(slug)!);

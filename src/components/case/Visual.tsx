@@ -6,6 +6,7 @@ import type { Stat, Visual as VisualData } from "@/content/caseStudies/types";
 import { ExhibitMedia } from "../ExhibitMedia";
 import { Anatomy, Bars, Brief, Compare, Podium, Switch, Table } from "./Charts";
 import { Diagram } from "./Diagram";
+import { PhoneRow } from "./Phone";
 import { useInView } from "./useInView";
 
 /** A number that counts up from zero once on screen; the prefix and suffix ($, %, mL) stay put. */
@@ -125,6 +126,7 @@ function Embed({ v }: { v: Extract<VisualData, { kind: "embed" }> }) {
 export function Visual({ visual }: { visual: VisualData }) {
   switch (visual.kind) {
     case "media":
+      if (visual.media.some((m) => m.frame)) return <PhoneRow phones={visual.media} />;
       return (
         <div className={`grid gap-4 ${visual.media.length > 1 ? "grid-cols-2" : ""}`}>
           {visual.media.map((m) => (

@@ -14,6 +14,7 @@ export function ExhibitMedia({
   sizes,
   priority = false,
   cover = false,
+  bare = false,
   play,
 }: {
   media: Media;
@@ -21,6 +22,8 @@ export function ExhibitMedia({
   priority?: boolean;
   /** Fill the positioned parent, cropped, instead of keeping its own ratio. */
   cover?: boolean;
+  /** No radius or ground: inside a phone frame. */
+  bare?: boolean;
   play?: boolean;
 }) {
   const video = useRef<HTMLVideoElement>(null);
@@ -49,7 +52,9 @@ export function ExhibitMedia({
 
   const box = cover
     ? "absolute inset-0 h-full w-full object-cover"
-    : "block h-auto w-full rounded-md bg-panel";
+    : bare
+      ? "block h-auto w-full"
+      : "block h-auto w-full rounded-md bg-panel";
   if (media.video) {
     return (
       <video

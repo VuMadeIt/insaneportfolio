@@ -1,4 +1,14 @@
-import type { Media } from "../projects";
+import type { Frame, Media } from "../projects";
+
+/** A phone screen, framed as an iPhone when `frame` is set. */
+export interface Shot {
+  src: string;
+  alt: string;
+  width: number;
+  height: number;
+  frame?: Frame;
+  label?: string;
+}
 
 export interface Stat {
   value: string;
@@ -81,7 +91,7 @@ export type Visual =
   /** A screen with numbered callouts at x/y percent, explained in a legend beside it. */
   | {
       kind: "anatomy";
-      image: { src: string; alt: string; width: number; height: number };
+      image: Shot;
       points: { x: number; y: number; title: string; text: string }[];
     }
   /** Two to three columns, each a heading and a short paragraph or a list. */
@@ -93,7 +103,7 @@ export type Visual =
       options: {
         label: string;
         note: string;
-        images: { src: string; alt: string; width: number; height: number }[];
+        images: Shot[];
       }[];
     };
 

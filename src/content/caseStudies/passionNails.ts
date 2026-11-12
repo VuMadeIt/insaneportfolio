@@ -285,7 +285,6 @@ export const passionNails: CaseStudy = {
           },
         ],
       },
-      caption: "Switch the language to compare.",
     },
     {
       id: "taps",

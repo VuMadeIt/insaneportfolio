@@ -1,9 +1,9 @@
 "use client";
 
 import Image from "next/image";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import type { Visual } from "@/content/caseStudies/types";
-import { useInView } from "./useInView";
+import { reducedMotion, useInView } from "./useInView";
 
 type Of<K extends Visual["kind"]> = Extract<Visual, { kind: K }>;
 
@@ -274,11 +274,25 @@ export function Anatomy({ v }: { v: Of<"anatomy"> }) {
   );
 }
 
-/** Phone screens in two or three states; the switch cross-fades them in place, so nothing jumps. */
+/**
+ * Phone screens in two to five states; the switch cross-fades them in place, so nothing jumps. The
+ * screens are sized to the window so the tabs, screens and note fit in one view. While on screen,
+ * the active tab fills and steps to the next state, until a tab is picked (never with reduced motion).
+ */
 export function Switch({ v }: { v: Of<"switch"> }) {
   const [on, setOn] = useState(0);
+  const [touched, setTouched] = useState(false);
+  const [visible, setVisible] = useState<boolean | null>(null);
+  const box = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    if (reducedMotion()) return;
+    const io = new IntersectionObserver(([e]) => setVisible(!!e?.isIntersecting), { threshold: 0.6 });
+    io.observe(box.current!);
+    return () => io.disconnect();
+  }, []);
+  const cycling = visible !== null && !touched;
   return (
-    <div>
+    <div ref={box}>
       <div
         role="group"
         aria-label={v.label}
@@ -289,14 +303,26 @@ export function Switch({ v }: { v: Of<"switch"> }) {
             key={o.label}
             type="button"
             aria-pressed={on === i}
-            onClick={() => setOn(i)}
-            className={`rounded-full px-5 py-2.5 text-[15px] transition-colors duration-300 ${on === i ? "bg-ink text-wall" : "hover:bg-white"}`}
+            onClick={() => {
+              setTouched(true);
+              setOn(i);
+            }}
+            className={`relative overflow-hidden rounded-full px-5 py-2.5 text-[15px] transition-colors duration-300 ${on === i ? "bg-ink text-wall" : "hover:bg-white"}`}
           >
             {o.label}
+            {cycling && on === i && (
+              <span
+                key={on}
+                aria-hidden
+                onAnimationEnd={() => setOn((on + 1) % v.options.length)}
+                className="absolute inset-x-4 bottom-1.5 h-[2px] origin-left rounded-full bg-wall/60 [animation:switch-fill_5s_linear_forwards]"
+                style={{ animationPlayState: visible ? "running" : "paused" }}
+              />
+            )}
           </button>
         ))}
       </div>
-      <div className="mt-8 grid">
+      <div className="mt-6 grid">
         {v.options.map((o, i) => (
           <div
             key={o.label}
@@ -313,7 +339,8 @@ export function Switch({ v }: { v: Of<"switch"> }) {
                 sizes="(min-width: 768px) 340px, 45vw"
                 className="h-auto min-w-0 rounded-[clamp(12px,2.4cqi,28px)]"
                 style={{
-                  width: `min(340px, calc((100cqi - ${o.images.length - 1} * clamp(12px, 3cqi, 40px)) / ${o.images.length}))`,
+                  // 360px: the tabs, the note, the panel's padding and the fixed progress bar.
+                  width: `min(340px, calc((100cqi - ${o.images.length - 1} * clamp(12px, 3cqi, 40px)) / ${o.images.length}), calc(max(240px, 100svh - 360px) * ${m.width / m.height}))`,
                 }}
               />
             ))}
@@ -321,7 +348,7 @@ export function Switch({ v }: { v: Of<"switch"> }) {
         ))}
       </div>
       <p
-        aria-live="polite"
+        aria-live={touched ? "polite" : "off"}
         className="mx-auto mt-6 max-w-[34em] text-center text-[15px] leading-[1.5] text-muted"
       >
         {v.options[on]!.note}

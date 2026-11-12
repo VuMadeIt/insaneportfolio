@@ -613,6 +613,16 @@
   }
 }
 
+/* The case-study switch: the active tab fills, then steps on (Charts.tsx Switch). */
+@keyframes switch-fill {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .giant-letter {
     animation: none;

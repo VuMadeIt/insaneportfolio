@@ -40,7 +40,6 @@ const PANELLED = new Set([
   "quotes",
   "cards",
   "options",
-  "scrub",
   "diagram",
   "bars",
   "podium",

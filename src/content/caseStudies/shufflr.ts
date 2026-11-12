@@ -296,17 +296,46 @@ export const shufflr: CaseStudy = {
       label: "Prototype",
       headline: "I coded the shuffle, because static frames could not show how it should feel.",
       body: [
-        "Timing and randomness don't demo as flat screens, so I built the shuffle with Claude. Seeing it move changed decisions that frames never would have surfaced.",
+        "Timing and randomness don't demo as flat screens, so I built the shuffle with Claude to test the real timing and the randomness behind it. Seeing it move changed decisions that frames never would have surfaced.",
       ],
       visual: {
-        kind: "scrub",
-        video: "/media/shufflr/shuffle-scrub.mp4",
-        poster: "/media/shufflr/shuffle.webp",
-        alt: "The shuffle prototype: preferences in, a shortlist out",
-        width: 1280,
-        height: 720,
+        kind: "media",
+        media: [
+          {
+            video: "/media/shufflr/shuffle.mp4",
+            poster: "/media/shufflr/shuffle.webp",
+            alt: "The shuffle prototype: an invite opens a deck of character cards, they shuffle, and one turns into an activity card with a Join button",
+            width: 1280,
+            height: 720,
+          },
+        ],
       },
-      caption: "Scroll to play the prototype frame by frame.",
+      caption: "The coded prototype: an invite, a pick, a shuffle, and the hangout it lands on.",
+    },
+    {
+      id: "decision-shuffle",
+      label: "Design decision",
+      headline: "I made the result a card you pick, not a list you scroll.",
+      body: [
+        "A list of options restarts the negotiation the inputs were meant to end. A shuffle hands the group one answer they all saw arrive, so nobody has to be the one who chose.",
+      ],
+      visual: {
+        kind: "cards",
+        cards: [
+          {
+            title: "An invite, not a feed",
+            body: "The shuffle opens from a friend's invite: 'You've been invited to join an activity!' The group is already there before anyone picks.",
+          },
+          {
+            title: "A pick, then a shuffle",
+            body: "Each card is a character, not a listing, so the choice feels like a game. One tap picks, and the deck shuffles long enough to build a little anticipation and no longer.",
+          },
+          {
+            title: "A photo card, then one button",
+            body: "The result lands as a polaroid with the place and who's going, and a single 'Join the adventure'. Nothing else on the screen competes with saying yes.",
+          },
+        ],
+      },
     },
     {
       id: "discover",
@@ -491,6 +520,6 @@ export const shufflr: CaseStudy = {
       },
     },
   ],
-  next: "reboot",
+  next: "ripple",
   draft: ["the three synthesis themes", "the 'one evening out' scale bar (illustrative)"],
 };

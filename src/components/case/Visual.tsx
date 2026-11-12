@@ -1,12 +1,12 @@
 "use client";
 
 import Image from "next/image";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import type { Stat, Visual as VisualData } from "@/content/caseStudies/types";
 import { ExhibitMedia } from "../ExhibitMedia";
 import { Anatomy, Bars, Brief, Compare, Podium, Switch, Table } from "./Charts";
 import { Diagram } from "./Diagram";
-import { reducedMotion, useInView } from "./useInView";
+import { useInView } from "./useInView";
 
 /** A number that counts up from zero once on screen; the prefix and suffix ($, %, mL) stay put. */
 function Counter({ value }: { value: string }) {
@@ -90,54 +90,6 @@ function Dots({ total, lit }: { total: number; lit: number }) {
         />
       ))}
     </div>
-  );
-}
-
-/** A video that plays as you scroll past it, frame by frame (keyframes every few frames). */
-function Scrub({ v }: { v: Extract<VisualData, { kind: "scrub" }> }) {
-  const video = useRef<HTMLVideoElement>(null);
-  useEffect(() => {
-    const el = video.current!;
-    if (reducedMotion()) return;
-    let frame = 0;
-    const update = () => {
-      frame = 0;
-      const r = el.getBoundingClientRect();
-      const t = Math.min(1, Math.max(0, (innerHeight - r.top) / (innerHeight + r.height)));
-      if (el.duration) el.currentTime = t * el.duration;
-    };
-    const schedule = () => (frame ||= requestAnimationFrame(update));
-    el.addEventListener("loadedmetadata", schedule);
-    const io = new IntersectionObserver(([e]) => {
-      if (!e?.isIntersecting) return removeEventListener("scroll", schedule);
-      if (el.readyState === 0) {
-        el.preload = "auto";
-        el.load();
-      }
-      addEventListener("scroll", schedule, { passive: true });
-      schedule();
-    });
-    io.observe(el);
-    return () => {
-      io.disconnect();
-      cancelAnimationFrame(frame);
-      removeEventListener("scroll", schedule);
-      el.removeEventListener("loadedmetadata", schedule);
-    };
-  }, []);
-  return (
-    <video
-      ref={video}
-      src={v.video}
-      poster={v.poster}
-      width={v.width}
-      height={v.height}
-      muted
-      playsInline
-      preload="none"
-      aria-label={v.alt}
-      className="block h-auto w-full rounded-md"
-    />
   );
 }
 
@@ -283,8 +235,6 @@ export function Visual({ visual }: { visual: VisualData }) {
           ))}
         </ul>
       );
-    case "scrub":
-      return <Scrub v={visual} />;
     case "embed":
       return <Embed v={visual} />;
     case "list":

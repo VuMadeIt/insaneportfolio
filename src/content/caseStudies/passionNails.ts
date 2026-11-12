@@ -3,7 +3,7 @@ import type { CaseStudy } from "./types";
 /**
  * Passion Nails (my mom's salon), from the build history in VuMadeIt/nailsalon: PLAN.md, the planning
  * Q&A (59 questions before any code, 32 more while the techs tried it), the screen audit of the
- * overnight build, and the branches after it. Every screen is a real build on fake bookings
+ * first build, and the branches after it. Every screen is a real build on fake bookings
  * (scripts/passion-nails-shots.mjs): night = feat/08-polish, the first fix round = feat/11, now = feat/36.
  */
 const phone = (name: string, alt: string) => ({
@@ -18,15 +18,15 @@ export const passionNails: CaseStudy = {
   accent: "#87133e",
   accentSoft: "#f1dbe2",
   summary:
-    "Passion Nails is my mom's nail salon in Toronto. There is no front desk, so every booking was a phone call she answered herself, often mid-manicure. I designed and built a booking site for customers and a staff app in Vietnamese that the four techs can run on their own, and took it live.",
+    "Passion Nails is my mom's nail salon in Toronto. There is no front desk, so every booking was a phone call she answered herself, often mid-manicure. I designed and built a booking site for customers, a staff app in Vietnamese that the four techs run on their own, and the design system both are built from. It's live, and the salon runs on it every day.",
   claim:
     "I took my mom's salon off the phone with a booking site and a Vietnamese staff app the techs can run without her.",
   meta: {
     role: "Research, product design, UI, engineering and launch",
     team: "Me, with my mom June (the owner) and the techs Kim, Dina and Alex",
     timeline: "November 2026, live since November 9",
-    scope: "Booking site, Vietnamese staff app, texts, email and push, search setup",
-    outcome: "Live at passionnailstoronto.ca",
+    scope: "Design system, booking site, Vietnamese staff app, texts, email and push, search setup",
+    outcome: "Live and used daily; about 4 hours a week back for my mom",
   },
   link: { label: "Live site", href: "https://passionnailstoronto.ca" },
   hero: {
@@ -67,7 +67,7 @@ export const passionNails: CaseStudy = {
         items: [
           "Research: question after question with my mom, then watching the techs use each version in the salon.",
           "Product and UX: the booking flow, the staff app, the message rules, and the edge cases a small salon hits every day.",
-          "UI: a customer site in the salon's cream and burgundy, and a staff app in Vietnamese.",
+          "UI and a design system: one set of tokens on Astryx's architecture, themed for the customer site and for the staff app.",
           "Engineering: SvelteKit on Cloudflare, a booking engine with real buffers, texts, email and push notifications.",
           "Launch: the domain, pricing out SMS providers, search engine setup, and a deploy order that can't break the live database.",
         ],
@@ -161,7 +161,7 @@ export const passionNails: CaseStudy = {
       headline:
         "Then I held the first build the way an older tech would, and found 13 places she'd get stuck.",
       body: [
-        "I put the overnight build on a phone, in Vietnamese, and went screen by screen as someone who reads Vietnamese first, with small fingers on a small phone. Here are five from the first screen alone.",
+        "I put the first build on a phone, in Vietnamese, and went screen by screen as someone who reads Vietnamese first, with small fingers on a small phone. Here are five from the first screen alone.",
       ],
       visual: {
         kind: "anatomy",
@@ -202,7 +202,7 @@ export const passionNails: CaseStudy = {
           },
         ],
       },
-      caption: "The overnight build in Vietnamese, the way a tech would first see it.",
+      caption: "The first build in Vietnamese, the way a tech would first see it.",
     },
     {
       id: "insight-1",
@@ -365,13 +365,13 @@ export const passionNails: CaseStudy = {
         media: [
           {
             image: "/media/passion-nails/evolution.webp",
-            alt: "The staff app's day three times: the overnight build, the first fix round, and today",
+            alt: "The staff app's day three times: the first build, the first fix round, and today",
             width: 1920,
             height: 1080,
           },
         ],
       },
-      caption: "Night one, the first fix round, and today: five tabs, four, then three.",
+      caption: "The first build, the first fix round, and today: five tabs, four, then three.",
     },
     {
       id: "safety",
@@ -587,6 +587,46 @@ export const passionNails: CaseStudy = {
       },
     },
     {
+      id: "system",
+      label: "Design system",
+      headline: "I built a design system, so the site and the staff app share one language.",
+      body: [
+        "It follows the architecture of Astryx, Meta's open-source design system: colour roles, four corner sizes, three shadows, a spacing scale and two motion speeds. The values are the salon's own, from its cream and burgundy, and every screen reads only tokens, so a change lands everywhere at once.",
+      ],
+      visual: {
+        kind: "media",
+        media: [
+          {
+            image: "/media/passion-nails/design-tokens.webp",
+            alt: "The design system's tokens: twelve colour roles, five corner radii and three shadows",
+            width: 2368,
+            height: 978,
+          },
+        ],
+      },
+      caption: "The tokens, from the specimen page in the salon's codebase.",
+    },
+    {
+      id: "themes",
+      label: "Design system",
+      headline: "I gave customers and techs their own theme, built from the same tokens.",
+      body: [
+        "Customers get the salon's editorial look: pills and wide display type. Techs get Astryx's calmer, denser one: system type at 17 px, white cards on a low shadow, and controls raised to the salon's 48 px floor. One rule holds in both: pills are for tapping, and square badges only label.",
+      ],
+      visual: {
+        kind: "media",
+        media: [
+          {
+            image: "/media/passion-nails/design-themes.webp",
+            alt: "The same components in two themes: buttons, a segmented control, time chips, a service card, a field, badges, notices and a card",
+            width: 2240,
+            height: 1690,
+          },
+        ],
+      },
+      caption: "Same components, same tokens: the site on the left, the staff app on the right.",
+    },
+    {
       id: "spam",
       label: "Explorations",
       headline:
@@ -629,7 +669,7 @@ export const passionNails: CaseStudy = {
           {
             title: "The waitlist",
             items: [
-              "Built on night one: a full day let customers join a list, and a cancellation texted them all.",
+              "Built in the first version: a full day let customers join a list, and a cancellation texted them all.",
               "Removed: a cancellation matching someone else's wanted time is rare, and the tab was one more thing to learn. An empty day now offers the next open day.",
             ],
           },
@@ -644,7 +684,7 @@ export const passionNails: CaseStudy = {
             title: "The floating + button",
             tone: "accent",
             items: [
-              "Built on night one, then labelled '+ Thêm' in the first fix round.",
+              "Built in the first version, then labelled '+ Thêm' in the first fix round.",
               "Replaced: it still covered appointments, so Add booking became a tab in the bottom bar.",
             ],
           },
@@ -675,15 +715,19 @@ export const passionNails: CaseStudy = {
     {
       id: "outcome",
       label: "Outcome",
-      headline: "We went live a day after my first question, and kept improving it on the live site.",
+      headline:
+        "I shipped it live: the salon uses it every day, and it gives my mom back about four hours a week.",
       body: [
-        "There are no numbers yet. On a usual day of about 30 customers, every one of them can now book, move or cancel without a call, and my mom sees all of it on her phone, wherever she is.",
+        "That's her estimate of the time that used to go to answering calls, texting back and forth, copying each booking into her appointment book and passing it on to the techs. On a usual day of about 30 customers, every one of them can book, move or cancel without a call, and she sees every change on her phone, wherever she is.",
       ],
       visual: {
         kind: "stats",
         stats: [
-          { value: "142", text: "commits in two days, each on its own branch, so any change can be undone." },
-          { value: "106", text: "automated tests, from double bookings to every text fitting in one SMS." },
+          {
+            value: "4 hrs",
+            text: "a week back for my mom, by her estimate: calls, texts, the appointment book.",
+          },
+          { value: "108", text: "automated tests, from double bookings to every text fitting in one SMS." },
           { value: "3", text: "tabs in the staff app, down from five." },
         ],
       },
@@ -691,7 +735,7 @@ export const passionNails: CaseStudy = {
     {
       id: "hindsight",
       label: "Looking back",
-      headline: "I'd put the phone in a tech's hands on day one, not after the overnight build.",
+      headline: "I'd put the phone in a tech's hands on day one, not after the first build.",
       body: [
         "The first build passed every test and still had 13 places a tech would get stuck. None of them showed up in the code. All of them showed up in five minutes on a phone, in Vietnamese.",
       ],

@@ -1299,3 +1299,17 @@ Branch `phase/16-revision-5` (continues it). Answers from the Q&A are recorded i
   (`feat/36`), shot by `scripts/passion-nails-shots.mjs`.
 - New visual `switch`: the same phone screens in two to five states (language, before and after,
   booking steps), cross-faded by a segmented control.
+
+### 15.23 Revision 8 (Lucas, 2026-11-12; branch `phase/revision-8`)
+- **Home:** Reboot, Passion Nails, Shufflr. Ripple stays first in /work's wins and joins the next-project
+  chain (Reboot, Passion Nails, Shufflr, Ripple, Maple Leaf).
+- **Passion Nails cover:** Lucas's walkthrough of the live site (`~/Videos/pnails.mp4`) cut to the
+  highlights (dead air out, cursor-only stretches 2.5x, motion 1.5x) on a soft mauve frame like
+  Reboot's (`scripts/passion-nails-cover.py`). Privacy: autofill popups patched, the typed number
+  blurred, the browser link bar cropped. Used for the row and the case-study hero.
+- **Shufflr:** the shuffle plays as a looping video (no scroll scrub), followed by its design decisions.
+- **Switches** fit one screen with their tabs and note; while on screen the active tab fills and steps
+  on until a tab is picked. No caption tells the reader to switch.
+- **Passion Nails copy:** no overnight or one-day framing. It says I made a design system (Astryx's
+  token architecture, two themes; specimen at `/design` in the salon repo) and a live product used
+  daily, and about 4 hours a week back for my mom, given as her estimate.

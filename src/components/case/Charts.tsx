@@ -274,6 +274,62 @@ export function Anatomy({ v }: { v: Of<"anatomy"> }) {
   );
 }
 
+/** Phone screens in two or three states; the switch cross-fades them in place, so nothing jumps. */
+export function Switch({ v }: { v: Of<"switch"> }) {
+  const [on, setOn] = useState(0);
+  return (
+    <div>
+      <div
+        role="group"
+        aria-label={v.label}
+        className="mx-auto flex w-fit flex-wrap justify-center gap-1 rounded-[26px] bg-wall p-1"
+      >
+        {v.options.map((o, i) => (
+          <button
+            key={o.label}
+            type="button"
+            aria-pressed={on === i}
+            onClick={() => setOn(i)}
+            className={`rounded-full px-5 py-2.5 text-[15px] transition-colors duration-300 ${on === i ? "bg-ink text-wall" : "hover:bg-white"}`}
+          >
+            {o.label}
+          </button>
+        ))}
+      </div>
+      <div className="mt-8 grid">
+        {v.options.map((o, i) => (
+          <div
+            key={o.label}
+            aria-hidden={on !== i}
+            className={`flex justify-center gap-[clamp(12px,3cqi,40px)] transition-[opacity,transform] duration-500 ease-[var(--ease-out)] [grid-area:1/1] ${on === i ? "" : "pointer-events-none translate-y-2 opacity-0"}`}
+          >
+            {o.images.map((m) => (
+              <Image
+                key={m.src}
+                src={m.src}
+                alt={m.alt}
+                width={m.width}
+                height={m.height}
+                sizes="(min-width: 768px) 340px, 45vw"
+                className="h-auto min-w-0 rounded-[clamp(12px,2.4cqi,28px)]"
+                style={{
+                  width: `min(340px, calc((100cqi - ${o.images.length - 1} * clamp(12px, 3cqi, 40px)) / ${o.images.length}))`,
+                }}
+              />
+            ))}
+          </div>
+        ))}
+      </div>
+      <p
+        aria-live="polite"
+        className="mx-auto mt-6 max-w-[34em] text-center text-[15px] leading-[1.5] text-muted"
+      >
+        {v.options[on]!.note}
+      </p>
+    </div>
+  );
+}
+
 /** Two or three columns side by side: before and after, or one approach against another. */
 export function Compare({ v }: { v: Of<"compare"> }) {
   const tone = { accent: "bg-[var(--accent)] text-white", ink: "bg-ink text-wall", plain: "bg-wall" };

@@ -1286,3 +1286,16 @@ Branch `phase/16-revision-5` (continues it). Answers from the Q&A are recorded i
 - Every app shows `balls.jpg`: no `og:video` (iMessage) and no Discord GIF. Case studies keep
   their own image. `cover.mp4` and `scripts/og.mjs` stay in the repo, unused, should a moving
   preview come back.
+
+### 15.22 Passion Nails case study (Lucas, 2026-11-11; branch `feat/passion-nails-case-study`)
+- A deep case study at `/work/passion-nails` for my mom's salon (passionnailstoronto.ca, repo
+  `VuMadeIt/nailsalon`), first in "selected projects". Takeaway: I ship real products end to end,
+  and I design for users unlike me (older Vietnamese techs, Hanoi register, small fingers, nobody to
+  ask once my mom leaves for Vietnam in January).
+- Answers from the Q&A: her stress, not a diagnosis; the techs were involved through my mom daily
+  and by watching them in the salon; no metrics yet (about 30 customers a day).
+- Every screen is a real build on fake bookings, never the live staff app (it holds real
+  customers): the overnight build (`feat/08-polish`), the first fix round (`feat/11`) and today
+  (`feat/36`), shot by `scripts/passion-nails-shots.mjs`.
+- New visual `switch`: the same phone screens in two to five states (language, before and after,
+  booking steps), cross-faded by a segmented control.

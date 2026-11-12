@@ -5,6 +5,7 @@ for (const [slug, title, next] of [
   ["ripple", "Ripple", "Shufflr"],
   ["reboot", "Reboot", "Maple Leaf Foods"],
   ["maple-leaf-foods", "Maple Leaf Foods", "Ripple"],
+  ["passion-nails", "Passion Nails", "Shufflr"],
 ] as const) {
   test(`${title} case study: title, no date above it, claim headlines, next project`, async ({ page }) => {
     await page.goto(`/work/${slug}`);
@@ -27,7 +28,7 @@ test("every diagram arrow runs from a box into a box, pointing at it, on desktop
   await page.emulateMedia({ reducedMotion: "reduce" });
   for (const width of [1440, 390]) {
     await page.setViewportSize({ width, height: 900 });
-    for (const slug of ["ripple", "shufflr"]) {
+    for (const slug of ["ripple", "shufflr", "passion-nails"]) {
       await page.goto(`/work/${slug}`);
       // Wires are measured after hydration.
       await expect(page.locator("path.dg-wire").first()).toBeAttached();
@@ -88,4 +89,18 @@ test("the Figma prototype loads only when asked", async ({ page }) => {
   await expect(page.locator("iframe")).toHaveCount(0);
   await page.getByRole("button", { name: "Open the prototype" }).click();
   await expect(page.locator('iframe[title="Ripple prototype in Figma"]')).toHaveCount(1);
+});
+
+test("a switch cross-fades its screens and says what changed", async ({ page }) => {
+  await page.goto("/work/passion-nails");
+  const lang = page.getByRole("group", { name: "Language" });
+  await lang.scrollIntoViewIfNeeded();
+  const vi = page.getByRole("img", { name: "Today's appointments in Vietnamese" });
+  const en = page.getByRole("img", { name: "Today's appointments in English" });
+  await expect(vi).toBeVisible();
+  await expect(en).toBeHidden(); // aria-hidden while its option is off
+  await lang.getByRole("button", { name: "English" }).click();
+  await expect(lang.getByRole("button", { name: "English" })).toHaveAttribute("aria-pressed", "true");
+  await expect(en).toBeVisible();
+  await expect(page.getByText(/^The same screens in English/)).toBeVisible();
 });

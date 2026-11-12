@@ -59,7 +59,7 @@ test("the catalogue: hackathon wins, then selected projects, every row clickable
   await expect(page.getByRole("heading", { level: 1 })).toHaveText("All work");
   await expect(page.getByRole("heading", { level: 2 })).toHaveText(["Hackathon wins", "Selected projects"]);
   const rows = page.locator("li.catalogue-row");
-  await expect(rows).toHaveCount(14);
+  await expect(rows).toHaveCount(15);
   await expect(rows.locator("h3").first()).toHaveText("Ripple");
   await expect(rows.locator("h3").nth(2)).toHaveText("We should go to Japan");
   for (const row of await rows.all()) await expect(row.getByRole("link")).toHaveCount(1);
@@ -69,6 +69,10 @@ test("the catalogue: hackathon wins, then selected projects, every row clickable
     "https://devpost.com/software/asper",
   );
   await expect(page.getByRole("link", { name: "Reboot" })).toHaveAttribute("href", "/work/reboot");
+  await expect(page.getByRole("link", { name: "Passion Nails" })).toHaveAttribute(
+    "href",
+    "/work/passion-nails",
+  );
   // The prize opens the description and its object sits beside the title.
   await expect(rows.filter({ hasText: "Reboot" })).toContainText("3rd place at the UofT UDesignathon.");
   await expect(rows.filter({ hasText: "Reboot" }).locator('img[src*="bronze"]')).toHaveCount(1);

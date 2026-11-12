@@ -48,6 +48,7 @@ const PANELLED = new Set([
   "brief",
   "anatomy",
   "compare",
+  "switch",
 ]);
 
 /** Visuals whose parts rise in one by one themselves; the others rise in as one figure. */

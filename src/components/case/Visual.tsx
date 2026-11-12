@@ -4,7 +4,7 @@ import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import type { Stat, Visual as VisualData } from "@/content/caseStudies/types";
 import { ExhibitMedia } from "../ExhibitMedia";
-import { Anatomy, Bars, Brief, Compare, Podium, Table } from "./Charts";
+import { Anatomy, Bars, Brief, Compare, Podium, Switch, Table } from "./Charts";
 import { Diagram } from "./Diagram";
 import { reducedMotion, useInView } from "./useInView";
 
@@ -232,6 +232,8 @@ export function Visual({ visual }: { visual: VisualData }) {
       return <Anatomy v={visual} />;
     case "compare":
       return <Compare v={visual} />;
+    case "switch":
+      return <Switch v={visual} />;
     case "cards":
       return (
         <dl className="grid gap-4 @xl:grid-cols-3">

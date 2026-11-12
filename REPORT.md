@@ -198,6 +198,8 @@ overflow. Screens: `.artifacts/screens/v1.5.0/`, sweep shots in `.artifacts/swee
   not per 10). Maple Leaf has no reflection (the old placeholder no longer shows).
 - `src/components/Close.tsx`: "I'm looking for Summer 2027 co-op roles" (from LinkedIn S27).
 - `src/content/about.ts`: captions tightened from your old site; chronology dates from LinkedIn.
+- `src/content/caseStudies/passionNails.ts` `draft` list: the line about calls on her days off,
+  how the techs were involved, the techs' persona card, "about 30 customers a day", and the quote labels.
 
 ## Morning to-dos
 1. Connect the repo to Vercel; set `NEXT_PUBLIC_SITE_URL` to the production URL (sitemap, OG).

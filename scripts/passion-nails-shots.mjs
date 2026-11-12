@@ -3,7 +3,10 @@
 //   NIGHT = feat/08-polish (the overnight build), AUDIT = feat/11-micro-animations, NOW = feat/36-staff-service-groups.
 // Usage: NIGHT=http://localhost:4411 AUDIT=http://localhost:4412 NOW=http://localhost:4413 PASSWORD=... \
 //          node scripts/passion-nails-shots.mjs        (STEPS=shots,films,media to run only some steps)
-//   -> .artifacts/passion-nails/*.png, then public/media/passion-nails/*.webp, hero.webp, evolution.webp, loop.{mp4,webp}
+// Seed each local DB first: scripts/passion-nails-seed.mjs. Screens are shot at 390 x 756, the part of an
+// iPhone 15 under its status bar and above its home indicator; the page frames them (src/components/case/Phone.tsx)
+// in each screen's own top and bottom colours, measured here into passionNails.bars.json.
+//   -> .artifacts/passion-nails/*.png, then public/media/passion-nails/*.webp and staff/customer.{mp4,webp}
 import { chromium } from "@playwright/test";
 import { execFileSync } from "node:child_process";
 import { mkdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
@@ -12,12 +15,11 @@ const { NIGHT, AUDIT, NOW, PASSWORD } = process.env;
 const STEPS = new Set((process.env.STEPS ?? "shots,films,media").split(","));
 const RAW = ".artifacts/passion-nails";
 const OUT = "public/media/passion-nails";
-const CREAM = "#F4EBDF"; // the salon's own background
 mkdirSync(RAW, { recursive: true });
 mkdirSync(OUT, { recursive: true });
 
 const browser = await chromium.launch({ channel: "msedge" });
-const phone = (viewport = { width: 390, height: 844 }, scale = 3) =>
+const phone = (viewport = { width: 390, height: 756 }, scale = 3) =>
   browser.newContext({
     viewport,
     deviceScaleFactor: scale,
@@ -28,8 +30,11 @@ const phone = (viewport = { width: 390, height: 844 }, scale = 3) =>
 const settle = (page, ms = 900) => page.waitForLoadState("networkidle").then(() => page.waitForTimeout(ms));
 const shot = (page, name) => page.screenshot({ path: `${RAW}/${name}.png` });
 
+// The staff screens are shot at 10:20 on the seeded day (the clock in the page, not the server's).
+const DAY = new Intl.DateTimeFormat("en-CA", { timeZone: "America/Toronto" }).format(new Date());
 async function staff(base, { lang = "vi" } = {}) {
   const ctx = await phone();
+  await ctx.clock.setFixedTime(new Date(`${DAY}T10:20:00-05:00`));
   const page = await ctx.newPage();
   await page.goto(`${base}/staff/login`);
   await settle(page, 400);
@@ -89,7 +94,10 @@ if (STEPS.has("shots"))
       await dlg.getByRole("button", { name: /^Manicure with Shellac/ }).click();
       await dlg.getByRole("button", { name: "Dina", exact: true }).click();
       await settle(page, 600);
-      await dlg.getByText(/rảnh giờ này/).evaluate((el) => el.scrollIntoView({ block: "center" }));
+      await dlg
+        .getByText(/rảnh giờ này|không ai rảnh|Trùng/)
+        .first()
+        .evaluate((el) => el.scrollIntoView({ block: "center" }));
       await page.waitForTimeout(500);
       await shot(page, "now-add-wheels");
       await dlg.getByRole("button", { name: "Kim", exact: true }).click();
@@ -155,7 +163,7 @@ async function film(name, ctx, play) {
     stamps.push(f.metadata.timestamp);
     await cdp.send("Page.screencastFrameAck", { sessionId: f.sessionId }).catch(() => {});
   });
-  await cdp.send("Page.startScreencast", { format: "jpeg", quality: 92, maxWidth: 780, maxHeight: 1688 });
+  await cdp.send("Page.startScreencast", { format: "jpeg", quality: 92, maxWidth: 780, maxHeight: 1512 });
   await play(page);
   await cdp.send("Page.stopScreencast");
   // shortcut: screencast frames arrive only on repaint, so the rate is averaged; fine for a short loop.
@@ -248,82 +256,89 @@ const ff = (...args) => execFileSync("ffmpeg", ["-v", "error", "-y", ...args]);
 const webp = (src, out, width) =>
   ff("-i", src, "-vf", `scale=${width}:-2:flags=lanczos`, "-quality", "84", out);
 
+// One pixel's colour, as #rrggbb (the app's colour behind the status bar or the home indicator).
+const pixel = (src, y) => {
+  const [r, g, b] = execFileSync("ffmpeg", [
+    "-v",
+    "error",
+    "-i",
+    src,
+    "-vf",
+    `format=rgb24,crop=1:1:24:${y}`,
+    "-frames:v",
+    "1",
+    "-f",
+    "rawvideo",
+    "-pix_fmt",
+    "rgb24",
+    "-",
+  ]);
+  return "#" + [r, g, b].map((c) => c.toString(16).padStart(2, "0")).join("");
+};
+const bars = {};
+const measure = (name, src, h) => {
+  const top = pixel(src, 2);
+  const lum =
+    parseInt(top.slice(1, 3), 16) * 0.3 +
+    parseInt(top.slice(3, 5), 16) * 0.59 +
+    parseInt(top.slice(5, 7), 16) * 0.11;
+  bars[name] = { top, bottom: pixel(src, `ih-${Math.max(2, Math.round(h))}`), dark: lum < 150 };
+};
+
 // Single phone screens for the page (780 px wide is 2x their largest size there).
-if (STEPS.has("media"))
-  for (const n of [
-    "night-day",
-    "night-sheet",
-    "night-hours",
-    "night-login",
-    "audit-day",
-    "now-day",
-    "now-day-en",
-    "now-sheet",
-    "now-sheet-en",
-    "now-hours",
-    "now-add",
-    "now-add-wheels",
-    "now-sure",
-    "site-home",
-    "book-services",
-    "book-staff",
-    "book-time",
-    "book-details",
-    "book-done",
-  ])
-    webp(`${RAW}/${n}.png`, `${OUT}/${n}.webp`, 780);
-
-// Rows of phones on the salon's cream, rendered in the browser so the corners stay crisp.
-async function stage(out, names, { width = 1920, height = 1080, phoneH = 900 } = {}) {
-  const b2 = await chromium.launch({ channel: "msedge" });
-  const page = await b2.newPage({ viewport: { width, height } });
-  const imgs = names
-    .map((n) => `<img src="data:image/png;base64,${readFileSync(`${RAW}/${n}.png`).toString("base64")}">`)
-    .join("");
-  await page.setContent(
-    `<body style="margin:0;height:100vh;display:flex;align-items:center;justify-content:center;gap:56px;background:${CREAM}">${imgs}</body>
-     <style>img{height:${phoneH}px;border-radius:44px;outline:1px solid rgba(20,18,13,.08)}</style>`,
-  );
-  await page.waitForTimeout(300);
-  await page.screenshot({ path: `${RAW}/${out}.png` });
-  await b2.close();
-  webp(`${RAW}/${out}.png`, `${OUT}/${out}.webp`, width);
-}
+const SHOTS = [
+  "night-day",
+  "night-sheet",
+  "night-hours",
+  "night-login",
+  "audit-day",
+  "now-day",
+  "now-day-en",
+  "now-sheet",
+  "now-sheet-en",
+  "now-hours",
+  "now-add",
+  "now-add-wheels",
+  "now-sure",
+  "site-home",
+  "book-services",
+  "book-staff",
+  "book-time",
+  "book-details",
+  "book-done",
+];
 if (STEPS.has("media")) {
-  await stage("hero", ["site-home", "book-services", "now-day"]);
-  await stage("evolution", ["night-day", "audit-day", "now-day"]);
-
-  // The loop: both films side by side on cream, the shorter one holding its last frame.
+  for (const n of SHOTS) {
+    webp(`${RAW}/${n}.png`, `${OUT}/${n}.webp`, 780);
+    measure(n, `${RAW}/${n}.png`, 3);
+  }
+  // The two films, each its own phone video (the page frames them side by side).
   const { a, b } = JSON.parse(readFileSync(FILMS, "utf8"));
-  const [w, h] = [1600, 1000];
-  const cream = CREAM.replace("#", "0x");
-  const each = `fps=30,scale=-2:880,pad=iw+120:ih:60:0:color=${cream},tpad=stop_mode=clone:stop_duration=60`;
-  ff(
-    "-framerate",
-    a.rate,
-    "-i",
-    `${a.dir}/f%04d.jpg`,
-    "-framerate",
-    b.rate,
-    "-i",
-    `${b.dir}/f%04d.jpg`,
-    "-filter_complex",
-    `[0]${each}[l];[1]${each}[r];[l][r]hstack=inputs=2,pad=${w}:${h}:(ow-iw)/2:(oh-ih)/2:color=${cream},format=yuv420p[v]`,
-    "-map",
-    "[v]",
-    "-t",
-    String(Math.ceil(Math.max(a.seconds, b.seconds))),
-    "-c:v",
-    "libx264",
-    "-crf",
-    "24",
-    "-preset",
-    "slow",
-    "-movflags",
-    "+faststart",
-    "-an",
-    `${OUT}/loop.mp4`,
-  );
-  ff("-ss", "6", "-i", `${OUT}/loop.mp4`, "-frames:v", "1", "-quality", "84", `${OUT}/loop.webp`);
+  for (const [name, f] of [
+    ["customer", a],
+    ["staff", b],
+  ]) {
+    ff(
+      "-framerate",
+      f.rate,
+      "-i",
+      `${f.dir}/f%04d.jpg`,
+      "-vf",
+      "fps=30,scale=780:-2,format=yuv420p,tpad=stop_mode=clone:stop_duration=1.5",
+      "-c:v",
+      "libx264",
+      "-crf",
+      "23",
+      "-preset",
+      "slow",
+      "-movflags",
+      "+faststart",
+      "-an",
+      `${OUT}/${name}.mp4`,
+    );
+    ff("-i", `${f.dir}/f0000.jpg`, "-vf", "scale=780:-2", "-quality", "84", `${OUT}/${name}.webp`);
+    measure(name, `${f.dir}/f0000.jpg`, 3);
+  }
+  writeFileSync("src/content/caseStudies/passionNails.bars.json", `${JSON.stringify(bars, null, 2)}\n`);
 }
 console.log("done");

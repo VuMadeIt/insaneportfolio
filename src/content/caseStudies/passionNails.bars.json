@@ -1,0 +1,107 @@
+{
+  "night-day": {
+    "top": "#ffffff",
+    "bottom": "#ffffff",
+    "dark": false
+  },
+  "night-sheet": {
+    "top": "#949494",
+    "bottom": "#ffffff",
+    "dark": true
+  },
+  "night-hours": {
+    "top": "#ffffff",
+    "bottom": "#ffffff",
+    "dark": false
+  },
+  "night-login": {
+    "top": "#ffffff",
+    "bottom": "#ffffff",
+    "dark": false
+  },
+  "audit-day": {
+    "top": "#f4ebdf",
+    "bottom": "#f4ebdf",
+    "dark": false
+  },
+  "now-day": {
+    "top": "#f5f4f2",
+    "bottom": "#ffffff",
+    "dark": false
+  },
+  "now-day-en": {
+    "top": "#f5f4f2",
+    "bottom": "#ffffff",
+    "dark": false
+  },
+  "now-sheet": {
+    "top": "#8d8d8c",
+    "bottom": "#ffffff",
+    "dark": true
+  },
+  "now-sheet-en": {
+    "top": "#8d8d8c",
+    "bottom": "#ffffff",
+    "dark": true
+  },
+  "now-hours": {
+    "top": "#f5f4f2",
+    "bottom": "#ffffff",
+    "dark": false
+  },
+  "now-add": {
+    "top": "#8d8d8c",
+    "bottom": "#ffffff",
+    "dark": true
+  },
+  "now-add-wheels": {
+    "top": "#8d8d8c",
+    "bottom": "#ffffff",
+    "dark": true
+  },
+  "now-sure": {
+    "top": "#7f7f7e",
+    "bottom": "#e5e5e5",
+    "dark": true
+  },
+  "site-home": {
+    "top": "#ece0cf",
+    "bottom": "#24221f",
+    "dark": false
+  },
+  "book-services": {
+    "top": "#f4ebdf",
+    "bottom": "#f4ebdf",
+    "dark": false
+  },
+  "book-staff": {
+    "top": "#f4ebdf",
+    "bottom": "#f4ebdf",
+    "dark": false
+  },
+  "book-time": {
+    "top": "#f4ebdf",
+    "bottom": "#f4ebdf",
+    "dark": false
+  },
+  "book-details": {
+    "top": "#f4ebdf",
+    "bottom": "#f4ebdf",
+    "dark": false
+  },
+  "book-done": {
+    "top": "#f4ebdf",
+    "bottom": "#f4ebdf",
+    "dark": false
+  },
+  "customer": {
+    "top": "#f3eadd",
+    "bottom": "#f3eadd",
+    "dark": false
+  },
+  "staff": {
+    "top": "#f5f3f2",
+    "bottom": "#ffffff",
+    "dark": false
+  }
+}

@@ -1,3 +1,5 @@
+import type { Frame } from "../projects";
+import bars from "./passionNails.bars.json";
 import type { CaseStudy } from "./types";
 
 /**
@@ -6,11 +8,32 @@ import type { CaseStudy } from "./types";
  * first build, and the branches after it. Every screen is a real build on fake bookings
  * (scripts/passion-nails-shots.mjs): night = feat/08-polish, the first fix round = feat/11, now = feat/36.
  */
+/** Which build a screen is from: tagged on the page, so the first version never reads as today's. */
+const STAGE: Record<string, string> = { night: "First build", audit: "First fix round" };
+const framed = (name: string) => {
+  const b = (bars as Record<string, Frame | undefined>)[name];
+  return b && { frame: b, label: STAGE[name.split("-")[0]!] };
+};
 const phone = (name: string, alt: string) => ({
   src: `/media/passion-nails/${name}.webp`,
   alt,
   width: 780,
-  height: 1688,
+  height: 1512,
+  ...framed(name),
+});
+/** The same screen as `Media`, for media rows. */
+const shot = (name: string, alt: string, label?: string) => {
+  const { src, ...rest } = phone(name, alt);
+  return { image: src, ...rest, ...(label && { label }) };
+};
+/** A film, framed like its screens. */
+const film = (name: string, alt: string) => ({
+  video: `/media/passion-nails/${name}.mp4`,
+  poster: `/media/passion-nails/${name}.webp`,
+  alt,
+  width: 780,
+  height: 1512,
+  ...framed(name),
 });
 
 export const passionNails: CaseStudy = {
@@ -18,11 +41,11 @@ export const passionNails: CaseStudy = {
   accent: "#87133e",
   accentSoft: "#f1dbe2",
   summary:
-    "Passion Nails is my mom's nail salon in Toronto. There is no front desk, so every booking was a phone call she answered herself, often mid-manicure. I designed and built a booking site for customers, a staff app in Vietnamese that the four techs run on their own, and the design system both are built from. It's live, and the salon runs on it every day.",
+    "Passion Nails is my mom's nail salon, a small boutique on Laird Drive in Toronto. There is no front desk, so every booking was a phone call she answered herself, often mid-manicure. As its design engineer, I designed and shipped a booking site for customers, a staff app in Vietnamese that the four techs run on their own, and the design system both are built from. It's live, and the salon runs on it every day.",
   claim:
     "I took my mom's salon off the phone with a booking site and a Vietnamese staff app the techs can run without her.",
   meta: {
-    role: "Research, product design, UI, engineering and launch",
+    role: "Design engineer: research, product design, design system, front and back end, launch",
     team: "Me, with my mom June (the owner) and the techs Kim, Dina and Alex",
     timeline: "November 2026, live since November 9",
     scope: "Design system, booking site, Vietnamese staff app, texts, email and push, search setup",
@@ -60,8 +83,10 @@ export const passionNails: CaseStudy = {
     {
       id: "role",
       label: "My role",
-      headline: "I designed it, built it and launched it, with my mom and the techs testing every round.",
-      body: ["It's my family's business, so nothing was out of scope:"],
+      headline: "I was the design engineer: I designed it, built it, shipped it, and I keep it running.",
+      body: [
+        "It's my family's business, so nothing was out of scope, and my mom and the techs tested every round:",
+      ],
       visual: {
         kind: "list",
         items: [
@@ -171,32 +196,32 @@ export const passionNails: CaseStudy = {
         ),
         points: [
           {
-            x: 25,
-            y: 9,
+            x: 37,
+            y: 10,
             title: "English inside the Vietnamese",
             text: "The days read S, M, T, W, and dates read 'Wed Nov 11'. Single letters are unclear in any language.",
           },
           {
-            x: 94,
-            y: 33,
+            x: 91,
+            y: 37,
             title: "A tech was cut off",
             text: "The staff filter ran off the edge with no hint, so Alex wasn't on the screen at all.",
           },
           {
-            x: 14,
-            y: 43,
+            x: 16,
+            y: 48,
             title: "Small grey times",
             text: "End times and services were small and mid-grey: hard to read with reading glasses.",
           },
           {
             x: 88,
-            y: 86,
+            y: 80,
             title: "A plus with no word",
             text: "The add button had no label and sat on top of the last appointment.",
           },
           {
             x: 30,
-            y: 95,
+            y: 96,
             title: "Five tabs, wrapping",
             text: "In Vietnamese the tab names broke onto two lines, and 'Away' used a person icon.",
           },
@@ -214,12 +239,7 @@ export const passionNails: CaseStudy = {
       visual: {
         kind: "media",
         media: [
-          {
-            image: "/media/passion-nails/night-hours.webp",
-            alt: "The first build's opening hours: today's date with Closed already ticked",
-            width: 780,
-            height: 1688,
-          },
+          shot("night-hours", "The first build's opening hours: today's date with Closed already ticked"),
         ],
       },
       caption: "First build: 'Đóng cửa' (closed) ticked by default.",
@@ -337,18 +357,11 @@ export const passionNails: CaseStudy = {
       visual: {
         kind: "media",
         media: [
-          {
-            image: "/media/passion-nails/now-add-wheels.webp",
-            alt: "Add booking: date, hour and minute wheels, and a green line saying Dina is free",
-            width: 780,
-            height: 1688,
-          },
-          {
-            image: "/media/passion-nails/now-hours.webp",
-            alt: "Opening hours with nothing ticked until a tech picks a date and a choice",
-            width: 780,
-            height: 1688,
-          },
+          shot(
+            "now-add-wheels",
+            "Add booking: date, hour and minute wheels, and a green line saying Dina is free",
+          ),
+          shot("now-hours", "Opening hours with nothing ticked until a tech picks a date and a choice"),
         ],
       },
       caption: "Add booking and opening hours: words first, and nothing pre-ticked.",
@@ -363,12 +376,9 @@ export const passionNails: CaseStudy = {
       visual: {
         kind: "media",
         media: [
-          {
-            image: "/media/passion-nails/evolution.webp",
-            alt: "The staff app's day three times: the first build, the first fix round, and today",
-            width: 1920,
-            height: 1080,
-          },
+          shot("night-day", "The first build's day, with five tabs"),
+          shot("audit-day", "The first fix round's day, with four tabs"),
+          shot("now-day", "Today's day, with three tabs", "Now"),
         ],
       },
       caption: "The first build, the first fix round, and today: five tabs, four, then three.",
@@ -611,7 +621,7 @@ export const passionNails: CaseStudy = {
       label: "Design system",
       headline: "I gave customers and techs their own theme, built from the same tokens.",
       body: [
-        "Customers get the salon's editorial look: pills and wide display type. Techs get Astryx's calmer, denser one: system type at 17 px, white cards on a low shadow, and controls raised to the salon's 48 px floor. One rule holds in both: pills are for tapping, and square badges only label.",
+        "Customers get the salon's editorial look: pills and wide display type. Techs get Astryx's calmer, denser one: system type at 17 px, white cards on a low shadow, and controls raised to the salon's 48 px floor. One rule holds in both: pills are for tapping, and square badges only label. I measured the first staff theme and its chips and tabs were 1.5:1 against the page, under the 3:1 that WCAG asks of controls, so it moved to white cards, near-black text and borders that pass.",
       ],
       visual: {
         kind: "media",
@@ -701,16 +711,11 @@ export const passionNails: CaseStudy = {
       visual: {
         kind: "media",
         media: [
-          {
-            video: "/media/passion-nails/loop.mp4",
-            poster: "/media/passion-nails/loop.webp",
-            alt: "A returning customer books a pedicure online, and a tech adds a walk-in in Vietnamese",
-            width: 1600,
-            height: 1000,
-          },
+          film("customer", "A returning customer books a pedicure online, in under a minute"),
+          film("staff", "A tech adds a walk-in for a free technician, in Vietnamese"),
         ],
       },
-      caption: "Left, a returning customer books. Right, a tech adds a walk-in for Dina.",
+      caption: "Left, a returning customer books. Right, a tech adds a walk-in in Vietnamese.",
     },
     {
       id: "outcome",
@@ -783,6 +788,7 @@ export const passionNails: CaseStudy = {
           "Design for the hardest user. The customer flow was easy; techs in a second language, with a customer in the chair, set the bar for every screen.",
           "Translate into the register people speak. Southern words in a Hanoi salon felt as foreign as English dates.",
           "Defaults are decisions. A pre-ticked box and a pre-selected name were the two most dangerous things in the first build.",
+          "Design and build in the same hands. A border that fails contrast or a tap target under 48 px is a fix I can ship the same afternoon, in the salon.",
           "Count what things really cost. Carrier fees put my first texting estimate at about half the real price, and one emoji would have doubled every message.",
         ],
       },

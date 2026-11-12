@@ -30,10 +30,11 @@ export const passionNails: CaseStudy = {
   },
   link: { label: "Live site", href: "https://passionnailstoronto.ca" },
   hero: {
-    image: "/media/passion-nails/hero.webp",
-    alt: "Three phones: the salon's home page, the first booking step, and the staff app's day in Vietnamese",
-    width: 1920,
-    height: 1080,
+    video: "/media/work/passion-nails.mp4",
+    poster: "/media/work/passion-nails.webp",
+    alt: "The live Passion Nails site: the home page, services and reviews, then a booking from services to 'You're booked'",
+    width: 1630,
+    height: 912,
   },
   blocks: [
     {

@@ -105,6 +105,6 @@ export const mapleLeaf: CaseStudy = {
       caption: "The Service Penalty App dashboard.",
     },
   ],
-  next: "reboot",
+  next: "passion-nails",
   draft: ["headlines rewritten as first-person claims", "a reflection, if Lucas wants one (none ships)"],
 };

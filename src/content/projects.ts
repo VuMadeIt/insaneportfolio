@@ -420,7 +420,7 @@ export function monthOf(date: string): string {
 }
 
 /** The home page (revision 8): Reboot, then Passion Nails (a live product), then Shufflr. Ripple stays on /work. */
-export const homeProjects = ["reboot", "passion-nails", "shufflr"].map((slug) => projectBySlug(slug)!);
+export const homeProjects = ["passion-nails", "reboot", "shufflr"].map((slug) => projectBySlug(slug)!);
 
 /** /work (PLAN 14.6, 15.16): hackathon wins, then selected projects, in my own order. */
 const pick = (slugs: string[]) => slugs.map((slug) => projectBySlug(slug)!);

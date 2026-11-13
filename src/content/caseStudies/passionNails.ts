@@ -574,7 +574,7 @@ export const passionNails: CaseStudy = {
       },
     },
   ],
-  next: "shufflr",
+  next: "reboot",
   draft: [
     "the language story: machine-translated first, Southern; walking the techs through the app gave the Hanoi words",
     "nail words kept in English: manicure, shellac, fill",

@@ -1429,3 +1429,8 @@ per study. Work through it in this order, then screenshot every section at 1440 
   every annotation; the Figma embed stays click-to-load.
 - Reboot: cut to the economy; one film per "doing" section if the Framer material has them; check
   phone sizes against the rest of the site.
+
+### 15.28 Home order (Lucas, 2026-11-12 night)
+- Passion Nails leads: home shows Passion Nails, Reboot, Shufflr, and the next-project chain runs
+  Passion Nails, Reboot, Shufflr, Ripple, Maple Leaf (and back). Home titles size to their column
+  (container units) and never wrap, so no row grows taller than the others.

@@ -3,9 +3,9 @@ import { expect, test } from "@playwright/test";
 for (const [slug, title, next] of [
   ["shufflr", "Shufflr", "Ripple"],
   ["ripple", "Ripple", "Maple Leaf Foods"],
-  ["reboot", "Reboot", "Passion Nails"],
-  ["maple-leaf-foods", "Maple Leaf Foods", "Reboot"],
-  ["passion-nails", "Passion Nails", "Shufflr"],
+  ["reboot", "Reboot", "Shufflr"],
+  ["maple-leaf-foods", "Maple Leaf Foods", "Passion Nails"],
+  ["passion-nails", "Passion Nails", "Reboot"],
 ] as const) {
   test(`${title} case study: title, no date above it, claim headlines, next project`, async ({ page }) => {
     await page.goto(`/work/${slug}`);

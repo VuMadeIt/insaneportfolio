@@ -1,41 +1,86 @@
-// Shoots the Passion Nails case-study media from three local builds of the salon app (VuMadeIt/nailsalon),
+// Shoots the Passion Nails case-study media from local builds of the salon app (VuMadeIt/nailsalon),
 // each served by `wrangler dev` on fake bookings, never the live staff app (it holds real customers):
-//   NIGHT = feat/08-polish (the overnight build), AUDIT = feat/11-micro-animations, NOW = feat/36-staff-service-groups.
-// Usage: NIGHT=http://localhost:4411 AUDIT=http://localhost:4412 NOW=http://localhost:4413 PASSWORD=... \
-//          node scripts/passion-nails-shots.mjs        (STEPS=shots,films,media to run only some steps)
-// Seed each local DB first: scripts/passion-nails-seed.mjs. Screens are shot at 390 x 756, the part of an
-// iPhone 15 under its status bar and above its home indicator; the page frames them (src/components/case/Phone.tsx)
-// in each screen's own top and bottom colours, measured here into passionNails.bars.json.
-//   -> .artifacts/passion-nails/*.png, then public/media/passion-nails/*.webp and staff/customer.{mp4,webp}
+//   NIGHT = feat/08-polish (the overnight build), AUDIT = feat/11-micro-animations, NOW = today's branch.
+// Usage: NOW=http://localhost:4413 PASSWORD=... [NIGHT=... AUDIT=...] node scripts/passion-nails-shots.mjs
+//   STEPS=now,site,design,films,media (default; add `old` with NIGHT and AUDIT to re-shoot the first builds).
+// Seed each local DB first: scripts/passion-nails-seed.mjs.
+// Today's screens are shot full height (393 x 852, an iPhone 15) with the phone's safe areas emulated,
+// so the page frames them under a see-through status bar (src/components/case/Phone.tsx). The first
+// builds never read the safe area, so they stay shot at 390 x 756 between drawn bars in their own colours.
+//   -> .artifacts/passion-nails/*.png, then public/media/passion-nails/*.webp and the films (*.mp4 + poster)
 import { chromium } from "@playwright/test";
 import { execFileSync } from "node:child_process";
-import { mkdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
+import { existsSync, mkdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 
 const { NIGHT, AUDIT, NOW, PASSWORD } = process.env;
-const STEPS = new Set((process.env.STEPS ?? "shots,films,media").split(","));
+const STEPS = new Set((process.env.STEPS ?? "now,site,design,films,media").split(","));
 const RAW = ".artifacts/passion-nails";
 const OUT = "public/media/passion-nails";
+const BARS = "src/content/caseStudies/passionNails.bars.json";
 mkdirSync(RAW, { recursive: true });
 mkdirSync(OUT, { recursive: true });
 
+// iPhone 15: 393 x 852 pt; safe areas 59 top / 34 bottom upright, 59 each side / 21 bottom sideways.
+const UPRIGHT = { viewport: { width: 393, height: 852 }, insets: { top: 59, bottom: 34 } };
+const SIDEWAYS = { viewport: { width: 852, height: 393 }, insets: { left: 59, right: 59, bottom: 21 } };
+const OLD = { viewport: { width: 390, height: 756 } };
+
 const browser = await chromium.launch({ channel: "msedge" });
-const phone = (viewport = { width: 390, height: 756 }, scale = 3) =>
-  browser.newContext({
+async function phone({ viewport, insets }, scale = 3) {
+  const ctx = await browser.newContext({
     viewport,
     deviceScaleFactor: scale,
     isMobile: true,
     hasTouch: true,
     timezoneId: "America/Toronto",
   });
+  // A soft dot where a finger lands, so a film can be followed tap by tap.
+  await ctx.addInitScript(() =>
+    addEventListener(
+      "pointerdown",
+      (e) => {
+        if (!document.documentElement.dataset.taps) return;
+        const d = document.createElement("i");
+        d.style.cssText = `position:fixed;left:${e.clientX - 22}px;top:${e.clientY - 22}px;width:44px;height:44px;border-radius:50%;background:rgb(14 14 14/.22);box-shadow:0 0 0 2px rgb(255 255 255/.7);pointer-events:none;z-index:2147483647;transition:opacity .6s,transform .6s;`;
+        document.body.append(d);
+        requestAnimationFrame(() =>
+          requestAnimationFrame(() => ((d.style.opacity = "0"), (d.style.transform = "scale(1.6)"))),
+        );
+        setTimeout(() => d.remove(), 700);
+      },
+      true,
+    ),
+  );
+  const page = await ctx.newPage();
+  if (insets) {
+    const cdp = await ctx.newCDPSession(page);
+    await cdp.send("Emulation.setSafeAreaInsetsOverride", { insets });
+  }
+  return page;
+}
+// Safari keeps the band under the status bar in the page's theme colour (cream); the site never needs
+// the inset itself, so the band is drawn here.
+const SAFARI = `html{padding-top:59px!important}html::before{content:"";position:fixed;inset:0 0 auto;height:59px;background:#f4ebdf;z-index:99}.top{top:59px!important}`;
+const safari = (page) =>
+  page.context().addInitScript((css) => {
+    document.addEventListener("DOMContentLoaded", () => {
+      const s = document.createElement("style");
+      s.textContent = css;
+      document.head.append(s);
+    });
+  }, SAFARI);
+
 const settle = (page, ms = 900) => page.waitForLoadState("networkidle").then(() => page.waitForTimeout(ms));
 const shot = (page, name) => page.screenshot({ path: `${RAW}/${name}.png` });
 
 // The staff screens are shot at 10:20 on the seeded day (the clock in the page, not the server's).
-const DAY = new Intl.DateTimeFormat("en-CA", { timeZone: "America/Toronto" }).format(new Date());
-async function staff(base, { lang = "vi" } = {}) {
-  const ctx = await phone();
-  await ctx.clock.setFixedTime(new Date(`${DAY}T10:20:00-05:00`));
-  const page = await ctx.newPage();
+// Seed and shoot tomorrow (DAY=YYYY-MM-DD) when shooting after hours: the server keeps the real clock,
+// so a walk-in at 10:30 today would be "in the past" to it.
+const DAY =
+  process.env.DAY ?? new Intl.DateTimeFormat("en-CA", { timeZone: "America/Toronto" }).format(new Date());
+async function staff(base, { lang = "vi", size = UPRIGHT } = {}) {
+  const page = await phone(size);
+  await page.context().clock.setFixedTime(new Date(`${DAY}T10:20:00-05:00`));
   await page.goto(`${base}/staff/login`);
   await settle(page, 400);
   await page.getByRole("radio", { name: lang === "vi" ? "Tiếng Việt" : "EN" }).click();
@@ -44,16 +89,21 @@ async function staff(base, { lang = "vi" } = {}) {
   await page.locator('form button:not([type="button"])').last().click();
   await page.waitForURL(/\/staff$/);
   await settle(page, 1200);
+  // The day strip opens on the chosen day; pin it so every shot starts the same.
+  await page
+    .locator('.d[aria-pressed="true"]')
+    .first()
+    .evaluate((el) => el.scrollIntoView({ inline: "start", block: "nearest" }));
   return page;
 }
 
 // The overnight build and the first fix round: the day, an appointment and opening hours.
-if (STEPS.has("shots"))
+if (STEPS.has("old"))
   for (const [tag, base] of [
     ["night", NIGHT],
     ["audit", AUDIT],
   ]) {
-    const page = await staff(base);
+    const page = await staff(base, { size: OLD });
     await shot(page, `${tag}-day`);
     await page.locator(".card", { hasText: "Maria Santos" }).click();
     await settle(page);
@@ -70,7 +120,7 @@ if (STEPS.has("shots"))
   }
 
 // Today's app, in Vietnamese and in English.
-if (STEPS.has("shots"))
+if (STEPS.has("now"))
   for (const lang of ["vi", "en"]) {
     const page = await staff(NOW, { lang });
     const sfx = lang === "vi" ? "" : "-en";
@@ -110,15 +160,17 @@ if (STEPS.has("shots"))
   }
 
 // The customer site: home, the four booking steps (a returning customer), and the confirmation.
-if (STEPS.has("shots")) {
-  const ctx = await phone();
-  await ctx.addInitScript(() =>
-    localStorage.setItem(
-      "pn-contact",
-      JSON.stringify({ name: "Maria Santos", phone: "416 555 0112", email: "" }),
-    ),
-  );
-  const page = await ctx.newPage();
+if (STEPS.has("site")) {
+  const page = await phone(UPRIGHT);
+  await safari(page);
+  await page
+    .context()
+    .addInitScript(() =>
+      localStorage.setItem(
+        "pn-contact",
+        JSON.stringify({ name: "Maria Santos", phone: "416 555 0112", email: "" }),
+      ),
+    );
   await page.goto(NOW);
   await settle(page, 1500);
   await shot(page, "site-home");
@@ -134,7 +186,8 @@ if (STEPS.has("shots")) {
   await settle(page, 1000);
   const next = page.getByRole("button", { name: /^Try / });
   if (await next.isVisible()) await next.click();
-  await page.locator(".chip").first().click();
+  // The evening, so the morning stays free for the walk-in film.
+  await page.locator(".chip:not(:disabled)").last().click();
   await page.waitForTimeout(400);
   await shot(page, "book-time");
   await page.getByRole("button", { name: "Continue" }).click();
@@ -147,33 +200,42 @@ if (STEPS.has("shots")) {
   await page.getByRole("heading", { name: "You’re booked" }).waitFor();
   await settle(page, 800);
   await shot(page, "book-done");
+  await page.context().close();
+}
+
+// The /design specimen: the same components in both themes, side by side (desktop, 2x).
+if (STEPS.has("design")) {
+  const ctx = await browser.newContext({ viewport: { width: 1200, height: 900 }, deviceScaleFactor: 2 });
+  const page = await ctx.newPage();
+  await page.goto(`${NOW}/design`);
+  await settle(page, 800);
+  await page.locator(".themes").screenshot({ path: `${RAW}/design-themes.png` });
   await ctx.close();
 }
 
-// Two short screen films for the loop: a customer booking, and a tech adding a walk-in in Vietnamese.
-async function film(name, ctx, play) {
+// Screen films, one per section, paced so a reader can follow each screen.
+async function film(name, page, play, { width = 786, height = 1704 } = {}) {
   const dir = `${RAW}/film-${name}`;
   rmSync(dir, { recursive: true, force: true });
   mkdirSync(dir, { recursive: true });
-  const page = ctx.pages()[0] ?? (await ctx.newPage());
-  const cdp = await ctx.newCDPSession(page);
+  const cdp = await page.context().newCDPSession(page);
   const stamps = [];
   cdp.on("Page.screencastFrame", async (f) => {
     writeFileSync(`${dir}/f${String(stamps.length).padStart(4, "0")}.jpg`, Buffer.from(f.data, "base64"));
     stamps.push(f.metadata.timestamp);
     await cdp.send("Page.screencastFrameAck", { sessionId: f.sessionId }).catch(() => {});
   });
-  await cdp.send("Page.startScreencast", { format: "jpeg", quality: 92, maxWidth: 780, maxHeight: 1512 });
+  await page.evaluate(() => (document.documentElement.dataset.taps = "1"));
+  await cdp.send("Page.startScreencast", { format: "jpeg", quality: 92, maxWidth: width, maxHeight: height });
   await play(page);
   await cdp.send("Page.stopScreencast");
-  // shortcut: screencast frames arrive only on repaint, so the rate is averaged; fine for a short loop.
-  const seconds = stamps.at(-1) - stamps[0];
-  return { dir, seconds, rate: String((stamps.length - 1) / seconds) };
+  // Frames arrive only on repaint, so each one keeps its own timestamp (ffconcat durations below).
+  return { dir, stamps };
 }
 const smooth = (loc) => loc.evaluate((el) => el.scrollIntoView({ behavior: "smooth", block: "center" }));
-const tap = async (page, loc, wait = 700) => {
+const tap = async (page, loc, wait = 1400) => {
   await smooth(loc);
-  await page.waitForTimeout(450);
+  await page.waitForTimeout(700);
   await loc.click();
   await page.waitForTimeout(wait);
 };
@@ -182,7 +244,6 @@ const FILMS = `${RAW}/films.json`;
 if (STEPS.has("films")) {
   // The film should show a free technician, so find one off camera first (before the customer film books into the day).
   const techPage = await staff(NOW);
-  const tech = techPage.context();
   const openAdd = async (page) => {
     await page.getByRole("navigation").getByRole("link").nth(1).click();
     await settle(page, 500);
@@ -205,50 +266,83 @@ if (STEPS.has("films")) {
     await techPage.goto(`${NOW}/staff`);
     await settle(techPage, 1200);
   }
-  const b = await film("staff", tech, async (page) => {
-    await page.waitForTimeout(900);
-    await tap(page, page.getByRole("navigation").getByRole("link").nth(1), 1100);
-    const dlg = page.getByRole("dialog");
-    await dlg.getByPlaceholder(/walk-in/i).fill("Mai");
-    await page.waitForTimeout(500);
-    await tap(page, dlg.getByRole("button", { name: /^Pedicure$/ }));
-    await tap(page, dlg.getByRole("button", { name: free ?? "Dina", exact: true }), 1000);
-    await smooth(dlg.getByText(/rảnh giờ này|không ai rảnh|Trùng/).first());
-    await page.waitForTimeout(1600);
-    await tap(page, page.getByRole("button", { name: "Lưu", exact: true }), 1200);
-    const sure = page.getByRole("button", { name: "Có, lưu" });
-    if (await sure.isVisible()) await tap(page, sure, 1200);
-    await smooth(page.locator(".card", { hasText: "Mai" }).first());
-    await page.waitForTimeout(2200);
-  });
-  await tech.close();
-  const customer = await phone(undefined, 2);
-  await customer.addInitScript(() =>
-    localStorage.setItem(
-      "pn-contact",
-      JSON.stringify({ name: "Ava Nguyen", phone: "416 555 0119", email: "" }),
-    ),
-  );
-  const custPage = await customer.newPage();
-  await custPage.goto(`${NOW}/book`);
-  await settle(custPage);
-  const a = await film("customer", customer, async (page) => {
-    await page.waitForTimeout(900);
-    await tap(page, page.getByRole("button", { name: /^Pedicure with Shellac/ }));
-    await tap(page, page.getByRole("button", { name: "Continue" }), 1100);
-    await tap(page, page.getByRole("button", { name: "Continue" }), 1300);
-    const next = page.getByRole("button", { name: /^Try / });
-    if (await next.isVisible()) await tap(page, next, 1100);
-    await tap(page, page.locator(".chip").nth(2));
-    await tap(page, page.getByRole("button", { name: "Continue" }), 1800);
+  const staffFilm = await film("staff", techPage, async (page) => {
     await page.waitForTimeout(1500);
+    await tap(page, page.getByRole("navigation").getByRole("link").nth(1), 1800);
+    const dlg = page.getByRole("dialog");
+    await dlg.getByPlaceholder(/walk-in/i).pressSequentially("Mai", { delay: 180 });
+    await page.waitForTimeout(900);
+    await tap(page, dlg.getByRole("button", { name: /^Pedicure$/ }));
+    await tap(page, dlg.getByRole("button", { name: free ?? "Dina", exact: true }), 1200);
+    await smooth(dlg.getByText(/rảnh giờ này|không ai rảnh|Trùng/).first());
+    await page.waitForTimeout(2800);
+    await tap(page, page.getByRole("button", { name: "Lưu", exact: true }), 1800);
+    const sure = page.getByRole("button", { name: "Có, lưu" });
+    if (await sure.isVisible()) await tap(page, sure, 1800);
+    await smooth(page.locator(".card", { hasText: "Mai" }).first());
+    await page.waitForTimeout(3200);
+  });
+  await techPage.context().close();
+
+  // Sideways: the By-tech timeline, the whole salon's day on one screen.
+  const wide = await staff(NOW, { size: SIDEWAYS });
+  // Open on the view switch, so the film's first frame (its poster) already shows the day.
+  await wide.locator(".controls").evaluate((el) => el.scrollIntoView({ block: "start" }));
+  await wide.waitForTimeout(500);
+  const dayFilm = await film(
+    "day",
+    wide,
+    async (page) => {
+      await page.waitForTimeout(1200);
+      // Tapped in place: centring it would scroll back up to the header.
+      await page.getByRole("radio", { name: /Theo thợ|By tech/ }).click();
+      await page.waitForTimeout(2200);
+      // Scroll the day from morning to closing, slowly enough to read the names.
+      for (let i = 0; i < 9; i++) {
+        await page.mouse.wheel(0, 120);
+        await page.waitForTimeout(650);
+      }
+      await page.waitForTimeout(1200);
+      const block = page.locator(".blk", { hasText: "Chloe Park" }).first();
+      if (await block.isVisible()) await tap(page, block, 2600);
+      await page.keyboard.press("Escape");
+      await page.waitForTimeout(1500);
+    },
+    { width: 1704, height: 786 },
+  );
+  await wide.context().close();
+
+  const customer = await phone(UPRIGHT, 2);
+  await safari(customer);
+  await customer
+    .context()
+    .addInitScript(() =>
+      localStorage.setItem(
+        "pn-contact",
+        JSON.stringify({ name: "Ava Nguyen", phone: "416 555 0119", email: "" }),
+      ),
+    );
+  await customer.goto(`${NOW}/book`);
+  await settle(customer);
+  const customerFilm = await film("customer", customer, async (page) => {
+    await page.waitForTimeout(1500);
+    await tap(page, page.getByRole("button", { name: /^Pedicure with Shellac/ }), 1600);
+    await tap(page, page.getByRole("button", { name: "Continue" }), 2200);
+    await tap(page, page.getByRole("button", { name: "Continue" }), 2200);
+    const next = page.getByRole("button", { name: /^Try / });
+    if (await next.isVisible()) await tap(page, next, 1600);
+    await tap(page, page.locator(".chip").nth(2), 1400);
+    await tap(page, page.getByRole("button", { name: "Continue" }), 2800);
     await tap(page, page.getByRole("button", { name: "Confirm booking" }), 0);
     await page.getByRole("heading", { name: "You’re booked" }).waitFor();
-    await page.waitForTimeout(2200);
+    await page.waitForTimeout(3500);
   });
-  await customer.close();
+  await customer.context().close();
 
-  writeFileSync(FILMS, JSON.stringify({ a, b, free: free ?? null }));
+  writeFileSync(
+    FILMS,
+    JSON.stringify({ staff: staffFilm, day: dayFilm, customer: customerFilm, free: free ?? null }),
+  );
 }
 await browser.close();
 
@@ -275,23 +369,23 @@ const pixel = (src, y) => {
   ]);
   return "#" + [r, g, b].map((c) => c.toString(16).padStart(2, "0")).join("");
 };
-const bars = {};
-const measure = (name, src, h) => {
+const lum = (hex) =>
+  parseInt(hex.slice(1, 3), 16) * 0.3 +
+  parseInt(hex.slice(3, 5), 16) * 0.59 +
+  parseInt(hex.slice(5, 7), 16) * 0.11;
+const bars = existsSync(BARS) ? JSON.parse(readFileSync(BARS, "utf8")) : {};
+// First builds: the colours behind the drawn bars. Today's: only whether the clock sits on a dark top.
+const measure = (name, src) => {
   const top = pixel(src, 2);
-  const lum =
-    parseInt(top.slice(1, 3), 16) * 0.3 +
-    parseInt(top.slice(3, 5), 16) * 0.59 +
-    parseInt(top.slice(5, 7), 16) * 0.11;
-  bars[name] = { top, bottom: pixel(src, `ih-${Math.max(2, Math.round(h))}`), dark: lum < 150 };
+  bars[name] = { top, bottom: pixel(src, "ih-3"), dark: lum(top) < 150 };
+};
+const measureFull = (name, src, y) => {
+  const top = pixel(src, y);
+  bars[name] = { top, bottom: top, dark: lum(top) < 150, full: true };
 };
 
-// Single phone screens for the page (780 px wide is 2x their largest size there).
-const SHOTS = [
-  "night-day",
-  "night-sheet",
-  "night-hours",
-  "night-login",
-  "audit-day",
+const OLD_SHOTS = ["night-day", "night-sheet", "night-hours", "night-login", "audit-day"];
+const NOW_SHOTS = [
   "now-day",
   "now-day-en",
   "now-sheet",
@@ -308,23 +402,38 @@ const SHOTS = [
   "book-done",
 ];
 if (STEPS.has("media")) {
-  for (const n of SHOTS) {
-    webp(`${RAW}/${n}.png`, `${OUT}/${n}.webp`, 780);
-    measure(n, `${RAW}/${n}.png`, 3);
+  // 786 px wide is 2x the largest phone on the page.
+  if (STEPS.has("old"))
+    for (const n of OLD_SHOTS) {
+      webp(`${RAW}/${n}.png`, `${OUT}/${n}.webp`, 780);
+      measure(n, `${RAW}/${n}.png`);
+    }
+  for (const n of NOW_SHOTS) {
+    webp(`${RAW}/${n}.png`, `${OUT}/${n}.webp`, 786);
+    measureFull(n, `${RAW}/${n}.png`, 60);
   }
-  // The two films, each its own phone video (the page frames them side by side).
-  const { a, b } = JSON.parse(readFileSync(FILMS, "utf8"));
-  for (const [name, f] of [
-    ["customer", a],
-    ["staff", b],
-  ]) {
+  const films = JSON.parse(readFileSync(FILMS, "utf8"));
+  for (const name of ["staff", "customer", "day"]) {
+    const { dir, stamps } = films[name];
+    // Each frame shows until the next repaint, so the film keeps the real pace.
+    const list = stamps.map(
+      (t, i) =>
+        `file 'f${String(i).padStart(4, "0")}.jpg'\nduration ${((stamps[i + 1] ?? t + 1.5) - t).toFixed(4)}`,
+    );
+    writeFileSync(
+      `${dir}/list.txt`,
+      `ffconcat version 1.0\n${list.join("\n")}\nfile 'f${String(stamps.length - 1).padStart(4, "0")}.jpg'\n`,
+    );
+    const wide = name === "day";
     ff(
-      "-framerate",
-      f.rate,
+      "-f",
+      "concat",
+      "-safe",
+      "0",
       "-i",
-      `${f.dir}/f%04d.jpg`,
+      `${dir}/list.txt`,
       "-vf",
-      "fps=30,scale=780:-2,format=yuv420p,tpad=stop_mode=clone:stop_duration=1.5",
+      `fps=30,scale=${wide ? "1704:-2" : "786:-2"},format=yuv420p`,
       "-c:v",
       "libx264",
       "-crf",
@@ -336,9 +445,19 @@ if (STEPS.has("media")) {
       "-an",
       `${OUT}/${name}.mp4`,
     );
-    ff("-i", `${f.dir}/f0000.jpg`, "-vf", "scale=780:-2", "-quality", "84", `${OUT}/${name}.webp`);
-    measure(name, `${f.dir}/f0000.jpg`, 3);
+    ff(
+      "-i",
+      `${dir}/f0000.jpg`,
+      "-vf",
+      `scale=${wide ? 1704 : 786}:-2`,
+      "-quality",
+      "84",
+      `${OUT}/${name}.webp`,
+    );
+    if (!wide) measureFull(name, `${dir}/f0000.jpg`, name === "customer" ? 40 : 60);
+    else bars[name] = { top: "#f4ebdf", bottom: "#f4ebdf", full: true };
   }
-  writeFileSync("src/content/caseStudies/passionNails.bars.json", `${JSON.stringify(bars, null, 2)}\n`);
+  writeFileSync(BARS, `${JSON.stringify(bars, null, 2)}\n`);
 }
+if (STEPS.has("design")) webp(`${RAW}/design-themes.png`, `${OUT}/design-themes.webp`, 2240);
 console.log("done");

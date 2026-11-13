@@ -1345,3 +1345,25 @@ To do next (a fresh session; read this list as the brief):
    same tokens" comparison. Cut anything that does not change a decision.
 6. Think as the hiring manager reading 50 case studies: the gist in the first screen, figures that
    explain themselves, proof it shipped and is used.
+
+### 15.25 Revision 9, done (2026-11-12 night; portfolio `phase/revision-8`, salon `feat/38-one-look` from `feat/37-design-system`)
+- **The font reason in 15.24 was wrong.** Google Fonts ships a Vietnamese cut of both Zalando Sans
+  Expanded and Hanken Grotesk; only the salon's own files were subset to Latin. So there was no real
+  reason for a second look. The salon now serves each face's 9 KB Vietnamese cut behind a
+  `unicode-range` (the English site never fetches it) and the staff app uses the site's fonts,
+  colours and shapes. The staff theme changes only sizes (17 px, 48 px+) and button case.
+- **Shape rule, both apps:** what you read is square with an ink hairline (cards, sheets, notices,
+  badges, like the reviews), what you tap is round (pill buttons, chips, segmented; 12 px fields and
+  tiles). No card shadows.
+- **Screens** are shot full height (393 x 852) with the iPhone safe areas emulated
+  (`Emulation.setSafeAreaInsetsOverride`), so the status bar and home indicator lie see-through on
+  the screen (`Phone` `full`). The first builds keep their 390 x 756 shots between drawn bars. Media
+  URLs carry `?v=9` (`mediaRev.ts`, allowed in `next.config.ts`): re-shooting under the same names had
+  left old screens in Next's image cache, the real cause of the "white status bar".
+- **Films** (`Film`): play while on screen, pause and a scrubber, a tap dot, about half the old pace.
+  One per section: adding a walk-in, booking online, and the sideways By-tech day (a 28-booking seed).
+- **Copy** in Caleb's economy: 27 blocks to 20, headlines of 13 words or fewer, bodies of 60 or fewer
+  (a test holds both), two or three examples per point. Vietnamese words are `[[vi|en]]` and show
+  their English on hover, focus or tap (`Gloss`).
+- **Design system** is a docs figure (`System`): colour, type (the Latin cut against the Vietnamese
+  cut, missing letters in burgundy), shape; then the side-by-side specimen.

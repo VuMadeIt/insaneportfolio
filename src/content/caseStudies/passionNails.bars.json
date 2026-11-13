@@ -1,0 +1,164 @@
+{
+  "night-day": {
+    "top": "#ffffff",
+    "bottom": "#ffffff",
+    "dark": false
+  },
+  "night-sheet": {
+    "top": "#949494",
+    "bottom": "#ffffff",
+    "dark": true
+  },
+  "night-hours": {
+    "top": "#ffffff",
+    "bottom": "#ffffff",
+    "dark": false
+  },
+  "night-login": {
+    "top": "#ffffff",
+    "bottom": "#ffffff",
+    "dark": false
+  },
+  "audit-day": {
+    "top": "#f4ebdf",
+    "bottom": "#f4ebdf",
+    "dark": false
+  },
+  "now-day": {
+    "top": "#f4ebdf",
+    "bottom": "#f4ebdf",
+    "dark": false,
+    "full": true
+  },
+  "now-day-en": {
+    "top": "#f4ebdf",
+    "bottom": "#f4ebdf",
+    "dark": false,
+    "full": true
+  },
+  "now-sheet": {
+    "top": "#8d8881",
+    "bottom": "#8d8881",
+    "dark": true,
+    "full": true
+  },
+  "now-sheet-en": {
+    "top": "#8d8881",
+    "bottom": "#8d8881",
+    "dark": true,
+    "full": true
+  },
+  "now-hours": {
+    "top": "#f4ebdf",
+    "bottom": "#f4ebdf",
+    "dark": false,
+    "full": true
+  },
+  "now-add": {
+    "top": "#8d8881",
+    "bottom": "#8d8881",
+    "dark": true,
+    "full": true
+  },
+  "now-add-wheels": {
+    "top": "#8d8881",
+    "bottom": "#8d8881",
+    "dark": true,
+    "full": true
+  },
+  "now-sure": {
+    "top": "#7f7a74",
+    "bottom": "#7f7a74",
+    "dark": true,
+    "full": true
+  },
+  "site-home": {
+    "top": "#f4ebdf",
+    "bottom": "#f4ebdf",
+    "dark": false,
+    "full": true
+  },
+  "book-services": {
+    "top": "#f4ebdf",
+    "bottom": "#f4ebdf",
+    "dark": false,
+    "full": true
+  },
+  "book-staff": {
+    "top": "#f4ebdf",
+    "bottom": "#f4ebdf",
+    "dark": false,
+    "full": true
+  },
+  "book-time": {
+    "top": "#f4ebdf",
+    "bottom": "#f4ebdf",
+    "dark": false,
+    "full": true
+  },
+  "book-details": {
+    "top": "#f4ebdf",
+    "bottom": "#f4ebdf",
+    "dark": false,
+    "full": true
+  },
+  "book-done": {
+    "top": "#f4ebdf",
+    "bottom": "#f4ebdf",
+    "dark": false,
+    "full": true
+  },
+  "customer": {
+    "top": "#f3eadd",
+    "bottom": "#f3eadd",
+    "dark": false,
+    "full": true
+  },
+  "staff": {
+    "top": "#f3eadd",
+    "bottom": "#f3eadd",
+    "dark": false,
+    "full": true
+  },
+  "day": {
+    "top": "#f4ebdf",
+    "bottom": "#f4ebdf",
+    "full": true
+  },
+  "night-day-en": {
+    "top": "#ffffff",
+    "bottom": "#ffffff",
+    "dark": false
+  },
+  "night-sheet-en": {
+    "top": "#949494",
+    "bottom": "#ffffff",
+    "dark": true
+  },
+  "night-hours-en": {
+    "top": "#ffffff",
+    "bottom": "#ffffff",
+    "dark": false
+  },
+  "night-login-en": {
+    "top": "#ffffff",
+    "bottom": "#ffffff",
+    "dark": false
+  },
+  "audit-day-en": {
+    "top": "#f4ebdf",
+    "bottom": "#f4ebdf",
+    "dark": false
+  },
+  "staff-en": {
+    "top": "#f3eadd",
+    "bottom": "#f3eadd",
+    "dark": false,
+    "full": true
+  },
+  "day-en": {
+    "top": "#f4ebdf",
+    "bottom": "#f4ebdf",
+    "full": true
+  }
+}

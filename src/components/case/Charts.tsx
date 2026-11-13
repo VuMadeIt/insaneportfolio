@@ -2,7 +2,9 @@
 
 import Image from "next/image";
 import { useState } from "react";
-import type { Visual } from "@/content/caseStudies/types";
+import type { Shot, Visual } from "@/content/caseStudies/types";
+import { Rich } from "./Gloss";
+import { groupTitle, Phone, PHONE_RATIO, PhoneTitle, phoneWidth } from "./Phone";
 import { useInView } from "./useInView";
 
 type Of<K extends Visual["kind"]> = Extract<Visual, { kind: K }>;
@@ -150,7 +152,7 @@ const Dash = () => (
  * screens get the same facts as one short list per product, so nothing scrolls sideways.
  */
 export function Table({ v }: { v: Of<"table"> }) {
-  const cell = (c: boolean | string) => (c === true ? <Check /> : c === false ? <Dash /> : c);
+  const cell = (c: boolean | string) => (c === true ? <Check /> : c === false ? <Dash /> : <Rich text={c} />);
   return (
     <>
       <ul className="flex flex-col gap-3 text-[15px] @3xl:hidden">
@@ -224,30 +226,64 @@ export function Brief({ v }: { v: Of<"brief"> }) {
 /** A screen with numbered callouts; hovering a line of the legend lights its marker. */
 export function Anatomy({ v }: { v: Of<"anatomy"> }) {
   const [on, setOn] = useState<number | null>(null);
+  const ratio = v.image.frame ? PHONE_RATIO : v.image.width / v.image.height;
+  const img = (
+    <div className="relative">
+      <Image
+        src={v.image.src}
+        alt={v.image.alt}
+        width={v.image.width}
+        height={v.image.height}
+        sizes="(min-width: 768px) 40vw, 100vw"
+        className={`block h-auto w-full ${v.image.frame ? "" : "rounded-md"}`}
+      />
+      {/* Numbers sit outside the picture, a leader line runs to a dot on the spot: nothing covers it. */}
+      <div aria-hidden className="pointer-events-none absolute inset-0">
+        {v.points.map((p, i) => {
+          const left = p.x < 50;
+          const hot = on === i;
+          const tone = hot ? "bg-ink" : "bg-[var(--accent)]";
+          return (
+            <span key={p.title} className="absolute inset-x-0 h-0" style={{ top: `${p.y}%` }}>
+              <span
+                className={`absolute h-px -translate-y-1/2 transition-colors duration-300 ${hot ? "bg-[var(--accent)]" : "bg-ink/50"}`}
+                // The line stops just short of the spot, so nothing covers the thing it points at.
+                style={
+                  left
+                    ? { left: "var(--lead)", right: `calc(${100 - p.x}% + 4px)` }
+                    : { left: `calc(${p.x}% + 4px)`, right: "var(--lead)" }
+                }
+              />
+              <span
+                className={`absolute flex size-7 -translate-y-1/2 items-center justify-center rounded-full text-[13px] text-white transition-[background-color,transform] duration-300 ${tone} ${hot ? "scale-110" : ""}`}
+                style={left ? { left: "calc(var(--lead) - 28px)" } : { right: "calc(var(--lead) - 28px)" }}
+              >
+                {i + 1}
+              </span>
+            </span>
+          );
+        })}
+      </div>
+    </div>
+  );
   return (
     <div className="grid items-center gap-10 @xl:grid-cols-[minmax(0,0.9fr)_minmax(0,1fr)]">
       <div
-        className="relative mx-auto w-full"
-        style={{ maxWidth: `min(${v.image.width}px, calc(70vh * ${v.image.width / v.image.height}))` }}
+        className="mx-auto flex w-full flex-col gap-4 px-[60px] [--lead:-48px]"
+        style={{
+          maxWidth: v.image.frame
+            ? `calc(${phoneWidth(1, PHONE_RATIO)} + 120px)`
+            : `calc(min(${v.image.width}px, 70vh * ${ratio}) + 120px)`,
+        }}
       >
-        <Image
-          src={v.image.src}
-          alt={v.image.alt}
-          width={v.image.width}
-          height={v.image.height}
-          sizes="(min-width: 768px) 40vw, 100vw"
-          className="h-auto w-full"
-        />
-        {v.points.map((p, i) => (
-          <span
-            key={p.title}
-            aria-hidden
-            className={`absolute flex size-8 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full bg-[var(--accent)] text-[14px] text-white ring-4 transition-transform duration-300 ${on === i ? "scale-125 ring-[var(--accent-soft)]" : "ring-white/70"}`}
-            style={{ left: `${p.x}%`, top: `${p.y}%` }}
-          >
-            {i + 1}
-          </span>
-        ))}
+        {v.image.label && <PhoneTitle label={v.image.label} />}
+        {v.image.frame ? (
+          <Phone {...v.image.frame} className="w-full">
+            {img}
+          </Phone>
+        ) : (
+          img
+        )}
       </div>
       <ol className="flex flex-col gap-6">
         {v.points.map((p, i) => (
@@ -265,7 +301,9 @@ export function Anatomy({ v }: { v: Of<"anatomy"> }) {
             </span>
             <div>
               <h3 className="text-[19px] leading-[1.25]">{p.title}</h3>
-              <p className="mt-1 text-[16px] leading-[1.5]">{p.text}</p>
+              <p className="mt-1 text-[16px] leading-[1.5]">
+                <Rich text={p.text} />
+              </p>
             </div>
           </li>
         ))}
@@ -274,7 +312,10 @@ export function Anatomy({ v }: { v: Of<"anatomy"> }) {
   );
 }
 
-/** Phone screens in two or three states; the switch cross-fades them in place, so nothing jumps. */
+/**
+ * Phone screens in two to five states; the switch cross-fades them in place, so nothing jumps.
+ * Screens are sized to the window so the tabs, screens and note fit in one view.
+ */
 export function Switch({ v }: { v: Of<"switch"> }) {
   const [on, setOn] = useState(0);
   return (
@@ -296,36 +337,62 @@ export function Switch({ v }: { v: Of<"switch"> }) {
           </button>
         ))}
       </div>
-      <div className="mt-8 grid">
-        {v.options.map((o, i) => (
-          <div
-            key={o.label}
-            aria-hidden={on !== i}
-            className={`flex justify-center gap-[clamp(12px,3cqi,40px)] transition-[opacity,transform] duration-500 ease-[var(--ease-out)] [grid-area:1/1] ${on === i ? "" : "pointer-events-none translate-y-2 opacity-0"}`}
-          >
-            {o.images.map((m) => (
-              <Image
-                key={m.src}
-                src={m.src}
-                alt={m.alt}
-                width={m.width}
-                height={m.height}
-                sizes="(min-width: 768px) 340px, 45vw"
-                className="h-auto min-w-0 rounded-[clamp(12px,2.4cqi,28px)]"
-                style={{
-                  width: `min(340px, calc((100cqi - ${o.images.length - 1} * clamp(12px, 3cqi, 40px)) / ${o.images.length}))`,
-                }}
-              />
-            ))}
-          </div>
-        ))}
+      <div className="mt-6 grid">
+        {v.options.map((o, i) => {
+          const shared = groupTitle(o.images);
+          return (
+            <div
+              key={o.label}
+              aria-hidden={on !== i}
+              className={`flex flex-col items-center gap-4 transition-[opacity,transform] duration-500 ease-[var(--ease-out)] [grid-area:1/1] ${on === i ? "" : "pointer-events-none translate-y-2 opacity-0"}`}
+            >
+              {shared && <PhoneTitle label={shared} />}
+              <div className="flex items-end justify-center gap-[clamp(16px,4cqi,56px)]">
+                {o.images.map((m) => (
+                  <Screen
+                    key={m.src}
+                    m={m}
+                    title={shared ? undefined : m.label}
+                    width={phoneWidth(o.images.length, m.frame ? PHONE_RATIO : m.width / m.height)}
+                  />
+                ))}
+              </div>
+            </div>
+          );
+        })}
       </div>
       <p
         aria-live="polite"
         className="mx-auto mt-6 max-w-[34em] text-center text-[15px] leading-[1.5] text-muted"
       >
-        {v.options[on]!.note}
+        <Rich text={v.options[on]!.note} />
       </p>
+    </div>
+  );
+}
+
+/** One screen: in an iPhone frame (with its version tag) when it has one, else a rounded shot. */
+function Screen({ m, width, title }: { m: Shot; width: string; title?: string }) {
+  const img = (
+    <Image
+      src={m.src}
+      alt={m.alt}
+      width={m.width}
+      height={m.height}
+      sizes="(min-width: 768px) 320px, 45vw"
+      className={`block h-auto w-full ${m.frame ? "" : "rounded-[clamp(12px,2.4cqi,28px)]"}`}
+    />
+  );
+  return (
+    <div className="flex min-w-0 flex-col items-center gap-4" style={{ width }}>
+      {title && <PhoneTitle label={title} />}
+      {m.frame ? (
+        <Phone {...m.frame} className="w-full">
+          {img}
+        </Phone>
+      ) : (
+        img
+      )}
     </div>
   );
 }
@@ -340,7 +407,9 @@ export function Compare({ v }: { v: Of<"compare"> }) {
           <h3 className="text-[20px] leading-[1.2]">{c.title}</h3>
           <ul className="mt-4 flex flex-col gap-2.5 text-[16px] leading-[1.45]">
             {c.items.map((x) => (
-              <li key={x}>{x}</li>
+              <li key={x}>
+                <Rich text={x} />
+              </li>
             ))}
           </ul>
         </div>

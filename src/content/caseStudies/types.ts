@@ -1,4 +1,14 @@
-import type { Media } from "../projects";
+import type { Frame, Media } from "../projects";
+
+/** A phone screen, framed as an iPhone when `frame` is set. */
+export interface Shot {
+  src: string;
+  alt: string;
+  width: number;
+  height: number;
+  frame?: Frame;
+  label?: string;
+}
 
 export interface Stat {
   value: string;
@@ -55,8 +65,6 @@ export type Visual =
   /** Short cards; with `image`, each opens on an illustration (my Framer case-study art). */
   | { kind: "cards"; cards: { title: string; body: string; image?: { src: string; alt: string } }[] }
   | { kind: "options"; options: { title: string; pros: string[]; cons: string[]; chosen?: boolean }[] }
-  /** A video played by the scroll position instead of the clock. */
-  | { kind: "scrub"; video: string; poster: string; width: number; height: number; alt: string }
   | { kind: "embed"; src: string; title: string; poster: Media }
   | { kind: "list"; items: string[] }
   | DiagramData
@@ -83,11 +91,24 @@ export type Visual =
   /** A screen with numbered callouts at x/y percent, explained in a legend beside it. */
   | {
       kind: "anatomy";
-      image: { src: string; alt: string; width: number; height: number };
+      image: Shot;
       points: { x: number; y: number; title: string; text: string }[];
     }
   /** Two to three columns, each a heading and a short paragraph or a list. */
   | { kind: "compare"; columns: { title: string; tone?: "accent" | "ink" | "plain"; items: string[] }[] }
+  /**
+   * A design system as a docs page: colour roles, the type (with the font's Latin cut against its
+   * Vietnamese cut), and the shape rule. Each row is a title and its one rule, then the specimen.
+   */
+  | {
+      kind: "system";
+      colours: { name: string; hex: string; role: string }[];
+      rules: { colour: string; type: string; shape: string; components: string; spacing: string };
+      faces: { name: string; use: string; family: "display" | "text"; sample: string }[];
+      /** One Vietnamese phrase, set in the Latin cut alone and then with the Vietnamese cut. */
+      proof: { text: string; before: string; after: string };
+      shapes: { shape: "square" | "pill" | "field"; label: string; note: string }[];
+    }
   /** The same screens in two or three states (before and after, two languages), cross-faded by a switch. */
   | {
       kind: "switch";
@@ -95,7 +116,7 @@ export type Visual =
       options: {
         label: string;
         note: string;
-        images: { src: string; alt: string; width: number; height: number }[];
+        images: Shot[];
       }[];
     };
 

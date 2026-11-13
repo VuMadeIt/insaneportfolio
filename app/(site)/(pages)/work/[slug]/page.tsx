@@ -1,12 +1,20 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { Film } from "@/components/case/Film";
+import { Rich } from "@/components/case/Gloss";
+import { ScreenLangTabs } from "@/components/case/screenLang";
 import { Visual } from "@/components/case/Visual";
+import { Zoom } from "@/components/case/Zoom";
+
 import { CONTACT } from "@/content/contact";
 import { ExhibitMedia } from "@/components/ExhibitMedia";
 import { ProgressBar } from "@/components/ProgressBar";
 import { type Block, caseStudies, caseStudyBySlug } from "@/content/caseStudies";
 import { projectBySlug } from "@/content/projects";
+
+/** A headline as plain text: "[[muộn|late]]" reads "muộn". */
+const plainText = (s: string) => s.replace(/\[\[([^|\]]+)\|[^\]]+\]\]/g, "$1");
 
 export const dynamicParams = false;
 
@@ -40,7 +48,6 @@ const PANELLED = new Set([
   "quotes",
   "cards",
   "options",
-  "scrub",
   "diagram",
   "bars",
   "podium",
@@ -49,6 +56,7 @@ const PANELLED = new Set([
   "anatomy",
   "compare",
   "switch",
+  "system",
 ]);
 
 /** Visuals whose parts rise in one by one themselves; the others rise in as one figure. */
@@ -65,27 +73,48 @@ function Text({ block }: { block: Block }) {
         id={`${block.id}-title`}
         className="reveal mt-3 max-w-[26em] text-[clamp(24px,2.4vw,34px)] leading-[1.15]"
       >
-        {block.headline}
+        <Rich text={block.headline} />
       </h2>
       {block.body.map((b, k) => (
         <p key={k} className="reveal mt-4 max-w-[36em] leading-[1.55]">
-          {b}
+          <Rich text={b} />
         </p>
       ))}
     </div>
   );
 }
 
-function Figure({ block }: { block: Block }) {
+/** Figures a phone can't read at its width: they get a full-screen zoom. Films have their own. */
+const zoomable = (v: NonNullable<Block["visual"]>) =>
+  PANELLED.has(v.kind) &&
+  !["statement", "dots", "quotes", "switch"].includes(v.kind) &&
+  !(v.kind === "media" && v.media.some((m) => m.video));
+
+function Figure({ block, fill = false }: { block: Block; fill?: boolean }) {
   if (!block.visual) return null;
-  const panel = PANELLED.has(block.visual.kind);
+  const v = block.visual;
+  const panel = PANELLED.has(v.kind);
+  // Staff screens with an English twin get the page-wide Tiếng Việt / English tabs.
+  const twins = v.kind === "media" && v.media.some((m) => m.en);
   return (
-    <figure className={`mt-10 ${STAGGERED.has(block.visual.kind) ? "" : "reveal"}`}>
-      <div className={`@container ${panel ? "rounded-lg bg-panel p-[clamp(16px,3vw,48px)]" : ""}`}>
-        <Visual visual={block.visual} />
+    <figure className={`mt-10 ${fill ? "flex flex-col" : ""} ${STAGGERED.has(v.kind) ? "" : "reveal"}`}>
+      {/* In a pair both figures fill the row, so the two panels end level. */}
+      <div
+        className={`@container ${panel ? "rounded-lg bg-panel p-[clamp(16px,3vw,48px)]" : ""} ${fill ? "grid flex-1 content-center" : ""}`}
+      >
+        {twins && <ScreenLangTabs />}
+        {zoomable(v) ? (
+          <Zoom label={plainText(block.headline)}>
+            <Visual visual={v} />
+          </Zoom>
+        ) : (
+          <Visual visual={v} />
+        )}
       </div>
       {block.caption && (
-        <figcaption className="mt-3 text-center text-[15px] text-muted">{block.caption}</figcaption>
+        <figcaption className="mt-3 text-center text-[15px] text-muted">
+          <Rich text={block.caption} />
+        </figcaption>
       )}
     </figure>
   );
@@ -101,11 +130,17 @@ function BlockView({ blocks }: { blocks: Block[] }) {
       aria-labelledby={`${blocks[0]!.id}-title`}
       className="case-block scroll-mt-28 px-[var(--gutter)] py-[clamp(56px,9vh,104px)]"
     >
-      <div className={`mx-auto max-w-[1400px] ${pair ? "grid gap-12 md:grid-cols-2" : ""}`}>
+      <div
+        className={`mx-auto max-w-[1400px] ${pair ? "grid gap-x-12 gap-y-12 md:grid-cols-2 md:grid-rows-[auto_1fr] md:gap-y-0" : ""}`}
+      >
         {blocks.map((b) => (
-          <div key={b.id} id={b === blocks[0] ? undefined : b.id} className="min-w-0">
+          <div
+            key={b.id}
+            id={b === blocks[0] ? undefined : b.id}
+            className={`min-w-0 ${pair ? "md:row-span-2 md:grid md:grid-rows-subgrid" : ""}`}
+          >
             <Text block={b} />
-            <Figure block={b} />
+            <Figure block={b} fill={pair} />
           </div>
         ))}
       </div>
@@ -166,7 +201,11 @@ export default async function CaseStudyPage({ params }: { params: Promise<{ slug
       {study.hero && (
         <div className="px-[var(--gutter)]">
           <div className="mx-auto max-w-[1400px] rounded-lg bg-panel p-[clamp(16px,3vw,48px)]">
-            <ExhibitMedia media={study.hero} sizes="(min-width: 1400px) 1400px, 100vw" priority />
+            {study.hero.video ? (
+              <Film media={study.hero} />
+            ) : (
+              <ExhibitMedia media={study.hero} sizes="(min-width: 1400px) 1400px, 100vw" priority />
+            )}
           </div>
         </div>
       )}

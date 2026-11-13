@@ -1,18 +1,21 @@
 "use client";
 
 import Image from "next/image";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import type { Stat, Visual as VisualData } from "@/content/caseStudies/types";
 import { ExhibitMedia } from "../ExhibitMedia";
 import { Anatomy, Bars, Brief, Compare, Podium, Switch, Table } from "./Charts";
 import { Diagram } from "./Diagram";
-import { reducedMotion, useInView } from "./useInView";
+import { Rich } from "./Gloss";
+import { PhoneRow } from "./Phone";
+import { System } from "./System";
+import { useInView } from "./useInView";
 
 /** A number that counts up from zero once on screen; the prefix and suffix ($, %, mL) stay put. */
 function Counter({ value }: { value: string }) {
   const [ref, inView] = useInView<HTMLSpanElement>();
-  const [, before, num = "0", after] = value.match(/^([^\d]*)([\d.]+)(.*)$/) ?? [];
-  const target = Number(num);
+  const [, before, num = "0", after] = value.match(/^([^\d]*)([\d.,]+)(.*)$/) ?? [];
+  const target = Number(num.replace(/,/g, ""));
   const decimals = num.split(".")[1]?.length ?? 0;
   const [shown, setShown] = useState(target);
   useEffect(() => {
@@ -31,7 +34,7 @@ function Counter({ value }: { value: string }) {
     <span ref={ref} aria-label={value} className="tabular-nums">
       <span aria-hidden>
         {before}
-        {shown.toFixed(decimals)}
+        {shown.toLocaleString("en-US", { minimumFractionDigits: decimals, maximumFractionDigits: decimals })}
         {after}
       </span>
     </span>
@@ -93,54 +96,6 @@ function Dots({ total, lit }: { total: number; lit: number }) {
   );
 }
 
-/** A video that plays as you scroll past it, frame by frame (keyframes every few frames). */
-function Scrub({ v }: { v: Extract<VisualData, { kind: "scrub" }> }) {
-  const video = useRef<HTMLVideoElement>(null);
-  useEffect(() => {
-    const el = video.current!;
-    if (reducedMotion()) return;
-    let frame = 0;
-    const update = () => {
-      frame = 0;
-      const r = el.getBoundingClientRect();
-      const t = Math.min(1, Math.max(0, (innerHeight - r.top) / (innerHeight + r.height)));
-      if (el.duration) el.currentTime = t * el.duration;
-    };
-    const schedule = () => (frame ||= requestAnimationFrame(update));
-    el.addEventListener("loadedmetadata", schedule);
-    const io = new IntersectionObserver(([e]) => {
-      if (!e?.isIntersecting) return removeEventListener("scroll", schedule);
-      if (el.readyState === 0) {
-        el.preload = "auto";
-        el.load();
-      }
-      addEventListener("scroll", schedule, { passive: true });
-      schedule();
-    });
-    io.observe(el);
-    return () => {
-      io.disconnect();
-      cancelAnimationFrame(frame);
-      removeEventListener("scroll", schedule);
-      el.removeEventListener("loadedmetadata", schedule);
-    };
-  }, []);
-  return (
-    <video
-      ref={video}
-      src={v.video}
-      poster={v.poster}
-      width={v.width}
-      height={v.height}
-      muted
-      playsInline
-      preload="none"
-      aria-label={v.alt}
-      className="block h-auto w-full rounded-md"
-    />
-  );
-}
-
 /** A third-party embed that loads only on request (the Figma prototype is heavy). */
 function Embed({ v }: { v: Extract<VisualData, { kind: "embed" }> }) {
   const [open, setOpen] = useState(false);
@@ -173,6 +128,7 @@ function Embed({ v }: { v: Extract<VisualData, { kind: "embed" }> }) {
 export function Visual({ visual }: { visual: VisualData }) {
   switch (visual.kind) {
     case "media":
+      if (visual.media.some((m) => m.frame)) return <PhoneRow phones={visual.media} />;
       return (
         <div className={`grid gap-4 ${visual.media.length > 1 ? "grid-cols-2" : ""}`}>
           {visual.media.map((m) => (
@@ -234,6 +190,8 @@ export function Visual({ visual }: { visual: VisualData }) {
       return <Compare v={visual} />;
     case "switch":
       return <Switch v={visual} />;
+    case "system":
+      return <System v={visual} />;
     case "cards":
       return (
         <dl className="grid gap-4 @xl:grid-cols-3">
@@ -283,8 +241,6 @@ export function Visual({ visual }: { visual: VisualData }) {
           ))}
         </ul>
       );
-    case "scrub":
-      return <Scrub v={visual} />;
     case "embed":
       return <Embed v={visual} />;
     case "list":
@@ -297,7 +253,9 @@ export function Visual({ visual }: { visual: VisualData }) {
                 className="mt-[0.7em] h-[2px] w-5 shrink-0"
                 style={{ background: "var(--metal)" }}
               />
-              {item}
+              <span>
+                <Rich text={item} />
+              </span>
             </li>
           ))}
         </ul>

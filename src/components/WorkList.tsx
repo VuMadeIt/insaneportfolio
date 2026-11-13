@@ -97,10 +97,10 @@ export function WorkList({
                   })}
             >
               <div
-                className={`grid gap-3 md:gap-10 ${large ? "md:grid-cols-[minmax(0,1.1fr)_minmax(0,1fr)_clamp(200px,22vw,340px)]" : "md:grid-cols-[minmax(0,1.1fr)_minmax(0,1fr)]"}`}
+                className={`grid gap-3 md:gap-10 ${large ? "md:grid-cols-[minmax(0,1.3fr)_minmax(0,1fr)_clamp(200px,22vw,340px)]" : "md:grid-cols-[minmax(0,1.1fr)_minmax(0,1fr)]"}`}
               >
                 <div
-                  className={`flex items-start gap-[0.2em] ${large ? "text-[clamp(44px,6.4vw,104px)] leading-[0.95]" : "text-[clamp(30px,3.6vw,52px)] leading-[1]"}`}
+                  className={`flex items-start gap-[0.2em] ${large ? "@container" : "text-[clamp(30px,3.6vw,52px)] leading-[1]"}`}
                 >
                   {p.prize && !large && (
                     <Image
@@ -112,7 +112,14 @@ export function WorkList({
                       className="size-[1em] shrink-0 object-contain"
                     />
                   )}
-                  <div>
+                  {/* Home titles size to their column: "Passion Nails", the longest, fills 93% of it on one line. */}
+                  <div
+                    className={
+                      large
+                        ? "w-full whitespace-nowrap text-[clamp(36px,17cqi,92px)] leading-[0.95]"
+                        : undefined
+                    }
+                  >
                     {p.caseStudy ? (
                       <Link href={href} {...linkProps}>
                         {title}

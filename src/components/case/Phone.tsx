@@ -1,0 +1,200 @@
+import type { ReactNode } from "react";
+import type { Media } from "@/content/projects";
+import { ExhibitMedia } from "../ExhibitMedia";
+import { Film } from "./Film";
+import { usePick } from "./screenLang";
+
+/**
+ * An iPhone 15 (393 x 852 pt). A `full` screen fills the display and the status bar and home
+ * indicator lie see-through on top, as on the phone (shots taken with the safe areas emulated). Older
+ * shots (390 x 756, the first builds) sit between drawn bars in the app's own top and bottom colours.
+ * Proportions are Apple's; it scales with its width (container units). `sideways` turns it to landscape.
+ */
+export function Phone({
+  children,
+  top = "#ffffff",
+  bottom = "#ffffff",
+  dark = false,
+  full = false,
+  sideways = false,
+  className = "",
+}: {
+  children: ReactNode;
+  /** Colours of the app behind the status bar and the home indicator. */
+  top?: string;
+  bottom?: string;
+  /** Light status-bar text, over a dark or dimmed top. */
+  dark?: boolean;
+  full?: boolean;
+  sideways?: boolean;
+  className?: string;
+}) {
+  const ink = dark ? "#fff" : "#0b0b0c";
+  const shell =
+    "phone relative bg-[#0b0b0c] shadow-[0_0_0_1.5px_#4a4a4e,0_0_0_3px_#1b1b1d,0_24px_48px_-16px_rgb(0_0_0/0.45)] [container-type:inline-size]";
+  if (sideways)
+    // Landscape: no status bar (iOS hides it), the Dynamic Island on the left, a shorter home bar.
+    return (
+      <div className={`${shell} rounded-[7.2%/15.5%] p-[1.63%] ${className}`}>
+        <div className="relative overflow-hidden rounded-[6.2cqi]">
+          {children}
+          <span
+            aria-hidden
+            className="absolute left-[1.4cqi] top-1/2 h-[14.3cqi] w-[4.3cqi] -translate-y-1/2 rounded-full bg-black"
+          />
+          <span
+            aria-hidden
+            className="absolute bottom-[1cqi] left-1/2 h-[0.6cqi] w-[24cqi] -translate-x-1/2 rounded-full bg-[#0b0b0c]"
+          />
+        </div>
+      </div>
+    );
+  const bar = (
+    <>
+      <span className="w-[16cqi] text-center tracking-[-0.02em]">9:41</span>
+      <span
+        aria-hidden
+        className="absolute left-1/2 top-[3cqi] h-[9.4cqi] w-[31cqi] -translate-x-1/2 rounded-full bg-black"
+      />
+      <StatusIcons color={ink} />
+    </>
+  );
+  const home = <span aria-hidden className="h-[1.3cqi] w-[34cqi] rounded-full" style={{ background: ink }} />;
+  return (
+    <div className={`${shell} rounded-[15.5%/7.2%] p-[3.4%] ${className}`}>
+      {full ? (
+        <div className="relative overflow-hidden rounded-[13.5cqi]">
+          {children}
+          <div
+            className="absolute inset-x-0 top-0 flex items-center justify-between px-[8cqi] pt-[1.6cqi] text-[4.3cqi] font-semibold"
+            style={{ color: ink, aspectRatio: "393 / 54" }}
+          >
+            {bar}
+          </div>
+          <div
+            className="absolute inset-x-0 bottom-0 flex items-end justify-center pb-[2.2cqi]"
+            style={{ aspectRatio: "393 / 34" }}
+          >
+            {home}
+          </div>
+        </div>
+      ) : (
+        <div className="flex flex-col">
+          <div
+            className="relative flex items-center justify-between rounded-t-[13.5cqi] px-[8cqi] pt-[1.6cqi] text-[4.3cqi] font-semibold"
+            style={{ background: top, color: ink, aspectRatio: "393 / 54" }}
+          >
+            {bar}
+          </div>
+          {children}
+          <div
+            className="flex items-end justify-center rounded-b-[13.5cqi] pb-[2.2cqi]"
+            style={{ background: bottom, aspectRatio: "393 / 34" }}
+          >
+            {home}
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+function StatusIcons({ color }: { color: string }) {
+  return (
+    <svg aria-hidden viewBox="0 0 68 12" className="w-[17.5cqi]" fill={color}>
+      {[0, 1, 2, 3].map((i) => (
+        <rect key={i} x={i * 4.5} y={9 - i * 2.4} width="3" height={3 + i * 2.4} rx="0.8" />
+      ))}
+      <path d="M30.5 2.6a9.6 9.6 0 0 1 13 0l-1.3 1.4a7.7 7.7 0 0 0-10.4 0zm2.6 2.8a5.8 5.8 0 0 1 7.8 0l-1.3 1.4a3.9 3.9 0 0 0-5.2 0zM37 8.1l1.9 2-1.9 1.9-1.9-1.9z" />
+      <rect x="48" y="1" width="17" height="10" rx="3" fill="none" stroke={color} strokeOpacity="0.45" />
+      <rect x="49.8" y="2.8" width="13.4" height="6.4" rx="1.6" />
+      <rect x="66" y="4.2" width="1.5" height="3.6" rx="0.7" fillOpacity="0.45" />
+    </svg>
+  );
+}
+
+/** Outer width over height of the framed phone (a 393 x 852 screen plus the bezel). */
+export const PHONE_RATIO = 0.479;
+
+/** Every phone on the page is this wide, unless a row of n or the window's height needs it smaller. */
+export const phoneWidth = (n: number, ratio = PHONE_RATIO, gap = "clamp(16px, 4cqi, 56px)") =>
+  `min(280px, calc((100cqi - ${n - 1} * ${gap}) / ${n}), calc(max(260px, 100svh - 300px) * ${ratio}))`;
+
+/** One title for a group of screens from the same build; mixed groups title each screen. */
+export const groupTitle = (shots: { label?: string }[]) => {
+  const labels = new Set(shots.map((s) => s.label));
+  return labels.size === 1 ? [...labels][0] : undefined;
+};
+
+/** A row of framed phones, sized like every other phone on the page; a film gets its controls. */
+export function PhoneRow({ phones }: { phones: Media[] }) {
+  const n = phones.length;
+  const gap = "clamp(16px, 4cqi, 56px)";
+  const shared = groupTitle(phones);
+  const sideways = n === 1 && phones[0]!.width > phones[0]!.height;
+  return (
+    <div className="flex flex-col items-center gap-5">
+      {shared && <PhoneTitle label={shared} />}
+      <div className="flex w-full items-end justify-center" style={{ gap }}>
+        {phones.map((m) => (
+          <PhoneItem key={m.alt} media={m} n={n} titled={!shared} sideways={sideways} />
+        ))}
+      </div>
+    </div>
+  );
+}
+
+/** One phone of a row, in the screen language picked on the page. */
+function PhoneItem({
+  media,
+  n,
+  titled,
+  sideways,
+}: {
+  media: Media;
+  n: number;
+  titled: boolean;
+  sideways: boolean;
+}) {
+  const m = usePick(media);
+  return (
+    <figure
+      className="flex min-w-0 flex-col items-center gap-4"
+      // Sideways, it takes the row, but stays short enough to fit the window with its controls.
+      style={{
+        width: sideways ? `min(100%, 860px, calc((100svh - 260px) / ${PHONE_RATIO}))` : phoneWidth(n),
+      }}
+    >
+      {titled && m.label && <PhoneTitle label={m.label} />}
+      {m.video ? (
+        <Film key={m.video} media={m} bare>
+          {(video) => (
+            <Phone {...m.frame} sideways={sideways} className="w-full">
+              {video}
+            </Phone>
+          )}
+        </Film>
+      ) : (
+        <Phone {...m.frame} className="w-full">
+          {/* Both languages stay loaded and cross-fade, so a switch never shows an empty screen. */}
+          <div className="grid">
+            {[media, ...(media.en ? [media.en] : [])].map((x) => (
+              <div
+                key={x.image}
+                aria-hidden={x.image !== m.image}
+                className={`transition-opacity duration-500 [grid-area:1/1] ${x.image === m.image ? "" : "opacity-0"}`}
+              >
+                <ExhibitMedia media={x} sizes="280px" bare />
+              </div>
+            ))}
+          </div>
+        </Phone>
+      )}
+    </figure>
+  );
+}
+
+/** Which build a screen is from: a quiet title above it. */
+export function PhoneTitle({ label }: { label: string }) {
+  return <p className="text-center text-[15px] leading-none text-muted">{label}</p>;
+}

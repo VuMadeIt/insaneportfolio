@@ -332,6 +332,6 @@ export const reboot: CaseStudy = {
       visual: { kind: "podium", place: 3, name: "Reboot" },
     },
   ],
-  next: "maple-leaf-foods",
+  next: "shufflr",
   draft: ["insight and decision headlines rewritten as first-person claims from the Framer copy"],
 };

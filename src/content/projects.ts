@@ -4,6 +4,15 @@
  * DRAFT are drafted for the layout and must be confirmed by Lucas (listed in REPORT.md).
  */
 
+/** A phone screen's frame: the app's colours behind the status bar and home indicator (Phone.tsx). */
+export interface Frame {
+  top: string;
+  bottom: string;
+  dark?: boolean;
+  /** Shot full height: the status bar and home indicator sit see-through on top of the screen. */
+  full?: boolean;
+}
+
 export interface Media {
   /** Video loop (muted) with its poster, or a still image. */
   video?: string;
@@ -12,9 +21,15 @@ export interface Media {
   /** A muted loop that plays only while the card is hovered (the still stays otherwise). */
   hover?: string;
   alt: string;
+  /** Shown in an iPhone frame. */
+  frame?: Frame;
+  /** A small tag above a framed phone: which version this is. */
+  label?: string;
   /** Intrinsic size of the poster or image. */
   width: number;
   height: number;
+  /** The same screen in English (Passion Nails' staff app is Vietnamese first). */
+  en?: Omit<Media, "en">;
 }
 
 /** Rendered objects in public/media/objects (scripts/objects.mjs). */
@@ -130,17 +145,17 @@ export const projects: Project[] = [
     date: "2026-11",
     year: "2026",
     medium: "Booking site and staff app",
-    role: "Designer and builder",
-    event: "My family's nail salon",
+    role: "Design engineer",
+    event: "My family's boutique nail salon",
     description:
       "My mom's salon ran on one phone and no front desk. Now customers book online, and four techs run the day from a staff app in Vietnamese.",
     caption: "Taking my mom's salon off the phone, with a staff app in Vietnamese.",
     media: {
-      video: "/media/passion-nails/loop.mp4",
-      poster: "/media/passion-nails/loop.webp",
-      alt: "A customer books a pedicure online while a tech adds a walk-in in Vietnamese",
-      width: 1600,
-      height: 1000,
+      video: "/media/work/passion-nails.mp4",
+      poster: "/media/work/passion-nails.webp",
+      alt: "The live Passion Nails site: the home page, services and reviews, then a booking from services to 'You're booked'",
+      width: 1630,
+      height: 912,
     },
     caseStudy: true,
     link: { label: "Live site", href: "https://passionnailstoronto.ca" },
@@ -404,8 +419,8 @@ export function monthOf(date: string): string {
   return `${MONTHS[month! - 1]} ${year}`;
 }
 
-/** The home page: the two strongest, then Reboot (PLAN 15.5). */
-export const homeProjects = ["ripple", "shufflr", "reboot"].map((slug) => projectBySlug(slug)!);
+/** The home page (revision 8): Reboot, then Passion Nails (a live product), then Shufflr. Ripple stays on /work. */
+export const homeProjects = ["passion-nails", "reboot", "shufflr"].map((slug) => projectBySlug(slug)!);
 
 /** /work (PLAN 14.6, 15.16): hackathon wins, then selected projects, in my own order. */
 const pick = (slugs: string[]) => slugs.map((slug) => projectBySlug(slug)!);

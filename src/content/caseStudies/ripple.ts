@@ -558,7 +558,7 @@ export const ripple: CaseStudy = {
       },
     },
   ],
-  next: "shufflr",
+  next: "maple-leaf-foods",
   draft: [
     "the competitor table rows (which tools the review covered)",
     "the criteria table ticks, judged from the two criteria in the old copy",

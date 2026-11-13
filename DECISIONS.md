@@ -860,3 +860,48 @@ Lucas's notes after revision 4, with his Q&A answers. PLAN.md Part 14 is the spe
 - **SolarScore clip.** The demo is 2:13 of the team talking with product shots between; the 29 s
   of full-screen product (landing, address, emailed report, satellite outline) at double speed
   makes a 14 s, 1.9 MB loop.
+
+### Revision 9: Passion Nails, one look and Caleb's economy (2026-11-12 night)
+- **Why the two apps looked different.** Checked rather than assumed: Google Fonts ships Vietnamese
+  cuts of both salon faces; the salon's files were subset to Latin, and the staff app had been
+  given system fonts instead. No reason survived, so the staff app now uses the site's fonts
+  (9 KB Vietnamese cuts behind `unicode-range`), colours and shapes. The earlier note that Zalando
+  Sans Expanded "has no Vietnamese" measured only the subset file and was wrong.
+- **Caleb Wu's RevisionDojo, read again for economy.** His headlines are 4 to 8 words, sentence
+  case, often not "I" ("Students navigate mountains of content."); bodies are one or two sentences
+  (~30 words) with the number inline ("6/30 subjects", "24 relevant results, not hundreds");
+  captions are 3 to 6 words; the figure takes most of each screen and makes the point alone; the
+  tone is casual ("ridiculously hard", "many, many, many"). Passion Nails now follows that: 20
+  blocks (was 27), quotes, anatomy points and the word table cut to three, the role and brief lists
+  folded into the header, buffer and push decisions cut (least decision-changing). The first-person
+  headline test now skips Passion Nails; a length test holds it to 13 words a headline, 60 a body.
+- **Phone frames.** Today's screens fill the display and the status bar lies on top, as on a phone.
+  The emulated safe area pushes the app's own header under the clock; the site gets Safari's cream
+  band drawn in. A `?v=9` on the media URLs stops Next's image cache serving re-shot files stale.
+- **Films with controls.** Muted autoplay in view stays (the reader sees motion without asking),
+  plus pause and a scrubber; a pause holds until play. Paced at about half the old speed with a tap
+  dot, so a screen can be read without pausing. One film per section, never two side by side.
+- **Glosses.** English on hover, keyboard focus or tap, as a small ink label; screen readers get it
+  inline in brackets, and the CSS label has empty alt text so it isn't read twice.
+
+### Revision 10: Passion Nails in English too, measured, zoomable (2026-11-12 night)
+- **Pale yellow in the films** was the encode, not the app: screencast JPEGs are full-range BT.601,
+  and an untagged full-range H.264 is decoded as limited-range BT.709, which lifts cream toward pale
+  yellow. Encoded as tagged BT.709 limited range, the film's cream reads 242,235,220 against the
+  still's 244,235,224 in Edge (chroma subsampling makes up the rest).
+- **English twins.** One page-wide setting rather than a tab per figure that forgets: readers who
+  pick English once want every screen in English. Vietnamese stays first (it's the real product).
+  Images keep both languages loaded and cross-fade; films swap their source. The anatomy and the
+  language switch stay Vietnamese: their point is the Vietnamese.
+- **Annotations** are placed from the image itself (the plus spans 80 to 95 % across and 81 to 89 %
+  down, so its point is 95 / 85), not guessed. Point 2 had pointed at a card, not the chip row.
+- **Measurements, Figma's way.** Figma's measure (Alt / Option hover) draws a red line with the
+  distance; Dev Mode tints padding. Here: 1 px #f24822 lines with end ticks, white-on-red value
+  pills, padding tinted red. Values are the staff app's, measured on the salon's /design page at its
+  17 px root, and placed by CSS against the specimen's own box. Each component shows as built
+  beside measured, and a switch hides the lines (as asked: both).
+- **Zoom on phones.** A figure opens full screen at its 1100 px desktop width, fitted to the screen,
+  with − / + steps and native pinch and pan, rather than a horizontal scroll inside the page.
+  Films get a full-screen button (the video element itself on iPhone, the only thing iOS allows).
+- **Wrapped pills** found by `scripts/pills.mjs`: Shufflr's and Ripple's diagram chips wrapped on
+  phones and bulged; a wrapping chip now has a fixed 16 px corner and 14 px text.

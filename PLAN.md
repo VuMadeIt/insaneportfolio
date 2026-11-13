@@ -1299,3 +1299,138 @@ Branch `phase/16-revision-5` (continues it). Answers from the Q&A are recorded i
   (`feat/36`), shot by `scripts/passion-nails-shots.mjs`.
 - New visual `switch`: the same phone screens in two to five states (language, before and after,
   booking steps), cross-faded by a segmented control.
+
+### 15.23 Revision 8 (Lucas, 2026-11-12; branch `phase/revision-8`)
+- **Home:** Reboot, Passion Nails, Shufflr. Ripple stays first in /work's wins and joins the next-project
+  chain (Reboot, Passion Nails, Shufflr, Ripple, Maple Leaf).
+- **Passion Nails cover:** Lucas's walkthrough of the live site (`~/Videos/pnails.mp4`) cut to the
+  highlights (dead air out, cursor-only stretches 2.5x, motion 1.5x) on a soft mauve frame like
+  Reboot's (`scripts/passion-nails-cover.py`). Privacy: autofill popups patched, the typed number
+  blurred, the browser link bar cropped. Used for the row and the case-study hero.
+- **Shufflr:** the shuffle plays as a looping video (no scroll scrub), followed by its design decisions.
+- **Switches** fit one screen with their tabs and note; while on screen the active tab fills and steps
+  on until a tab is picked. No caption tells the reader to switch.
+- **Passion Nails copy:** no overnight or one-day framing. It says I made a design system (Astryx's
+  token architecture, two themes; specimen at `/design` in the salon repo) and a live product used
+  daily, and about 4 hours a week back for my mom, given as her estimate.
+
+### 15.24 Revision 9 (Lucas, 2026-11-12 night; branch `phase/revision-8`, salon `feat/37-design-system`)
+Done in this session (see commits): switch has tabs only (no arrows); status bar and home indicator
+are transparent overlays on the screen; annotations are a thin leader line (no ring); one version
+title per group of phones instead of a pill on each; one phone size everywhere; the paired insights
+share a height; the outcome stats are what 4 hours a week adds up to.
+
+To do next (a fresh session; read this list as the brief):
+1. **One look for both apps.** There is one real reason the staff app differs: the site's display
+   font (Zalando Sans Expanded) is a Latin-only cut with no Vietnamese letters (measured), so the
+   staff app uses system fonts. Everything else should match the site, above all the reviews
+   section: sharp, square cards with a black hairline, soft pill buttons, black, white and the brown.
+   Restyle the salon's staff theme to that (keep 17px, 48px+ targets, system type), re-shoot with
+   `scripts/passion-nails-seed.mjs` + `scripts/passion-nails-shots.mjs`, and say the font reason
+   explicitly on the case study. Astryx stays as the token architecture, not a second look.
+2. **Write like Caleb Wu** (calebwu.ca/RevisionDojo): study how his figures carry the story with few
+   words, his tone and sentence length, then cut the Passion Nails copy hard. Headlines carry the
+   story, a line or two under each, the figure does the rest. Two or three examples per point, not
+   six (the quotes, the Southern/Northern table, the anatomy points).
+3. **Vietnamese the reader can follow:** every Vietnamese word on the page gets its English on hover
+   or tap (a small popover), and the language story is told as it happened: the first build was
+   machine-translated, so it came out Southern; walking the techs through the real MVP, again and
+   again, showed the Hanoi words they use, and that nail words (manicure, pedicure, shellac) stay in
+   English in either language, across the whole app.
+4. **Video wherever a section is about doing something** (one video per section, not several at
+   once), with play/pause and a scrubber, played slower than now so a reader can read the screen.
+   Add a landscape phone filming the By-tech timeline with a full mock day for every tech.
+5. **Design system section redone like a real company's docs**, with hierarchy: colour, type, shape
+   (cards square, buttons soft), components, and the two-app rule above. Keep the "same components,
+   same tokens" comparison. Cut anything that does not change a decision.
+6. Think as the hiring manager reading 50 case studies: the gist in the first screen, figures that
+   explain themselves, proof it shipped and is used.
+
+### 15.25 Revision 9, done (2026-11-12 night; portfolio `phase/revision-8`, salon `feat/38-one-look` from `feat/37-design-system`)
+- **The font reason in 15.24 was wrong.** Google Fonts ships a Vietnamese cut of both Zalando Sans
+  Expanded and Hanken Grotesk; only the salon's own files were subset to Latin. So there was no real
+  reason for a second look. The salon now serves each face's 9 KB Vietnamese cut behind a
+  `unicode-range` (the English site never fetches it) and the staff app uses the site's fonts,
+  colours and shapes. The staff theme changes only sizes (17 px, 48 px+) and button case.
+- **Shape rule, both apps:** what you read is square with an ink hairline (cards, sheets, notices,
+  badges, like the reviews), what you tap is round (pill buttons, chips, segmented; 12 px fields and
+  tiles). No card shadows.
+- **Screens** are shot full height (393 x 852) with the iPhone safe areas emulated
+  (`Emulation.setSafeAreaInsetsOverride`), so the status bar and home indicator lie see-through on
+  the screen (`Phone` `full`). The first builds keep their 390 x 756 shots between drawn bars. Media
+  URLs carry `?v=9` (`mediaRev.ts`, allowed in `next.config.ts`): re-shooting under the same names had
+  left old screens in Next's image cache, the real cause of the "white status bar".
+- **Films** (`Film`): play while on screen, pause and a scrubber, a tap dot, about half the old pace.
+  One per section: adding a walk-in, booking online, and the sideways By-tech day (a 28-booking seed).
+- **Copy** in Caleb's economy: 27 blocks to 20, headlines of 13 words or fewer, bodies of 60 or fewer
+  (a test holds both), two or three examples per point. Vietnamese words are `[[vi|en]]` and show
+  their English on hover, focus or tap (`Gloss`).
+- **Design system** is a docs figure (`System`): colour, type (the Latin cut against the Vietnamese
+  cut, missing letters in burgundy), shape; then the side-by-side specimen.
+
+### 15.26 Revision 10 (Lucas, 2026-11-12 night; same branches)
+- Every staff screen and film has an English twin, behind Tiếng Việt / English tabs on each figure
+  (one page-wide setting, Vietnamese first). The anatomy and the language switch stay as they are:
+  they are about the Vietnamese itself.
+- Films are encoded as tagged BT.709, so the app's cream (#f4ebdf) matches the stills (the old
+  full-range encode washed it to pale yellow). Films get a full-screen button; figures a phone
+  can't read get "Zoom in" (full screen at desktop width, − / + and pinch).
+- Copy says who the techs are (mostly over 40, immigrants, new to smartphones) and that this is why
+  their controls are bigger than the customer site's.
+- The design system measures its components the way Figma does (red lines, red value pills, red
+  tinted padding): each one as built beside the same one measured, a spacing scale, and a switch to
+  hide the measurements.
+
+### 15.27 Case-study playbook (from Lucas's Passion Nails reviews, 15.23 to 15.26). Apply to Shufflr, Ripple and Reboot next
+Shared components already carry some of this to every case study: film controls (pause, scrubber,
+full screen) on any video, "Zoom in" on figures for phones, glosses, the phone frame. The rest is
+per study. Work through it in this order, then screenshot every section at 1440 and 390
+(`PORT=3100 node scripts/sections.mjs <slug>`, `VIEW=390x844`) and look at each one.
+
+**Reading time (the hiring manager reads 50 of these)**
+1. The gist is on the first screen: a two-sentence summary, the meta row, the hero film.
+2. Caleb Wu's economy: headlines of 13 words or fewer, a body of one or two sentences (60 words or
+   fewer), captions of 3 to 6 words, numbers inline. Extend the Passion Nails length test to the study.
+3. Two or three examples per point, never six (quotes, tables, annotated points, lists).
+4. Cut any block that doesn't change a decision. Fold "My role" and "The brief" into the header meta.
+5. Sound like a person: not every headline starts with "I"; casual where it's true; no em dashes.
+
+**Truth**
+6. Check a reason before writing it (the Passion Nails font story was wrong until it was checked).
+7. Say the user facts that drive the design, plainly, next to the decision they drive.
+8. Outcomes mean something: what the number adds up to (hours over five years, the wage it would
+   cost), never vanity counts (tests written, tabs removed).
+
+**Figures**
+9. One idea per figure; the figure makes the point alone. Paired figures end level.
+10. Video wherever a section is about doing something: one per section, never two side by side,
+    paced to read (about half real speed of a rushed demo), with a tap dot when it's a phone.
+    Encode BT.709 tagged (see `scripts/passion-nails-shots.mjs`) so colours match the page.
+11. Show a view that sells a feature better (the sideways By-tech day).
+12. Phones: one size on the page, a real iPhone frame, the status bar see-through on a full-height
+    screen. Version: one quiet title per group of phones, never a pill on each.
+13. Switches are tabs only: no arrows, no timers, no "tap to switch" caption.
+14. Annotations: a 1 px leader line, no ring, ending at the edge of its target; check each one on a
+    screenshot (measure the target in the image, don't guess).
+15. A product in another language gets twins and Tiếng Việt / English-style tabs.
+16. No off-palette colour anywhere, including inside videos.
+17. A design system is docs, with hierarchy: colour, type, shape, components measured Figma-style
+    (as built beside measured, a hide switch), spacing; then the side-by-side.
+
+**Phones and caches**
+18. At 390 nothing wraps inside a pill or chip, nothing scrolls sideways, every diagram has Zoom in.
+19. Re-shot media under the same names gets a new `?v=` (`mediaRev.ts` and `next.config.ts`), or
+    Next's image cache and browsers keep showing the old files.
+
+**Per study, as a starting list**
+- Shufflr: cut to Caleb's lengths; the shuffle film gets controls already; say who the 20+
+  interviewees were where it drives a decision; outcome as meaning (1st place, Most Practical).
+- Ripple: cut the water numbers to the two that drive the idea; Zoom in on the diagrams; check
+  every annotation; the Figma embed stays click-to-load.
+- Reboot: cut to the economy; one film per "doing" section if the Framer material has them; check
+  phone sizes against the rest of the site.
+
+### 15.28 Home order (Lucas, 2026-11-12 night)
+- Passion Nails leads: home shows Passion Nails, Reboot, Shufflr, and the next-project chain runs
+  Passion Nails, Reboot, Shufflr, Ripple, Maple Leaf (and back). Home titles size to their column
+  (container units) and never wrap, so no row grows taller than the others.

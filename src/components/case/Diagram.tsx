@@ -249,14 +249,17 @@ export function Diagram({ data }: { data: DiagramData }) {
       {n.sub && <span className="mt-1 block text-[13px] leading-[1.35] opacity-70">{n.sub}</span>}
     </div>
   );
+  // A chip that may wrap on a phone keeps a fixed 16 px corner: a pill on one line, a bubble on two
+  // (a full radius on two lines bulges).
+  const wrapChip = { whiteSpace: "normal", borderRadius: 16, fontSize: 14 } as const;
   const stackedNode = (id: string) => {
     const n = byId.get(id)!;
-    return node(n, n.tone === "chip" ? { whiteSpace: "normal", alignSelf: "flex-start" } : undefined);
+    return node(n, n.tone === "chip" ? { ...wrapChip, alignSelf: "flex-start" } : undefined);
   };
   /** Sources or results of one box flow like words: chips as they are, boxes 150 px and up. */
   const groupedNode = (id: string) => {
     const n = byId.get(id)!;
-    return node(n, n.tone === "chip" ? { whiteSpace: "normal", flex: "0 1 auto" } : { flex: "1 1 150px" });
+    return node(n, n.tone === "chip" ? { ...wrapChip, flex: "0 1 auto" } : { flex: "1 1 150px" });
   };
 
   /**

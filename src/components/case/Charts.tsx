@@ -3,7 +3,7 @@
 import Image from "next/image";
 import { useState } from "react";
 import type { Shot, Visual } from "@/content/caseStudies/types";
-import { Phone, PHONE_RATIO, PhoneTag } from "./Phone";
+import { groupTitle, Phone, PHONE_RATIO, PhoneTitle, phoneWidth } from "./Phone";
 import { useInView } from "./useInView";
 
 type Of<K extends Visual["kind"]> = Extract<Visual, { kind: K }>;
@@ -245,17 +245,13 @@ export function Anatomy({ v }: { v: Of<"anatomy"> }) {
           return (
             <span key={p.title} className="absolute inset-x-0 h-0" style={{ top: `${p.y}%` }}>
               <span
-                className={`absolute h-[1.5px] -translate-y-1/2 transition-colors duration-300 ${hot ? "bg-[var(--accent)]" : "bg-ink/60"}`}
-                // The line stops at the ring, so nothing crosses the thing it points at.
+                className={`absolute h-px -translate-y-1/2 transition-colors duration-300 ${hot ? "bg-[var(--accent)]" : "bg-ink/50"}`}
+                // The line stops just short of the spot, so nothing covers the thing it points at.
                 style={
                   left
-                    ? { left: "var(--lead)", right: `calc(${100 - p.x}% + 12px)` }
-                    : { left: `calc(${p.x}% + 12px)`, right: "var(--lead)" }
+                    ? { left: "var(--lead)", right: `calc(${100 - p.x}% + 4px)` }
+                    : { left: `calc(${p.x}% + 4px)`, right: "var(--lead)" }
                 }
-              />
-              <span
-                className="absolute size-5 -translate-x-1/2 -translate-y-1/2 rounded-full border-2 border-[var(--accent)] shadow-[0_0_0_2px_rgb(255_255_255/0.9)]"
-                style={{ left: `${p.x}%` }}
               />
               <span
                 className={`absolute flex size-7 -translate-y-1/2 items-center justify-center rounded-full text-[13px] text-white transition-[background-color,transform] duration-300 ${tone} ${hot ? "scale-110" : ""}`}
@@ -273,13 +269,13 @@ export function Anatomy({ v }: { v: Of<"anatomy"> }) {
     <div className="grid items-center gap-10 @xl:grid-cols-[minmax(0,0.9fr)_minmax(0,1fr)]">
       <div
         className="mx-auto w-full px-[60px] [--lead:-48px]"
-        style={{ maxWidth: `calc(min(${v.image.frame ? 340 : v.image.width}px, 70vh * ${ratio}) + 120px)` }}
+        style={{
+          maxWidth: v.image.frame
+            ? `calc(${phoneWidth(1, PHONE_RATIO)} + 120px)`
+            : `calc(min(${v.image.width}px, 70vh * ${ratio}) + 120px)`,
+        }}
       >
-        {v.image.label && (
-          <div className="mb-4 flex justify-center">
-            <PhoneTag label={v.image.label} />
-          </div>
-        )}
+        {v.image.label && <PhoneTitle label={v.image.label} />}
         {v.image.frame ? (
           <Phone {...v.image.frame} className="w-full">
             {img}
@@ -315,32 +311,10 @@ export function Anatomy({ v }: { v: Of<"anatomy"> }) {
 
 /**
  * Phone screens in two to five states; the switch cross-fades them in place, so nothing jumps.
- * Screens are sized to the window so the tabs, screens and note fit in one view. Arrows either side
- * step through the states (and say so by being there); the tabs jump to one.
+ * Screens are sized to the window so the tabs, screens and note fit in one view.
  */
 export function Switch({ v }: { v: Of<"switch"> }) {
   const [on, setOn] = useState(0);
-  const n = v.options.length;
-  const step = (d: number) => setOn((on + d + n) % n);
-  const arrow = (d: number) => (
-    <button
-      type="button"
-      onClick={() => step(d)}
-      aria-label={`${d < 0 ? "Previous" : "Next"}: ${v.options[(on + d + n) % n]!.label}`}
-      className="flex size-11 shrink-0 items-center justify-center rounded-full bg-white text-ink shadow-[inset_0_0_0_1px_rgb(0_0_0/0.14),0_2px_8px_rgb(0_0_0/0.08)] transition-transform duration-300 hover:scale-105 active:scale-95"
-    >
-      <svg aria-hidden viewBox="0 0 16 16" className={`size-4 ${d < 0 ? "rotate-180" : ""}`}>
-        <path
-          d="M6 3l5 5-5 5"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="1.8"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        />
-      </svg>
-    </button>
-  );
   return (
     <div>
       <div
@@ -360,27 +334,29 @@ export function Switch({ v }: { v: Of<"switch"> }) {
           </button>
         ))}
       </div>
-      <div className="mt-6 flex items-center justify-center gap-[clamp(8px,2cqi,24px)]">
-        {arrow(-1)}
-        <div className="grid min-w-0 flex-1">
-          {v.options.map((o, i) => (
+      <div className="mt-6 grid">
+        {v.options.map((o, i) => {
+          const shared = groupTitle(o.images);
+          return (
             <div
               key={o.label}
               aria-hidden={on !== i}
-              className={`flex items-end justify-center gap-[clamp(12px,3cqi,40px)] transition-[opacity,transform] duration-500 ease-[var(--ease-out)] [grid-area:1/1] ${on === i ? "" : "pointer-events-none translate-y-2 opacity-0"}`}
+              className={`flex flex-col items-center gap-4 transition-[opacity,transform] duration-500 ease-[var(--ease-out)] [grid-area:1/1] ${on === i ? "" : "pointer-events-none translate-y-2 opacity-0"}`}
             >
-              {o.images.map((m) => (
-                <Screen
-                  key={m.src}
-                  m={m}
-                  // 300px: the tabs, the note and the panel's padding.
-                  width={`min(320px, calc((100cqi - 120px - ${o.images.length - 1} * clamp(12px, 3cqi, 40px)) / ${o.images.length}), calc(max(260px, 100svh - 300px) * ${m.frame ? PHONE_RATIO : m.width / m.height}))`}
-                />
-              ))}
+              {shared && <PhoneTitle label={shared} />}
+              <div className="flex items-end justify-center gap-[clamp(16px,4cqi,56px)]">
+                {o.images.map((m) => (
+                  <Screen
+                    key={m.src}
+                    m={m}
+                    title={shared ? undefined : m.label}
+                    width={phoneWidth(o.images.length, m.frame ? PHONE_RATIO : m.width / m.height)}
+                  />
+                ))}
+              </div>
             </div>
-          ))}
-        </div>
-        {arrow(1)}
+          );
+        })}
       </div>
       <p
         aria-live="polite"
@@ -393,7 +369,7 @@ export function Switch({ v }: { v: Of<"switch"> }) {
 }
 
 /** One screen: in an iPhone frame (with its version tag) when it has one, else a rounded shot. */
-function Screen({ m, width }: { m: Shot; width: string }) {
+function Screen({ m, width, title }: { m: Shot; width: string; title?: string }) {
   const img = (
     <Image
       src={m.src}
@@ -406,7 +382,7 @@ function Screen({ m, width }: { m: Shot; width: string }) {
   );
   return (
     <div className="flex min-w-0 flex-col items-center gap-4" style={{ width }}>
-      {m.label && <PhoneTag label={m.label} />}
+      {title && <PhoneTitle label={title} />}
       {m.frame ? (
         <Phone {...m.frame} className="w-full">
           {img}

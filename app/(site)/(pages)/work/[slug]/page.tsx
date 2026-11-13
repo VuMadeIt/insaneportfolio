@@ -75,12 +75,17 @@ function Text({ block }: { block: Block }) {
   );
 }
 
-function Figure({ block }: { block: Block }) {
+function Figure({ block, fill = false }: { block: Block; fill?: boolean }) {
   if (!block.visual) return null;
   const panel = PANELLED.has(block.visual.kind);
   return (
-    <figure className={`mt-10 ${STAGGERED.has(block.visual.kind) ? "" : "reveal"}`}>
-      <div className={`@container ${panel ? "rounded-lg bg-panel p-[clamp(16px,3vw,48px)]" : ""}`}>
+    <figure
+      className={`mt-10 ${fill ? "flex flex-col" : ""} ${STAGGERED.has(block.visual.kind) ? "" : "reveal"}`}
+    >
+      {/* In a pair both figures fill the row, so the two panels end level. */}
+      <div
+        className={`@container ${panel ? "rounded-lg bg-panel p-[clamp(16px,3vw,48px)]" : ""} ${fill ? "grid flex-1 content-center" : ""}`}
+      >
         <Visual visual={block.visual} />
       </div>
       {block.caption && (
@@ -100,11 +105,17 @@ function BlockView({ blocks }: { blocks: Block[] }) {
       aria-labelledby={`${blocks[0]!.id}-title`}
       className="case-block scroll-mt-28 px-[var(--gutter)] py-[clamp(56px,9vh,104px)]"
     >
-      <div className={`mx-auto max-w-[1400px] ${pair ? "grid gap-12 md:grid-cols-2" : ""}`}>
+      <div
+        className={`mx-auto max-w-[1400px] ${pair ? "grid gap-x-12 gap-y-12 md:grid-cols-2 md:grid-rows-[auto_1fr] md:gap-y-0" : ""}`}
+      >
         {blocks.map((b) => (
-          <div key={b.id} id={b === blocks[0] ? undefined : b.id} className="min-w-0">
+          <div
+            key={b.id}
+            id={b === blocks[0] ? undefined : b.id}
+            className={`min-w-0 ${pair ? "md:row-span-2 md:grid md:grid-rows-subgrid" : ""}`}
+          >
             <Text block={b} />
-            <Figure block={b} />
+            <Figure block={b} fill={pair} />
           </div>
         ))}
       </div>

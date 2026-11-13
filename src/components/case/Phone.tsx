@@ -72,38 +72,43 @@ function StatusIcons({ color }: { color: string }) {
 /** Outer width over height of the framed phone (screen 390 x 844 with its bars, plus the bezel). */
 export const PHONE_RATIO = 0.478;
 
-/** A row of framed phones, each with an optional version tag, sized so the row fits one screen. */
-export function PhoneRow({ phones, max = 300 }: { phones: Media[]; max?: number }) {
+/** Every phone on the page is this wide, unless a row of n or the window's height needs it smaller. */
+export const phoneWidth = (n: number, ratio = PHONE_RATIO, gap = "clamp(16px, 4cqi, 56px)") =>
+  `min(280px, calc((100cqi - ${n - 1} * ${gap}) / ${n}), calc(max(260px, 100svh - 300px) * ${ratio}))`;
+
+/** One title for a group of screens from the same build; mixed groups title each screen. */
+export const groupTitle = (shots: { label?: string }[]) => {
+  const labels = new Set(shots.map((s) => s.label));
+  return labels.size === 1 ? [...labels][0] : undefined;
+};
+
+/** A row of framed phones, sized like every other phone on the page. */
+export function PhoneRow({ phones }: { phones: Media[] }) {
   const n = phones.length;
   const gap = "clamp(16px, 4cqi, 56px)";
+  const shared = groupTitle(phones);
   return (
-    <div className="flex items-end justify-center" style={{ gap }}>
-      {phones.map((m) => (
-        <figure
-          key={m.alt}
-          className="flex min-w-0 flex-col items-center gap-4"
-          style={{
-            width: `min(${max}px, calc((100cqi - ${n - 1} * ${gap}) / ${n}), calc(max(260px, 100svh - 300px) * ${PHONE_RATIO}))`,
-          }}
-        >
-          {m.label && <PhoneTag label={m.label} />}
-          <Phone {...m.frame} className="w-full">
-            <ExhibitMedia media={m} sizes={`${max}px`} bare />
-          </Phone>
-        </figure>
-      ))}
+    <div className="flex flex-col items-center gap-5">
+      {shared && <PhoneTitle label={shared} />}
+      <div className="flex items-end justify-center" style={{ gap }}>
+        {phones.map((m) => (
+          <figure
+            key={m.alt}
+            className="flex min-w-0 flex-col items-center gap-4"
+            style={{ width: phoneWidth(n) }}
+          >
+            {!shared && m.label && <PhoneTitle label={m.label} />}
+            <Phone {...m.frame} className="w-full">
+              <ExhibitMedia media={m} sizes="280px" bare />
+            </Phone>
+          </figure>
+        ))}
+      </div>
     </div>
   );
 }
 
-/** Which version a screen is from, set above the phone so it is read before the screen. */
-export function PhoneTag({ label }: { label: string }) {
-  const now = label === "Now";
-  return (
-    <span
-      className={`rounded-full px-3 py-1 text-[13px] leading-none tracking-[0.01em] ${now ? "bg-ink text-wall" : "bg-white text-ink shadow-[inset_0_0_0_1px_rgb(0_0_0/0.18)]"}`}
-    >
-      {label}
-    </span>
-  );
+/** Which build a screen is from: a quiet title above it. */
+export function PhoneTitle({ label }: { label: string }) {
+  return <p className="text-center text-[15px] leading-none text-muted">{label}</p>;
 }

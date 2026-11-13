@@ -196,7 +196,7 @@ export const passionNails: CaseStudy = {
         ),
         points: [
           {
-            x: 37,
+            x: 13,
             y: 10,
             title: "English inside the Vietnamese",
             text: "The days read S, M, T, W, and dates read 'Wed Nov 11'. Single letters are unclear in any language.",
@@ -208,7 +208,7 @@ export const passionNails: CaseStudy = {
             text: "The staff filter ran off the edge with no hint, so Alex wasn't on the screen at all.",
           },
           {
-            x: 16,
+            x: 10.5,
             y: 48,
             title: "Small grey times",
             text: "End times and services were small and mid-grey: hard to read with reading glasses.",
@@ -221,7 +221,7 @@ export const passionNails: CaseStudy = {
           },
           {
             x: 30,
-            y: 96,
+            y: 91.5,
             title: "Five tabs, wrapping",
             text: "In Vietnamese the tab names broke onto two lines, and 'Away' used a person icon.",
           },
@@ -258,8 +258,6 @@ export const passionNails: CaseStudy = {
         rows: [
           { label: "Late", cells: ["trễ", "muộn"] },
           { label: "Move", cells: ["dời", "chuyển"] },
-          { label: "Tap", cells: ["bấm", "nhấn"] },
-          { label: "The salon", cells: ["tiệm", "cửa hàng"] },
           { label: "Wednesday 11", cells: ["W 11", "T4 11"], ours: true },
         ],
       },
@@ -728,12 +726,14 @@ export const passionNails: CaseStudy = {
       visual: {
         kind: "stats",
         stats: [
+          { value: "1,040", text: "hours back over five years, at her estimate of four a week." },
+          { value: "130", text: "eight-hour days: half a working year she isn't on the phone." },
           {
-            value: "4 hrs",
-            text: "a week back for my mom, by her estimate: calls, texts, the appointment book.",
+            value: "$18.7k",
+            text: "what those hours would cost a hire at Ontario's minimum wage of $17.95, before payroll costs.",
+            source: "Ontario",
+            href: "https://www.ontario.ca/document/your-guide-employment-standards-act-0/minimum-wage",
           },
-          { value: "108", text: "automated tests, from double bookings to every text fitting in one SMS." },
-          { value: "3", text: "tabs in the staff app, down from five." },
         ],
       },
     },

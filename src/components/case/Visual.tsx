@@ -12,8 +12,8 @@ import { useInView } from "./useInView";
 /** A number that counts up from zero once on screen; the prefix and suffix ($, %, mL) stay put. */
 function Counter({ value }: { value: string }) {
   const [ref, inView] = useInView<HTMLSpanElement>();
-  const [, before, num = "0", after] = value.match(/^([^\d]*)([\d.]+)(.*)$/) ?? [];
-  const target = Number(num);
+  const [, before, num = "0", after] = value.match(/^([^\d]*)([\d.,]+)(.*)$/) ?? [];
+  const target = Number(num.replace(/,/g, ""));
   const decimals = num.split(".")[1]?.length ?? 0;
   const [shown, setShown] = useState(target);
   useEffect(() => {
@@ -32,7 +32,7 @@ function Counter({ value }: { value: string }) {
     <span ref={ref} aria-label={value} className="tabular-nums">
       <span aria-hidden>
         {before}
-        {shown.toFixed(decimals)}
+        {shown.toLocaleString("en-US", { minimumFractionDigits: decimals, maximumFractionDigits: decimals })}
         {after}
       </span>
     </span>

@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { useState } from "react";
 import type { Shot, Visual } from "@/content/caseStudies/types";
+import { Rich } from "./Gloss";
 import { groupTitle, Phone, PHONE_RATIO, PhoneTitle, phoneWidth } from "./Phone";
 import { useInView } from "./useInView";
 
@@ -151,7 +152,7 @@ const Dash = () => (
  * screens get the same facts as one short list per product, so nothing scrolls sideways.
  */
 export function Table({ v }: { v: Of<"table"> }) {
-  const cell = (c: boolean | string) => (c === true ? <Check /> : c === false ? <Dash /> : c);
+  const cell = (c: boolean | string) => (c === true ? <Check /> : c === false ? <Dash /> : <Rich text={c} />);
   return (
     <>
       <ul className="flex flex-col gap-3 text-[15px] @3xl:hidden">
@@ -268,7 +269,7 @@ export function Anatomy({ v }: { v: Of<"anatomy"> }) {
   return (
     <div className="grid items-center gap-10 @xl:grid-cols-[minmax(0,0.9fr)_minmax(0,1fr)]">
       <div
-        className="mx-auto w-full px-[60px] [--lead:-48px]"
+        className="mx-auto flex w-full flex-col gap-4 px-[60px] [--lead:-48px]"
         style={{
           maxWidth: v.image.frame
             ? `calc(${phoneWidth(1, PHONE_RATIO)} + 120px)`
@@ -300,7 +301,9 @@ export function Anatomy({ v }: { v: Of<"anatomy"> }) {
             </span>
             <div>
               <h3 className="text-[19px] leading-[1.25]">{p.title}</h3>
-              <p className="mt-1 text-[16px] leading-[1.5]">{p.text}</p>
+              <p className="mt-1 text-[16px] leading-[1.5]">
+                <Rich text={p.text} />
+              </p>
             </div>
           </li>
         ))}
@@ -362,7 +365,7 @@ export function Switch({ v }: { v: Of<"switch"> }) {
         aria-live="polite"
         className="mx-auto mt-6 max-w-[34em] text-center text-[15px] leading-[1.5] text-muted"
       >
-        {v.options[on]!.note}
+        <Rich text={v.options[on]!.note} />
       </p>
     </div>
   );
@@ -404,7 +407,9 @@ export function Compare({ v }: { v: Of<"compare"> }) {
           <h3 className="text-[20px] leading-[1.2]">{c.title}</h3>
           <ul className="mt-4 flex flex-col gap-2.5 text-[16px] leading-[1.45]">
             {c.items.map((x) => (
-              <li key={x}>{x}</li>
+              <li key={x}>
+                <Rich text={x} />
+              </li>
             ))}
           </ul>
         </div>

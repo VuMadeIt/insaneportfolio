@@ -6,7 +6,9 @@ import type { Stat, Visual as VisualData } from "@/content/caseStudies/types";
 import { ExhibitMedia } from "../ExhibitMedia";
 import { Anatomy, Bars, Brief, Compare, Podium, Switch, Table } from "./Charts";
 import { Diagram } from "./Diagram";
+import { Rich } from "./Gloss";
 import { PhoneRow } from "./Phone";
+import { System } from "./System";
 import { useInView } from "./useInView";
 
 /** A number that counts up from zero once on screen; the prefix and suffix ($, %, mL) stay put. */
@@ -188,6 +190,8 @@ export function Visual({ visual }: { visual: VisualData }) {
       return <Compare v={visual} />;
     case "switch":
       return <Switch v={visual} />;
+    case "system":
+      return <System v={visual} />;
     case "cards":
       return (
         <dl className="grid gap-4 @xl:grid-cols-3">
@@ -249,7 +253,9 @@ export function Visual({ visual }: { visual: VisualData }) {
                 className="mt-[0.7em] h-[2px] w-5 shrink-0"
                 style={{ background: "var(--metal)" }}
               />
-              {item}
+              <span>
+                <Rich text={item} />
+              </span>
             </li>
           ))}
         </ul>

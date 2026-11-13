@@ -1,17 +1,21 @@
 import type { ReactNode } from "react";
 import type { Media } from "@/content/projects";
 import { ExhibitMedia } from "../ExhibitMedia";
+import { Film } from "./Film";
 
 /**
- * An iPhone 15 (393 x 852 pt) around a screen shot at 390 x 756: the status bar and the home
- * indicator are drawn here, in the app's own top and bottom colours, so nothing on the screen sits
- * under the Dynamic Island. Proportions are Apple's; it scales with its width (container units).
+ * An iPhone 15 (393 x 852 pt). A `full` screen fills the display and the status bar and home
+ * indicator lie see-through on top, as on the phone (shots taken with the safe areas emulated). Older
+ * shots (390 x 756, the first builds) sit between drawn bars in the app's own top and bottom colours.
+ * Proportions are Apple's; it scales with its width (container units). `sideways` turns it to landscape.
  */
 export function Phone({
   children,
   top = "#ffffff",
   bottom = "#ffffff",
   dark = false,
+  full = false,
+  sideways = false,
   className = "",
 }: {
   children: ReactNode;
@@ -20,37 +24,76 @@ export function Phone({
   bottom?: string;
   /** Light status-bar text, over a dark or dimmed top. */
   dark?: boolean;
+  full?: boolean;
+  sideways?: boolean;
   className?: string;
 }) {
   const ink = dark ? "#fff" : "#0b0b0c";
-  return (
-    <div
-      className={`phone relative rounded-[15.5%/7.2%] bg-[#0b0b0c] p-[3.4%] shadow-[0_0_0_1.5px_#4a4a4e,0_0_0_3px_#1b1b1d,0_24px_48px_-16px_rgb(0_0_0/0.45)] [container-type:inline-size] ${className}`}
-    >
-      <div className="flex flex-col">
-        <div
-          className="relative flex items-center justify-between rounded-t-[13.5cqi] px-[8cqi] pt-[1.6cqi] text-[4.3cqi] font-semibold"
-          style={{ background: top, color: ink, aspectRatio: "393 / 54" }}
-        >
-          <span className="w-[16cqi] text-center tracking-[-0.02em]">9:41</span>
+  const shell =
+    "phone relative bg-[#0b0b0c] shadow-[0_0_0_1.5px_#4a4a4e,0_0_0_3px_#1b1b1d,0_24px_48px_-16px_rgb(0_0_0/0.45)] [container-type:inline-size]";
+  if (sideways)
+    // Landscape: no status bar (iOS hides it), the Dynamic Island on the left, a shorter home bar.
+    return (
+      <div className={`${shell} rounded-[7.2%/15.5%] p-[1.63%] ${className}`}>
+        <div className="relative overflow-hidden rounded-[6.2cqi]">
+          {children}
           <span
             aria-hidden
-            className="absolute left-1/2 top-[3cqi] h-[9.4cqi] w-[31cqi] -translate-x-1/2 rounded-full bg-black"
+            className="absolute left-[1.4cqi] top-1/2 h-[14.3cqi] w-[4.3cqi] -translate-y-1/2 rounded-full bg-black"
           />
-          <StatusIcons color={ink} />
-        </div>
-        {children}
-        <div
-          className="flex items-end justify-center rounded-b-[13.5cqi] pb-[2.2cqi]"
-          style={{ background: bottom, aspectRatio: "393 / 34" }}
-        >
           <span
             aria-hidden
-            className="h-[1.3cqi] w-[34cqi] rounded-full"
-            style={{ background: dark ? "#fff" : "#0b0b0c" }}
+            className="absolute bottom-[1cqi] left-1/2 h-[0.6cqi] w-[24cqi] -translate-x-1/2 rounded-full bg-[#0b0b0c]"
           />
         </div>
       </div>
+    );
+  const bar = (
+    <>
+      <span className="w-[16cqi] text-center tracking-[-0.02em]">9:41</span>
+      <span
+        aria-hidden
+        className="absolute left-1/2 top-[3cqi] h-[9.4cqi] w-[31cqi] -translate-x-1/2 rounded-full bg-black"
+      />
+      <StatusIcons color={ink} />
+    </>
+  );
+  const home = <span aria-hidden className="h-[1.3cqi] w-[34cqi] rounded-full" style={{ background: ink }} />;
+  return (
+    <div className={`${shell} rounded-[15.5%/7.2%] p-[3.4%] ${className}`}>
+      {full ? (
+        <div className="relative overflow-hidden rounded-[13.5cqi]">
+          {children}
+          <div
+            className="absolute inset-x-0 top-0 flex items-center justify-between px-[8cqi] pt-[1.6cqi] text-[4.3cqi] font-semibold"
+            style={{ color: ink, aspectRatio: "393 / 54" }}
+          >
+            {bar}
+          </div>
+          <div
+            className="absolute inset-x-0 bottom-0 flex items-end justify-center pb-[2.2cqi]"
+            style={{ aspectRatio: "393 / 34" }}
+          >
+            {home}
+          </div>
+        </div>
+      ) : (
+        <div className="flex flex-col">
+          <div
+            className="relative flex items-center justify-between rounded-t-[13.5cqi] px-[8cqi] pt-[1.6cqi] text-[4.3cqi] font-semibold"
+            style={{ background: top, color: ink, aspectRatio: "393 / 54" }}
+          >
+            {bar}
+          </div>
+          {children}
+          <div
+            className="flex items-end justify-center rounded-b-[13.5cqi] pb-[2.2cqi]"
+            style={{ background: bottom, aspectRatio: "393 / 34" }}
+          >
+            {home}
+          </div>
+        </div>
+      )}
     </div>
   );
 }
@@ -69,8 +112,8 @@ function StatusIcons({ color }: { color: string }) {
   );
 }
 
-/** Outer width over height of the framed phone (screen 390 x 844 with its bars, plus the bezel). */
-export const PHONE_RATIO = 0.478;
+/** Outer width over height of the framed phone (a 393 x 852 screen plus the bezel). */
+export const PHONE_RATIO = 0.479;
 
 /** Every phone on the page is this wide, unless a row of n or the window's height needs it smaller. */
 export const phoneWidth = (n: number, ratio = PHONE_RATIO, gap = "clamp(16px, 4cqi, 56px)") =>
@@ -82,27 +125,44 @@ export const groupTitle = (shots: { label?: string }[]) => {
   return labels.size === 1 ? [...labels][0] : undefined;
 };
 
-/** A row of framed phones, sized like every other phone on the page. */
+/** A row of framed phones, sized like every other phone on the page; a film gets its controls. */
 export function PhoneRow({ phones }: { phones: Media[] }) {
   const n = phones.length;
   const gap = "clamp(16px, 4cqi, 56px)";
   const shared = groupTitle(phones);
+  const sideways = n === 1 && phones[0]!.width > phones[0]!.height;
   return (
     <div className="flex flex-col items-center gap-5">
       {shared && <PhoneTitle label={shared} />}
-      <div className="flex items-end justify-center" style={{ gap }}>
-        {phones.map((m) => (
-          <figure
-            key={m.alt}
-            className="flex min-w-0 flex-col items-center gap-4"
-            style={{ width: phoneWidth(n) }}
-          >
-            {!shared && m.label && <PhoneTitle label={m.label} />}
+      <div className="flex w-full items-end justify-center" style={{ gap }}>
+        {phones.map((m) => {
+          const screen = m.video ? (
+            <Film media={m} bare>
+              {(video) => (
+                <Phone {...m.frame} sideways={sideways} className="w-full">
+                  {video}
+                </Phone>
+              )}
+            </Film>
+          ) : (
             <Phone {...m.frame} className="w-full">
               <ExhibitMedia media={m} sizes="280px" bare />
             </Phone>
-          </figure>
-        ))}
+          );
+          return (
+            <figure
+              key={m.alt}
+              className="flex min-w-0 flex-col items-center gap-4"
+              // Sideways, it takes the row, but stays short enough to fit the window with its controls.
+              style={{
+                width: sideways ? `min(100%, 860px, calc((100svh - 260px) / ${PHONE_RATIO}))` : phoneWidth(n),
+              }}
+            >
+              {!shared && m.label && <PhoneTitle label={m.label} />}
+              {screen}
+            </figure>
+          );
+        })}
       </div>
     </div>
   );

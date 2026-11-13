@@ -9,6 +9,8 @@ export interface Frame {
   top: string;
   bottom: string;
   dark?: boolean;
+  /** Shot full height: the status bar and home indicator sit see-through on top of the screen. */
+  full?: boolean;
 }
 
 export interface Media {

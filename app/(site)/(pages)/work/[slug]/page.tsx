@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { Film } from "@/components/case/Film";
+import { Rich } from "@/components/case/Gloss";
 import { Visual } from "@/components/case/Visual";
 import { CONTACT } from "@/content/contact";
 import { ExhibitMedia } from "@/components/ExhibitMedia";
@@ -48,6 +50,7 @@ const PANELLED = new Set([
   "anatomy",
   "compare",
   "switch",
+  "system",
 ]);
 
 /** Visuals whose parts rise in one by one themselves; the others rise in as one figure. */
@@ -64,11 +67,11 @@ function Text({ block }: { block: Block }) {
         id={`${block.id}-title`}
         className="reveal mt-3 max-w-[26em] text-[clamp(24px,2.4vw,34px)] leading-[1.15]"
       >
-        {block.headline}
+        <Rich text={block.headline} />
       </h2>
       {block.body.map((b, k) => (
         <p key={k} className="reveal mt-4 max-w-[36em] leading-[1.55]">
-          {b}
+          <Rich text={b} />
         </p>
       ))}
     </div>
@@ -89,7 +92,9 @@ function Figure({ block, fill = false }: { block: Block; fill?: boolean }) {
         <Visual visual={block.visual} />
       </div>
       {block.caption && (
-        <figcaption className="mt-3 text-center text-[15px] text-muted">{block.caption}</figcaption>
+        <figcaption className="mt-3 text-center text-[15px] text-muted">
+          <Rich text={block.caption} />
+        </figcaption>
       )}
     </figure>
   );
@@ -176,7 +181,11 @@ export default async function CaseStudyPage({ params }: { params: Promise<{ slug
       {study.hero && (
         <div className="px-[var(--gutter)]">
           <div className="mx-auto max-w-[1400px] rounded-lg bg-panel p-[clamp(16px,3vw,48px)]">
-            <ExhibitMedia media={study.hero} sizes="(min-width: 1400px) 1400px, 100vw" priority />
+            {study.hero.video ? (
+              <Film media={study.hero} />
+            ) : (
+              <ExhibitMedia media={study.hero} sizes="(min-width: 1400px) 1400px, 100vw" priority />
+            )}
           </div>
         </div>
       )}

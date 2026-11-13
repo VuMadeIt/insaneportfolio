@@ -96,6 +96,19 @@ export type Visual =
     }
   /** Two to three columns, each a heading and a short paragraph or a list. */
   | { kind: "compare"; columns: { title: string; tone?: "accent" | "ink" | "plain"; items: string[] }[] }
+  /**
+   * A design system as a docs page: colour roles, the type (with the font's Latin cut against its
+   * Vietnamese cut), and the shape rule. Each row is a title and its one rule, then the specimen.
+   */
+  | {
+      kind: "system";
+      colours: { name: string; hex: string; role: string }[];
+      rules: { colour: string; type: string; shape: string };
+      faces: { name: string; use: string; family: "display" | "text"; sample: string }[];
+      /** One Vietnamese phrase, set in the Latin cut alone and then with the Vietnamese cut. */
+      proof: { text: string; before: string; after: string };
+      shapes: { shape: "square" | "pill" | "field"; label: string; note: string }[];
+    }
   /** The same screens in two or three states (before and after, two languages), cross-faded by a switch. */
   | {
       kind: "switch";

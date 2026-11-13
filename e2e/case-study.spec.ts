@@ -104,3 +104,30 @@ test("a switch cross-fades its screens and says what changed", async ({ page }) 
   await expect(en).toBeVisible();
   await expect(page.getByText(/^The same screens in English/)).toBeVisible();
 });
+
+test("a film plays in view, pauses on request and stays paused, and seeks to a moment", async ({ page }) => {
+  await page.goto("/work/passion-nails");
+  const film = page.locator('video[aria-label^="A tech adds a walk-in"]');
+  await film.scrollIntoViewIfNeeded();
+  const paused = () => film.evaluate((v) => (v as HTMLVideoElement).paused);
+  await expect.poll(paused, { timeout: 8000 }).toBe(false);
+  const controls = film.locator("xpath=ancestor::figure[1]");
+  await controls.getByRole("button", { name: "Pause" }).click();
+  await expect.poll(paused).toBe(true);
+  await page.mouse.wheel(0, 400);
+  await page.mouse.wheel(0, -400);
+  await page.waitForTimeout(600);
+  expect(await paused()).toBe(true); // coming back into view does not override the pause
+  await controls.getByRole("slider", { name: "Seek" }).fill("10");
+  await expect.poll(() => film.evaluate((v) => Math.round((v as HTMLVideoElement).currentTime))).toBe(10);
+});
+
+test("a Vietnamese word shows its English on focus, and screen readers get it inline", async ({ page }) => {
+  await page.goto("/work/passion-nails");
+  const word = page.locator(".gloss", { hasText: "muộn" }).first();
+  await word.scrollIntoViewIfNeeded();
+  await expect(word).toHaveAttribute("data-en", "late");
+  await expect(word).toContainText("(late)"); // the sr-only copy
+  await word.focus();
+  await expect.poll(() => word.evaluate((el) => getComputedStyle(el, "::after").opacity)).toBe("1");
+});

@@ -17,9 +17,26 @@ describe("site copy", () => {
   it("every case-study headline is a first-person claim (the skim test)", () => {
     for (const study of caseStudies) {
       expect(study.claim, study.slug).toMatch(/\b(I|We|we|I'd|I'm)\b/);
+      // Passion Nails follows Caleb Wu's economy instead: short headlines, the figure carries the rest.
+      if (study.slug === "passion-nails") continue;
       for (const b of study.blocks)
         expect(b.headline, `${study.slug}/${b.id}`).toMatch(/\b(I|We|we|I'd|I'm|So we)\b/);
     }
+  });
+
+  it("Passion Nails reads fast: short headlines, a line or two under each, one figure per block", () => {
+    const study = caseStudies.find((c) => c.slug === "passion-nails")!;
+    for (const b of study.blocks) {
+      expect(b.headline.split(" ").length, b.id).toBeLessThanOrEqual(13);
+      expect(b.body.join(" ").split(" ").length, b.id).toBeLessThanOrEqual(60);
+      expect(b.visual, b.id).toBeTruthy();
+    }
+  });
+
+  it("every Vietnamese gloss is a whole [[Vietnamese|English]] mark", () => {
+    const marks = allText.match(/\[\[/g)?.length ?? 0;
+    expect(allText.match(/\[\[[^|\]]+\|[^\]]+\]\]/g)?.length ?? 0).toBe(marks);
+    expect(marks).toBeGreaterThan(0);
   });
 
   it("every featured project has a case study, and every case study points at a real next one", () => {

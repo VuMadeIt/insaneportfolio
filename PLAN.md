@@ -1313,3 +1313,35 @@ Branch `phase/16-revision-5` (continues it). Answers from the Q&A are recorded i
 - **Passion Nails copy:** no overnight or one-day framing. It says I made a design system (Astryx's
   token architecture, two themes; specimen at `/design` in the salon repo) and a live product used
   daily, and about 4 hours a week back for my mom, given as her estimate.
+
+### 15.24 Revision 9 (Lucas, 2026-11-12 night; branch `phase/revision-8`, salon `feat/37-design-system`)
+Done in this session (see commits): switch has tabs only (no arrows); status bar and home indicator
+are transparent overlays on the screen; annotations are a thin leader line (no ring); one version
+title per group of phones instead of a pill on each; one phone size everywhere; the paired insights
+share a height; the outcome stats are what 4 hours a week adds up to.
+
+To do next (a fresh session; read this list as the brief):
+1. **One look for both apps.** There is one real reason the staff app differs: the site's display
+   font (Zalando Sans Expanded) is a Latin-only cut with no Vietnamese letters (measured), so the
+   staff app uses system fonts. Everything else should match the site, above all the reviews
+   section: sharp, square cards with a black hairline, soft pill buttons, black, white and the brown.
+   Restyle the salon's staff theme to that (keep 17px, 48px+ targets, system type), re-shoot with
+   `scripts/passion-nails-seed.mjs` + `scripts/passion-nails-shots.mjs`, and say the font reason
+   explicitly on the case study. Astryx stays as the token architecture, not a second look.
+2. **Write like Caleb Wu** (calebwu.ca/RevisionDojo): study how his figures carry the story with few
+   words, his tone and sentence length, then cut the Passion Nails copy hard. Headlines carry the
+   story, a line or two under each, the figure does the rest. Two or three examples per point, not
+   six (the quotes, the Southern/Northern table, the anatomy points).
+3. **Vietnamese the reader can follow:** every Vietnamese word on the page gets its English on hover
+   or tap (a small popover), and the language story is told as it happened: the first build was
+   machine-translated, so it came out Southern; walking the techs through the real MVP, again and
+   again, showed the Hanoi words they use, and that nail words (manicure, pedicure, shellac) stay in
+   English in either language, across the whole app.
+4. **Video wherever a section is about doing something** (one video per section, not several at
+   once), with play/pause and a scrubber, played slower than now so a reader can read the screen.
+   Add a landscape phone filming the By-tech timeline with a full mock day for every tech.
+5. **Design system section redone like a real company's docs**, with hierarchy: colour, type, shape
+   (cards square, buttons soft), components, and the two-app rule above. Keep the "same components,
+   same tokens" comparison. Cut anything that does not change a decision.
+6. Think as the hiring manager reading 50 case studies: the gist in the first screen, figures that
+   explain themselves, proof it shipped and is used.

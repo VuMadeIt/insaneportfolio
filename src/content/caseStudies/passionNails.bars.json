@@ -124,5 +124,41 @@
     "top": "#f4ebdf",
     "bottom": "#f4ebdf",
     "full": true
+  },
+  "night-day-en": {
+    "top": "#ffffff",
+    "bottom": "#ffffff",
+    "dark": false
+  },
+  "night-sheet-en": {
+    "top": "#949494",
+    "bottom": "#ffffff",
+    "dark": true
+  },
+  "night-hours-en": {
+    "top": "#ffffff",
+    "bottom": "#ffffff",
+    "dark": false
+  },
+  "night-login-en": {
+    "top": "#ffffff",
+    "bottom": "#ffffff",
+    "dark": false
+  },
+  "audit-day-en": {
+    "top": "#f4ebdf",
+    "bottom": "#f4ebdf",
+    "dark": false
+  },
+  "staff-en": {
+    "top": "#f3eadd",
+    "bottom": "#f3eadd",
+    "dark": false,
+    "full": true
+  },
+  "day-en": {
+    "top": "#f4ebdf",
+    "bottom": "#f4ebdf",
+    "full": true
   }
 }

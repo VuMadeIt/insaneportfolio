@@ -103,20 +103,23 @@ if (STEPS.has("old"))
     ["night", NIGHT],
     ["audit", AUDIT],
   ]) {
-    const page = await staff(base, { size: OLD });
-    await shot(page, `${tag}-day`);
-    await page.locator(".card", { hasText: "Maria Santos" }).click();
-    await settle(page);
-    await shot(page, `${tag}-sheet`);
-    await page.goto(`${base}/staff/hours`);
-    await settle(page, 1200);
-    await shot(page, `${tag}-hours`);
-    if (tag === "night") {
-      await page.goto(`${base}/staff/login`);
-      await settle(page, 400);
-      await shot(page, "night-login");
+    for (const lang of ["vi", "en"]) {
+      const sfx = lang === "vi" ? "" : "-en";
+      const page = await staff(base, { lang, size: OLD });
+      await shot(page, `${tag}-day${sfx}`);
+      await page.locator(".card", { hasText: "Maria Santos" }).click();
+      await settle(page);
+      await shot(page, `${tag}-sheet${sfx}`);
+      await page.goto(`${base}/staff/hours`);
+      await settle(page, 1200);
+      await shot(page, `${tag}-hours${sfx}`);
+      if (tag === "night") {
+        await page.goto(`${base}/staff/login`);
+        await settle(page, 400);
+        await shot(page, `night-login${sfx}`);
+      }
+      await page.context().close();
     }
-    await page.context().close();
   }
 
 // Today's app, in Vietnamese and in English.
@@ -240,10 +243,30 @@ const tap = async (page, loc, wait = 1400) => {
   await page.waitForTimeout(wait);
 };
 
-const FILMS = `${RAW}/films.json`;
+// FILM_LANG=en films the staff side in English, as "<name>-en"; reseed first, since the Vietnamese
+// walk-in takes the free slot. The customer film is English already, so it runs with Vietnamese.
+const FL = process.env.FILM_LANG ?? "vi";
+const T = {
+  vi: {
+    free: /rảnh giờ này/,
+    status: /rảnh giờ này|không ai rảnh|Trùng/,
+    save: "Lưu",
+    sure: "Có, lưu",
+    byTech: /Theo thợ/,
+  },
+  en: {
+    free: /is free then/,
+    status: /is free then|Nobody is free|overlap/i,
+    save: "Save",
+    sure: "Yes, save",
+    byTech: /By staff/,
+  },
+}[FL];
+const SFX = FL === "vi" ? "" : `-${FL}`;
+const FILMS = `${RAW}/films${SFX}.json`;
 if (STEPS.has("films")) {
   // The film should show a free technician, so find one off camera first (before the customer film books into the day).
-  const techPage = await staff(NOW);
+  const techPage = await staff(NOW, { lang: FL });
   const openAdd = async (page) => {
     await page.getByRole("navigation").getByRole("link").nth(1).click();
     await settle(page, 500);
@@ -258,7 +281,7 @@ if (STEPS.has("films")) {
     for (const who of ["Dina", "Alex", "June", "Kim"]) {
       await dlg.getByRole("button", { name: who, exact: true }).click();
       await settle(techPage, 500);
-      if (await dlg.getByText(/rảnh giờ này/).isVisible()) {
+      if (await dlg.getByText(T.free).isVisible()) {
         free = who;
         break;
       }
@@ -266,7 +289,8 @@ if (STEPS.has("films")) {
     await techPage.goto(`${NOW}/staff`);
     await settle(techPage, 1200);
   }
-  const staffFilm = await film("staff", techPage, async (page) => {
+  const films = { free: free ?? null };
+  films.staff = await film(`staff${SFX}`, techPage, async (page) => {
     await page.waitForTimeout(1500);
     await tap(page, page.getByRole("navigation").getByRole("link").nth(1), 1800);
     const dlg = page.getByRole("dialog");
@@ -274,10 +298,10 @@ if (STEPS.has("films")) {
     await page.waitForTimeout(900);
     await tap(page, dlg.getByRole("button", { name: /^Pedicure$/ }));
     await tap(page, dlg.getByRole("button", { name: free ?? "Dina", exact: true }), 1200);
-    await smooth(dlg.getByText(/rảnh giờ này|không ai rảnh|Trùng/).first());
+    await smooth(dlg.getByText(T.status).first());
     await page.waitForTimeout(2800);
-    await tap(page, page.getByRole("button", { name: "Lưu", exact: true }), 1800);
-    const sure = page.getByRole("button", { name: "Có, lưu" });
+    await tap(page, page.getByRole("button", { name: T.save, exact: true }), 1800);
+    const sure = page.getByRole("button", { name: T.sure });
     if (await sure.isVisible()) await tap(page, sure, 1800);
     await smooth(page.locator(".card", { hasText: "Mai" }).first());
     await page.waitForTimeout(3200);
@@ -285,17 +309,17 @@ if (STEPS.has("films")) {
   await techPage.context().close();
 
   // Sideways: the By-tech timeline, the whole salon's day on one screen.
-  const wide = await staff(NOW, { size: SIDEWAYS });
+  const wide = await staff(NOW, { lang: FL, size: SIDEWAYS });
   // Open on the view switch, so the film's first frame (its poster) already shows the day.
   await wide.locator(".controls").evaluate((el) => el.scrollIntoView({ block: "start" }));
   await wide.waitForTimeout(500);
-  const dayFilm = await film(
-    "day",
+  films.day = await film(
+    `day${SFX}`,
     wide,
     async (page) => {
       await page.waitForTimeout(1200);
       // Tapped in place: centring it would scroll back up to the header.
-      await page.getByRole("radio", { name: /Theo thợ|By tech/ }).click();
+      await page.getByRole("radio", { name: T.byTech }).click();
       await page.waitForTimeout(2200);
       // Scroll the day from morning to closing, slowly enough to read the names.
       for (let i = 0; i < 9; i++) {
@@ -312,37 +336,35 @@ if (STEPS.has("films")) {
   );
   await wide.context().close();
 
-  const customer = await phone(UPRIGHT, 2);
-  await safari(customer);
-  await customer
-    .context()
-    .addInitScript(() =>
-      localStorage.setItem(
-        "pn-contact",
-        JSON.stringify({ name: "Ava Nguyen", phone: "416 555 0119", email: "" }),
-      ),
-    );
-  await customer.goto(`${NOW}/book`);
-  await settle(customer);
-  const customerFilm = await film("customer", customer, async (page) => {
-    await page.waitForTimeout(1500);
-    await tap(page, page.getByRole("button", { name: /^Pedicure with Shellac/ }), 1600);
-    await tap(page, page.getByRole("button", { name: "Continue" }), 2200);
-    await tap(page, page.getByRole("button", { name: "Continue" }), 2200);
-    const next = page.getByRole("button", { name: /^Try / });
-    if (await next.isVisible()) await tap(page, next, 1600);
-    await tap(page, page.locator(".chip").nth(2), 1400);
-    await tap(page, page.getByRole("button", { name: "Continue" }), 2800);
-    await tap(page, page.getByRole("button", { name: "Confirm booking" }), 0);
-    await page.getByRole("heading", { name: "You’re booked" }).waitFor();
-    await page.waitForTimeout(3500);
-  });
-  await customer.context().close();
-
-  writeFileSync(
-    FILMS,
-    JSON.stringify({ staff: staffFilm, day: dayFilm, customer: customerFilm, free: free ?? null }),
-  );
+  if (FL === "vi") {
+    const customer = await phone(UPRIGHT, 2);
+    await safari(customer);
+    await customer
+      .context()
+      .addInitScript(() =>
+        localStorage.setItem(
+          "pn-contact",
+          JSON.stringify({ name: "Ava Nguyen", phone: "416 555 0119", email: "" }),
+        ),
+      );
+    await customer.goto(`${NOW}/book`);
+    await settle(customer);
+    films.customer = await film("customer", customer, async (page) => {
+      await page.waitForTimeout(1500);
+      await tap(page, page.getByRole("button", { name: /^Pedicure with Shellac/ }), 1600);
+      await tap(page, page.getByRole("button", { name: "Continue" }), 2200);
+      await tap(page, page.getByRole("button", { name: "Continue" }), 2200);
+      const next = page.getByRole("button", { name: /^Try / });
+      if (await next.isVisible()) await tap(page, next, 1600);
+      await tap(page, page.locator(".chip").nth(2), 1400);
+      await tap(page, page.getByRole("button", { name: "Continue" }), 2800);
+      await tap(page, page.getByRole("button", { name: "Confirm booking" }), 0);
+      await page.getByRole("heading", { name: "You’re booked" }).waitFor();
+      await page.waitForTimeout(3500);
+    });
+    await customer.context().close();
+  }
+  writeFileSync(FILMS, JSON.stringify(films));
 }
 await browser.close();
 
@@ -384,7 +406,10 @@ const measureFull = (name, src, y) => {
   bars[name] = { top, bottom: top, dark: lum(top) < 150, full: true };
 };
 
-const OLD_SHOTS = ["night-day", "night-sheet", "night-hours", "night-login", "audit-day"];
+const OLD_SHOTS = ["night-day", "night-sheet", "night-hours", "night-login", "audit-day"].flatMap((n) => [
+  n,
+  `${n}-en`,
+]);
 const NOW_SHOTS = [
   "now-day",
   "now-day-en",
@@ -403,18 +428,20 @@ const NOW_SHOTS = [
 ];
 if (STEPS.has("media")) {
   // 786 px wide is 2x the largest phone on the page.
-  if (STEPS.has("old"))
-    for (const n of OLD_SHOTS) {
-      webp(`${RAW}/${n}.png`, `${OUT}/${n}.webp`, 780);
-      measure(n, `${RAW}/${n}.png`);
-    }
+  for (const n of OLD_SHOTS.filter((n) => existsSync(`${RAW}/${n}.png`))) {
+    webp(`${RAW}/${n}.png`, `${OUT}/${n}.webp`, 780);
+    measure(n, `${RAW}/${n}.png`);
+  }
   for (const n of NOW_SHOTS) {
     webp(`${RAW}/${n}.png`, `${OUT}/${n}.webp`, 786);
     measureFull(n, `${RAW}/${n}.png`, 60);
   }
-  const films = JSON.parse(readFileSync(FILMS, "utf8"));
-  for (const name of ["staff", "customer", "day"]) {
-    const { dir, stamps } = films[name];
+  // Every film from the last Vietnamese and English runs, named after its frame folder.
+  const runs = [`${RAW}/films.json`, `${RAW}/films-en.json`].filter(existsSync);
+  for (const { dir, stamps } of runs.flatMap((f) =>
+    Object.values(JSON.parse(readFileSync(f, "utf8"))).filter((x) => x?.dir),
+  )) {
+    const name = dir.split("/film-").pop();
     // Each frame shows until the next repaint, so the film keeps the real pace.
     const list = stamps.map(
       (t, i) =>
@@ -424,7 +451,7 @@ if (STEPS.has("media")) {
       `${dir}/list.txt`,
       `ffconcat version 1.0\n${list.join("\n")}\nfile 'f${String(stamps.length - 1).padStart(4, "0")}.jpg'\n`,
     );
-    const wide = name === "day";
+    const wide = name.startsWith("day");
     ff(
       "-f",
       "concat",
@@ -433,7 +460,17 @@ if (STEPS.has("media")) {
       "-i",
       `${dir}/list.txt`,
       "-vf",
-      `fps=30,scale=${wide ? "1704:-2" : "786:-2"},format=yuv420p`,
+      // Screencast JPEGs are full-range BT.601; left as is, browsers wash the cream out to pale
+      // yellow. Convert to tagged limited-range BT.709, what every browser decodes the same way.
+      `fps=30,scale=${wide ? "1704:-2" : "786:-2"}:in_color_matrix=bt601:in_range=pc:out_color_matrix=bt709:out_range=tv,format=yuv420p`,
+      "-colorspace",
+      "bt709",
+      "-color_primaries",
+      "bt709",
+      "-color_trc",
+      "bt709",
+      "-color_range",
+      "tv",
       "-c:v",
       "libx264",
       "-crf",

@@ -46,6 +46,8 @@ const day = [
   ["Tina Vo", "4165550156", ["mani-pedi-shellac"], "online", alex, "16:30", "17:45", "booked", 0],
   ["Jenny Liu", "4165550157", ["shellac-change-hand"], "online", alex, "18:00", "18:30", "booked", 0],
 ];
+// The first builds (ALEC=1) predate the newer services, so they get the morning's first eight.
+if (ALEC) day.length = 8;
 const sql = ["DELETE FROM blocks;", "DELETE FROM bookings;"];
 day.forEach(([name, phone, svc, source, staff, start, end, status], i) => {
   const id = i + 1;

@@ -28,6 +28,8 @@ export interface Media {
   /** Intrinsic size of the poster or image. */
   width: number;
   height: number;
+  /** The same screen in English (Passion Nails' staff app is Vietnamese first). */
+  en?: Omit<Media, "en">;
 }
 
 /** Rendered objects in public/media/objects (scripts/objects.mjs). */

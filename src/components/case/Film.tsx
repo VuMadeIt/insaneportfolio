@@ -110,6 +110,28 @@ export function Film({
         <span className="w-[5.5em] shrink-0 text-right">
           {clock(time)} / {clock(length)}
         </span>
+        <button
+          type="button"
+          aria-label="Full screen"
+          onClick={() => {
+            const v = ref.current as HTMLVideoElement & { webkitEnterFullscreen?: () => void };
+            // iPhones only let the video itself go full screen.
+            if (document.fullscreenEnabled) void v.requestFullscreen().catch(() => {});
+            else v.webkitEnterFullscreen?.();
+          }}
+          className="grid size-9 shrink-0 place-items-center rounded-full border border-ink/25 text-ink transition-transform duration-200 active:scale-95"
+        >
+          <svg
+            aria-hidden
+            viewBox="0 0 16 16"
+            className="size-3.5"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="1.6"
+          >
+            <path d="M2.5 6V2.5H6M10 2.5h3.5V6M13.5 10v3.5H10M6 13.5H2.5V10" />
+          </svg>
+        </button>
       </div>
     </div>
   );

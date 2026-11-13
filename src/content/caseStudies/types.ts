@@ -103,7 +103,7 @@ export type Visual =
   | {
       kind: "system";
       colours: { name: string; hex: string; role: string }[];
-      rules: { colour: string; type: string; shape: string };
+      rules: { colour: string; type: string; shape: string; components: string; spacing: string };
       faces: { name: string; use: string; family: "display" | "text"; sample: string }[];
       /** One Vietnamese phrase, set in the Latin cut alone and then with the Vietnamese cut. */
       proof: { text: string; before: string; after: string };

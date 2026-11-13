@@ -3,12 +3,18 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Film } from "@/components/case/Film";
 import { Rich } from "@/components/case/Gloss";
+import { ScreenLangTabs } from "@/components/case/screenLang";
 import { Visual } from "@/components/case/Visual";
+import { Zoom } from "@/components/case/Zoom";
+
 import { CONTACT } from "@/content/contact";
 import { ExhibitMedia } from "@/components/ExhibitMedia";
 import { ProgressBar } from "@/components/ProgressBar";
 import { type Block, caseStudies, caseStudyBySlug } from "@/content/caseStudies";
 import { projectBySlug } from "@/content/projects";
+
+/** A headline as plain text: "[[muộn|late]]" reads "muộn". */
+const plainText = (s: string) => s.replace(/\[\[([^|\]]+)\|[^\]]+\]\]/g, "$1");
 
 export const dynamicParams = false;
 
@@ -78,18 +84,32 @@ function Text({ block }: { block: Block }) {
   );
 }
 
+/** Figures a phone can't read at its width: they get a full-screen zoom. Films have their own. */
+const zoomable = (v: NonNullable<Block["visual"]>) =>
+  PANELLED.has(v.kind) &&
+  !["statement", "dots", "quotes", "switch"].includes(v.kind) &&
+  !(v.kind === "media" && v.media.some((m) => m.video));
+
 function Figure({ block, fill = false }: { block: Block; fill?: boolean }) {
   if (!block.visual) return null;
-  const panel = PANELLED.has(block.visual.kind);
+  const v = block.visual;
+  const panel = PANELLED.has(v.kind);
+  // Staff screens with an English twin get the page-wide Tiếng Việt / English tabs.
+  const twins = v.kind === "media" && v.media.some((m) => m.en);
   return (
-    <figure
-      className={`mt-10 ${fill ? "flex flex-col" : ""} ${STAGGERED.has(block.visual.kind) ? "" : "reveal"}`}
-    >
+    <figure className={`mt-10 ${fill ? "flex flex-col" : ""} ${STAGGERED.has(v.kind) ? "" : "reveal"}`}>
       {/* In a pair both figures fill the row, so the two panels end level. */}
       <div
         className={`@container ${panel ? "rounded-lg bg-panel p-[clamp(16px,3vw,48px)]" : ""} ${fill ? "grid flex-1 content-center" : ""}`}
       >
-        <Visual visual={block.visual} />
+        {twins && <ScreenLangTabs />}
+        {zoomable(v) ? (
+          <Zoom label={plainText(block.headline)}>
+            <Visual visual={v} />
+          </Zoom>
+        ) : (
+          <Visual visual={v} />
+        )}
       </div>
       {block.caption && (
         <figcaption className="mt-3 text-center text-[15px] text-muted">

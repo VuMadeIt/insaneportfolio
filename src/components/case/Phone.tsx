@@ -2,6 +2,7 @@ import type { ReactNode } from "react";
 import type { Media } from "@/content/projects";
 import { ExhibitMedia } from "../ExhibitMedia";
 import { Film } from "./Film";
+import { usePick } from "./screenLang";
 
 /**
  * An iPhone 15 (393 x 852 pt). A `full` screen fills the display and the status bar and home
@@ -135,36 +136,61 @@ export function PhoneRow({ phones }: { phones: Media[] }) {
     <div className="flex flex-col items-center gap-5">
       {shared && <PhoneTitle label={shared} />}
       <div className="flex w-full items-end justify-center" style={{ gap }}>
-        {phones.map((m) => {
-          const screen = m.video ? (
-            <Film media={m} bare>
-              {(video) => (
-                <Phone {...m.frame} sideways={sideways} className="w-full">
-                  {video}
-                </Phone>
-              )}
-            </Film>
-          ) : (
-            <Phone {...m.frame} className="w-full">
-              <ExhibitMedia media={m} sizes="280px" bare />
-            </Phone>
-          );
-          return (
-            <figure
-              key={m.alt}
-              className="flex min-w-0 flex-col items-center gap-4"
-              // Sideways, it takes the row, but stays short enough to fit the window with its controls.
-              style={{
-                width: sideways ? `min(100%, 860px, calc((100svh - 260px) / ${PHONE_RATIO}))` : phoneWidth(n),
-              }}
-            >
-              {!shared && m.label && <PhoneTitle label={m.label} />}
-              {screen}
-            </figure>
-          );
-        })}
+        {phones.map((m) => (
+          <PhoneItem key={m.alt} media={m} n={n} titled={!shared} sideways={sideways} />
+        ))}
       </div>
     </div>
+  );
+}
+
+/** One phone of a row, in the screen language picked on the page. */
+function PhoneItem({
+  media,
+  n,
+  titled,
+  sideways,
+}: {
+  media: Media;
+  n: number;
+  titled: boolean;
+  sideways: boolean;
+}) {
+  const m = usePick(media);
+  return (
+    <figure
+      className="flex min-w-0 flex-col items-center gap-4"
+      // Sideways, it takes the row, but stays short enough to fit the window with its controls.
+      style={{
+        width: sideways ? `min(100%, 860px, calc((100svh - 260px) / ${PHONE_RATIO}))` : phoneWidth(n),
+      }}
+    >
+      {titled && m.label && <PhoneTitle label={m.label} />}
+      {m.video ? (
+        <Film key={m.video} media={m} bare>
+          {(video) => (
+            <Phone {...m.frame} sideways={sideways} className="w-full">
+              {video}
+            </Phone>
+          )}
+        </Film>
+      ) : (
+        <Phone {...m.frame} className="w-full">
+          {/* Both languages stay loaded and cross-fade, so a switch never shows an empty screen. */}
+          <div className="grid">
+            {[media, ...(media.en ? [media.en] : [])].map((x) => (
+              <div
+                key={x.image}
+                aria-hidden={x.image !== m.image}
+                className={`transition-opacity duration-500 [grid-area:1/1] ${x.image === m.image ? "" : "opacity-0"}`}
+              >
+                <ExhibitMedia media={x} sizes="280px" bare />
+              </div>
+            ))}
+          </div>
+        </Phone>
+      )}
+    </figure>
   );
 }
 

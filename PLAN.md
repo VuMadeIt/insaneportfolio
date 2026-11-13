@@ -1367,3 +1367,65 @@ To do next (a fresh session; read this list as the brief):
   their English on hover, focus or tap (`Gloss`).
 - **Design system** is a docs figure (`System`): colour, type (the Latin cut against the Vietnamese
   cut, missing letters in burgundy), shape; then the side-by-side specimen.
+
+### 15.26 Revision 10 (Lucas, 2026-11-12 night; same branches)
+- Every staff screen and film has an English twin, behind Tiếng Việt / English tabs on each figure
+  (one page-wide setting, Vietnamese first). The anatomy and the language switch stay as they are:
+  they are about the Vietnamese itself.
+- Films are encoded as tagged BT.709, so the app's cream (#f4ebdf) matches the stills (the old
+  full-range encode washed it to pale yellow). Films get a full-screen button; figures a phone
+  can't read get "Zoom in" (full screen at desktop width, − / + and pinch).
+- Copy says who the techs are (mostly over 40, immigrants, new to smartphones) and that this is why
+  their controls are bigger than the customer site's.
+- The design system measures its components the way Figma does (red lines, red value pills, red
+  tinted padding): each one as built beside the same one measured, a spacing scale, and a switch to
+  hide the measurements.
+
+### 15.27 Case-study playbook (from Lucas's Passion Nails reviews, 15.23 to 15.26). Apply to Shufflr, Ripple and Reboot next
+Shared components already carry some of this to every case study: film controls (pause, scrubber,
+full screen) on any video, "Zoom in" on figures for phones, glosses, the phone frame. The rest is
+per study. Work through it in this order, then screenshot every section at 1440 and 390
+(`PORT=3100 node scripts/sections.mjs <slug>`, `VIEW=390x844`) and look at each one.
+
+**Reading time (the hiring manager reads 50 of these)**
+1. The gist is on the first screen: a two-sentence summary, the meta row, the hero film.
+2. Caleb Wu's economy: headlines of 13 words or fewer, a body of one or two sentences (60 words or
+   fewer), captions of 3 to 6 words, numbers inline. Extend the Passion Nails length test to the study.
+3. Two or three examples per point, never six (quotes, tables, annotated points, lists).
+4. Cut any block that doesn't change a decision. Fold "My role" and "The brief" into the header meta.
+5. Sound like a person: not every headline starts with "I"; casual where it's true; no em dashes.
+
+**Truth**
+6. Check a reason before writing it (the Passion Nails font story was wrong until it was checked).
+7. Say the user facts that drive the design, plainly, next to the decision they drive.
+8. Outcomes mean something: what the number adds up to (hours over five years, the wage it would
+   cost), never vanity counts (tests written, tabs removed).
+
+**Figures**
+9. One idea per figure; the figure makes the point alone. Paired figures end level.
+10. Video wherever a section is about doing something: one per section, never two side by side,
+    paced to read (about half real speed of a rushed demo), with a tap dot when it's a phone.
+    Encode BT.709 tagged (see `scripts/passion-nails-shots.mjs`) so colours match the page.
+11. Show a view that sells a feature better (the sideways By-tech day).
+12. Phones: one size on the page, a real iPhone frame, the status bar see-through on a full-height
+    screen. Version: one quiet title per group of phones, never a pill on each.
+13. Switches are tabs only: no arrows, no timers, no "tap to switch" caption.
+14. Annotations: a 1 px leader line, no ring, ending at the edge of its target; check each one on a
+    screenshot (measure the target in the image, don't guess).
+15. A product in another language gets twins and Tiếng Việt / English-style tabs.
+16. No off-palette colour anywhere, including inside videos.
+17. A design system is docs, with hierarchy: colour, type, shape, components measured Figma-style
+    (as built beside measured, a hide switch), spacing; then the side-by-side.
+
+**Phones and caches**
+18. At 390 nothing wraps inside a pill or chip, nothing scrolls sideways, every diagram has Zoom in.
+19. Re-shot media under the same names gets a new `?v=` (`mediaRev.ts` and `next.config.ts`), or
+    Next's image cache and browsers keep showing the old files.
+
+**Per study, as a starting list**
+- Shufflr: cut to Caleb's lengths; the shuffle film gets controls already; say who the 20+
+  interviewees were where it drives a decision; outcome as meaning (1st place, Most Practical).
+- Ripple: cut the water numbers to the two that drive the idea; Zoom in on the diagrams; check
+  every annotation; the Figma embed stays click-to-load.
+- Reboot: cut to the economy; one film per "doing" section if the Framer material has them; check
+  phone sizes against the rest of the site.

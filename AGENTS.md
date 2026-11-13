@@ -64,6 +64,10 @@ vision, architecture, phases, git workflow and the autonomous execution protocol
   live staff app); `STEPS=shots,films,media` runs only some steps.
 - `PORT=3100 node scripts/perf.mjs [route ...]` measures frame rate and long tasks idle and while
   scrolling, on a 390 px DPR 3 phone with a 4x slower CPU (`CSS='...'` injects a stylesheet).
+- `PORT=3100 node scripts/sections.mjs <slug> [tag]` shoots each case-study section on its own screen
+  (`VIEW=390x844` for phones) and prints the page's length in screens; `PORT=3100 node scripts/pills.mjs`
+  lists every pill whose text wrapped, on every route at 390 and 768. How to revise a case study:
+  PLAN.md 15.27.
 - `PORT=3200 node scripts/og.mjs [angle]` films the link preview (`public/og/cover.mp4` + `.jpg`)
   from `/lab/og`, frame by frame.
 - A stale `next dev` from an old session blocks a new one ("Another next dev server is already

@@ -1,5 +1,8 @@
-import type { ReactNode } from "react";
+"use client";
+
+import { type ReactNode, useState } from "react";
 import type { Visual } from "@/content/caseStudies/types";
+import { Measured, SpacingScale } from "./Specimens";
 
 type Of = Extract<Visual, { kind: "system" }>;
 
@@ -22,6 +25,7 @@ function Row({ title, rule, children }: { title: string; rule: string; children:
 
 /** The salon's design system on one panel: colour, type and shape, in the salon's own fonts. */
 export function System({ v }: { v: Of }) {
+  const [on, setOn] = useState(true);
   return (
     <div className="flex flex-col gap-[clamp(20px,3cqi,32px)]">
       <Row title="Colour" rule={v.rules.colour}>
@@ -113,13 +117,13 @@ export function System({ v }: { v: Of }) {
                 ) : s.shape === "pill" ? (
                   <span className="inline-flex gap-2">
                     <span
-                      className="rounded-full bg-ink px-6 py-3 text-[15px] font-semibold text-[#f4ebdf]"
+                      className="whitespace-nowrap rounded-full bg-ink px-6 py-3 text-[15px] font-semibold text-[#f4ebdf]"
                       style={{ fontFamily: FACE.text }}
                     >
                       Gọi
                     </span>
                     <span
-                      className="rounded-full border border-ink px-6 py-3 text-[15px] font-semibold"
+                      className="whitespace-nowrap rounded-full border border-ink px-6 py-3 text-[15px] font-semibold"
                       style={{ fontFamily: FACE.text }}
                     >
                       +5 phút
@@ -140,6 +144,27 @@ export function System({ v }: { v: Of }) {
           ))}
         </ul>
       </Row>
+      <Row title="Components" rule={v.rules.components}>
+        <Measured on={on} />
+      </Row>
+
+      <Row title="Spacing" rule={v.rules.spacing}>
+        <SpacingScale on={on} />
+      </Row>
+
+      <button
+        type="button"
+        aria-pressed={!on}
+        onClick={() => setOn((o) => !o)}
+        className="mx-auto flex items-center gap-2 rounded-full bg-ink px-5 py-2.5 text-[15px] text-wall transition-transform duration-200 active:scale-95"
+      >
+        <span
+          aria-hidden
+          className="size-2 rounded-full"
+          style={{ background: on ? "#f24822" : "#a8a49b" }}
+        />
+        {on ? "Hide measurements" : "Show measurements"}
+      </button>
     </div>
   );
 }

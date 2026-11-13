@@ -27,19 +27,28 @@ const phone = (name: string, alt: string) => ({
   ...size(name),
   ...framed(name),
 });
-/** The same screen as `Media`, for media rows. */
+/** Its English twin, when the shoot made one ("<name>-en"). */
+const english = <T>(name: string, make: (n: string) => T) =>
+  `${name}-en` in bars ? { en: make(`${name}-en`) } : {};
+/** The same screen as `Media`, for media rows, with its English twin. */
 const shot = (name: string, alt: string, label?: string) => {
-  const { src, ...rest } = phone(name, alt);
-  return { image: src, ...rest, ...(label && { label }) };
+  const one = (n: string) => {
+    const { src, ...rest } = phone(n, n === name ? alt : `${alt}, in English`);
+    return { image: src, ...rest, ...(label && { label }) };
+  };
+  return { ...one(name), ...english(name, one) };
 };
 /** A screen film with its controls, framed like its screens; `sideways` for the landscape one. */
-const film = (name: string, alt: string, sideways = false) => ({
-  video: `/media/passion-nails/${name}.mp4${PN_MEDIA}`,
-  poster: `/media/passion-nails/${name}.webp${PN_MEDIA}`,
-  alt,
-  ...(sideways ? { width: 1704, height: 786 } : { width: 786, height: 1704 }),
-  ...framed(name),
-});
+const film = (name: string, alt: string, sideways = false) => {
+  const one = (n: string) => ({
+    video: `/media/passion-nails/${n}.mp4${PN_MEDIA}`,
+    poster: `/media/passion-nails/${n}.webp${PN_MEDIA}`,
+    alt: n === name ? alt : `${alt}, in English`,
+    ...(sideways ? { width: 1704, height: 786 } : { width: 786, height: 1704 }),
+    ...framed(n),
+  });
+  return { ...one(name), ...english(name, one) };
+};
 
 export const passionNails: CaseStudy = {
   slug: "passion-nails",
@@ -77,7 +86,7 @@ export const passionNails: CaseStudy = {
         stats: [
           { value: "0", text: "people at the front desk." },
           { value: "30", text: "customers on a usual day, each one a call." },
-          { value: "4", text: "techs who read Vietnamese first." },
+          { value: "4", text: "techs, most over 40, who read Vietnamese first." },
         ],
       },
     },
@@ -128,14 +137,14 @@ export const passionNails: CaseStudy = {
             text: "Days read S, M, T, W. Dates read 'Wed Nov 11'.",
           },
           {
-            x: 91,
-            y: 37,
+            x: 97,
+            y: 29,
             title: "A tech cut off",
             text: "The filter ran off the edge, so Alex wasn't on screen at all.",
           },
           {
-            x: 88,
-            y: 80,
+            x: 95,
+            y: 85,
             title: "A plus with no word",
             text: "No label, and it sat on top of the last appointment.",
           },
@@ -223,7 +232,7 @@ export const passionNails: CaseStudy = {
       label: "Design decision",
       headline: "What the techs tap all day beats Apple's and Google's minimums.",
       body: [
-        "Small fingers, small phones. Chips went from 40 to 50 px, buttons to 54, and every minute button says [[phút|minutes]], so +5 is never a guess.",
+        "Most of the techs are over 40 and immigrants, and still fairly new to smartphones. So their app gets bigger controls than the customer site: chips went from 40 to 50 px, buttons to 54, and every minute button says [[phút|minutes]], so +5 is never a guess.",
       ],
       visual: {
         kind: "bars",
@@ -430,6 +439,8 @@ export const passionNails: CaseStudy = {
           colour: "Five roles. Burgundy only marks what's chosen or new.",
           type: "Two faces in both apps. Vietnamese letters come in a 9 KB cut, loaded only where they're needed.",
           shape: "What you read is square. What you tap is round.",
+          components: "Every size is a token. In the staff app, nothing you tap is under 48 px.",
+          spacing: "A 4 px grid from 4 to 32. Inside a card, 12; between the fields of a form, 16.",
         },
         colours: [
           { name: "Cream", hex: "#f4ebdf", role: "the page" },

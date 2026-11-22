@@ -151,7 +151,8 @@ export const projects: Project[] = [
       "A 35-component library for Hack Canada, then the hacker dashboard rebuilt on it, with challenges, a points store, Bet Points and two mini games.",
     caption: "A design system, a rebuilt dashboard and games for between prompts.",
     media: {
-      image: "/media/hack-canada/ds-home-light.webp",
+      video: "/media/hack-canada/ds-reel.mp4",
+      poster: "/media/hack-canada/ds-home-light.webp",
       alt: "Hack Canada's Library: the home page, with live component previews",
       width: 1440,
       height: 900,

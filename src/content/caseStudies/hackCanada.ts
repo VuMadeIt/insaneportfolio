@@ -60,7 +60,7 @@ export const hackCanada: CaseStudy = {
     {
       id: "problem",
       label: "The problem",
-      headline: "The dashboard was one Figma file with no rules behind it.",
+      headline: "We started from one Figma file with no rules behind it.",
       body: [
         "Every screen had its own spacing, the buttons were coral on cream, and the copy was still lorem ipsum. Engineers had to guess every value, so each page drifted a little further from the next.",
       ],
@@ -86,7 +86,7 @@ export const hackCanada: CaseStudy = {
     {
       id: "result",
       label: "The result",
-      headline: "Now one library feeds every screen, in light and dark.",
+      headline: "Now one library I built feeds every screen, in light and dark.",
       body: [
         "35 components, tokens and motion, documented on one site. Each component page has a live preview, a Light & dark tab, the code, and the rules for using it.",
       ],
@@ -129,7 +129,7 @@ export const hackCanada: CaseStudy = {
     {
       id: "colour",
       label: "Design decision",
-      headline: "Blue does the work, gold is the reward.",
+      headline: "I gave blue the work and saved gold for rewards.",
       body: [
         "Blue is for actions and links. Gold only appears where hackers earn something: points, prizes, wins. I darkened the brand blue from #1c74c9 to #1a6dbd so small labels pass 4.5:1.",
       ],
@@ -179,7 +179,7 @@ export const hackCanada: CaseStudy = {
     {
       id: "claude",
       label: "Design decision",
-      headline: "The library is written for Claude as much as for people.",
+      headline: "I wrote the library for Claude as much as for people.",
       body: [
         "An AGENTS.md holds the rule of 8, what each colour is for, type, contrast and motion. Claude, Codex and Gemini read it before they touch a screen, so generated pages still follow the system.",
       ],
@@ -205,7 +205,7 @@ export const hackCanada: CaseStudy = {
     {
       id: "challenges",
       label: "Dashboard",
-      headline: "Challenges read as a list of things to do, not a wall of colour.",
+      headline: "I made challenges read as a list of things to do, not a wall of colour.",
       body: [
         "Each category had its own loud colour. Now points sit in gold, and the action is always the same blue button.",
       ],
@@ -214,7 +214,7 @@ export const hackCanada: CaseStudy = {
     {
       id: "store",
       label: "Dashboard",
-      headline: "The store shows what's left, so nothing sells out by surprise.",
+      headline: "The store shows what's left, so we never sell out by surprise.",
       body: [
         "Stock is limited to about 30 of each prize and 50 candy bags. I rebalanced prices against what a hacker can earn in a weekend, and photos sit on white so every product reads at the same size.",
       ],
@@ -223,7 +223,7 @@ export const hackCanada: CaseStudy = {
     {
       id: "bets",
       label: "Beaver Games",
-      headline: "Bet Points turns the weekend into something to watch.",
+      headline: "With Bet Points, we turned the weekend into something to watch.",
       body: [
         "Hackers bet points on yes or no questions about the event. Payouts shift as others bet, and winners split the pool.",
       ],
@@ -232,7 +232,7 @@ export const hackCanada: CaseStudy = {
     {
       id: "games",
       label: "Beaver Games",
-      headline: "Two mini games for the minutes between prompts.",
+      headline: "We made two mini games for the minutes between prompts.",
       body: [
         "Hackers wait on AI tools all weekend. Timber Tycoon is an idle game you can leave and come back to. Cup Shuffle is a quick bet with a daily limit, so it never takes over the weekend.",
       ],
@@ -241,7 +241,7 @@ export const hackCanada: CaseStudy = {
     {
       id: "timber",
       label: "Beaver Games",
-      headline: "Timber Tycoon rewards coming back, and the server keeps it fair.",
+      headline: "Timber Tycoon rewards coming back, and we keep it fair on the server.",
       body: [
         "Chop trees, sell wood, upgrade the axe. Saves and rewards live on the server with cheat checks, because points here buy real prizes.",
       ],
@@ -267,7 +267,7 @@ export const hackCanada: CaseStudy = {
     {
       id: "flow",
       label: "User flow",
-      headline: "Every game feeds the same loop.",
+      headline: "We tied every game to the same loop.",
       body: ["Earn points from challenges, grow them in games and bets, spend them in the store."],
       visual: {
         kind: "diagram",
@@ -288,7 +288,7 @@ export const hackCanada: CaseStudy = {
     {
       id: "reflection",
       label: "Reflection",
-      headline: "A design system is only real when something checks it.",
+      headline: "I learned a design system is only real when something checks it.",
       body: [
         "Rules in a doc drifted within a day. The spacing script and the contrast checks held. Next time I'd write the checks first and design inside them.",
       ],

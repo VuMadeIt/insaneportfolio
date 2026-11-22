@@ -35,7 +35,7 @@ export const hackCanadaLanding: CaseStudy = {
     {
       id: "audiences",
       label: "The problem",
-      headline: "One page had to convince two very different people.",
+      headline: "We had one page to convince two very different people.",
       body: [
         "A hacker deciding whether to come, and a sponsor deciding whether to pay for it. They scan for different things.",
       ],
@@ -82,7 +82,7 @@ export const hackCanadaLanding: CaseStudy = {
     {
       id: "theme",
       label: "Research",
-      headline: "Nova Scotia gave us the theme: coast, lighthouses, docks, the sea.",
+      headline: "We took the theme from Nova Scotia: coast, lighthouses, docks, the sea.",
       body: [
         "We pinned painted references and wrote what the province means to us. The VPs settled on a hand-painted, mostly static background, with SVG for the parts that move.",
       ],
@@ -120,7 +120,7 @@ export const hackCanadaLanding: CaseStudy = {
     {
       id: "decision",
       label: "Design decision",
-      headline: "The lighthouse idea lost its trick and kept its place.",
+      headline: "We kept the lighthouse and dropped its trick.",
       body: [
         "A beam that lights up text in the dark looked great and failed on phones, where there's no hover and the text hid. The lighthouse stayed as the hero, and the beam became decoration.",
       ],
@@ -149,7 +149,7 @@ export const hackCanadaLanding: CaseStudy = {
     {
       id: "flow",
       label: "The flow",
-      headline: "The scroll is a trip from the sky to the sea floor.",
+      headline: "We made the scroll a trip from the sky to the sea floor.",
       body: ["Each section is a place, and each place has an owner."],
       visual: {
         kind: "diagram",
@@ -197,7 +197,7 @@ export const hackCanadaLanding: CaseStudy = {
     {
       id: "reflection",
       label: "Reflection",
-      headline: "Ownership made six designers move like one.",
+      headline: "I gave every section an owner, so six designers moved like one.",
       body: [
         "Voting on concepts got everyone's best idea into the page. Giving each person a section of the coast kept it one story. Next time I'd bring developers into the first critique, not the second, so interactions are scoped before they're loved.",
       ],

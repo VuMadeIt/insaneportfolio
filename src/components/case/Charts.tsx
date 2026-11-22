@@ -353,7 +353,11 @@ export function Switch({ v }: { v: Of<"switch"> }) {
                     key={m.src}
                     m={m}
                     title={shared ? undefined : m.label}
-                    width={phoneWidth(o.images.length, m.frame ? PHONE_RATIO : m.width / m.height)}
+                    width={
+                      !m.frame && m.width / m.height > 0.7
+                        ? `min(100%, ${m.width}px, calc((100svh - 260px) * ${m.width / m.height}))`
+                        : phoneWidth(o.images.length, m.frame ? PHONE_RATIO : m.width / m.height)
+                    }
                   />
                 ))}
               </div>
@@ -379,7 +383,11 @@ function Screen({ m, width, title }: { m: Shot; width: string; title?: string })
       alt={m.alt}
       width={m.width}
       height={m.height}
-      sizes="(min-width: 768px) 320px, 45vw"
+      sizes={
+        m.frame || m.width / m.height <= 0.7
+          ? "(min-width: 768px) 320px, 45vw"
+          : "(min-width: 1400px) 1300px, 100vw"
+      }
       className={`block h-auto w-full ${m.frame ? "" : "rounded-[clamp(12px,2.4cqi,28px)]"}`}
     />
   );

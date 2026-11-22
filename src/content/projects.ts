@@ -140,6 +140,46 @@ export const projects: Project[] = [
     draft: ["role", "description"],
   },
   {
+    slug: "hack-canada",
+    title: "Hack Canada",
+    date: "2026-11",
+    year: "2026",
+    medium: "Design system, dashboard and games",
+    role: "Design lead and design engineer",
+    event: "Hack Canada",
+    description:
+      "A 35-component library for Hack Canada, then the hacker dashboard rebuilt on it, with challenges, a points store, Bet Points and two mini games.",
+    caption: "A design system, a rebuilt dashboard and games for between prompts.",
+    media: {
+      image: "/media/hack-canada/ds-home-light.webp",
+      alt: "Hack Canada's Library: the home page, with live component previews",
+      width: 1440,
+      height: 900,
+    },
+    caseStudy: true,
+    link: { label: "Library", href: "https://hackcanada-design-system.vercel.app" },
+  },
+  {
+    slug: "hack-canada-landing",
+    title: "Hack Canada",
+    date: "2026-11",
+    year: "2026",
+    medium: "Landing page",
+    role: "Design lead",
+    event: "Hack Canada",
+    description:
+      "Six designers, one Nova Scotia story from a lighthouse to the sea floor, for hackers and sponsors.",
+    caption: "Leading six designers to one scrolling Nova Scotia story.",
+    media: {
+      video: "/media/hack-canada/landing.mp4",
+      poster: "/media/hack-canada/landing.webp",
+      alt: "The Hack Canada landing page, animated by Fay Wu",
+      width: 918,
+      height: 640,
+    },
+    caseStudy: true,
+  },
+  {
     slug: "passion-nails",
     title: "Passion Nails",
     date: "2026-11",
@@ -426,6 +466,7 @@ export const homeProjects = ["passion-nails", "reboot", "shufflr"].map((slug) =>
 const pick = (slugs: string[]) => slugs.map((slug) => projectBySlug(slug)!);
 export const wins = pick(["ripple", "shufflr", "we-should-go-to-japan", "reboot", "asper", "solarscore"]);
 export const selected = pick([
+  "hack-canada",
   "passion-nails",
   "maple-leaf-foods",
   "sweaterify",

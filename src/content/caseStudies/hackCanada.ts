@@ -102,7 +102,7 @@ export const hackCanada: CaseStudy = {
           {
             label: "Dark",
             note: "The same page in dark mode.",
-            images: [desk("ds-button-dark", "The Button page in dark mode")],
+            images: [desk("ds-button-night", "The Button page in dark mode")],
           },
         ],
       },
@@ -193,7 +193,7 @@ export const hackCanada: CaseStudy = {
             height: 1688,
           },
           {
-            image: `${M}/ds-m-button-dark.webp`,
+            image: `${M}/ds-m-button-night.webp`,
             alt: "The Button page on a phone, dark",
             width: 780,
             height: 1688,

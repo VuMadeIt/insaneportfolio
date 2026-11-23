@@ -273,10 +273,10 @@ export const hackCanada: CaseStudy = {
         kind: "diagram",
         cols: 4,
         nodes: [
-          { id: "c", text: "Challenges", sub: "earn points", col: 1, row: 1, tone: "white" },
-          { id: "g", text: "Mini games", sub: "grow them", col: 2, row: 1, tone: "white" },
-          { id: "b", text: "Bet Points", sub: "risk them", col: 3, row: 1, tone: "white" },
-          { id: "s", text: "Store", sub: "spend them", col: 4, row: 1, tone: "accent" },
+          { id: "c", text: "Challenges", sub: "earn points", col: 0, row: 0, tone: "white" },
+          { id: "g", text: "Mini games", sub: "grow them", col: 1, row: 0, tone: "white" },
+          { id: "b", text: "Bet Points", sub: "risk them", col: 2, row: 0, tone: "white" },
+          { id: "s", text: "Store", sub: "spend them", col: 3, row: 0, tone: "accent" },
         ],
         edges: [
           { from: "c", to: "g" },

@@ -227,6 +227,11 @@ export function Brief({ v }: { v: Of<"brief"> }) {
 export function Anatomy({ v }: { v: Of<"anatomy"> }) {
   const [on, setOn] = useState<number | null>(null);
   const ratio = v.image.frame ? PHONE_RATIO : v.image.width / v.image.height;
+  // A landscape screen is too small beside its key, so it gets the full width and the key goes under it.
+  const wide = !v.image.frame && ratio > 1;
+  const maxWidth = v.image.frame
+    ? `calc(${phoneWidth(1, PHONE_RATIO)} + 120px)`
+    : `calc(min(${v.image.width}px, 70vh * ${ratio}) + 120px)`;
   const img = (
     <div className="relative">
       <Image
@@ -267,15 +272,14 @@ export function Anatomy({ v }: { v: Of<"anatomy"> }) {
     </div>
   );
   return (
-    <div className="grid items-center gap-10 @xl:grid-cols-[minmax(0,0.9fr)_minmax(0,1fr)]">
-      <div
-        className="mx-auto flex w-full flex-col gap-4 px-[60px] [--lead:-48px]"
-        style={{
-          maxWidth: v.image.frame
-            ? `calc(${phoneWidth(1, PHONE_RATIO)} + 120px)`
-            : `calc(min(${v.image.width}px, 70vh * ${ratio}) + 120px)`,
-        }}
-      >
+    <div
+      className={
+        wide
+          ? "flex flex-col gap-10"
+          : "grid items-center gap-10 @xl:grid-cols-[minmax(0,0.9fr)_minmax(0,1fr)]"
+      }
+    >
+      <div className="mx-auto flex w-full flex-col gap-4 px-[60px] [--lead:-48px]" style={{ maxWidth }}>
         {v.image.label && <PhoneTitle label={v.image.label} />}
         {v.image.frame ? (
           <Phone {...v.image.frame} className="w-full">
@@ -285,7 +289,10 @@ export function Anatomy({ v }: { v: Of<"anatomy"> }) {
           img
         )}
       </div>
-      <ol className="flex flex-col gap-6">
+      <ol
+        className={wide ? "mx-auto grid w-full gap-6 @xl:px-[60px] @3xl:grid-cols-3" : "flex flex-col gap-6"}
+        style={wide ? { maxWidth } : undefined}
+      >
         {v.points.map((p, i) => (
           <li
             key={p.title}

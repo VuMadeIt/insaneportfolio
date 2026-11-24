@@ -221,15 +221,15 @@ export const reboot: CaseStudy = {
         },
         points: [
           {
-            x: 80,
-            y: 33,
+            x: 23.4,
+            y: 24.3,
             title: "Use-case navigation",
             text: "Compute, networking, power, cooling: hardware sorted by purpose instead of specs.",
           },
-          { x: 35, y: 49, title: "Progressive filtering", text: "Narrow the list one choice at a time." },
+          { x: 23.4, y: 48.6, title: "Progressive filtering", text: "Narrow the list one choice at a time." },
           {
-            x: 56,
-            y: 56,
+            x: 24.4,
+            y: 79.6,
             title: "Recommendations in context",
             text: "Suggested hardware, tagged by the project it belongs to.",
           },

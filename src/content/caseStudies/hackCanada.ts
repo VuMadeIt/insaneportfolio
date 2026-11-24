@@ -3,8 +3,8 @@ import type { CaseStudy, Shot } from "./types";
 /**
  * Hack Canada, the design system and the hacker dashboard. Sources: the original Figma file
  * ("hacker dashboard !!"), the live dashboard before the redesign, VuMadeIt/daedalus (the new
- * dashboard), VuMadeIt/hackcanada-design-system (the library) and VuMadeIt/hackcanada-minigame
- * (Timber Tycoon). Every "after" screen is a real build on test data.
+ * dashboard) and VuMadeIt/hackcanada-design-system (the library). Kept short on purpose: the
+ * key decisions, then the dashboard that runs on it. Every "after" screen is a real build on test data.
  */
 const M = "/media/hack-canada";
 const desk = (name: string, alt: string): Shot => ({
@@ -35,14 +35,13 @@ export const hackCanada: CaseStudy = {
   accent: "#1a6dbd",
   accentSoft: "#e3eefa",
   summary:
-    "Hack Canada is a national hackathon. I rebuilt its hacker dashboard on a design system I made for it, with 35 components in light and dark, and added Beaver Games: challenges, a points store, Bet Points and two mini games for the time between prompts.",
-  claim:
-    "I turned a one-off Figma file into a 35-component library, then rebuilt Hack Canada's hacker dashboard and its games on it.",
+    "Hack Canada is a national hackathon. I turned its one-off Figma file into a design system: 35 components in light and dark, with rules a script checks. The hacker dashboard now runs on it.",
+  claim: "I turned a one-off Figma file into a 35-component library that the Hack Canada dashboard runs on.",
   meta: {
     role: "Design lead and design engineer",
     team: "Hack Canada design and software teams",
     timeline: "2026",
-    scope: "Design system, dashboard redesign, Beaver Games, front end",
+    scope: "Design system, docs site, dashboard rollout",
     outcome: "Live library and dashboard",
   },
   link: { label: "Try the library", href: "https://hackcanada-design-system.vercel.app" },
@@ -158,6 +157,26 @@ export const hackCanada: CaseStudy = {
       },
     },
     {
+      id: "cta",
+      label: "Design decision",
+      headline: "I put the main button first, on the left, every time.",
+      body: [
+        "We read left to right, so the action you came for is the first thing you hit, then the safe way out. On phones, dialog buttons stack with the main one at the bottom, under the thumb.",
+      ],
+      visual: {
+        kind: "media",
+        media: [
+          {
+            image: `${M}/ds-cta-dialog.webp`,
+            alt: "A Redeem dialog with the blue Redeem button before Cancel",
+            width: 579,
+            height: 327,
+          },
+        ],
+      },
+      caption: "The rule, as the library shows it.",
+    },
+    {
       id: "build",
       label: "Design decision",
       headline: "I built on an open source system instead of drawing my own primitives.",
@@ -179,111 +198,30 @@ export const hackCanada: CaseStudy = {
     {
       id: "claude",
       label: "Design decision",
-      headline: "I wrote the library for Claude as much as for people.",
+      headline: "I wrote the library for AI agents as much as for people.",
       body: [
-        "An AGENTS.md holds the rule of 8, what each colour is for, type, contrast and motion. Claude, Codex and Gemini read it before they touch a screen, so generated pages still follow the system.",
+        "Hackers build with Claude, Codex and Gemini. An AGENTS.md gives them the rule of 8, the colour roles and the button order, so a generated screen still looks like Hack Canada.",
       ],
       visual: {
         kind: "media",
         media: [
           {
-            image: `${M}/ds-m-home-light.webp`,
-            alt: "The library home on a phone, light",
-            width: 780,
-            height: 1688,
-          },
-          {
-            image: `${M}/ds-m-button-night.webp`,
-            alt: "The Button page on a phone, dark",
-            width: 780,
-            height: 1688,
-          },
-        ],
-      },
-      caption: "Every page works on a phone, in both themes.",
-    },
-    {
-      id: "challenges",
-      label: "Dashboard",
-      headline: "I made challenges read as a list of things to do, not a wall of colour.",
-      body: [
-        "Each category had its own loud colour. Now points sit in gold, and the action is always the same blue button.",
-      ],
-      visual: pair("challenges", "Challenges"),
-    },
-    {
-      id: "store",
-      label: "Dashboard",
-      headline: "The store shows what's left, so we never sell out by surprise.",
-      body: [
-        "Stock is limited to about 30 of each prize and 50 candy bags. I rebalanced prices against what a hacker can earn in a weekend, and photos sit on white so every product reads at the same size.",
-      ],
-      visual: pair("store", "The store"),
-    },
-    {
-      id: "bets",
-      label: "Beaver Games",
-      headline: "With Bet Points, we turned the weekend into something to watch.",
-      body: [
-        "Hackers bet points on yes or no questions about the event. Payouts shift as others bet, and winners split the pool.",
-      ],
-      visual: pair("bets", "Bet Points"),
-    },
-    {
-      id: "games",
-      label: "Beaver Games",
-      headline: "We made two mini games for the minutes between prompts.",
-      body: [
-        "Hackers wait on AI tools all weekend. Timber Tycoon is an idle game you can leave and come back to. Cup Shuffle is a quick bet with a daily limit, so it never takes over the weekend.",
-      ],
-      visual: pair("games", "Mini games"),
-    },
-    {
-      id: "timber",
-      label: "Beaver Games",
-      headline: "Timber Tycoon rewards coming back, and we keep it fair on the server.",
-      body: [
-        "Chop trees, sell wood, upgrade the axe. Saves and rewards live on the server with cheat checks, because points here buy real prizes.",
-      ],
-      visual: {
-        kind: "media",
-        media: [
-          {
-            image: `${M}/timber-title.webp`,
-            alt: "Timber Tycoon's papercut title card: a beaver with an axe",
-            width: 960,
-            height: 640,
-          },
-          {
-            image: `${M}/timber-play.webp`,
-            alt: "Timber Tycoon in the dashboard: the tree, stats and shop",
+            image: `${M}/ds-claude-light.webp`,
+            alt: "The library's page for AI agents",
             width: 1440,
             height: 900,
           },
         ],
       },
-      caption: "I picked the papercut title card from six directions.",
     },
     {
-      id: "flow",
-      label: "User flow",
-      headline: "We tied every game to the same loop.",
-      body: ["Earn points from challenges, grow them in games and bets, spend them in the store."],
-      visual: {
-        kind: "diagram",
-        cols: 4,
-        nodes: [
-          { id: "c", text: "Challenges", sub: "earn points", col: 0, row: 0, tone: "white" },
-          { id: "g", text: "Mini games", sub: "grow them", col: 1, row: 0, tone: "white" },
-          { id: "b", text: "Bet Points", sub: "risk them", col: 2, row: 0, tone: "white" },
-          { id: "s", text: "Store", sub: "spend them", col: 3, row: 0, tone: "accent" },
-        ],
-        edges: [
-          { from: "c", to: "g" },
-          { from: "g", to: "b" },
-          { from: "b", to: "s" },
-        ],
-      },
+      id: "applied",
+      label: "In use",
+      headline: "Then I moved the hacker dashboard onto it.",
+      body: [
+        "Challenges, the points store, Bet Points and the mini games now share one set of parts. Each category used to have its own loud colour; now points are gold and the action is always the same blue button.",
+      ],
+      visual: pair("challenges", "Challenges"),
     },
     {
       id: "reflection",
@@ -294,6 +232,6 @@ export const hackCanada: CaseStudy = {
       ],
     },
   ],
-  next: "passion-nails",
-  draft: ["role, team and timeline", "outcome line", "store and game numbers from the live config"],
+  next: "ripple",
+  draft: ["role, team and timeline", "outcome line"],
 };

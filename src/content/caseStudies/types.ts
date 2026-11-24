@@ -146,6 +146,8 @@ export interface CaseStudy {
   accent: string;
   accentSoft: string;
   link?: { label: string; href: string };
+  /** More links beside `link`, e.g. a second live product. */
+  links?: { label: string; href: string }[];
   /** Sibling case studies of one project (Hack Canada: design system, landing page), as tabs. */
   tabs?: { label: string; slug: string }[];
   hero?: Media;

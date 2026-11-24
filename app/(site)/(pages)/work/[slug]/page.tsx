@@ -206,9 +206,13 @@ export default async function CaseStudyPage({ params }: { params: Promise<{ slug
             ))}
           </dl>
           {study.link && (
-            <a href={study.link.href} className="link-arrow mt-8 inline-block text-[16px]">
-              {study.link.label} <span aria-hidden>&rarr;</span>
-            </a>
+            <div className="mt-8 flex flex-wrap gap-x-8 gap-y-4">
+              {[study.link, ...(study.links ?? [])].map((l) => (
+                <a key={l.href} href={l.href} className="link-arrow inline-block text-[16px]">
+                  {l.label} <span aria-hidden>&rarr;</span>
+                </a>
+              ))}
+            </div>
           )}
         </div>
       </header>

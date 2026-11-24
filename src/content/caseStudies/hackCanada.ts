@@ -349,7 +349,7 @@ export const hackCanada: CaseStudy = {
     },
     {
       id: "spacing",
-      label: "Design decision",
+      label: "System decision",
       headline: "I put everything on a rule of 8, and a script enforces it.",
       body: [
         "The Figma styles used line heights like 75.6 and 18.9. I moved every size to a multiple of 8, with 4 as the only half step. The check fails the build if anything drifts.",
@@ -360,6 +360,44 @@ export const hackCanada: CaseStudy = {
           {
             image: `${M}/ds-spacing-light.webp`,
             alt: "The spacing page: the rule of 8 with measured examples",
+            width: 1440,
+            height: 900,
+          },
+        ],
+      },
+    },
+    {
+      id: "cta",
+      label: "System decision",
+      headline: "I put the main button first, on the left, every time.",
+      body: [
+        "We read left to right, so the action you came for is the first thing you hit, then the safe way out. On phones, dialog buttons stack with the main one under the thumb.",
+      ],
+      visual: {
+        kind: "media",
+        media: [
+          {
+            image: `${M}/ds-cta-dialog.webp`,
+            alt: "A Redeem dialog with the blue Redeem button before Cancel",
+            width: 579,
+            height: 327,
+          },
+        ],
+      },
+    },
+    {
+      id: "agents",
+      label: "System decision",
+      headline: "I wrote the library for AI agents as much as for people.",
+      body: [
+        "Hackers build with Claude, Codex and Gemini. An AGENTS.md gives them the rule of 8, the colour roles and the button order, so a generated screen still looks like Hack Canada.",
+      ],
+      visual: {
+        kind: "media",
+        media: [
+          {
+            image: `${M}/ds-claude-light.webp`,
+            alt: "The library's page for AI agents",
             width: 1440,
             height: 900,
           },
@@ -398,46 +436,8 @@ export const hackCanada: CaseStudy = {
       },
     },
     {
-      id: "cta",
-      label: "Design decision",
-      headline: "I put the main button first, on the left, every time.",
-      body: [
-        "We read left to right, so the action you came for is the first thing you hit, then the safe way out. On phones, dialog buttons stack with the main one under the thumb.",
-      ],
-      visual: {
-        kind: "media",
-        media: [
-          {
-            image: `${M}/ds-cta-dialog.webp`,
-            alt: "A Redeem dialog with the blue Redeem button before Cancel",
-            width: 579,
-            height: 327,
-          },
-        ],
-      },
-    },
-    {
-      id: "agents",
-      label: "Design decision",
-      headline: "I wrote the library for AI agents as much as for people.",
-      body: [
-        "Hackers build with Claude, Codex and Gemini. An AGENTS.md gives them the rule of 8, the colour roles and the button order, so a generated screen still looks like Hack Canada.",
-      ],
-      visual: {
-        kind: "media",
-        media: [
-          {
-            image: `${M}/ds-claude-light.webp`,
-            alt: "The library's page for AI agents",
-            width: 1440,
-            height: 900,
-          },
-        ],
-      },
-    },
-    {
       id: "challenge-flow",
-      label: "User flow",
+      label: "Dashboard flow",
       headline: "I designed a challenge as one hand-off between hacker and organizer.",
       body: ["No codes to type. The hacker shows a QR, an organizer scans it, and the points land in gold."],
       visual: {

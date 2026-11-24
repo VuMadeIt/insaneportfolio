@@ -86,9 +86,10 @@ function Text({ block }: { block: Block }) {
 
 /** Figures a phone can't read at its width: they get a full-screen zoom. Films have their own. */
 const zoomable = (v: NonNullable<Block["visual"]>) =>
-  PANELLED.has(v.kind) &&
-  !["statement", "dots", "quotes", "switch"].includes(v.kind) &&
-  !(v.kind === "media" && v.media.some((m) => m.video));
+  v.kind === "mosaic" ||
+  (PANELLED.has(v.kind) &&
+    !["statement", "dots", "quotes", "switch"].includes(v.kind) &&
+    !(v.kind === "media" && v.media.some((m) => m.video)));
 
 function Figure({ block, fill = false }: { block: Block; fill?: boolean }) {
   if (!block.visual) return null;

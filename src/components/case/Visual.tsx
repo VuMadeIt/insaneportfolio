@@ -125,6 +125,53 @@ function Embed({ v }: { v: Extract<VisualData, { kind: "embed" }> }) {
   );
 }
 
+/** Sticky notes under each site's screenshot. Below the fold they pin in one by one, slightly askew. */
+function Notes({ v }: { v: Extract<VisualData, { kind: "notes" }> }) {
+  const [ref, inView] = useInView<HTMLDivElement>();
+  return (
+    <div ref={ref} className="grid gap-x-6 gap-y-10 @lg:grid-cols-2 @5xl:grid-cols-4">
+      {v.columns.map((c, ci) => (
+        <div key={c.title} className="flex flex-col gap-4">
+          {c.image ? (
+            <Image
+              src={c.image.src}
+              alt={c.image.alt}
+              width={960}
+              height={600}
+              sizes="(min-width: 1400px) 340px, (min-width: 700px) 50vw, 100vw"
+              className="aspect-[8/5] w-full rounded-md object-cover object-top"
+            />
+          ) : (
+            // Keeps the notes level with the screenshotted columns when they share a row.
+            <div aria-hidden className="hidden aspect-[8/5] w-full @5xl:block" />
+          )}
+          <h3 className="font-display text-[22px] font-[350] tracking-[-0.02em]">{c.title}</h3>
+          <ul className="flex flex-col gap-3">
+            {c.notes.map((n, i) => {
+              const order = ci * c.notes.length + i;
+              const tilt = ((order % 3) - 1) * 1.2;
+              return (
+                <li
+                  key={n}
+                  className="p-4 text-[15px] leading-[1.45] text-[#1d1d1f] shadow-[0_8px_16px_-8px_rgba(0,0,0,0.35)] transition-[opacity,transform] duration-500 ease-out"
+                  style={{
+                    background: c.colour,
+                    opacity: inView === false ? 0 : 1,
+                    transform: inView === false ? "translateY(16px) scale(0.96)" : `rotate(${tilt}deg)`,
+                    transitionDelay: `${order * 60}ms`,
+                  }}
+                >
+                  {n}
+                </li>
+              );
+            })}
+          </ul>
+        </div>
+      ))}
+    </div>
+  );
+}
+
 export function Visual({ visual }: { visual: VisualData }) {
   switch (visual.kind) {
     case "media":
@@ -197,16 +244,26 @@ export function Visual({ visual }: { visual: VisualData }) {
         <dl className={`grid gap-4 ${visual.cards.length === 4 ? "@xl:grid-cols-2" : "@xl:grid-cols-3"}`}>
           {visual.cards.map((c) => (
             <div key={c.title} className="reveal overflow-hidden rounded-md bg-wall">
-              {c.image && (
-                <Image
-                  src={c.image.src}
-                  alt={c.image.alt}
-                  width={269}
-                  height={269}
-                  unoptimized
-                  className="aspect-[8/5] w-full object-cover object-top"
-                />
-              )}
+              {c.image &&
+                (c.image.width && c.image.height ? (
+                  <Image
+                    src={c.image.src}
+                    alt={c.image.alt}
+                    width={c.image.width}
+                    height={c.image.height}
+                    sizes="(min-width: 1400px) 460px, (min-width: 700px) 33vw, 100vw"
+                    className="h-auto w-full"
+                  />
+                ) : (
+                  <Image
+                    src={c.image.src}
+                    alt={c.image.alt}
+                    width={269}
+                    height={269}
+                    unoptimized
+                    className="aspect-[8/5] w-full object-cover object-top"
+                  />
+                ))}
               <div className="p-6">
                 <dt className="font-display text-[22px] font-[350] tracking-[-0.02em]">{c.title}</dt>
                 <dd className="mt-2 text-[16px] leading-[1.5]">{c.body}</dd>
@@ -243,6 +300,53 @@ export function Visual({ visual }: { visual: VisualData }) {
       );
     case "embed":
       return <Embed v={visual} />;
+    case "notes":
+      return <Notes v={visual} />;
+    case "mosaic":
+      return (
+        <div className="columns-2 gap-4 @3xl:columns-3">
+          {visual.media.map((m) => (
+            <div key={m.alt} className="reveal mb-4 break-inside-avoid">
+              <ExhibitMedia media={m} sizes="(min-width: 1400px) 460px, (min-width: 700px) 33vw, 50vw" />
+            </div>
+          ))}
+        </div>
+      );
+    case "links":
+      return (
+        <ul className="grid gap-4 @xl:grid-cols-3">
+          {visual.links.map((l) => (
+            <li key={l.href} className="reveal">
+              <a
+                href={l.href}
+                target="_blank"
+                rel="noreferrer"
+                className="group flex h-full flex-col overflow-hidden rounded-md bg-wall"
+              >
+                {l.image && (
+                  <span className="block overflow-hidden">
+                    <Image
+                      src={l.image.src}
+                      alt={l.image.alt}
+                      width={1440}
+                      height={900}
+                      sizes="(min-width: 1400px) 460px, (min-width: 700px) 33vw, 100vw"
+                      className="aspect-[8/5] w-full object-cover object-top transition-transform duration-500 ease-out group-hover:scale-[1.03]"
+                    />
+                  </span>
+                )}
+                <span className="flex flex-1 flex-col p-6">
+                  <span className="font-display text-[22px] font-[350] tracking-[-0.02em]">{l.title}</span>
+                  <span className="mt-2 text-[16px] leading-[1.5]">{l.body}</span>
+                  <span className="mt-auto pt-4 text-[16px] text-[var(--accent)] underline-offset-4 group-hover:underline">
+                    {l.cta} <span aria-hidden>&#8599;</span>
+                  </span>
+                </span>
+              </a>
+            </li>
+          ))}
+        </ul>
+      );
     case "list":
       return (
         <ul className="flex max-w-[44em] flex-col gap-5">

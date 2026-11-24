@@ -2,9 +2,9 @@ import type { CaseStudy, Shot } from "./types";
 
 /**
  * Hack Canada, end to end: the landing page (the team's FigJam research, sketches and flow, and the
- * live hackcanada.org) and the design system the hacker dashboard runs on (the original Figma file,
- * VuMadeIt/hackcanada-design-system and VuMadeIt/daedalus). The card animation is Fay Wu's, made for
- * the organization. Every "after" dashboard screen is a real build on test data.
+ * live hackcanada.org) and the design system we founded for the hacker dashboard
+ * (VuMadeIt/hackcanada-design-system and VuMadeIt/daedalus). "Before" dashboard screens are the
+ * vibecoded upstream dashboard (Hack-Canada/daedalus 290d3ef) on demo data; "after" is our redesign.
  */
 const M = "/media/hack-canada";
 const desk = (name: string, alt: string): Shot => ({
@@ -25,13 +25,13 @@ const pair = (name: string, what: string) => ({
   options: [
     {
       label: "Before",
-      note: "The original Figma file.",
-      images: [desk(`before-${name}`, `${what} in the original Figma file`)],
+      note: "The vibecoded dashboard we started from.",
+      images: [desk(`before-${name}`, `${what} on the vibecoded dashboard, before our redesign`)],
     },
     {
       label: "After",
-      note: "The live dashboard, built on the library.",
-      images: [desk(`after-${name}`, `${what} on the new dashboard`)],
+      note: "Our redesign, built on the design system.",
+      images: [desk(`after-${name}`, `${what} on our redesigned dashboard`)],
     },
   ],
 });
@@ -41,23 +41,26 @@ export const hackCanada: CaseStudy = {
   accent: "#1a6dbd",
   accentSoft: "#e3eefa",
   summary:
-    "Hack Canada is a national hackathon. I led the landing page that sells the weekend to hackers and sponsors, then built the design system the hacker dashboard runs on, so both feel like one product.",
-  claim: "I led Hack Canada's landing page and built the design system its dashboard runs on.",
+    "Hack Canada is a national hackathon. Over four months, our team of four designers made the landing page that sells the weekend to hackers and sponsors, then founded a design system from scratch and redesigned the hacker dashboard on it.",
+  claim: "I led Hack Canada's landing page and the design system we founded for its dashboard.",
   meta: {
     role: "Design lead and design engineer",
-    team: "Six designers, the visual design and software teams. Animation by Fay Wu.",
-    timeline: "2026",
+    team: "Four designers, with the visual design and software teams",
+    timeline: "4 months",
     scope: "Research, landing page, design system, dashboard",
     outcome: "Live site, library and dashboard",
   },
   link: { label: "Visit hackcanada.org", href: "https://hackcanada.org" },
-  links: [{ label: "Try the library", href: "https://hackcanada-design-system.vercel.app" }],
+  links: [
+    { label: "Try the design system", href: "https://hackcanada-design-system.vercel.app" },
+    { label: "Try the dashboard demo", href: "https://hackcanada-dashboard.vercel.app" },
+  ],
   hero: {
     video: `${M}/landing.mp4`,
     poster: `${M}/landing.webp`,
-    alt: "The Hack Canada landing page scrolling from the beach to the sea floor, animated by Fay Wu",
-    width: 918,
-    height: 640,
+    alt: "The Hack Canada landing page scrolling from the beach to the sea floor",
+    width: 1376,
+    height: 960,
   },
   blocks: [
     {
@@ -65,7 +68,7 @@ export const hackCanada: CaseStudy = {
       label: "The brief",
       headline: "We needed a front door and a home base that look like one product.",
       body: [
-        "The landing page convinces people to come. The dashboard runs their weekend: applying, checking in, earning and spending points. I led design on the first and built the system under the second.",
+        "The landing page convinces people to come. The dashboard runs their weekend: applying, checking in, earning and spending points. Neither had a design behind it, so we designed both from scratch.",
       ],
       visual: {
         kind: "brief",
@@ -73,9 +76,10 @@ export const hackCanada: CaseStudy = {
           "How might one hackathon look and work the same from the first visit to the last prize, for hackers, sponsors and organizers?",
         facts: [
           { label: "Users", value: "Hackers, sponsors, organizers" },
-          { label: "Team", value: "6 designers I led" },
+          { label: "Team", value: "4 designers" },
+          { label: "Timeline", value: "4 months" },
           { label: "Surfaces", value: "Landing page, dashboard" },
-          { label: "Shipped", value: "Live site and 35-component library" },
+          { label: "Shipped", value: "Live site, design system, dashboard" },
         ],
       },
     },
@@ -112,41 +116,70 @@ export const hackCanada: CaseStudy = {
       label: "Sponsors",
       headline: "I wrote the sponsor into the brief as a second user.",
       body: [
-        "Sponsors decide whether to pay for the weekend. They need proof: how many hackers came, what they built, and who already backs it. Hack the North's site showed us the pattern.",
+        "Sponsors decide whether to pay for the weekend. They need proof before they read a single word: how many hackers came, what they built, who they are and who already backs it.",
       ],
-      visual: {
-        kind: "media",
-        media: [
-          {
-            image: `${M}/sponsor-brief.webp`,
-            alt: "The FigJam key info card: two personas, hackers and sponsors, and the sections each one needs",
-            width: 1200,
-            height: 460,
-          },
-          {
-            image: `${M}/sponsor-reference.webp`,
-            alt: "Hack the North's proof sections pinned in FigJam: stats, projects, speakers and hacker stories",
-            width: 1660,
-            height: 1100,
-          },
-        ],
-      },
     },
     {
       id: "competitors",
       label: "Research",
       headline: "We pulled apart three hackathon sites before drawing anything.",
       body: [
-        "Each of us filled the same grid for JAMHacks 10, Hack the North 2025 and HackHERS 2026. The weak spots were clutter, squished sponsor logos and backgrounds that stand alone.",
+        "Each of us filled the same board of likes and dislikes for JAMHacks, Hack the North and HackHERS. Then we sorted the notes into what we'd take.",
       ],
       visual: {
-        kind: "media",
-        media: [
+        kind: "notes",
+        columns: [
           {
-            image: `${M}/competitors.webp`,
-            alt: "The FigJam competitor grid: one row per teammate, columns for each site and overall themes",
-            width: 1600,
-            height: 1151,
+            title: "JAMHacks",
+            colour: "#a8d8fb",
+            image: {
+              src: `${M}/site-jamhacks.webp`,
+              alt: "The JAMHacks site: a hand-drawn jar mascot on a blue sky with stars and a balloon",
+            },
+            notes: [
+              "Interactive details, like clouds that move when you click them.",
+              "A floating cat that blinks and wags its tail.",
+              "Sponsor logos at a sensible size, not giant posters.",
+              "Cluttered, with rough jumps between backgrounds.",
+            ],
+          },
+          {
+            title: "Hack the North",
+            colour: "#d4bffc",
+            image: {
+              src: `${M}/site-htn.webp`,
+              alt: "The Hack the North site: an illustrated map with objects on a wooden table",
+            },
+            notes: [
+              "Far less cluttered, with real photos of the event.",
+              "Flowers that keep growing as you scroll.",
+              "Music adds to the experience.",
+              "Sponsor text is squished at the bottom.",
+            ],
+          },
+          {
+            title: "HackHERS",
+            colour: "#ffb8a6",
+            image: {
+              src: `${M}/site-hackhers.webp`,
+              alt: "The HackHERS site: a night sky with clouds, a moon and a flying dragon",
+            },
+            notes: [
+              "Looks official and legitimate.",
+              "Photos in a camera roll, and a rare loading screen.",
+              "Clean boxes separate the content.",
+              "Backgrounds stand alone and carry no information.",
+            ],
+          },
+          {
+            title: "What we took",
+            colour: "#b3f0bc",
+            notes: [
+              "One theme, carried through every section.",
+              "Real photos and projects from last year.",
+              "Room for every sponsor logo, by tier.",
+              "Backgrounds that hold the content, not just sit behind it.",
+            ],
           },
         ],
       },
@@ -154,18 +187,48 @@ export const hackCanada: CaseStudy = {
     {
       id: "sketches",
       label: "Leadership",
-      headline: "I set week one's homework: sketch how the site feels, not how it looks.",
+      headline: "I ran our work sessions: brainstorm together, sketch alone, then combine.",
       body: [
-        "We took the theme from Nova Scotia: coast, lighthouses, docks, the sea. Everyone sketched two or three sections, we voted, combined the strongest ideas, and each designer took the sections they were best at.",
+        "We brainstormed Nova Scotia together: coast, lighthouses, docks, the sea. Everyone sketched two or three sections of how the site should feel, we voted, merged the strongest ideas, and each designer took the sections they were best at.",
       ],
       visual: {
-        kind: "media",
+        kind: "mosaic",
         media: [
           {
-            image: `${M}/sketches.webp`,
-            alt: "Hand sketches: the lighthouse idea, footprints in the sand and a paper flow from hero to sponsors",
-            width: 1600,
-            height: 1046,
+            image: `${M}/lofi-lighthouse.webp`,
+            alt: "Sketch: a lighthouse whose beam lights up text, with notes on why it fails on phones",
+            width: 1200,
+            height: 786,
+          },
+          {
+            image: `${M}/lofi-scroll.webp`,
+            alt: "Lo-fi flow: the lighthouse hero winding down a river to the team section",
+            width: 900,
+            height: 1918,
+          },
+          {
+            image: `${M}/lofi-moodboard.webp`,
+            alt: "Mood board: a pixel art lighthouse at sunset and a pond under a waterfall",
+            width: 816,
+            height: 520,
+          },
+          {
+            image: `${M}/lofi-hero.webp`,
+            alt: "Lo-fi wireframe: the hero with the date, Register, fact cards that tilt on hover and a lighthouse",
+            width: 1200,
+            height: 1194,
+          },
+          {
+            image: `${M}/lofi-footprints.webp`,
+            alt: "Sketch: words written as beaver footprints in the sand, washed away by waves",
+            width: 1200,
+            height: 810,
+          },
+          {
+            image: `${M}/lofi-paper.webp`,
+            alt: "Paper sketch: the hero with the lighthouse and Apply, then Meet the team",
+            width: 900,
+            height: 1583,
           },
         ],
       },
@@ -231,59 +294,23 @@ export const hackCanada: CaseStudy = {
       },
     },
     {
-      id: "live",
-      label: "The landing page",
-      headline: "We shipped it with the date, place and Apply in the first screen.",
-      body: [
-        "Experienced hackers get what they came for without scrolling. New hackers and sponsors keep going down the coast to the stories and the numbers.",
-      ],
-      visual: {
-        kind: "switch",
-        label: "Device",
-        options: [
-          {
-            label: "Desktop",
-            note: "hackcanada.org, live.",
-            images: [
-              desk("live-hero", "The live landing page: lighthouse, date, place and the Apply button"),
-              desk("live-stats", "Last year's numbers as sea creatures: prizes, sponsors, projects, hackers"),
-            ],
-          },
-          {
-            label: "Phone",
-            note: "The same page at 390 px.",
-            images: [
-              phone("live-m-hero", "The landing page on a phone: the hero and About"),
-              phone("live-m-2", "The landing page on a phone, further down the beach"),
-            ],
-          },
-        ],
-      },
-    },
-    {
       id: "sponsor-proof",
       label: "For sponsors",
       headline: "I gave each sponsor question its own answer on the page.",
       body: [
-        "Below the hero, the page turns into proof. Sponsors meet it on the way down to their own logo wall.",
+        "Below the hero, the page turns into proof: 800+ hackers, 210+ projects in 36 hours, 20+ sponsors and 10K+ in prizes last year. Sponsors pass it on the way down to their own logo wall.",
       ],
       visual: {
         kind: "cards",
         cards: [
           {
-            title: "How many came",
-            body: "Last year's turnout, prizes and projects, as sea creatures.",
-            image: {
-              src: `${M}/proof-stats.webp`,
-              alt: "Last year we had: 10K+ in prizes, 20+ sponsors, 210+ projects",
-            },
-          },
-          {
             title: "What they build",
             body: "Real projects with their teams, like Wallhacks, which sees people through walls.",
             image: {
               src: `${M}/proof-projects.webp`,
-              alt: "Get inspired: the Wallhacks project on a driftwood sign",
+              alt: "Get inspired: the Wallhacks project and its team on a driftwood sign, with two photos of the demo",
+              width: 1200,
+              height: 937,
             },
           },
           {
@@ -292,6 +319,8 @@ export const hackCanada: CaseStudy = {
             image: {
               src: `${M}/proof-photos.webp`,
               alt: "Photos of last year's hackers in sandcastle frames on the beach",
+              width: 960,
+              height: 600,
             },
           },
           {
@@ -299,15 +328,53 @@ export const hackCanada: CaseStudy = {
             body: "Logos by tier, each with room to breathe, unlike the squished walls we saw.",
             image: {
               src: `${M}/proof-sponsors.webp`,
-              alt: "The sponsor wall under the sea: Squarepoint, Tailscale and Photon in Silver, then Reality Defender, Taste Labs and ElevenLabs in Bronze",
+              alt: "The sponsor wall under the sea: Squarepoint, Tailscale and Photon in Silver, then Reality Defender, Taste Labs, ElevenLabs and Render in Bronze",
+              width: 1200,
+              height: 1041,
             },
           },
         ],
       },
     },
     {
+      id: "sponsor-flow",
+      label: "Sponsor flow",
+      headline: "I mapped a sponsor's scroll, from the first screen to their decision.",
+      body: [
+        "A sponsor never applies, so the page itself is their journey. Each stop answers one question, and the sponsor wall sits right after the proof.",
+      ],
+      visual: {
+        kind: "diagram",
+        cols: 6,
+        minWidth: 1080,
+        gap: "clamp(32px, 3vw, 64px)",
+        nodes: [
+          {
+            id: "o",
+            text: "Opens the site",
+            sub: "Date and place, first screen",
+            col: 0,
+            row: 0,
+            tone: "ink",
+          },
+          { id: "n", text: "Last year", sub: "800+ hackers, 210+ projects", col: 1, row: 0, tone: "white" },
+          { id: "p", text: "Get inspired", sub: "What hackers built", col: 2, row: 0, tone: "white" },
+          { id: "f", text: "Photos", sub: "Who the hackers are", col: 3, row: 0, tone: "white" },
+          { id: "w", text: "Sponsor wall", sub: "Who backs it, by tier", col: 4, row: 0, tone: "white" },
+          { id: "d", text: "Decides", sub: "Reaches out to the team", col: 5, row: 0, tone: "accent" },
+        ],
+        edges: [
+          { from: "o", to: "n" },
+          { from: "n", to: "p" },
+          { from: "p", to: "f" },
+          { from: "f", to: "w" },
+          { from: "w", to: "d" },
+        ],
+      },
+    },
+    {
       id: "journey",
-      label: "User flow",
+      label: "Hacker flow",
       headline: "I mapped the hacker's whole weekend, from the landing page to prizes.",
       body: [
         "The landing page hands off to the dashboard at Apply. From there every step earns or spends points, so the dashboard had to make points and actions impossible to confuse.",
@@ -370,33 +437,33 @@ export const hackCanada: CaseStudy = {
     {
       id: "problem",
       label: "The dashboard",
-      headline: "I inherited the dashboard as one Figma file with no rules behind it.",
+      headline: "The dashboard was vibecoded, so we redesigned it from scratch.",
       body: [
-        "Every screen had its own spacing, the buttons were coral on cream, and the copy was still lorem ipsum. Engineers had to guess every value.",
+        "It ran, but nothing was designed: there was no Figma file, and every page picked its own colours, cards and spacing. There was nothing to fix, so we started over.",
       ],
       visual: {
         kind: "media",
         media: [
           {
-            image: `${M}/before-challenges.webp`,
-            alt: "Challenges in the original Figma file",
+            image: `${M}/before-home.webp`,
+            alt: "The vibecoded dashboard home: dark cards with emoji titles and mixed button styles",
             width: 1440,
             height: 900,
           },
           {
-            image: `${M}/before-bets.webp`,
-            alt: "A bet in the original Figma file, with placeholder copy",
+            image: `${M}/before-store.webp`,
+            alt: "The vibecoded dashboard store: prize cards with placeholder icons",
             width: 1440,
             height: 900,
           },
         ],
       },
-      caption: "Two screens from the original file.",
+      caption: "The dashboard before our redesign, on demo data.",
     },
     {
       id: "system",
       label: "Design system",
-      headline: "So I built one library for every screen, in light and dark.",
+      headline: "So we founded a design system from scratch, in light and dark.",
       body: [
         "35 components, tokens and motion on one docs site, each with a live preview, the code and its rules. It sits on Meta's open source Astryx, so focus states and keyboard support came tested.",
       ],
@@ -419,10 +486,10 @@ export const hackCanada: CaseStudy = {
     },
     {
       id: "spacing",
-      label: "System decision",
+      label: "Rule of 8",
       headline: "I put everything on a rule of 8, and a script enforces it.",
       body: [
-        "The Figma styles used line heights like 75.6 and 18.9. I moved every size to a multiple of 8, with 4 as the only half step. The check fails the build if anything drifts.",
+        "Every size is a multiple of 8, with 4 as the only half step. The check fails the build if anything drifts, so the vibecoded mess can't creep back.",
       ],
       visual: {
         kind: "media",
@@ -437,27 +504,27 @@ export const hackCanada: CaseStudy = {
       },
     },
     {
-      id: "cta",
-      label: "System decision",
-      headline: "I put the main button first, on the left, every time.",
+      id: "empty",
+      label: "UX principle",
+      headline: "I made every empty screen say what to do next.",
       body: [
-        "We read left to right, so the action you came for is the first thing you hit, then the safe way out. On phones, dialog buttons stack with the main one under the thumb.",
+        "A new hacker sees a lot of empty lists: no bets, no points, no challenges yet. The empty state gives each one a beaver, a plain title and one next step, never a blank page that says \u201cNo data\u201d.",
       ],
       visual: {
         kind: "media",
         media: [
           {
-            image: `${M}/ds-cta-dialog.webp`,
-            alt: "A Redeem dialog with the blue Redeem button before Cancel",
-            width: 579,
-            height: 327,
+            image: `${M}/ds-empty.webp`,
+            alt: "Do: No bets yet, pick a market to start, with a beaver. Don't: a blank box that only says No data",
+            width: 1200,
+            height: 391,
           },
         ],
       },
     },
     {
       id: "agents",
-      label: "System decision",
+      label: "For AI agents",
       headline: "I wrote the library for AI agents as much as for people.",
       body: [
         "Hackers build with Claude, Codex and Gemini. An AGENTS.md gives them the rule of 8, the colour roles and the button order, so a generated screen still looks like Hack Canada.",
@@ -482,25 +549,13 @@ export const hackCanada: CaseStudy = {
         "Blue is for actions and links. Gold only appears where hackers earn something. I darkened the brand blue from #1c74c9 to #1a6dbd so small labels pass 4.5:1, with a 2 px focus ring and 44 px touch targets.",
       ],
       visual: {
-        kind: "switch",
-        label: "Colour",
-        options: [
+        kind: "media",
+        media: [
           {
-            label: "Before",
-            note: "The original colour styles.",
-            images: [
-              {
-                src: `${M}/ds-before-colors.webp`,
-                alt: "The original Figma colour styles, generic defaults",
-                width: 1088,
-                height: 1360,
-              },
-            ],
-          },
-          {
-            label: "After",
-            note: "Colour roles in the library.",
-            images: [desk("ds-color-light", "The library's colour page with roles and contrast")],
+            image: `${M}/ds-color-light.webp`,
+            alt: "The design system's colour page with roles and contrast",
+            width: 1440,
+            height: 900,
           },
         ],
       },
@@ -533,12 +588,44 @@ export const hackCanada: CaseStudy = {
     },
     {
       id: "applied",
-      label: "In use",
-      headline: "Then I moved the hacker dashboard onto it.",
+      label: "Redesign",
+      headline: "Then we rebuilt every dashboard page on it.",
       body: [
-        "Challenges, the store, Bet Points and the mini games share one set of parts. Each category used to have its own loud colour; now points are gold and the action is always the same blue button.",
+        "Challenges, the store, Bet Points and the mini games now share one set of parts. Points are always gold and the action is always the same blue button.",
       ],
       visual: pair("challenges", "Challenges"),
+    },
+    {
+      id: "try",
+      label: "Try it",
+      headline: "We built much more than fits here, so try it yourself.",
+      body: ["All three are live. The dashboard demo runs on test data, so click anything."],
+      visual: {
+        kind: "links",
+        links: [
+          {
+            title: "Landing page",
+            body: "Scroll from the lighthouse to the sea floor.",
+            href: "https://hackcanada.org",
+            cta: "Open hackcanada.org",
+            image: { src: `${M}/landing.webp`, alt: "The Hack Canada landing page hero with the lighthouse" },
+          },
+          {
+            title: "Design system",
+            body: "Every component, with live demos, specs and rules, in light and dark.",
+            href: "https://hackcanada-design-system.vercel.app",
+            cta: "Open the design system",
+            image: { src: `${M}/ds-home-light.webp`, alt: "The design system's home page" },
+          },
+          {
+            title: "Dashboard demo",
+            body: "Log in as lucas@test.dev with the password beaver-8d3ac3, then start a challenge or redeem a prize.",
+            href: "https://hackcanada-dashboard.vercel.app/sign-in",
+            cta: "Open the demo",
+            image: { src: `${M}/after-home.webp`, alt: "The redesigned dashboard home" },
+          },
+        ],
+      },
     },
     {
       id: "outcome",
@@ -548,7 +635,7 @@ export const hackCanada: CaseStudy = {
       visual: {
         kind: "stats",
         stats: [
-          { value: "6", text: "designers, each owning a section of the coast." },
+          { value: "4", text: "designers in 4 months, each owning sections of the coast." },
           { value: "35", text: "components in light and dark, checked by a script." },
           { value: "23", text: "dashboard pages that fit a phone with no sideways scroll." },
         ],
@@ -559,10 +646,10 @@ export const hackCanada: CaseStudy = {
       label: "Reflection",
       headline: "I learned owners keep a team together and checks keep a system together.",
       body: [
-        "Giving each designer a section kept six people on one story. Rules in a doc drifted within a day; the spacing and contrast checks held. Next time I'd bring developers into the first critique.",
+        "Giving each designer sections kept four of us on one story. Rules in a doc drifted within a day; the spacing and contrast checks held. Next time I'd bring developers into the first critique.",
       ],
     },
   ],
   next: "ripple",
-  draft: ["team list and section owners", "timeline", "Fay Wu credit wording"],
+  draft: ["sponsor flow steps", "competitor notes, condensed from the FigJam boards", "public demo login"],
 };

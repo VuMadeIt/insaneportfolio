@@ -148,14 +148,14 @@ export const projects: Project[] = [
     role: "Design lead and design engineer",
     event: "Hack Canada",
     description:
-      "I led six designers on the landing page, then built the 35-component design system the hacker dashboard runs on.",
+      "I led a team of four designers on the landing page, then founded the 35-component design system the hacker dashboard runs on.",
     caption: "One hackathon, from the first visit to the last prize.",
     media: {
       video: "/media/hack-canada/landing.mp4",
       poster: "/media/hack-canada/landing.webp",
-      alt: "The Hack Canada landing page scrolling from the beach to the sea floor, animated by Fay Wu",
-      width: 918,
-      height: 640,
+      alt: "The Hack Canada landing page scrolling from the beach to the sea floor",
+      width: 1376,
+      height: 960,
     },
     caseStudy: true,
     link: { label: "Live site", href: "https://hackcanada.org" },

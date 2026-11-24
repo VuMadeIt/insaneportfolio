@@ -63,7 +63,33 @@ export type Visual =
   /** `lit` of `total` dots light up: a ratio from a quote, drawn. */
   | { kind: "dots"; total: number; lit: number }
   /** Short cards; with `image`, each opens on an illustration (my Framer case-study art). */
-  | { kind: "cards"; cards: { title: string; body: string; image?: { src: string; alt: string } }[] }
+  | {
+      kind: "cards";
+      /** With `width` and `height`, an image keeps its whole frame instead of a cropped 8:5. */
+      cards: {
+        title: string;
+        body: string;
+        image?: { src: string; alt: string; width?: number; height?: number };
+      }[];
+    }
+  /** Sticky notes in columns, one column per site under its screenshot; the notes pin in one by one. */
+  | {
+      kind: "notes";
+      columns: { title: string; colour: string; image?: { src: string; alt: string }; notes: string[] }[];
+    }
+  /** Images of any shape packed into columns, each whole: a wall of sketches. */
+  | { kind: "mosaic"; media: Media[] }
+  /** Live products to open, each with what to do there. */
+  | {
+      kind: "links";
+      links: {
+        title: string;
+        body: string;
+        href: string;
+        cta: string;
+        image?: { src: string; alt: string };
+      }[];
+    }
   | { kind: "options"; options: { title: string; pros: string[]; cons: string[]; chosen?: boolean }[] }
   | { kind: "embed"; src: string; title: string; poster: Media }
   | { kind: "list"; items: string[] }

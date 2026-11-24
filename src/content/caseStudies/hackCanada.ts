@@ -299,7 +299,7 @@ export const hackCanada: CaseStudy = {
             body: "Logos by tier, each with room to breathe, unlike the squished walls we saw.",
             image: {
               src: `${M}/proof-sponsors.webp`,
-              alt: "The sponsor wall under the sea, with Silver and Bronze tiers",
+              alt: "The sponsor wall under the sea: Squarepoint, Tailscale and Photon in Silver, then Reality Defender, Taste Labs and ElevenLabs in Bronze",
             },
           },
         ],

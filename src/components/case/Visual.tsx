@@ -194,7 +194,7 @@ export function Visual({ visual }: { visual: VisualData }) {
       return <System v={visual} />;
     case "cards":
       return (
-        <dl className="grid gap-4 @xl:grid-cols-3">
+        <dl className={`grid gap-4 ${visual.cards.length === 4 ? "@xl:grid-cols-2" : "@xl:grid-cols-3"}`}>
           {visual.cards.map((c) => (
             <div key={c.title} className="reveal overflow-hidden rounded-md bg-wall">
               {c.image && (

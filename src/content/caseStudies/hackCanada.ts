@@ -108,6 +108,31 @@ export const hackCanada: CaseStudy = {
       },
     },
     {
+      id: "sponsor-brief",
+      label: "Sponsors",
+      headline: "I wrote the sponsor into the brief as a second user.",
+      body: [
+        "Sponsors decide whether to pay for the weekend. They need proof: how many hackers came, what they built, and who already backs it. Hack the North's site showed us the pattern.",
+      ],
+      visual: {
+        kind: "media",
+        media: [
+          {
+            image: `${M}/sponsor-brief.webp`,
+            alt: "The FigJam key info card: two personas, hackers and sponsors, and the sections each one needs",
+            width: 1200,
+            height: 460,
+          },
+          {
+            image: `${M}/sponsor-reference.webp`,
+            alt: "Hack the North's proof sections pinned in FigJam: stats, projects, speakers and hacker stories",
+            width: 1660,
+            height: 1100,
+          },
+        ],
+      },
+    },
+    {
       id: "competitors",
       label: "Research",
       headline: "We pulled apart three hackathon sites before drawing anything.",
@@ -231,6 +256,51 @@ export const hackCanada: CaseStudy = {
               phone("live-m-hero", "The landing page on a phone: the hero and About"),
               phone("live-m-2", "The landing page on a phone, further down the beach"),
             ],
+          },
+        ],
+      },
+    },
+    {
+      id: "sponsor-proof",
+      label: "For sponsors",
+      headline: "I gave each sponsor question its own answer on the page.",
+      body: [
+        "Below the hero, the page turns into proof. Sponsors meet it on the way down to their own logo wall.",
+      ],
+      visual: {
+        kind: "cards",
+        cards: [
+          {
+            title: "How many came",
+            body: "Last year's turnout, prizes and projects, as sea creatures.",
+            image: {
+              src: `${M}/proof-stats.webp`,
+              alt: "Last year we had: 10K+ in prizes, 20+ sponsors, 210+ projects",
+            },
+          },
+          {
+            title: "What they build",
+            body: "Real projects with their teams, like Wallhacks, which sees people through walls.",
+            image: {
+              src: `${M}/proof-projects.webp`,
+              alt: "Get inspired: the Wallhacks project on a driftwood sign",
+            },
+          },
+          {
+            title: "Who they are",
+            body: "Photos from last year, framed in sandcastles along the beach.",
+            image: {
+              src: `${M}/proof-photos.webp`,
+              alt: "Photos of last year's hackers in sandcastle frames on the beach",
+            },
+          },
+          {
+            title: "Who backs it",
+            body: "Logos by tier, each with room to breathe, unlike the squished walls we saw.",
+            image: {
+              src: `${M}/proof-sponsors.webp`,
+              alt: "The sponsor wall under the sea, with Silver and Bronze tiers",
+            },
           },
         ],
       },

@@ -112,19 +112,11 @@ export const hackCanada: CaseStudy = {
       },
     },
     {
-      id: "sponsor-brief",
-      label: "Sponsors",
-      headline: "I wrote the sponsor into the brief as a second user.",
-      body: [
-        "Sponsors decide whether to pay for the weekend. They need proof before they read a single word: how many hackers came, what they built, who they are and who already backs it.",
-      ],
-    },
-    {
       id: "competitors",
       label: "Research",
       headline: "We pulled apart three hackathon sites before drawing anything.",
       body: [
-        "Each of us filled the same board of likes and dislikes for JAMHacks, Hack the North and HackHERS. Then we sorted the notes into what we'd take.",
+        "We picked JAMHacks and HackHERS because they match what our software engineers can build, and Hack the North for the occasional stretch. Each of us filled the same board of likes and dislikes, then we sorted the notes into what we'd take.",
       ],
       visual: {
         kind: "notes",
@@ -165,10 +157,10 @@ export const hackCanada: CaseStudy = {
               alt: "The HackHERS site: a night sky with clouds, a moon and a flying dragon",
             },
             notes: [
-              "Looks official and legitimate.",
-              "Photos in a camera roll, and a rare loading screen.",
-              "Clean boxes separate the content.",
-              "Backgrounds stand alone and carry no information.",
+              "Painted, Ghibli-style skies, close to our own sea and clouds.",
+              "Looks official, with clean boxes that separate the content.",
+              "A loading screen and camera-roll photos we hadn't seen elsewhere.",
+              "Feels static, and the backgrounds carry no information.",
             ],
           },
         ],
@@ -234,30 +226,54 @@ export const hackCanada: CaseStudy = {
       },
     },
     {
-      id: "lighthouse",
+      id: "decisions",
       label: "Design decision",
-      headline: "We kept the lighthouse and dropped its trick.",
+      headline: "We turned each research note into one thing on the page.",
       body: [
-        "A beam that lights up text in the dark looked great and failed on phones, where there's no hover and the text hid. The lighthouse stayed as the hero, and the beam became decoration.",
+        "Every choice below answers a note from the boards, so the site keeps what worked and fixes what didn't.",
       ],
       visual: {
-        kind: "options",
-        options: [
+        kind: "cards",
+        cards: [
           {
-            title: "Beam reveals the text",
-            pros: ["Memorable"],
-            cons: ["Text hidden by default", "No hover on phones"],
+            title: "One coast, top to bottom",
+            body: "JAMHacks jumped between backgrounds. Ours is one scroll down the coast, from the lighthouse to a dock that runs into the sea.",
+            image: {
+              src: `${M}/dd-coast.webp`,
+              alt: "The dock with a Hack Canada sign running down into the water, under bubbles",
+              width: 1200,
+              height: 750,
+            },
           },
           {
-            title: "Footprints in the sand",
-            pros: ["Playful, on theme"],
-            cons: ["Waves wash the words away"],
+            title: "Last year, in real photos",
+            body: "Hack the North's event photos built trust. We framed last year's hackers in sandcastles along the beach.",
+            image: {
+              src: `${M}/proof-photos.webp`,
+              alt: "Photos of last year's hackers in sandcastle frames on the beach",
+              width: 960,
+              height: 600,
+            },
           },
           {
-            title: "Lighthouse hero, one scroll down the coast",
-            pros: ["Key info visible at once", "Works on phones"],
-            cons: ["Less of a trick"],
-            chosen: true,
+            title: "Every sponsor, by tier",
+            body: "Hack the North squished its sponsors into text at the bottom. Ours get a whole underwater wall, a row for each tier.",
+            image: {
+              src: `${M}/dd-sponsors.webp`,
+              alt: "The sponsor wall under the sea: Squarepoint, Tailscale and Photon in Silver, then Reality Defender, Taste Labs and ElevenLabs in Bronze",
+              width: 1200,
+              height: 750,
+            },
+          },
+          {
+            title: "The background holds the content",
+            body: "HackHERS's backgrounds carried no information. On ours, last year's numbers ride on sea creatures and the FAQ grows on kelp.",
+            image: {
+              src: `${M}/dd-stats.webp`,
+              alt: "Last year's numbers on sea creatures: 10K+ in prizes, 20+ sponsors, 210+ projects, 36 hours hacking and 800+ hackers",
+              width: 1200,
+              height: 750,
+            },
           },
         ],
       },
@@ -294,54 +310,11 @@ export const hackCanada: CaseStudy = {
       },
     },
     {
-      id: "sponsor-proof",
-      label: "For sponsors",
-      headline: "I gave each sponsor question its own answer on the page.",
-      body: [
-        "Below the hero, the page turns into proof: 800+ hackers, 210+ projects in 36 hours, 20+ sponsors and 10K+ in prizes last year. Sponsors pass it on the way down to their own logo wall.",
-      ],
-      visual: {
-        kind: "cards",
-        cards: [
-          {
-            title: "What they build",
-            body: "Real projects with their teams, like Wallhacks, which sees people through walls.",
-            image: {
-              src: `${M}/proof-projects.webp`,
-              alt: "Get inspired: the Wallhacks project and its team on a driftwood sign, with two photos of the demo",
-              width: 1200,
-              height: 937,
-            },
-          },
-          {
-            title: "Who they are",
-            body: "Photos from last year, framed in sandcastles along the beach.",
-            image: {
-              src: `${M}/proof-photos.webp`,
-              alt: "Photos of last year's hackers in sandcastle frames on the beach",
-              width: 960,
-              height: 600,
-            },
-          },
-          {
-            title: "Who backs it",
-            body: "Logos by tier, each with room to breathe, unlike the squished walls we saw.",
-            image: {
-              src: `${M}/proof-sponsors.webp`,
-              alt: "The sponsor wall under the sea: Squarepoint, Tailscale and Photon in Silver, then Reality Defender, Taste Labs, ElevenLabs and Render in Bronze",
-              width: 1200,
-              height: 1041,
-            },
-          },
-        ],
-      },
-    },
-    {
       id: "sponsor-flow",
-      label: "Sponsor flow",
-      headline: "I mapped a sponsor's scroll, from the first screen to their decision.",
+      label: "For sponsors",
+      headline: "I wrote the sponsor in as a second user, then mapped their scroll.",
       body: [
-        "A sponsor never applies, so the page itself is their journey. Each stop answers one question, and the sponsor wall sits right after the proof.",
+        "Sponsors decide whether to pay for the weekend, and they never apply. So the page is their journey: 800+ hackers, 210+ projects in 36 hours, 20+ sponsors and 10K+ in prizes, then their own wall.",
       ],
       visual: {
         kind: "diagram",
@@ -361,7 +334,7 @@ export const hackCanada: CaseStudy = {
           { id: "p", text: "Get inspired", sub: "What hackers built", col: 2, row: 0, tone: "white" },
           { id: "f", text: "Photos", sub: "Who the hackers are", col: 3, row: 0, tone: "white" },
           { id: "w", text: "Sponsor wall", sub: "Who backs it, by tier", col: 4, row: 0, tone: "white" },
-          { id: "d", text: "Decides", sub: "Reaches out to the team", col: 5, row: 0, tone: "accent" },
+          { id: "d", text: "Decides", sub: "Whether to back the weekend", col: 5, row: 0, tone: "accent" },
         ],
         edges: [
           { from: "o", to: "n" },

@@ -75,7 +75,9 @@ export type Visual =
   /** Sticky notes in columns, one column per site under its screenshot; the notes pin in one by one. */
   | {
       kind: "notes";
-      columns: { title: string; colour: string; image?: { src: string; alt: string }; notes: string[] }[];
+      columns: { title: string; colour: string; image: { src: string; alt: string }; notes: string[] }[];
+      /** What the team concluded, as its own row under the columns. */
+      takeaways?: { title: string; colour: string; notes: string[] };
     }
   /** Images of any shape packed into columns, each whole: a wall of sketches. */
   | { kind: "mosaic"; media: Media[] }

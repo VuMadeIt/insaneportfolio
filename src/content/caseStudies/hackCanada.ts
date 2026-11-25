@@ -171,17 +171,17 @@ export const hackCanada: CaseStudy = {
               "Backgrounds stand alone and carry no information.",
             ],
           },
-          {
-            title: "What we took",
-            colour: "#b3f0bc",
-            notes: [
-              "One theme, carried through every section.",
-              "Real photos and projects from last year.",
-              "Room for every sponsor logo, by tier.",
-              "Backgrounds that hold the content, not just sit behind it.",
-            ],
-          },
         ],
+        takeaways: {
+          title: "What we took",
+          colour: "#b3f0bc",
+          notes: [
+            "One theme, carried through every section.",
+            "Real photos and projects from last year.",
+            "Room for every sponsor logo, by tier.",
+            "Backgrounds that hold the content, not just sit behind it.",
+          ],
+        },
       },
     },
     {
@@ -583,6 +583,49 @@ export const hackCanada: CaseStudy = {
           { from: "h2", to: "o1" },
           { from: "o1", to: "o2" },
           { from: "o2", to: "h3" },
+        ],
+      },
+    },
+    {
+      id: "organizers",
+      label: "For organizers",
+      headline: "I designed the organizer side for a crowded door: pick a station, then scan.",
+      body: [
+        "Organizers work standing up, with a line of hackers in front of them. So each tool asks one question first, then does one job.",
+      ],
+      visual: {
+        kind: "cards",
+        cards: [
+          {
+            title: "Pick the station first",
+            body: "Check-in, a meal, a challenge or a store pickup. One scan then means one thing, and check-in comes before any meal.",
+            image: {
+              src: `${M}/org-scanner.webp`,
+              alt: "The organizer Scanner: four scanner cards, then a grid of meals and snacks to scan for",
+              width: 1130,
+              height: 706,
+            },
+          },
+          {
+            title: "Fix points by hand",
+            body: "Find a hacker, see their balance in gold, then give or take back up to 500 points with a reason on record.",
+            image: {
+              src: `${M}/org-points-manager.webp`,
+              alt: "The Points manager: Lucas Vu with 4,981 points, 25 points entered and Give points before Take back points",
+              width: 1130,
+              height: 706,
+            },
+          },
+          {
+            title: "Run the markets",
+            body: "Organizers open a yes or no question for Bet Points, pause it, then settle it. The server pays out or refunds.",
+            image: {
+              src: `${M}/org-bets.webp`,
+              alt: "Bet Points for an organizer: live markets on the left and an Open a market form on the right",
+              width: 1130,
+              height: 706,
+            },
+          },
         ],
       },
     },

@@ -126,48 +126,69 @@ function Embed({ v }: { v: Extract<VisualData, { kind: "embed" }> }) {
 }
 
 /** Sticky notes under each site's screenshot. Below the fold they pin in one by one, slightly askew. */
+function Note({
+  text,
+  colour,
+  order,
+  inView,
+}: {
+  text: string;
+  colour: string;
+  order: number;
+  inView: boolean | null;
+}) {
+  const tilt = ((order % 3) - 1) * 1.2;
+  return (
+    <li
+      className="p-4 text-[15px] leading-[1.45] text-[#1d1d1f] shadow-[0_8px_16px_-8px_rgba(0,0,0,0.35)] transition-[opacity,transform] duration-500 ease-out"
+      style={{
+        background: colour,
+        opacity: inView === false ? 0 : 1,
+        transform: inView === false ? "translateY(16px) scale(0.96)" : `rotate(${tilt}deg)`,
+        transitionDelay: `${order * 60}ms`,
+      }}
+    >
+      {text}
+    </li>
+  );
+}
+
 function Notes({ v }: { v: Extract<VisualData, { kind: "notes" }> }) {
   const [ref, inView] = useInView<HTMLDivElement>();
+  const per = v.columns[0]?.notes.length ?? 0;
+  const t = v.takeaways;
   return (
-    <div ref={ref} className="grid gap-x-6 gap-y-10 @lg:grid-cols-2 @5xl:grid-cols-4">
-      {v.columns.map((c, ci) => (
-        <div key={c.title} className="flex flex-col gap-4">
-          {c.image ? (
+    <div ref={ref} className="flex flex-col gap-12">
+      <div className="grid gap-x-6 gap-y-10 @lg:grid-cols-2 @4xl:grid-cols-3">
+        {v.columns.map((c, ci) => (
+          <div key={c.title} className="flex flex-col gap-4">
             <Image
               src={c.image.src}
               alt={c.image.alt}
               width={960}
               height={600}
-              sizes="(min-width: 1400px) 340px, (min-width: 700px) 50vw, 100vw"
+              sizes="(min-width: 1400px) 460px, (min-width: 700px) 50vw, 100vw"
               className="aspect-[8/5] w-full rounded-md object-cover object-top"
             />
-          ) : (
-            // Keeps the notes level with the screenshotted columns when they share a row.
-            <div aria-hidden className="hidden aspect-[8/5] w-full @5xl:block" />
-          )}
-          <h3 className="font-display text-[22px] font-[350] tracking-[-0.02em]">{c.title}</h3>
-          <ul className="flex flex-col gap-3">
-            {c.notes.map((n, i) => {
-              const order = ci * c.notes.length + i;
-              const tilt = ((order % 3) - 1) * 1.2;
-              return (
-                <li
-                  key={n}
-                  className="p-4 text-[15px] leading-[1.45] text-[#1d1d1f] shadow-[0_8px_16px_-8px_rgba(0,0,0,0.35)] transition-[opacity,transform] duration-500 ease-out"
-                  style={{
-                    background: c.colour,
-                    opacity: inView === false ? 0 : 1,
-                    transform: inView === false ? "translateY(16px) scale(0.96)" : `rotate(${tilt}deg)`,
-                    transitionDelay: `${order * 60}ms`,
-                  }}
-                >
-                  {n}
-                </li>
-              );
-            })}
+            <h3 className="font-display text-[22px] font-[350] tracking-[-0.02em]">{c.title}</h3>
+            <ul className="flex flex-col gap-3">
+              {c.notes.map((n, i) => (
+                <Note key={n} text={n} colour={c.colour} order={ci * per + i} inView={inView} />
+              ))}
+            </ul>
+          </div>
+        ))}
+      </div>
+      {t && (
+        <div className="flex flex-col gap-4">
+          <h3 className="font-display text-[22px] font-[350] tracking-[-0.02em]">{t.title}</h3>
+          <ul className="grid gap-3 @lg:grid-cols-2 @4xl:grid-cols-4">
+            {t.notes.map((n, i) => (
+              <Note key={n} text={n} colour={t.colour} order={v.columns.length * per + i} inView={inView} />
+            ))}
           </ul>
         </div>
-      ))}
+      )}
     </div>
   );
 }

@@ -151,8 +151,8 @@ export const projects: Project[] = [
       "I led a team of four designers on the landing page, then founded the 35-component design system the hacker dashboard runs on.",
     caption: "One hackathon, from the first visit to the last prize.",
     media: {
-      video: "/media/hack-canada/landing-wide.mp4",
-      poster: "/media/hack-canada/landing-wide.webp",
+      video: "/media/hack-canada/landing-wood.mp4",
+      poster: "/media/hack-canada/landing-wood.webp",
       alt: "The Hack Canada landing page scrolling from the beach to the sea floor",
       width: 1630,
       height: 912,

@@ -1,6 +1,7 @@
 "use client";
 
 import { useSyncExternalStore } from "react";
+import { Segmented } from "./Segmented";
 
 /** The language the staff screens are shown in, shared by every figure on the page. */
 export type Lang = "vi" | "en";
@@ -34,23 +35,12 @@ const OPTIONS: [Lang, string][] = [
 export function ScreenLangTabs() {
   const lang = useScreenLang();
   return (
-    <div
-      role="group"
-      aria-label="Screen language"
-      className="mx-auto mb-6 flex w-fit justify-center gap-1 rounded-[26px] bg-wall p-1"
-    >
-      {OPTIONS.map(([l, label]) => (
-        <button
-          key={l}
-          type="button"
-          lang={l}
-          aria-pressed={lang === l}
-          onClick={() => set(l)}
-          className={`rounded-full px-5 py-2.5 text-[15px] transition-colors duration-300 ${lang === l ? "bg-ink text-wall" : "hover:bg-white"}`}
-        >
-          {label}
-        </button>
-      ))}
-    </div>
+    <Segmented
+      label="Screen language"
+      className="mb-6"
+      options={OPTIONS.map(([l, label]) => ({ key: l, label, lang: l }))}
+      value={lang}
+      onChange={(l) => set(l as Lang)}
+    />
   );
 }

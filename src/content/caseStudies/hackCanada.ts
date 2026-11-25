@@ -236,18 +236,8 @@ export const hackCanada: CaseStudy = {
         kind: "cards",
         cards: [
           {
-            title: "One coast, top to bottom",
-            body: "JAMHacks jumped between backgrounds. Ours is one scroll down the coast, from the lighthouse to a dock that runs into the sea.",
-            image: {
-              src: `${M}/dd-coast.webp`,
-              alt: "The dock with a Hack Canada sign running down into the water, under bubbles",
-              width: 1200,
-              height: 750,
-            },
-          },
-          {
             title: "Last year, in real photos",
-            body: "Hack the North's event photos built trust. We framed last year's hackers in sandcastles along the beach.",
+            body: "Hack the North and HackHERS both showed real photos of their events, and it built trust. We framed last year's hackers in sandcastles along the beach.",
             image: {
               src: `${M}/proof-photos.webp`,
               alt: "Photos of last year's hackers in sandcastle frames on the beach",
@@ -257,7 +247,7 @@ export const hackCanada: CaseStudy = {
           },
           {
             title: "Every sponsor, by tier",
-            body: "Hack the North squished its sponsors into text at the bottom. Ours get a whole underwater wall, a row for each tier.",
+            body: "Sponsors often end up squished into a strip at the bottom of a hackathon site. Ours get a whole underwater wall, a row for each tier.",
             image: {
               src: `${M}/dd-sponsors.webp`,
               alt: "The sponsor wall under the sea: Squarepoint, Tailscale and Photon in Silver, then Reality Defender, Taste Labs and ElevenLabs in Bronze",
@@ -635,7 +625,11 @@ export const hackCanada: CaseStudy = {
           },
           {
             title: "Dashboard demo",
-            body: "Log in as lucas@test.dev with the password beaver-8d3ac3, then start a challenge or redeem a prize.",
+            body: "Log in with the test account below, then start a challenge or redeem a prize.",
+            logins: [
+              { label: "Email", value: "lucas@test.dev" },
+              { label: "Password", value: "beaver-8d3ac3" },
+            ],
             href: "https://hackcanada-dashboard.vercel.app/sign-in",
             cta: "Open the demo",
             image: { src: `${M}/after-home.webp`, alt: "The redesigned dashboard home" },

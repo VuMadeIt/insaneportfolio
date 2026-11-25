@@ -90,6 +90,8 @@ export type Visual =
         href: string;
         cta: string;
         image?: { src: string; alt: string };
+        /** Test logins shown with a copy button each. */
+        logins?: { label: string; value: string }[];
       }[];
     }
   | { kind: "options"; options: { title: string; pros: string[]; cons: string[]; chosen?: boolean }[] }

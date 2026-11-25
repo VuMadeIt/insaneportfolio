@@ -126,6 +126,58 @@ function Embed({ v }: { v: Extract<VisualData, { kind: "embed" }> }) {
 }
 
 /** Sticky notes under each site's screenshot. Below the fold they pin in one by one, slightly askew. */
+/** One test login with a button that copies it, for reviewers trying a demo. */
+function Copy({ label, value }: { label: string; value: string }) {
+  const [done, setDone] = useState(false);
+  useEffect(() => {
+    if (!done) return;
+    const t = setTimeout(() => setDone(false), 2000);
+    return () => clearTimeout(t);
+  }, [done]);
+  return (
+    <li className="flex items-center gap-3 rounded-md bg-white/70 py-1 pr-1 pl-4">
+      <span className={`w-[4.5em] shrink-0 text-[14px] ${done ? "text-[var(--accent)]" : "text-muted"}`}>
+        {done ? "Copied" : label}
+      </span>
+      <span className="min-w-0 flex-1 truncate text-[16px] select-all">{value}</span>
+      <button
+        type="button"
+        aria-label={`Copy ${label.toLowerCase()}`}
+        onClick={() =>
+          navigator.clipboard?.writeText(value).then(
+            () => setDone(true),
+            () => {},
+          )
+        }
+        className="grid size-10 shrink-0 place-items-center rounded-full transition-colors duration-200 hover:bg-wall"
+      >
+        <svg
+          aria-hidden
+          viewBox="0 0 24 24"
+          className="size-[18px]"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="1.75"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        >
+          {done ? (
+            <path d="M5 12.5l4.5 4.5L19 7.5" />
+          ) : (
+            <>
+              <rect x="8" y="8" width="12" height="12" rx="2.5" />
+              <path d="M16 8V6.5A2.5 2.5 0 0 0 13.5 4h-7A2.5 2.5 0 0 0 4 6.5v7A2.5 2.5 0 0 0 6.5 16H8" />
+            </>
+          )}
+        </svg>
+      </button>
+      <span role="status" className="sr-only">
+        {done ? `${label} copied` : ""}
+      </span>
+    </li>
+  );
+}
+
 function Note({
   text,
   colour,
@@ -338,14 +390,16 @@ export function Visual({ visual }: { visual: VisualData }) {
         <ul className="grid gap-4 @xl:grid-cols-3">
           {visual.links.map((l) => (
             <li key={l.href} className="reveal">
-              <a
-                href={l.href}
-                target="_blank"
-                rel="noreferrer"
-                className="group flex h-full flex-col overflow-hidden rounded-md bg-wall"
-              >
+              <div className="group flex h-full flex-col overflow-hidden rounded-md bg-wall">
                 {l.image && (
-                  <span className="block overflow-hidden">
+                  <a
+                    href={l.href}
+                    target="_blank"
+                    rel="noreferrer"
+                    tabIndex={-1}
+                    aria-hidden
+                    className="block overflow-hidden"
+                  >
                     <Image
                       src={l.image.src}
                       alt={l.image.alt}
@@ -354,16 +408,28 @@ export function Visual({ visual }: { visual: VisualData }) {
                       sizes="(min-width: 1400px) 460px, (min-width: 700px) 33vw, 100vw"
                       className="aspect-[8/5] w-full object-cover object-top transition-transform duration-500 ease-out group-hover:scale-[1.03]"
                     />
-                  </span>
+                  </a>
                 )}
-                <span className="flex flex-1 flex-col p-6">
+                <div className="flex flex-1 flex-col p-6">
                   <span className="font-display text-[22px] font-[350] tracking-[-0.02em]">{l.title}</span>
                   <span className="mt-2 text-[16px] leading-[1.5]">{l.body}</span>
-                  <span className="mt-auto pt-4 text-[16px] text-[var(--accent)] underline-offset-4 group-hover:underline">
+                  {l.logins && (
+                    <ul className="mt-4 flex flex-col gap-2">
+                      {l.logins.map((x) => (
+                        <Copy key={x.label} label={x.label} value={x.value} />
+                      ))}
+                    </ul>
+                  )}
+                  <a
+                    href={l.href}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="mt-auto self-start pt-4 text-[16px] text-[var(--accent)] underline-offset-4 hover:underline"
+                  >
                     {l.cta} <span aria-hidden>&#8599;</span>
-                  </span>
-                </span>
-              </a>
+                  </a>
+                </div>
+              </div>
             </li>
           ))}
         </ul>

@@ -340,7 +340,7 @@ export function Switch({ v }: { v: Of<"switch"> }) {
           return (
             <div
               key={o.label}
-              aria-hidden={on !== i}
+              inert={on !== i}
               className={`flex flex-col items-center gap-4 transition-opacity [grid-area:1/1] motion-reduce:transition-none ${on === i ? "z-10 duration-300 ease-[var(--ease-out)]" : "pointer-events-none opacity-0 delay-300 duration-0"}`}
             >
               {shared && <PhoneTitle label={shared} />}
@@ -369,7 +369,7 @@ export function Switch({ v }: { v: Of<"switch"> }) {
         {v.options.map((o, i) => (
           <span
             key={o.label}
-            aria-hidden={on !== i}
+            inert={on !== i}
             className={`transition-opacity [grid-area:1/1] motion-reduce:transition-none ${on === i ? "duration-300 ease-[var(--ease-out)]" : "opacity-0 duration-100"}`}
           >
             <Rich text={o.note} />

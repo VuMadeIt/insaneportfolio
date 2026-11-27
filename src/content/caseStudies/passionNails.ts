@@ -447,7 +447,7 @@ export const passionNails: CaseStudy = {
           { name: "Card", hex: "#fbf7f1", role: "cards and sheets" },
           { name: "Ink", hex: "#0e0e0e", role: "text and hairlines" },
           { name: "Burgundy", hex: "#87133e", role: "chosen, new, Add" },
-          { name: "Line", hex: "#8c7b68", role: "control edges, 3.4:1" },
+          { name: "Line", hex: "#8c7b68", role: "control edges", against: "Card" },
         ],
         faces: [
           { name: "Zalando Sans Expanded", use: "display", family: "display", sample: "Passion Nails" },

@@ -520,6 +520,6 @@ export const shufflr: CaseStudy = {
       },
     },
   ],
-  next: "ripple",
+  next: "hack-canada",
   draft: ["the three synthesis themes", "the 'one evening out' scale bar (illustrative)"],
 };

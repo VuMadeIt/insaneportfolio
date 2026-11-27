@@ -140,6 +140,27 @@ export const projects: Project[] = [
     draft: ["role", "description"],
   },
   {
+    slug: "hack-canada",
+    title: "Hack Canada",
+    date: "2026-11",
+    year: "2026",
+    medium: "Landing page and design system",
+    role: "Design lead and design engineer",
+    event: "Hack Canada",
+    description:
+      "I led a team of four designers on the landing page, then founded the 35-component design system the hacker dashboard runs on.",
+    caption: "One hackathon, from the first visit to the last prize.",
+    media: {
+      video: "/media/hack-canada/landing-wood.mp4",
+      poster: "/media/hack-canada/landing-wood.webp",
+      alt: "The Hack Canada landing page scrolling from the beach to the sea floor",
+      width: 1630,
+      height: 912,
+    },
+    caseStudy: true,
+    link: { label: "Live site", href: "https://hackcanada.org" },
+  },
+  {
     slug: "passion-nails",
     title: "Passion Nails",
     date: "2026-11",
@@ -419,13 +440,16 @@ export function monthOf(date: string): string {
   return `${MONTHS[month! - 1]} ${year}`;
 }
 
-/** The home page (revision 8): Reboot, then Passion Nails (a live product), then Shufflr. Ripple stays on /work. */
-export const homeProjects = ["passion-nails", "reboot", "shufflr"].map((slug) => projectBySlug(slug)!);
+/** The home page: Passion Nails, Reboot, Shufflr, then the Hack Canada design system. Ripple stays on /work. */
+export const homeProjects = ["passion-nails", "reboot", "shufflr", "hack-canada"].map((slug) =>
+  projectBySlug(slug)!,
+);
 
 /** /work (PLAN 14.6, 15.16): hackathon wins, then selected projects, in my own order. */
 const pick = (slugs: string[]) => slugs.map((slug) => projectBySlug(slug)!);
 export const wins = pick(["ripple", "shufflr", "we-should-go-to-japan", "reboot", "asper", "solarscore"]);
 export const selected = pick([
+  "hack-canada",
   "passion-nails",
   "maple-leaf-foods",
   "sweaterify",

@@ -63,7 +63,37 @@ export type Visual =
   /** `lit` of `total` dots light up: a ratio from a quote, drawn. */
   | { kind: "dots"; total: number; lit: number }
   /** Short cards; with `image`, each opens on an illustration (my Framer case-study art). */
-  | { kind: "cards"; cards: { title: string; body: string; image?: { src: string; alt: string } }[] }
+  | {
+      kind: "cards";
+      /** With `width` and `height`, an image keeps its whole frame instead of a cropped 8:5. */
+      cards: {
+        title: string;
+        body: string;
+        image?: { src: string; alt: string; width?: number; height?: number };
+      }[];
+    }
+  /** Sticky notes in columns, one column per site under its screenshot; the notes pin in one by one. */
+  | {
+      kind: "notes";
+      columns: { title: string; colour: string; image: { src: string; alt: string }; notes: string[] }[];
+      /** What the team concluded, as its own row under the columns. */
+      takeaways?: { title: string; colour: string; notes: string[] };
+    }
+  /** Images of any shape packed into columns, each whole: a wall of sketches. */
+  | { kind: "mosaic"; media: Media[] }
+  /** Live products to open, each with what to do there. */
+  | {
+      kind: "links";
+      links: {
+        title: string;
+        body: string;
+        href: string;
+        cta: string;
+        image?: { src: string; alt: string };
+        /** Test logins shown with a copy button each. */
+        logins?: { label: string; value: string }[];
+      }[];
+    }
   | { kind: "options"; options: { title: string; pros: string[]; cons: string[]; chosen?: boolean }[] }
   | { kind: "embed"; src: string; title: string; poster: Media }
   | { kind: "list"; items: string[] }
@@ -97,12 +127,13 @@ export type Visual =
   /** Two to three columns, each a heading and a short paragraph or a list. */
   | { kind: "compare"; columns: { title: string; tone?: "accent" | "ink" | "plain"; items: string[] }[] }
   /**
-   * A design system as a docs page: colour roles, the type (with the font's Latin cut against its
-   * Vietnamese cut), and the shape rule. Each row is a title and its one rule, then the specimen.
+   * A design system as a small docs site in a window: a side nav of foundations (colour, type, shape,
+   * spacing) and components, each page a title, its one rule, then the specimen.
    */
   | {
       kind: "system";
-      colours: { name: string; hex: string; role: string }[];
+      /** `against` names the colour its contrast is checked on (an edge); otherwise text on it. */
+      colours: { name: string; hex: string; role: string; against?: string }[];
       rules: { colour: string; type: string; shape: string; components: string; spacing: string };
       faces: { name: string; use: string; family: "display" | "text"; sample: string }[];
       /** One Vietnamese phrase, set in the Latin cut alone and then with the Vietnamese cut. */
@@ -146,6 +177,10 @@ export interface CaseStudy {
   accent: string;
   accentSoft: string;
   link?: { label: string; href: string };
+  /** More links beside `link`, e.g. a second live product. */
+  links?: { label: string; href: string }[];
+  /** Sibling case studies of one project (Hack Canada: design system, landing page), as tabs. */
+  tabs?: { label: string; slug: string }[];
   hero?: Media;
   blocks: Block[];
   next: string;

@@ -50,11 +50,12 @@ describe("site copy", () => {
       expect(hrefOf(p), p.slug).toBeTruthy();
       expect(p.media.video ?? p.media.hover, p.slug).toBeTruthy();
     }
-    expect(homeProjects.map((p) => p.slug)).toEqual(["passion-nails", "reboot", "shufflr"]);
+    expect(homeProjects.map((p) => p.slug)).toEqual(["passion-nails", "reboot", "shufflr", "hack-canada"]);
     expect(wins.slice(0, 3).map((p) => p.slug)).toEqual(["ripple", "shufflr", "we-should-go-to-japan"]);
     expect(wins.every((p) => p.prize)).toBe(true);
     expect(selected.some((p) => p.prize)).toBe(false);
-    expect(new Set([...wins, ...selected]).size).toBe(projects.length);
+    const tabbed = caseStudies.flatMap((c) => c.tabs?.map((t) => t.slug) ?? []);
+    expect(new Set([...wins, ...selected].map((p) => p.slug).concat(tabbed)).size).toBe(projects.length);
     const after = (list: typeof wins, a: string, b: string) =>
       list.findIndex((p) => p.slug === a) > list.findIndex((p) => p.slug === b);
     expect(after(wins, "asper", "reboot")).toBe(true);

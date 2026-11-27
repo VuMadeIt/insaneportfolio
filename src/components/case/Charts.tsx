@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { useState } from "react";
 import type { Shot, Visual } from "@/content/caseStudies/types";
+import { Segmented } from "./Segmented";
 import { Rich } from "./Gloss";
 import { groupTitle, Phone, PHONE_RATIO, PhoneTitle, phoneWidth } from "./Phone";
 import { useInView } from "./useInView";
@@ -227,6 +228,11 @@ export function Brief({ v }: { v: Of<"brief"> }) {
 export function Anatomy({ v }: { v: Of<"anatomy"> }) {
   const [on, setOn] = useState<number | null>(null);
   const ratio = v.image.frame ? PHONE_RATIO : v.image.width / v.image.height;
+  // A landscape screen is too small beside its key, so it gets the full width and the key goes under it.
+  const wide = !v.image.frame && ratio > 1;
+  const maxWidth = v.image.frame
+    ? `calc(${phoneWidth(1, PHONE_RATIO)} + 120px)`
+    : `calc(min(${v.image.width}px, 70vh * ${ratio}) + 120px)`;
   const img = (
     <div className="relative">
       <Image
@@ -267,15 +273,14 @@ export function Anatomy({ v }: { v: Of<"anatomy"> }) {
     </div>
   );
   return (
-    <div className="grid items-center gap-10 @xl:grid-cols-[minmax(0,0.9fr)_minmax(0,1fr)]">
-      <div
-        className="mx-auto flex w-full flex-col gap-4 px-[60px] [--lead:-48px]"
-        style={{
-          maxWidth: v.image.frame
-            ? `calc(${phoneWidth(1, PHONE_RATIO)} + 120px)`
-            : `calc(min(${v.image.width}px, 70vh * ${ratio}) + 120px)`,
-        }}
-      >
+    <div
+      className={
+        wide
+          ? "flex flex-col gap-10"
+          : "grid items-center gap-10 @xl:grid-cols-[minmax(0,0.9fr)_minmax(0,1fr)]"
+      }
+    >
+      <div className="mx-auto flex w-full flex-col gap-4 px-[60px] [--lead:-48px]" style={{ maxWidth }}>
         {v.image.label && <PhoneTitle label={v.image.label} />}
         {v.image.frame ? (
           <Phone {...v.image.frame} className="w-full">
@@ -285,7 +290,10 @@ export function Anatomy({ v }: { v: Of<"anatomy"> }) {
           img
         )}
       </div>
-      <ol className="flex flex-col gap-6">
+      <ol
+        className={wide ? "mx-auto grid w-full gap-6 @xl:px-[60px] @3xl:grid-cols-3" : "flex flex-col gap-6"}
+        style={wide ? { maxWidth } : undefined}
+      >
         {v.points.map((p, i) => (
           <li
             key={p.title}
@@ -320,31 +328,20 @@ export function Switch({ v }: { v: Of<"switch"> }) {
   const [on, setOn] = useState(0);
   return (
     <div>
-      <div
-        role="group"
-        aria-label={v.label}
-        className="mx-auto flex w-fit flex-wrap justify-center gap-1 rounded-[26px] bg-wall p-1"
-      >
-        {v.options.map((o, i) => (
-          <button
-            key={o.label}
-            type="button"
-            aria-pressed={on === i}
-            onClick={() => setOn(i)}
-            className={`rounded-full px-5 py-2.5 text-[15px] transition-colors duration-300 ${on === i ? "bg-ink text-wall" : "hover:bg-white"}`}
-          >
-            {o.label}
-          </button>
-        ))}
-      </div>
+      <Segmented
+        label={v.label}
+        options={v.options.map((o) => ({ key: o.label, label: o.label }))}
+        value={v.options[on]!.label}
+        onChange={(k) => setOn(v.options.findIndex((o) => o.label === k))}
+      />
       <div className="mt-6 grid">
         {v.options.map((o, i) => {
           const shared = groupTitle(o.images);
           return (
             <div
               key={o.label}
-              aria-hidden={on !== i}
-              className={`flex flex-col items-center gap-4 transition-[opacity,transform] duration-500 ease-[var(--ease-out)] [grid-area:1/1] ${on === i ? "" : "pointer-events-none translate-y-2 opacity-0"}`}
+              inert={on !== i}
+              className={`flex flex-col items-center gap-4 transition-opacity [grid-area:1/1] motion-reduce:transition-none ${on === i ? "z-10 duration-300 ease-[var(--ease-out)]" : "pointer-events-none opacity-0 delay-300 duration-0"}`}
             >
               {shared && <PhoneTitle label={shared} />}
               <div className="flex items-end justify-center gap-[clamp(16px,4cqi,56px)]">
@@ -353,7 +350,11 @@ export function Switch({ v }: { v: Of<"switch"> }) {
                     key={m.src}
                     m={m}
                     title={shared ? undefined : m.label}
-                    width={phoneWidth(o.images.length, m.frame ? PHONE_RATIO : m.width / m.height)}
+                    width={
+                      !m.frame && m.width / m.height > 0.7
+                        ? `min(100%, ${m.width}px, calc((100svh - 260px) * ${m.width / m.height}))`
+                        : phoneWidth(o.images.length, m.frame ? PHONE_RATIO : m.width / m.height)
+                    }
                   />
                 ))}
               </div>
@@ -363,9 +364,17 @@ export function Switch({ v }: { v: Of<"switch"> }) {
       </div>
       <p
         aria-live="polite"
-        className="mx-auto mt-6 max-w-[34em] text-center text-[15px] leading-[1.5] text-muted"
+        className="mx-auto mt-6 grid max-w-[34em] text-center text-[15px] leading-[1.5] text-muted"
       >
-        <Rich text={v.options[on]!.note} />
+        {v.options.map((o, i) => (
+          <span
+            key={o.label}
+            inert={on !== i}
+            className={`transition-opacity [grid-area:1/1] motion-reduce:transition-none ${on === i ? "duration-300 ease-[var(--ease-out)]" : "opacity-0 duration-100"}`}
+          >
+            <Rich text={o.note} />
+          </span>
+        ))}
       </p>
     </div>
   );
@@ -379,7 +388,11 @@ function Screen({ m, width, title }: { m: Shot; width: string; title?: string })
       alt={m.alt}
       width={m.width}
       height={m.height}
-      sizes="(min-width: 768px) 320px, 45vw"
+      sizes={
+        m.frame || m.width / m.height <= 0.7
+          ? "(min-width: 768px) 320px, 45vw"
+          : "(min-width: 1400px) 1300px, 100vw"
+      }
       className={`block h-auto w-full ${m.frame ? "" : "rounded-[clamp(12px,2.4cqi,28px)]"}`}
     />
   );

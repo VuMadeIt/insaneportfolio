@@ -86,9 +86,10 @@ function Text({ block }: { block: Block }) {
 
 /** Figures a phone can't read at its width: they get a full-screen zoom. Films have their own. */
 const zoomable = (v: NonNullable<Block["visual"]>) =>
-  PANELLED.has(v.kind) &&
-  !["statement", "dots", "quotes", "switch"].includes(v.kind) &&
-  !(v.kind === "media" && v.media.some((m) => m.video));
+  v.kind === "mosaic" ||
+  (PANELLED.has(v.kind) &&
+    !["statement", "dots", "quotes", "switch"].includes(v.kind) &&
+    !(v.kind === "media" && v.media.some((m) => m.video)));
 
 function Figure({ block, fill = false }: { block: Block; fill?: boolean }) {
   if (!block.visual) return null;
@@ -181,6 +182,20 @@ export default async function CaseStudyPage({ params }: { params: Promise<{ slug
     <article style={{ "--accent": study.accent, "--accent-soft": study.accentSoft } as React.CSSProperties}>
       <header className="px-[var(--gutter)] pb-[clamp(40px,6vh,72px)] pt-[clamp(72px,12vh,140px)]">
         <div className="mx-auto max-w-[1400px]">
+          {study.tabs && (
+            <nav aria-label="Case studies" className="mb-8 flex w-fit gap-1 rounded-[26px] bg-panel p-1">
+              {study.tabs.map((t) => (
+                <Link
+                  key={t.slug}
+                  href={`/work/${t.slug}`}
+                  aria-current={t.slug === slug ? "page" : undefined}
+                  className={`rounded-full px-5 py-2.5 text-[15px] transition-colors duration-300 ${t.slug === slug ? "bg-ink text-wall" : "hover:bg-white"}`}
+                >
+                  {t.label}
+                </Link>
+              ))}
+            </nav>
+          )}
           <h1 className="text-[clamp(56px,9vw,148px)] leading-[0.9]">{project.title}</h1>
           <p className="mt-8 max-w-[36em] text-[clamp(18px,1.5vw,22px)] leading-[1.5]">{study.summary}</p>
           <dl className="mt-10 grid gap-6 text-[15px] leading-[1.5] sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
@@ -192,9 +207,13 @@ export default async function CaseStudyPage({ params }: { params: Promise<{ slug
             ))}
           </dl>
           {study.link && (
-            <a href={study.link.href} className="link-arrow mt-8 inline-block text-[16px]">
-              {study.link.label} <span aria-hidden>&rarr;</span>
-            </a>
+            <div className="mt-8 flex flex-wrap gap-x-8 gap-y-4">
+              {[study.link, ...(study.links ?? [])].map((l) => (
+                <a key={l.href} href={l.href} className="link-arrow inline-block text-[16px]">
+                  {l.label} <span aria-hidden>&rarr;</span>
+                </a>
+              ))}
+            </div>
           )}
         </div>
       </header>

@@ -6,7 +6,7 @@ export const metadata = {
   description: "Everything I've designed and built: case studies, hackathon wins and experiments.",
 };
 
-/** The catalogue (PLAN 14.6): hackathon wins, then selected projects. */
+/** The catalogue (PLAN 14.6): hackathon wins, then all work. */
 export default function WorkPage() {
   return (
     <section
@@ -19,7 +19,7 @@ export default function WorkPage() {
       {(
         [
           ["Hackathon wins", wins],
-          ["Selected projects", selected],
+          ["All Work", selected],
         ] as const
       ).map(([heading, list]) => (
         <div key={heading} className="mt-[clamp(64px,10vh,120px)]">

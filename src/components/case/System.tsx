@@ -199,10 +199,19 @@ export function System({ v }: { v: Of }) {
   const [at, setAt] = useState(0);
   const [q, setQ] = useState("");
   const main = useRef<HTMLDivElement>(null);
+  const top = useRef<HTMLParagraphElement>(null);
+  const moved = useRef(false);
   useEffect(() => {
-    main.current?.scrollTo({ top: 0 });
+    if (!moved.current) return;
+    const pane = main.current;
+    if (pane && getComputedStyle(pane).overflowY === "auto") pane.scrollTo({ top: 0 });
+    else if ((top.current?.getBoundingClientRect().top ?? 0) < 0)
+      top.current?.scrollIntoView({ block: "start" });
   }, [at]);
-  const go = (id: string) => setAt(pages.findIndex((p) => p.id === id));
+  const go = (id: string) => {
+    moved.current = true;
+    setAt(pages.findIndex((p) => p.id === id));
+  };
   const current = pages[at]!;
   const found = pages.filter((p) => p.title.toLowerCase().includes(q.trim().toLowerCase()));
   const hex = (name: string) => v.colours.find((c) => c.name === name)?.hex ?? INK;
@@ -555,7 +564,7 @@ export function System({ v }: { v: Of }) {
               aria-label={p.title}
               className="min-w-0 transition-opacity duration-300 ease-[var(--ease-out)] motion-reduce:transition-none starting:opacity-0"
             >
-              <p className="flex flex-wrap gap-1.5 text-[13px]">
+              <p ref={top} className="flex scroll-mt-24 flex-wrap gap-1.5 text-[13px]">
                 <span className="rounded-full bg-[#87133e]/10 px-2.5 py-0.5" style={{ color: ACCENT }}>
                   {p.group}
                 </span>

@@ -33,14 +33,14 @@ type Page = { id: string; group: string; title: string; lede: string };
 /** Tabs that look like the docs' own: text with an ink underline under the chosen one. */
 function Tabs({ value, onChange }: { value: number; onChange: (i: number) => void }) {
   return (
-    <div role="group" aria-label="View" className="flex gap-5 border-b border-ink/15">
+    <div role="group" aria-label="View" className="flex gap-6 border-b border-ink/15">
       {["Preview", "Measured", "Code"].map((t, i) => (
         <button
           key={t}
           type="button"
           aria-pressed={value === i}
           onClick={() => onChange(i)}
-          className={`-mb-px min-h-10 border-b-2 text-[15px] transition-colors duration-200 ${
+          className={`-mb-px min-h-10 border-b-2 text-[16px] transition-colors duration-200 ${
             value === i ? "border-ink" : "border-transparent text-[#5c5148] hover:text-ink"
           }`}
         >
@@ -60,7 +60,7 @@ function CopyCode({ code }: { code: string }) {
   }, [done]);
   return (
     <div className="relative w-full self-stretch">
-      <pre className="overflow-x-auto rounded-[10px] bg-ink px-5 py-4 text-[14px] leading-[1.6] text-[#f4ebdf]">
+      <pre className="overflow-x-auto rounded-[8px] bg-ink px-6 py-4 text-[14px] leading-6 text-[#f4ebdf]">
         <code>{code}</code>
       </pre>
       <button
@@ -71,7 +71,7 @@ function CopyCode({ code }: { code: string }) {
             () => {},
           )
         }
-        className="absolute top-2 right-2 min-h-9 rounded-full bg-[#f4ebdf]/10 px-3.5 text-[13px] text-[#f4ebdf] transition-colors duration-200 hover:bg-[#f4ebdf]/20"
+        className="absolute top-2 right-2 min-h-8 rounded-full bg-[#f4ebdf]/10 px-4 text-[14px] text-[#f4ebdf] transition-colors duration-200 hover:bg-[#f4ebdf]/20"
       >
         {done ? "Copied" : "Copy"}
       </button>
@@ -80,7 +80,7 @@ function CopyCode({ code }: { code: string }) {
 }
 
 const H4 = ({ children, at }: { children: ReactNode; at?: (el: HTMLElement | null) => void }) => (
-  <h4 ref={at} className="mt-10 scroll-mt-24 text-[17px] font-semibold">
+  <h4 ref={at} className="mt-10 scroll-mt-24 text-[18px] leading-6 font-semibold">
     {children}
   </h4>
 );
@@ -91,12 +91,12 @@ function ComponentPage({ i }: { i: number }) {
   const refs = useRef<(HTMLElement | null)[]>([]);
   const parts = ["Preview", "Properties", "Accessibility"];
   return (
-    <div className="grid gap-10 @5xl:grid-cols-[minmax(0,1fr)_9em]">
+    <div className="grid gap-10 @5xl:grid-cols-[minmax(0,1fr)_160px]">
       <div className="min-w-0">
         <div ref={(el) => void (refs.current[0] = el)} className="scroll-mt-24">
           <Tabs value={view} onChange={setView} />
         </div>
-        <div className="mt-4 grid min-h-[230px] grid-cols-[minmax(0,1fr)] place-items-center overflow-hidden rounded-[12px] border border-ink/15 bg-[#fbf7f1] px-2 py-12 @xl:px-6">
+        <div className="mt-4 grid min-h-[232px] grid-cols-[minmax(0,1fr)] place-items-center overflow-hidden rounded-[16px] border border-ink/15 bg-[#fbf7f1] px-2 py-12 @xl:px-6">
           {[0, 1, 2].map((k) => (
             <div
               key={k}
@@ -108,9 +108,9 @@ function ComponentPage({ i }: { i: number }) {
           ))}
         </div>
         <H4 at={(el) => void (refs.current[1] = el)}>Properties</H4>
-        <dl className="mt-3 grid text-[15px]">
+        <dl className="mt-2 grid text-[16px]">
           {c.rows.map(([k, v]) => (
-            <div key={k} className="grid grid-cols-[8em_1fr] gap-4 border-t border-ink/10 py-2.5">
+            <div key={k} className="grid grid-cols-[128px_1fr] gap-4 border-t border-ink/10 py-2">
               <dt style={{ color: MUTED }}>{k}</dt>
               <dd className="tabular-nums">{v}</dd>
             </div>
@@ -123,8 +123,8 @@ function ComponentPage({ i }: { i: number }) {
       </div>
       {
         <nav aria-label="On this page" className="sticky top-0 hidden self-start @5xl:block">
-          <p className="text-[13px] font-semibold">On this page</p>
-          <ul className="mt-2 grid gap-1.5 text-[14px]" style={{ color: MUTED }}>
+          <p className="text-[14px] font-semibold">On this page</p>
+          <ul className="mt-2 grid gap-2 text-[14px]" style={{ color: MUTED }}>
             {parts.map((t, k) => (
               <li key={t}>
                 <button
@@ -144,11 +144,11 @@ function ComponentPage({ i }: { i: number }) {
 }
 
 const Table = ({ head, rows }: { head: [string, string]; rows: [ReactNode, ReactNode][] }) => (
-  <table className="w-full text-left text-[15px]">
+  <table className="w-full text-left text-[16px]">
     <thead>
       <tr style={{ color: MUTED }}>
         {head.map((h) => (
-          <th key={h} className="pb-2 text-[13px] font-normal">
+          <th key={h} className="pb-2 text-[14px] font-normal">
             {h}
           </th>
         ))}
@@ -157,8 +157,8 @@ const Table = ({ head, rows }: { head: [string, string]; rows: [ReactNode, React
     <tbody>
       {rows.map(([a, b], i) => (
         <tr key={i} className="border-t border-ink/10">
-          <td className="py-2.5 pr-4">{a}</td>
-          <td className="py-2.5 tabular-nums">{b}</td>
+          <td className="py-2 pr-4">{a}</td>
+          <td className="py-2 tabular-nums">{b}</td>
         </tr>
       ))}
     </tbody>
@@ -219,7 +219,7 @@ export function System({ v }: { v: Of }) {
 
   const body: Record<string, ReactNode> = {
     overview: (
-      <ul className="grid gap-3 @xl:grid-cols-2">
+      <ul className="grid gap-4 @xl:grid-cols-2">
         {pages
           .filter((p) => p.group === "Foundations")
           .concat({ ...pages.find((p) => p.id === "c0")!, title: "Components", lede: v.rules.components })
@@ -228,10 +228,10 @@ export function System({ v }: { v: Of }) {
               <button
                 type="button"
                 onClick={() => go(p.id)}
-                className="group h-full w-full rounded-[12px] border border-ink/15 bg-[#fbf7f1] px-5 py-4 text-left transition-colors duration-200 hover:border-ink/40"
+                className="group h-full w-full rounded-[16px] border border-ink/15 bg-[#fbf7f1] px-6 py-4 text-left transition-colors duration-200 hover:border-ink/40"
               >
                 <span className="block font-semibold group-hover:underline">{p.title}</span>
-                <span className="mt-1 block text-[15px] leading-[1.45]" style={{ color: MUTED }}>
+                <span className="mt-1 block text-[16px]" style={{ color: MUTED }}>
                   {p.lede}
                 </span>
               </button>
@@ -245,7 +245,7 @@ export function System({ v }: { v: Of }) {
           <Table
             head={["Colour", "Value"]}
             rows={v.colours.map((c) => [
-              <span key={c.name} className="flex items-center gap-2.5">
+              <span key={c.name} className="flex items-center gap-2">
                 <span
                   aria-hidden
                   className="size-4 rounded-full shadow-[inset_0_0_0_1px_rgb(14_14_14/0.15)]"
@@ -276,8 +276,8 @@ export function System({ v }: { v: Of }) {
     a11y: (
       <div className="grid gap-8">
         <div>
-          <h4 className="text-[17px] font-semibold">Tap targets</h4>
-          <p className="mt-1 mb-3 text-[15px]" style={{ color: MUTED }}>
+          <h4 className="text-[18px] font-semibold">Tap targets</h4>
+          <p className="mt-1 mb-4 text-[16px]" style={{ color: MUTED }}>
             In the staff app nothing you tap is under 48 px.
           </p>
           <Table
@@ -289,8 +289,8 @@ export function System({ v }: { v: Of }) {
           />
         </div>
         <div>
-          <h4 className="text-[17px] font-semibold">Contrast</h4>
-          <p className="mt-1 mb-3 text-[15px]" style={{ color: MUTED }}>
+          <h4 className="text-[18px] font-semibold">Contrast</h4>
+          <p className="mt-1 mb-4 text-[16px]" style={{ color: MUTED }}>
             Text needs 4.5:1. A control&rsquo;s edge needs 3:1 against what it sits on.
           </p>
           <Table
@@ -304,8 +304,8 @@ export function System({ v }: { v: Of }) {
           />
         </div>
         <div>
-          <h4 className="text-[17px] font-semibold">Vietnamese letters</h4>
-          <p className="mt-1 text-[15px]" style={{ color: MUTED }}>
+          <h4 className="text-[18px] font-semibold">Vietnamese letters</h4>
+          <p className="mt-1 text-[16px]" style={{ color: MUTED }}>
             {v.proof.after} See Type.
           </p>
         </div>
@@ -320,11 +320,11 @@ export function System({ v }: { v: Of }) {
           return (
             <li
               key={c.hex}
-              className="grid grid-cols-[56px_1fr] items-center gap-x-4 gap-y-1 border-t border-ink/10 py-3 first:border-t-0 @xl:grid-cols-[56px_1fr_auto]"
+              className="grid grid-cols-[56px_1fr] items-center gap-x-4 gap-y-1 border-t border-ink/10 py-4 first:border-t-0 @xl:grid-cols-[56px_1fr_auto]"
             >
               <span
                 aria-hidden
-                className="row-span-2 grid size-14 place-items-center rounded-[10px] text-[18px] font-semibold @xl:row-span-1"
+                className="row-span-2 grid size-14 place-items-center rounded-[8px] text-[18px] font-semibold @xl:row-span-1"
                 style={
                   base
                     ? { background: base.hex, boxShadow: `inset 0 0 0 1.5px ${c.hex}` }
@@ -353,32 +353,32 @@ export function System({ v }: { v: Of }) {
     ),
     type: (
       <>
-        <div className="grid gap-3 @xl:grid-cols-2">
+        <div className="grid gap-4 @xl:grid-cols-2">
           {v.faces.map((f) => (
-            <div key={f.name} className="rounded-[12px] border border-ink/15 bg-[#fbf7f1] px-5 py-5">
+            <div key={f.name} className="rounded-[16px] border border-ink/15 bg-[#fbf7f1] p-6">
               <p
                 lang="vi"
-                className={`leading-[1.15] ${f.family === "display" ? "text-[clamp(20px,3cqi,30px)] uppercase" : "text-[clamp(20px,2.6cqi,26px)] font-semibold"}`}
+                className={`leading-8 ${f.family === "display" ? "text-[clamp(20px,3cqi,30px)] uppercase" : "text-[clamp(20px,2.6cqi,26px)] font-semibold"}`}
                 style={{ fontFamily: FACE[f.family] }}
               >
                 {f.sample}
               </p>
-              <p className="mt-3 text-[14px]" style={{ color: MUTED }}>
+              <p className="mt-4 text-[14px]" style={{ color: MUTED }}>
                 {f.name} · {f.use}
               </p>
             </div>
           ))}
         </div>
-        <h4 className="mt-8 text-[17px] font-semibold">Why the Vietnamese cut</h4>
-        <div className="mt-3 grid gap-3 @xl:grid-cols-2">
+        <h4 className="mt-8 text-[18px] font-semibold">Why the Vietnamese cut</h4>
+        <div className="mt-4 grid gap-4 @xl:grid-cols-2">
           {[
             { note: v.proof.before, latin: true },
             { note: v.proof.after, latin: false },
           ].map((p) => (
-            <div key={p.note} className="rounded-[12px] border border-ink/15 bg-white px-5 py-4">
+            <div key={p.note} className="rounded-[16px] border border-ink/15 bg-white px-6 py-4">
               <p
                 lang="vi"
-                className="text-[clamp(20px,2.6cqi,26px)] leading-[1.2]"
+                className="text-[clamp(20px,2.6cqi,26px)] leading-8"
                 style={{ fontFamily: p.latin ? "'PN Display Latin', Arial" : FACE.display }}
               >
                 {p.latin
@@ -394,7 +394,7 @@ export function System({ v }: { v: Of }) {
                     )
                   : v.proof.text}
               </p>
-              <p className="mt-2 text-[14px] leading-[1.4]" style={{ color: MUTED }}>
+              <p className="mt-2 text-[14px]" style={{ color: MUTED }}>
                 {p.note}
               </p>
             </div>
@@ -403,10 +403,10 @@ export function System({ v }: { v: Of }) {
       </>
     ),
     shape: (
-      <ul className="grid gap-3 @xl:grid-cols-3">
+      <ul className="grid gap-4 @xl:grid-cols-3">
         {v.shapes.map((s) => (
-          <li key={s.shape} className="flex flex-col rounded-[12px] border border-ink/15 bg-[#fbf7f1] p-4">
-            <div className="flex h-[92px] items-center">
+          <li key={s.shape} className="flex flex-col rounded-[16px] border border-ink/15 bg-[#fbf7f1] p-4">
+            <div className="flex h-24 items-center">
               {s.shape === "square" ? (
                 <span className="flex w-full flex-col gap-0.5 border border-ink bg-white px-3.5 py-3 text-[14px] leading-[1.3]">
                   <b>11:00am Maria Santos</b>
@@ -430,8 +430,8 @@ export function System({ v }: { v: Of }) {
                 </span>
               )}
             </div>
-            <p className="mt-3 font-semibold">{s.label}</p>
-            <p className="mt-0.5 text-[14px] leading-[1.4]" style={{ color: MUTED }}>
+            <p className="mt-4 font-semibold">{s.label}</p>
+            <p className="mt-1 text-[14px]" style={{ color: MUTED }}>
               {s.note}
             </p>
           </li>
@@ -439,7 +439,7 @@ export function System({ v }: { v: Of }) {
       </ul>
     ),
     spacing: (
-      <div className="rounded-[12px] border border-ink/15 bg-[#fbf7f1] px-5 py-6">
+      <div className="rounded-[16px] border border-ink/15 bg-[#fbf7f1] px-6 py-6">
         <SpacingScale on />
       </div>
     ),
@@ -454,7 +454,7 @@ export function System({ v }: { v: Of }) {
           type="button"
           aria-current={on ? "page" : undefined}
           onClick={() => go(p.id)}
-          className={`flex min-h-9 w-full items-center rounded-[8px] px-3 text-left text-[15px] transition-colors duration-200 ${
+          className={`flex min-h-10 w-full items-center rounded-[8px] px-2 text-left text-[16px] transition-colors duration-200 ${
             on ? "bg-[#ebe0d2] font-semibold" : "hover:bg-[#ebe0d2]/60"
           }`}
         >
@@ -468,36 +468,20 @@ export function System({ v }: { v: Of }) {
 
   return (
     <div
-      className="@container overflow-hidden rounded-[16px] border border-ink/15 bg-[#f4ebdf] text-[16px] leading-[1.5] text-ink shadow-[0_32px_64px_-32px_rgb(14_14_14/0.35)]"
+      className="@container overflow-hidden rounded-[16px] [&_:focus-visible]:outline-2 [&_:focus-visible]:outline-offset-2 [&_:focus-visible]:outline-[#87133e] border border-ink/15 bg-[#f4ebdf] text-[16px] leading-6 text-ink shadow-[0_32px_64px_-32px_rgb(14_14_14/0.35)]"
       style={{ fontFamily: FACE.text }}
     >
-      <div className="flex h-12 items-center gap-4 border-b border-ink/15 bg-[#fbf7f1] px-4">
-        <span aria-hidden className="flex gap-1.5">
-          {[0, 1, 2].map((k) => (
-            <span key={k} className="size-3 rounded-full bg-ink/15" />
-          ))}
-        </span>
-        <p className="flex min-w-0 items-baseline gap-2.5 whitespace-nowrap">
-          <span className="text-[14px] uppercase" style={{ fontFamily: FACE.display }}>
-            Passion Nails
-          </span>
-          <span className="truncate text-[14px]" style={{ color: MUTED }}>
-            Design system
-          </span>
-        </p>
-      </div>
-
-      <div className="grid @3xl:h-[min(720px,82svh)] @3xl:grid-cols-[212px_minmax(0,1fr)]">
+      <div className="grid @3xl:h-[min(720px,82svh)] @3xl:grid-cols-[256px_minmax(0,1fr)]">
         <nav
           aria-label="Design system pages"
-          className="hidden overflow-y-auto overscroll-contain border-r border-ink/15 p-3 @3xl:block"
+          className="hidden overflow-y-auto overscroll-contain border-r border-ink/15 p-4 @3xl:block"
         >
           <label className="relative mb-4 block">
             <span className="sr-only">Search pages</span>
             <svg
               aria-hidden
               viewBox="0 0 16 16"
-              className="pointer-events-none absolute top-1/2 left-3 size-3.5 -translate-y-1/2"
+              className="pointer-events-none absolute top-1/2 left-4 size-4 -translate-y-1/2"
               fill="none"
               stroke={MUTED}
               strokeWidth="1.6"
@@ -510,7 +494,7 @@ export function System({ v }: { v: Of }) {
               value={q}
               onChange={(e) => setQ(e.target.value)}
               placeholder="Search pages"
-              className="h-9 w-full rounded-full border-[1.5px] border-[#8c7b68] bg-[#fbf7f1] pr-3 pl-8 text-[14px] placeholder:text-[#5c5148]"
+              className="h-10 w-full rounded-full border-[1.5px] border-[#8c7b68] bg-[#fbf7f1] pr-4 pl-10 text-[16px] placeholder:text-[#5c5148]"
             />
           </label>
           {groups.map((g) => {
@@ -518,7 +502,7 @@ export function System({ v }: { v: Of }) {
             return (
               list.length > 0 && (
                 <div key={g} className="mb-4 last:mb-0">
-                  <p className="px-3 pt-1 pb-1.5 text-[13px]" style={{ color: MUTED }}>
+                  <p className="px-2 pb-1 text-[14px]" style={{ color: MUTED }}>
                     {g}
                   </p>
                   <ul>{list.map(navItem)}</ul>
@@ -527,7 +511,7 @@ export function System({ v }: { v: Of }) {
             );
           })}
           {found.length === 0 && (
-            <p className="px-3 text-[14px]" style={{ color: MUTED }}>
+            <p className="px-2 text-[14px]" style={{ color: MUTED }}>
               No page called &ldquo;{q}&rdquo;.
             </p>
           )}
@@ -535,14 +519,14 @@ export function System({ v }: { v: Of }) {
 
         <div
           ref={main}
-          className="min-w-0 px-[clamp(20px,4.5cqi,48px)] pt-6 pb-8 @3xl:overflow-y-auto @3xl:overscroll-contain @3xl:pt-10"
+          className="min-w-0 px-4 pt-6 pb-8 @xl:px-8 @3xl:overflow-y-auto @3xl:overscroll-contain @3xl:pt-10"
         >
           <label className="mb-6 block @3xl:hidden">
             <span className="sr-only">Page</span>
             <select
               value={current.id}
               onChange={(e) => go(e.target.value)}
-              className="h-11 w-full rounded-full border-[1.5px] border-[#8c7b68] bg-[#fbf7f1] px-4 text-[16px]"
+              className="h-12 w-full rounded-full border-[1.5px] border-[#8c7b68] bg-[#fbf7f1] px-4 text-[16px]"
             >
               {groups.map((g) => (
                 <optgroup key={g} label={g}>
@@ -564,16 +548,16 @@ export function System({ v }: { v: Of }) {
               aria-label={p.title}
               className="min-w-0 transition-opacity duration-300 ease-[var(--ease-out)] motion-reduce:transition-none starting:opacity-0"
             >
-              <p ref={top} className="flex scroll-mt-24 flex-wrap gap-1.5 text-[13px]">
-                <span className="rounded-full bg-[#87133e]/10 px-2.5 py-0.5" style={{ color: ACCENT }}>
+              <p ref={top} className="flex scroll-mt-24 flex-wrap gap-2 text-[14px]">
+                <span className="rounded-full bg-[#87133e]/10 px-2" style={{ color: ACCENT }}>
                   {p.group}
                 </span>
-                <span className="rounded-full bg-ink/5 px-2.5 py-0.5" style={{ color: MUTED }}>
+                <span className="rounded-full bg-ink/5 px-2" style={{ color: MUTED }}>
                   {p.group === "Components" ? "Staff app" : "Both apps"}
                 </span>
               </p>
               <h3
-                className="mt-3 text-[clamp(24px,3.4cqi,36px)] leading-[1.15] uppercase"
+                className="mt-2 text-[24px] leading-8 uppercase @xl:text-[32px] @xl:leading-10"
                 style={{ fontFamily: FACE.display }}
               >
                 {p.title}
@@ -584,16 +568,16 @@ export function System({ v }: { v: Of }) {
               <div className="mt-8">{body[p.id]}</div>
             </section>
           ))}
-          <div className="mt-10 grid grid-cols-2 gap-3 border-t border-ink/15 pt-5 text-[15px]">
+          <div className="mt-10 grid grid-cols-2 gap-4 border-t border-ink/15 pt-6 text-[16px]">
             {[prev, next].map((p, k) =>
               p ? (
                 <button
                   key={p.id}
                   type="button"
                   onClick={() => go(p.id)}
-                  className={`group min-h-11 ${k ? "col-start-2 text-right" : "text-left"}`}
+                  className={`group min-h-12 ${k ? "col-start-2 text-right" : "text-left"}`}
                 >
-                  <span className="block text-[13px]" style={{ color: MUTED }}>
+                  <span className="block text-[14px]" style={{ color: MUTED }}>
                     {k ? "Next" : "Previous"}
                   </span>
                   <span className="font-semibold group-hover:underline">{p.title}</span>

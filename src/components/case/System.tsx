@@ -96,12 +96,12 @@ function ComponentPage({ i }: { i: number }) {
         <div ref={(el) => void (refs.current[0] = el)} className="scroll-mt-24">
           <Tabs value={view} onChange={setView} />
         </div>
-        <div className="mt-4 grid min-h-[230px] place-items-center overflow-hidden rounded-[12px] border border-ink/15 bg-[#fbf7f1] px-2 py-12 @xl:px-6">
+        <div className="mt-4 grid min-h-[230px] grid-cols-[minmax(0,1fr)] place-items-center overflow-hidden rounded-[12px] border border-ink/15 bg-[#fbf7f1] px-2 py-12 @xl:px-6">
           {[0, 1, 2].map((k) => (
             <div
               key={k}
               inert={view !== k}
-              className={`${EASE} [grid-area:1/1] ${k === 2 ? "w-full max-w-[26em]" : "pb-8 @xl:pr-10"} ${view === k ? "duration-300 ease-[var(--ease-out)]" : "pointer-events-none opacity-0 duration-100"}`}
+              className={`${EASE} [grid-area:1/1] ${k === 2 ? "w-full max-w-[26em]" : "pb-8 @max-md:scale-[0.8] @xl:pr-10"} ${view === k ? "duration-300 ease-[var(--ease-out)]" : "pointer-events-none opacity-0 duration-100"}`}
             >
               {k === 2 ? <CopyCode code={c.code} /> : <c.Spec on={k === 1} />}
             </div>

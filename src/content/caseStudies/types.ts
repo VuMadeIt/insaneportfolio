@@ -127,12 +127,13 @@ export type Visual =
   /** Two to three columns, each a heading and a short paragraph or a list. */
   | { kind: "compare"; columns: { title: string; tone?: "accent" | "ink" | "plain"; items: string[] }[] }
   /**
-   * A design system as a docs page: colour roles, the type (with the font's Latin cut against its
-   * Vietnamese cut), and the shape rule. Each row is a title and its one rule, then the specimen.
+   * A design system as a small docs site in a window: a side nav of foundations (colour, type, shape,
+   * spacing) and components, each page a title, its one rule, then the specimen.
    */
   | {
       kind: "system";
-      colours: { name: string; hex: string; role: string }[];
+      /** `against` names the colour its contrast is checked on (an edge); otherwise text on it. */
+      colours: { name: string; hex: string; role: string; against?: string }[];
       rules: { colour: string; type: string; shape: string; components: string; spacing: string };
       faces: { name: string; use: string; family: "display" | "text"; sample: string }[];
       /** One Vietnamese phrase, set in the Latin cut alone and then with the Vietnamese cut. */

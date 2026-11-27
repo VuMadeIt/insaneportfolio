@@ -163,43 +163,76 @@ export function CardSpec({ on }: { on: boolean }) {
   );
 }
 
-const SPECS: { name: string; note: string; Spec: (p: { on: boolean }) => ReactNode }[] = [
-  { name: "Button", note: "54 high, sides 1.6em", Spec: ButtonSpec },
-  { name: "Chip", note: "50 high, 8 from dot to name", Spec: ChipSpec },
-  { name: "Field", note: "50 high, 12 corners", Spec: FieldSpec },
-  { name: "Appointment card", note: "12 inside, square", Spec: CardSpec },
-];
+export type Spec = {
+  name: string;
+  lede: string;
+  Spec: (p: { on: boolean }) => ReactNode;
+  rows: [string, string][];
+  /** The specimen's values written out as CSS. */
+  code: string;
+  /** Who can't use it if it's wrong, and what the size or line does about it. */
+  a11y: string;
+};
 
-/** Each component as built and measured, side by side. */
-export function Measured({ on }: { on: boolean }) {
-  return (
-    <div className="flex flex-col gap-3">
-      <div className="hidden grid-cols-[minmax(0,9em)_minmax(0,1fr)_minmax(0,1fr)] gap-6 text-[13px] text-muted @4xl:grid">
-        <span />
-        <span>As built</span>
-        <span>{on ? "Measured" : "Measured (hidden)"}</span>
-      </div>
-      {SPECS.map(({ name, note, Spec }) => (
-        <div
-          key={name}
-          className="grid gap-x-6 gap-y-3 border-t border-ink/10 pt-4 @4xl:grid-cols-[minmax(0,9em)_minmax(0,1fr)_minmax(0,1fr)] @4xl:items-center"
-        >
-          <div>
-            <p className="text-[16px] leading-[1.25]">{name}</p>
-            <p className="text-[13px] leading-[1.4] text-muted">{note}</p>
-          </div>
-          {/* Room around each specimen for its lines and labels. */}
-          <div className="flex min-h-[120px] items-center px-2">
-            <Spec on={false} />
-          </div>
-          <div className="flex min-h-[150px] items-center py-10 pl-2 pr-12 @4xl:pr-24">
-            <Spec on={on} />
-          </div>
-        </div>
-      ))}
-    </div>
-  );
-}
+/** Each staff-app component with its measured values, one docs page each. */
+export const COMPONENTS: Spec[] = [
+  {
+    name: "Button",
+    lede: "Fully round, and 54 px tall in the staff app, so nothing you tap is under 48.",
+    Spec: ButtonSpec,
+    rows: [
+      ["Height", "54"],
+      ["Sides", "27 (1.6em)"],
+      ["Radius", "999"],
+      ["Type", "Hanken Grotesk 17 · 600"],
+      ["Colour", "Ink fill, Cream text"],
+    ],
+    code: `height: 54px;\npadding: 0 1.6em;\nborder-radius: 999px;\nbackground: #0e0e0e;\ncolor: #f4ebdf;\nfont: 600 17px "Hanken Grotesk";`,
+    a11y: "54 px tall, over the 48 px minimum for anything you tap.",
+  },
+  {
+    name: "Chip",
+    lede: "A staff member with her colour dot, round because you tap it.",
+    Spec: ChipSpec,
+    rows: [
+      ["Height", "50"],
+      ["Sides", "18"],
+      ["Dot to name", "8"],
+      ["Stroke", "1.5 · Line"],
+      ["Type", "Hanken Grotesk 17 · 600"],
+    ],
+    code: `height: 50px;\npadding: 0 18px;\ngap: 8px;\nborder: 1.5px solid #8c7b68;\nborder-radius: 999px;\nfont: 600 17px "Hanken Grotesk";`,
+    a11y: "The name sits beside the colour dot, so no one is told apart by colour alone.",
+  },
+  {
+    name: "Field",
+    lede: "12 px corners, for controls too tall to be pills.",
+    Spec: FieldSpec,
+    rows: [
+      ["Height", "50"],
+      ["Sides", "14"],
+      ["Radius", "12"],
+      ["Stroke", "1.5 · Line"],
+      ["Type", "Hanken Grotesk 17 · 400"],
+    ],
+    code: `height: 50px;\npadding: 0 14px;\nborder: 1.5px solid #8c7b68;\nborder-radius: 12px;\nfont: 400 17px "Hanken Grotesk";`,
+    a11y: "50 px tall, and its Line edge is checked against Card.",
+  },
+  {
+    name: "Appointment card",
+    lede: "Square with an ink hairline, like the site's reviews, because you read it.",
+    Spec: CardSpec,
+    rows: [
+      ["Padding", "12"],
+      ["Columns", "64 time · 6 staff colour"],
+      ["Gap", "12"],
+      ["Stroke", "1 · Ink"],
+      ["Radius", "0"],
+    ],
+    code: `display: grid;\ngrid-template-columns: 64px 6px 1fr;\ngap: 12px;\npadding: 12px;\nborder: 1px solid #0e0e0e;\nborder-radius: 0;`,
+    a11y: "Read, not tapped, so it can stay square. Time comes first for a glance.",
+  },
+];
 
 /** The 4 px spacing step, each token drawn to size. */
 export function SpacingScale({ on }: { on: boolean }) {
